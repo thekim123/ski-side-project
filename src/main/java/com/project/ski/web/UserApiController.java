@@ -1,10 +1,10 @@
 package com.project.ski.web;
 
 import com.project.ski.config.auth.PrincipalDetails;
+import com.project.ski.service.AuthService;
 import com.project.ski.web.dto.CMRespDto;
 import com.project.ski.web.dto.JoinRespDto;
-import com.project.ski.domain.user.User;
-import com.project.ski.service.UserService;
+import com.project.ski.domain.user.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,23 +17,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping()
+@RequestMapping("/api/user")
 public class UserApiController {
 
-    private final UserService userService;
+    private final AuthService authService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @PostMapping("user/join")
-    public ResponseEntity<?> join(@RequestBody User user) {
-        JoinRespDto joinDto = userService.userJoin(user);
+    @PostMapping("join")
+    public ResponseEntity<?> join(@RequestBody Users user) {
+        JoinRespDto joinDto = authService.userJoin(user);
         return new ResponseEntity<>(new CMRespDto<>(1, "회원가입완료", joinDto), HttpStatus.OK);
     }
 
-    @PostMapping("user/login")
-    public String login(Authentication authentication) {
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        System.out.println("principal : " + principalDetails);
-        return "user";
+    @PostMapping("login")
+    public PrincipalDetails login(Authentication authentication) {
+        PrincipalDetails principalDetails = authService.userLogin(authentication);
+        return principalDetails;
     }
 
 }

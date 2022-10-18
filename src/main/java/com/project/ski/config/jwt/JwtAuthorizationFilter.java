@@ -3,7 +3,7 @@ package com.project.ski.config.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.project.ski.config.auth.PrincipalDetails;
-import com.project.ski.domain.user.User;
+import com.project.ski.domain.user.Users;
 import com.project.ski.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,7 +33,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             chain.doFilter(request, response);
             return;
         }
-        System.out.println("header : "+header);
         String token = request.getHeader(JwtProperties.HEADER_STRING)
                 .replace(JwtProperties.TOKEN_PREFIX, "");
 
@@ -41,7 +40,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 .getClaim("username").asString();
 
         if(username != null) {
-            User user = userRepository.findByUsername(username);
+            Users user = userRepository.findByUsername(username);
 
             PrincipalDetails principalDetails = new PrincipalDetails(user);
             Authentication authentication =
@@ -49,6 +48,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                             principalDetails,
                             null,
                             principalDetails.getAuthorities());
+
+            System.out.println(authentication.getAuthorities().toString());
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
