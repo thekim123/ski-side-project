@@ -7,7 +7,7 @@ import com.project.ski.config.jwt.JwtProperties;
 import com.project.ski.config.oauth.GoogleUser;
 import com.project.ski.config.oauth.OAuthUserInfo;
 import com.project.ski.domain.user.Role;
-import com.project.ski.domain.user.Users;
+import com.project.ski.domain.user.User;
 import com.project.ski.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,12 +32,15 @@ public class JwtCreateController {
         OAuthUserInfo googleUser = new GoogleUser((Map<String, Object>) data.get("profileObj"));
         System.out.println(googleUser);
 
-        Users userEntity = userRepository.findByUsername(googleUser.getProvider() + "_" + googleUser.getProviderId());
+
+
+        User userEntity = userRepository.findByUsername(googleUser.getProvider() + "_" + googleUser.getProviderId());
+        User userRequest = new User();
         if (userEntity == null) {
-            Users userRequest = Users.builder()
+            userRequest = User.builder()
                     .username(googleUser.getProvider()+"_"+googleUser.getProviderId())
                     .password(bCryptPasswordEncoder.encode("skiproject"))
-                    .roles(Role.USER)
+                    .roles(userRequest.setRoleToNewUser())
                     .build();
             userEntity = userRepository.save(userRequest);
         }
