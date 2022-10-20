@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests(authorize -> authorize
                         .antMatchers("/api/home")
-                        .access("hasRole('ROLE_USER')")
+                        .access("hasRole('USER')")
                         .anyRequest().permitAll())
                 .build();
     }

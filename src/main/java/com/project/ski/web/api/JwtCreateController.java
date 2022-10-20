@@ -1,4 +1,4 @@
-package com.project.ski.web;
+package com.project.ski.web.api;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -40,7 +40,7 @@ public class JwtCreateController {
             userRequest = User.builder()
                     .username(googleUser.getProvider()+"_"+googleUser.getProviderId())
                     .password(bCryptPasswordEncoder.encode("skiproject"))
-                    .roles(userRequest.setRoleToNewUser())
+                    .roles(userRequest.getRoles())
                     .build();
             userEntity = userRepository.save(userRequest);
         }

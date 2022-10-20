@@ -1,14 +1,22 @@
 package com.project.ski.domain.board;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.project.ski.domain.user.Users;
+import com.project.ski.domain.resort.ResortName;
+import com.project.ski.domain.user.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Board {
 
     @Id
@@ -18,12 +26,26 @@ public class Board {
 
     @Column(nullable = false)
     private String title;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private ResortName resortName;
+
     private String content;
 
     @JsonIgnoreProperties({"boards"})
     @JoinColumn(name = "userId")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Users users;
+    @ManyToOne
+    private User user;
+
+    @OrderBy("id desc")
+    @JsonIgnoreProperties("board")
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
+    private List<Comment> comment;
+
+    @JsonIgnoreProperties({"board"})
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
+    private List<Likes> likes;
     private LocalDateTime createDate;
 
     @PrePersist

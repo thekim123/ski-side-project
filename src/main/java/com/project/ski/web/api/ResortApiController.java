@@ -1,4 +1,4 @@
-package com.project.ski.web;
+package com.project.ski.web.api;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;

@@ -1,32 +1,35 @@
 package com.project.ski.config.auth;
 
-import com.project.ski.domain.user.Users;
+import com.project.ski.domain.user.User;
 import lombok.Data;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 @Data
 public class PrincipalDetails implements UserDetails {
-    private Users user;
+    private User user;
 
-    public PrincipalDetails(Users user) {
+    public PrincipalDetails(User user) {
         this.user = user;
+    }
+
+    public User getUser() {
+        return user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         authorities.add(() -> {
-            return ""+user.getRoles();
+            return "" + user.getRoles();
         });
         return authorities;
-    }
-
-    public Users getUser() {
-        return user;
     }
 
     @Override

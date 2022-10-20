@@ -1,40 +1,36 @@
-package com.project.ski.domain.user;
+package com.project.ski.domain.board;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.ski.domain.board.Board;
+import com.project.ski.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.repository.Query;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
-@Data
 @Entity
-@Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-
+@Builder
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    @Column(unique = true, nullable = false)
-    private String username;
+    private String content;
 
-    @Column(nullable = false)
-    private String password;
+    @JoinColumn(name = "boardId")
+    @ManyToOne
+    private Board board;
 
-    @Enumerated(EnumType.STRING)
-    private Role roles;
-
-    @JsonIgnoreProperties({"user"})
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Board> boards;
+    @JsonIgnoreProperties({"boards"})
+    @JoinColumn(name = "userId")
+    @ManyToOne
+    private User user;
 
     private LocalDateTime createDate;
 

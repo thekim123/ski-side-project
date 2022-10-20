@@ -3,7 +3,7 @@ package com.project.ski.config.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.project.ski.config.auth.PrincipalDetails;
-import com.project.ski.domain.user.Users;
+import com.project.ski.domain.user.User;
 import com.project.ski.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -40,7 +40,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 .getClaim("username").asString();
 
         if(username != null) {
-            Users user = userRepository.findByUsername(username);
+            User user = userRepository.findByUsername(username);
 
             PrincipalDetails principalDetails = new PrincipalDetails(user);
             Authentication authentication =
