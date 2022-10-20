@@ -15,17 +15,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 @Data
-@Entity
 public class Weather {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @JoinColumn(name = "resortId")
-    @ManyToOne
-    private Resort resort;
-
+    private String resortName;
     private String weatherDescription;
     private Double temp;
     private Double feelsLike;

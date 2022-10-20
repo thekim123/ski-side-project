@@ -46,6 +46,12 @@ public class Board {
     @JsonIgnoreProperties({"board"})
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
     private List<Likes> likes;
+
+    @Transient
+    private long likeCount;
+
+    @Transient
+    private boolean likeState;
     private LocalDateTime createDate;
 
     @PrePersist

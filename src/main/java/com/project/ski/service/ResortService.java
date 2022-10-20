@@ -24,10 +24,9 @@ public class ResortService {
     public Resort getWeather(Resort resort) throws JsonProcessingException {
         String apiUrl = resort.buildApiUrl(weatherMapKey);
         Weather weather = new Weather().buildWeather(apiUrl);
+        weather.setResortName(resort.getResortName());
 
-        ArrayList<Weather> arr = new ArrayList<>();
-        arr.add(weather);
-        resort.setWeather(arr);
+        resort.setWeather(weather);
         resortRepository.save(resort);
         return resort;
     }

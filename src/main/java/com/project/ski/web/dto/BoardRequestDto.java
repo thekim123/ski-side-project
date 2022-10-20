@@ -9,20 +9,22 @@ import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Getter
-public class BoardDto {
+public class BoardRequestDto {
 
     private Long id;
     private String title;
     private String content;
-    private User user;
+    private String username;
+    private String resortName;
     private LocalDateTime createDate;
 
-    public BoardDto toDto(Board board) {
+    public BoardRequestDto toDto(Board board) {
         this.id = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
-        this.user = board.getUser();
+        this.username = board.getUser().getUsername();
         this.createDate = board.getCreateDate();
+        this.resortName = board.getResortName().toString();
         return this;
     }
 }

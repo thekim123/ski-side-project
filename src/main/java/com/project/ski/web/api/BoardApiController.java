@@ -6,9 +6,10 @@ import com.project.ski.domain.board.Board;
 import com.project.ski.domain.board.Comment;
 import com.project.ski.domain.user.User;
 import com.project.ski.service.BoardService;
+import com.project.ski.service.BookmarkService;
 import com.project.ski.service.CommentService;
 import com.project.ski.service.LikesService;
-import com.project.ski.web.dto.BoardDto;
+import com.project.ski.web.dto.BoardRequestDto;
 import com.project.ski.web.dto.CmRespDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,10 +28,13 @@ public class BoardApiController {
     private final BoardService boardService;
     private final CommentService commentService;
     private final LikesService likesService;
+    private final BookmarkService bookmarkService;
 
     @GetMapping("/")
-    public CmRespDto<?> boardList(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<Board> pages = boardService.getBoardList(pageable);
+    public CmRespDto<?> boardList(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable, Authentication authentication) {
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        long principalId = principalDetails.getUser().getId();
+        Page<Board> pages = boardService.getBoardList(pageable, principalId);
         return new CmRespDto<>(1, "글 조회 완료", pages);
     }
 
@@ -38,18 +42,18 @@ public class BoardApiController {
     public CmRespDto<?> write(@RequestBody Board board, Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         User user = principalDetails.getUser();
-        BoardDto dto = boardService.write(board, user);
+        boardService.write(board, user);
         return new CmRespDto<>(1, "글쓰기 완료", null);
     }
 
     @DeleteMapping("/delete/{boardId}")
-    public @ResponseBody CmRespDto<?> delete(@PathVariable long boardId) {
+    public CmRespDto<?> delete(@PathVariable long boardId) {
         boardService.delete(boardId);
         return new CmRespDto<>(HttpStatus.OK.value(), "글 삭제 완료", null);
     }
 
     @PutMapping("/update/{boardId}")
-    public CmRespDto<?> update(@PathVariable long boardId, BoardDto dto) {
+    public CmRespDto<?> update(@PathVariable long boardId, BoardRequestDto dto) {
         boardService.update(boardId, dto);
         return new CmRespDto<>(HttpStatus.OK.value(), "글 수정 완료", null);
     }
@@ -75,7 +79,7 @@ public class BoardApiController {
             Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         User principal = principalDetails.getUser();
-        Comment commentEntity = commentService.write(principal, content, boardId);
+        commentService.write(principal, content, boardId);
         return new CmRespDto<>(1, "댓글쓰기 완료", null);
     }
 

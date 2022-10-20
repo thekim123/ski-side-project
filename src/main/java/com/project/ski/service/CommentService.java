@@ -13,7 +13,7 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
 
-    public Comment write(User principal, String content, long boardId) {
+    public void write(User principal, String content, long boardId) {
         Board board = Board.builder()
                 .id(boardId)
                 .build();
@@ -23,8 +23,7 @@ public class CommentService {
                 .board(board)
                 .user(principal)
                 .build();
-
-        return commentRepository.save(comment);
+        commentRepository.save(comment);
     }
 
     public void delete(long id, User user) {

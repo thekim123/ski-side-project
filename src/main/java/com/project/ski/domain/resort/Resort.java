@@ -22,10 +22,8 @@ public class Resort {
     private String lat;
     private String lon;
 
-    @OrderBy("id DESC")
-    @JsonIgnoreProperties("resort")
-    @OneToMany(mappedBy = "resort", fetch = FetchType.EAGER)
-    private List<Weather> weather;
+    @Transient
+    private Weather weather;
 
     public String buildApiUrl(String weatherMapKey) {
         String apiUrl = "https://api.openweathermap.org/data/2.5/weather?lat="
