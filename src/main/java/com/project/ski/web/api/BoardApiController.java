@@ -52,10 +52,10 @@ public class BoardApiController {
     }
 
     @PostMapping("write")
-    public CmRespDto<?> write(@RequestBody Board board, Authentication authentication) {
+    public CmRespDto<?> write(@RequestBody BoardRequestDto dto, Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         User user = principalDetails.getUser();
-        boardService.write(board, user);
+        boardService.write(dto, user);
         return new CmRespDto<>(1, "글쓰기 완료", null);
     }
 
@@ -65,9 +65,9 @@ public class BoardApiController {
         return new CmRespDto<>(HttpStatus.OK.value(), "글 삭제 완료", null);
     }
 
-    @PutMapping("/update/{boardId}")
-    public CmRespDto<?> update(@PathVariable long boardId, BoardRequestDto dto) {
-        boardService.update(boardId, dto);
+    @PutMapping("/update/")
+    public CmRespDto<?> update(BoardRequestDto dto, Authentication authentication) {
+        boardService.update(dto, authentication);
         return new CmRespDto<>(HttpStatus.OK.value(), "글 수정 완료", null);
     }
 

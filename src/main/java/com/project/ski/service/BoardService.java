@@ -1,30 +1,48 @@
 package com.project.ski.service;
 
+import com.project.ski.config.auth.PrincipalDetails;
 import com.project.ski.domain.board.Board;
-import com.project.ski.domain.resort.Resort;
 import com.project.ski.domain.resort.ResortName;
 import com.project.ski.domain.user.User;
 import com.project.ski.repository.BoardRepository;
-import com.project.ski.repository.ResortRepository;
 import com.project.ski.web.dto.BoardRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class BoardService {
 
     private final BoardRepository boardRepository;
-    private final ResortRepository resortRepository;
+    @Value("${file.path}")
+    private String uploadFolder;
 
     @Transactional
-    public void write(Board board, User user) {
-        board.setUser(user);
+    public void write(BoardRequestDto dto, User user) {
+        UUID uuid = UUID.randomUUID();
+        String imageFileName = uuid + "_" + dto.getFile().getOriginalFilename();
+
+        Path imageFilePath = Paths.get(uploadFolder + imageFileName);
+
+        try {
+            Files.write(imageFilePath, dto.getFile().getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Board board = dto.toEntity(imageFileName, user);
         boardRepository.save(board);
     }
 
@@ -37,13 +55,24 @@ public class BoardService {
     }
 
     @Transactional
-    public void update(long boardId, BoardRequestDto dto) {
-        Board boardEntity = boardRepository.findById(boardId).orElseThrow(() -> {
+    public void update(BoardRequestDto dto, Authentication authentication) {
+        User user = getUserFromPrincipal(authentication);
+
+        Board boardEntity = boardRepository.findById(dto.getId()).orElseThrow(() -> {
             return new IllegalArgumentException("글 수정 실패 : 게시글의 ID를 찾을 수 없습니다.");
         });
 
-        boardEntity.setTitle(dto.getTitle());
-        boardEntity.setContent(dto.getContent());
+        UUID uuid = UUID.randomUUID();
+        String imageFileName = uuid + "_" + dto.getFile().getOriginalFilename();
+        Path imageFilePath = Paths.get(uploadFolder + imageFileName);
+
+        try {
+            Files.write(imageFilePath, dto.getFile().getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        boardEntity = dto.toEntity(imageFileName, user);
+
     }
 
 
@@ -76,5 +105,11 @@ public class BoardService {
     public List<Board> getPopular() {
         return boardRepository.getPopular();
     }
+
+    public User getUserFromPrincipal(Authentication authentication) {
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        return principalDetails.getUser();
+    }
+
 
 }

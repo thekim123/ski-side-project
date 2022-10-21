@@ -27,11 +27,11 @@ public class Board {
 
     @Column(nullable = false)
     private String title;
+    private String content;
+    private String postImageUrl;
 
     @Enumerated(EnumType.STRING)
     private ResortName resortName;
-
-    private String content;
 
     @JsonIgnoreProperties({"boards"})
     @JoinColumn(name = "userId")
