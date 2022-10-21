@@ -33,6 +33,7 @@ public class Comment {
     private User user;
 
     private LocalDateTime createDate;
+    private LocalDateTime updateDate;
 
     @PrePersist
     public void createDate() {

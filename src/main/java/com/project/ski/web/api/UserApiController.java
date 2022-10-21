@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,5 +50,11 @@ public class UserApiController {
     public CmRespDto<?> delete(Authentication authentication) {
         authService.delete(authentication);
         return new CmRespDto<>(1, "회원탈퇴 완료", null);
+    }
+
+    @PostMapping("update/profile/")
+    public CmRespDto<?> profileImageUrlUpdate(Authentication authentication, MultipartFile profileImageFile) {
+        userService.updateProfileImage(authentication, profileImageFile);
+        return new CmRespDto<>(1, "프로필 사진 업데이트 완료", null);
     }
 }

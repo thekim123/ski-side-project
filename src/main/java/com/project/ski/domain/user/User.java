@@ -39,6 +39,8 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Board> boards;
 
+    private String profileImageUrl;
+
     private LocalDateTime createDate;
 
     private LocalDateTime updateDate;

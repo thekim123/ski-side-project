@@ -34,3 +34,5 @@ spring:
 weather:
   key: 5e3bf77ce9a0a4bd03da20cdf524e02d
 
+file:
+  path: C:/workspace/image/
