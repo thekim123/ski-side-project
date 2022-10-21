@@ -1,6 +1,8 @@
 package com.project.ski.web.dto;
 
 import com.project.ski.domain.board.Board;
+import com.project.ski.domain.resort.Resort;
+import com.project.ski.domain.resort.ResortName;
 import com.project.ski.domain.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

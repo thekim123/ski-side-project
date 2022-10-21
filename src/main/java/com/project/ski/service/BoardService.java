@@ -1,8 +1,11 @@
 package com.project.ski.service;
 
 import com.project.ski.domain.board.Board;
+import com.project.ski.domain.resort.Resort;
+import com.project.ski.domain.resort.ResortName;
 import com.project.ski.domain.user.User;
 import com.project.ski.repository.BoardRepository;
+import com.project.ski.repository.ResortRepository;
 import com.project.ski.web.dto.BoardRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -10,11 +13,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final ResortRepository resortRepository;
 
     @Transactional
     public void write(Board board, User user) {
@@ -59,14 +65,15 @@ public class BoardService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Board> getBoardListSortByResortName() {
-
-        return null;
+    public Page<Board> getBoardByResort(String resortName, Pageable pageable) {
+        ResortName name = ResortName.valueOf(resortName);
+        Page<Board> pages = boardRepository.findByResortName(name, pageable);
+        return pages;
     }
 
     // 인기게시글 보기(좋아요 순)
     @Transactional(readOnly = true)
-    public Page<Board> getPopular() {
+    public List<Board> getPopular() {
         return boardRepository.getPopular();
     }
 

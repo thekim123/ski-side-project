@@ -1,6 +1,7 @@
 package com.project.ski.domain.board;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.project.ski.domain.resort.Resort;
 import com.project.ski.domain.resort.ResortName;
 import com.project.ski.domain.user.User;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,6 @@ public class Board {
     @Column(nullable = false)
     private String title;
 
-    @Column
     @Enumerated(EnumType.STRING)
     private ResortName resortName;
 
