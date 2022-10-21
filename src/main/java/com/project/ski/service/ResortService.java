@@ -30,4 +30,10 @@ public class ResortService {
         resortRepository.save(resort);
         return resort;
     }
+
+    @Transactional
+    public void insert(Resort resort) {
+        System.out.println(resort.getResortName());
+        resortRepository.save(resort);
+    }
 }
