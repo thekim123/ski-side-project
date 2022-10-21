@@ -5,7 +5,6 @@ import com.project.ski.config.auth.PrincipalDetails;
 import com.project.ski.domain.board.Board;
 import com.project.ski.domain.user.User;
 import com.project.ski.service.BoardService;
-import com.project.ski.service.BookmarkService;
 import com.project.ski.service.CommentService;
 import com.project.ski.service.LikesService;
 import com.project.ski.web.dto.BoardRequestDto;
@@ -29,14 +28,19 @@ public class BoardApiController {
     private final BoardService boardService;
     private final CommentService commentService;
     private final LikesService likesService;
-    private final BookmarkService bookmarkService;
+
+    @GetMapping("/home")
+    public CmRespDto<?> home(Authentication authentication, @PageableDefault Pageable pageable) {
+        Page<Board> pages = boardService.getHomeBoard(authentication, pageable);
+        return new CmRespDto<>(1, "즐겨찾기한 게시글 조회 완료", pages);
+    }
 
     @GetMapping("/")
-    public CmRespDto<?> boardList(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable, Authentication authentication) {
+    public CmRespDto<?> getAllBoard(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable, Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         long principalId = principalDetails.getUser().getId();
-        Page<Board> pages = boardService.getBoardList(pageable, principalId);
-        return new CmRespDto<>(1, "글 조회 완료", pages);
+        Page<Board> pages = boardService.getAllBoardList(pageable, principalId);
+        return new CmRespDto<>(1, "전체 게시글 조회 완료", pages);
     }
 
     @GetMapping("/popular")
@@ -46,7 +50,7 @@ public class BoardApiController {
     }
 
     @GetMapping("/{resortName}")
-    public CmRespDto<?> getBoardByResort(@PathVariable String resortName, @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public CmRespDto<?> getBoardByResort(@PathVariable String resortName, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<Board> pages = boardService.getBoardByResort(resortName.toUpperCase(), pageable);
         return new CmRespDto<>(1, "리조트별 게시글 조회 완료", pages);
     }
@@ -74,14 +78,14 @@ public class BoardApiController {
     @PostMapping("{boardId}/likes")
     public void like(@PathVariable long boardId, Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        Long principalId = principalDetails.getUser().getId();
+        long principalId = principalDetails.getUser().getId();
         likesService.like(boardId, principalId);
     }
 
     @DeleteMapping("{boardId}/unlikes")
     public void unlike(@PathVariable long boardId, Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        Long principalId = principalDetails.getUser().getId();
+        long principalId = principalDetails.getUser().getId();
         likesService.unlike(boardId, principalId);
     }
 

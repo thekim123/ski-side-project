@@ -1,6 +1,7 @@
 package com.project.ski.web.dto;
 
 import com.project.ski.domain.board.Board;
+import com.project.ski.domain.resort.Resort;
 import com.project.ski.domain.resort.ResortName;
 import com.project.ski.domain.user.User;
 import lombok.Data;
@@ -16,7 +17,7 @@ public class BoardRequestDto {
     private Long id;
     private String title;
     private String content;
-    private MultipartFile file;
+    //private MultipartFile file;
     private String username;
     private String resortName;
     private LocalDateTime createDate;
@@ -27,16 +28,17 @@ public class BoardRequestDto {
         this.content = board.getContent();
         this.username = board.getUser().getUsername();
         this.createDate = board.getCreateDate();
-        this.resortName = board.getResortName().toString();
         return this;
     }
 
-    public Board toEntity(String postImageUrl, User user) {
+    //    public Board toEntity(String postImageUrl, User user) {
+    public Board toEntity(User user, Resort resort) {
+
         return Board.builder()
                 .user(user)
-                .postImageUrl(postImageUrl)
+                //.postImageUrl(postImageUrl)
+                .resort(resort)
                 .content(content)
-                .resortName(ResortName.valueOf(resortName))
                 .title(title)
                 .build();
     }

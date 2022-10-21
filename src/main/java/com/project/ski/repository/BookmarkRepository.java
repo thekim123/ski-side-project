@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
 
     @Modifying
-    @Query(value = "insert into bookmark(fromUserId, toUserId, createDate) values(:fromUserId, :toResortId, now())", nativeQuery = true)
+    @Query(value = "insert into bookmark(fromUserId, toResortId, createDate) values(:fromUserId, :toResortId, now())", nativeQuery = true)
     void customOnBookmark(@Param("fromUserId") long fromUserId, @Param("toResortId") long toResortId);
 
     @Modifying

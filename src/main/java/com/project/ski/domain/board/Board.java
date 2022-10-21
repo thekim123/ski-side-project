@@ -2,7 +2,6 @@ package com.project.ski.domain.board;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.ski.domain.resort.Resort;
-import com.project.ski.domain.resort.ResortName;
 import com.project.ski.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,8 +29,9 @@ public class Board {
     private String content;
     private String postImageUrl;
 
-    @Enumerated(EnumType.STRING)
-    private ResortName resortName;
+    @JoinColumn(name = "resortId")
+    @ManyToOne
+    private Resort resort;
 
     @JsonIgnoreProperties({"boards"})
     @JoinColumn(name = "userId")

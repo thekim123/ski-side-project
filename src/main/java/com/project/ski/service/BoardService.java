@@ -2,9 +2,11 @@ package com.project.ski.service;
 
 import com.project.ski.config.auth.PrincipalDetails;
 import com.project.ski.domain.board.Board;
+import com.project.ski.domain.resort.Resort;
 import com.project.ski.domain.resort.ResortName;
 import com.project.ski.domain.user.User;
 import com.project.ski.repository.BoardRepository;
+import com.project.ski.repository.ResortRepository;
 import com.project.ski.web.dto.BoardRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,23 +28,34 @@ import java.util.UUID;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final ResortRepository resortRepository;
+
     @Value("${file.path}")
     private String uploadFolder;
+
+    @Transactional(readOnly = true)
+    public Page<Board> getHomeBoard(Authentication authentication, Pageable pageable) {
+        long principalId = getUserFromPrincipal(authentication).getId();
+        Page<Board> boards = boardRepository.homeBoard(principalId, pageable);
+        return boards;
+    }
 
     @Transactional
     public void write(BoardRequestDto dto, User user) {
         UUID uuid = UUID.randomUUID();
-        String imageFileName = uuid + "_" + dto.getFile().getOriginalFilename();
+        //String imageFileName = uuid + "_" + dto.getFile().getOriginalFilename();
 
-        Path imageFilePath = Paths.get(uploadFolder + imageFileName);
+        //   Path imageFilePath = Paths.get(uploadFolder + imageFileName);
 
-        try {
-            Files.write(imageFilePath, dto.getFile().getBytes());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            Files.write(imageFilePath, dto.getFile().getBytes());
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+        Resort resort = resortRepository.findByResortName(dto.getResortName());
 
-        Board board = dto.toEntity(imageFileName, user);
+        Board board = dto.toEntity(user, resort);
+//        Board board = dto.toEntity(user);
         boardRepository.save(board);
     }
 
@@ -62,23 +75,24 @@ public class BoardService {
             return new IllegalArgumentException("글 수정 실패 : 게시글의 ID를 찾을 수 없습니다.");
         });
 
-        UUID uuid = UUID.randomUUID();
-        String imageFileName = uuid + "_" + dto.getFile().getOriginalFilename();
-        Path imageFilePath = Paths.get(uploadFolder + imageFileName);
-
-        try {
-            Files.write(imageFilePath, dto.getFile().getBytes());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        boardEntity = dto.toEntity(imageFileName, user);
+//        UUID uuid = UUID.randomUUID();
+//        String imageFileName = uuid + "_" + dto.getFile().getOriginalFilename();
+//        Path imageFilePath = Paths.get(uploadFolder + imageFileName);
+//
+//        try {
+//            Files.write(imageFilePath, dto.getFile().getBytes());
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+        Resort resort = resortRepository.findByResortName(dto.getResortName());
+        boardEntity = dto.toEntity(user, resort);
+        // boardEntity = dto.toEntity(imageFileName, user);
 
     }
 
-
     // 전체 게시글 보기
     @Transactional(readOnly = true)
-    public Page<Board> getBoardList(Pageable pageable, long principalId) {
+    public Page<Board> getAllBoardList(Pageable pageable, long principalId) {
         Page<Board> boards = boardRepository.findAll(pageable);
 
         boards.forEach((board) -> {
@@ -96,7 +110,9 @@ public class BoardService {
     @Transactional(readOnly = true)
     public Page<Board> getBoardByResort(String resortName, Pageable pageable) {
         ResortName name = ResortName.valueOf(resortName);
-        Page<Board> pages = boardRepository.findByResortName(name, pageable);
+        Resort resort = resortRepository.findByResortName(resortName);
+        long resortId = resort.getId();
+        Page<Board> pages = boardRepository.findByResortId(resortId, pageable);
         return pages;
     }
 
@@ -110,6 +126,5 @@ public class BoardService {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         return principalDetails.getUser();
     }
-
 
 }
