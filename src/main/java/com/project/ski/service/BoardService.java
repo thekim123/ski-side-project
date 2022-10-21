@@ -40,6 +40,8 @@ public class BoardService {
         boardEntity.setContent(dto.getContent());
     }
 
+
+    // 전체 게시글 보기
     @Transactional(readOnly = true)
     public Page<Board> getBoardList(Pageable pageable, long principalId) {
         Page<Board> boards = boardRepository.findAll(pageable);
@@ -56,5 +58,16 @@ public class BoardService {
         return boards;
     }
 
+    @Transactional(readOnly = true)
+    public Page<Board> getBoardListSortByResortName() {
+
+        return null;
+    }
+
+    // 인기게시글 보기(좋아요 순)
+    @Transactional(readOnly = true)
+    public Page<Board> getPopular() {
+        return boardRepository.getPopular();
+    }
 
 }

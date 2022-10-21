@@ -38,6 +38,12 @@ public class BoardApiController {
         return new CmRespDto<>(1, "글 조회 완료", pages);
     }
 
+    @GetMapping("/popular")
+    public CmRespDto<?> popular() {
+        Page<Board> pages = boardService.getPopular();
+        return new CmRespDto<>(1, "인기페이지 조회 완료", pages)
+    }
+
     @PostMapping("write")
     public CmRespDto<?> write(@RequestBody Board board, Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();

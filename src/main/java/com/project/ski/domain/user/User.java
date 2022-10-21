@@ -29,6 +29,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private String email;
+
     @Enumerated(EnumType.STRING)
     private Role roles;
 
@@ -37,6 +40,8 @@ public class User {
     private List<Board> boards;
 
     private LocalDateTime createDate;
+
+    private LocalDateTime updateDate;
 
     @PrePersist
     public void createDate() {
