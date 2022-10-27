@@ -2,6 +2,7 @@ package com.project.ski.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.ski.domain.board.Board;
+import com.project.ski.domain.club.Club;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +11,10 @@ import org.springframework.data.jpa.repository.Query;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
+import static javax.persistence.FetchType.LAZY;
 
 @Data
 @Entity
@@ -36,8 +40,11 @@ public class User {
     private Role roles;
 
     @JsonIgnoreProperties({"user"})
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = LAZY)
     private List<Board> boards;
+
+    @OneToMany(mappedBy = "user")
+    private List<Club> clubs = new ArrayList<>();
 
     private String profileImageUrl;
 
