@@ -2,7 +2,10 @@ package com.project.ski.domain.club;
 
 import com.project.ski.domain.resort.Resort;
 import com.project.ski.domain.user.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -11,6 +14,9 @@ import static javax.persistence.FetchType.*;
 
 @Getter
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(uniqueConstraints = {
         @UniqueConstraint(
                 name = "club",
@@ -28,7 +34,8 @@ public class Club {
     @JoinColumn(name="user_id")
     private User user;
 
-    @OneToOne(fetch = LAZY)
+
+    @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "resort_id")
     private Resort resort;
 
