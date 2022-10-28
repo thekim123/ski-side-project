@@ -31,18 +31,24 @@ public class BoardService {
 
     @Transactional
     public void write(BoardRequestDto dto, User user) {
-        UUID uuid = UUID.randomUUID();
-        String imageFileName = uuid + "_" + dto.getFile().getOriginalFilename();
+        Board board;
+        if (dto.getFile() != null) {
 
-        Path imageFilePath = Paths.get(uploadFolder + imageFileName);
+            UUID uuid = UUID.randomUUID();
+            String imageFileName = uuid + "_" + dto.getFile().getOriginalFilename();
 
-        try {
-            Files.write(imageFilePath, dto.getFile().getBytes());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            Path imageFilePath = Paths.get(uploadFolder + imageFileName);
+
+            try {
+                Files.write(imageFilePath, dto.getFile().getBytes());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            board = dto.toEntity(imageFileName, user);
+        } else {
+            board = dto.toEntityIfImageNull(user);
         }
-
-        Board board = dto.toEntity(imageFileName, user);
         boardRepository.save(board);
     }
 

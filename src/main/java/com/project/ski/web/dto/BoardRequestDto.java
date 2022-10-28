@@ -40,4 +40,12 @@ public class BoardRequestDto {
                 .title(title)
                 .build();
     }
+    public Board toEntityIfImageNull(User user) {
+        return Board.builder()
+                .user(user)
+                .content(content)
+                .resortName(ResortName.valueOf(resortName))
+                .title(title)
+                .build();
+    }
 }
