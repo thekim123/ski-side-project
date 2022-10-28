@@ -42,20 +42,25 @@ public class BoardService {
 
     @Transactional
     public void write(BoardRequestDto dto, User user) {
-        UUID uuid = UUID.randomUUID();
-        //String imageFileName = uuid + "_" + dto.getFile().getOriginalFilename();
-
-        //   Path imageFilePath = Paths.get(uploadFolder + imageFileName);
-
-//        try {
-//            Files.write(imageFilePath, dto.getFile().getBytes());
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+        Board board;
         Resort resort = resortRepository.findByResortName(dto.getResortName());
+        if (dto.getFile() != null) {
 
-        Board board = dto.toEntity(user, resort);
-//        Board board = dto.toEntity(user);
+            UUID uuid = UUID.randomUUID();
+            String imageFileName = uuid + "_" + dto.getFile().getOriginalFilename();
+
+            Path imageFilePath = Paths.get(uploadFolder + imageFileName);
+
+            try {
+                Files.write(imageFilePath, dto.getFile().getBytes());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            board = dto.toEntity(user, resort, imageFileName);
+        } else {
+            board = dto.toEntityIfImageNull(user, resort);
+        }
         boardRepository.save(board);
     }
 
@@ -85,7 +90,7 @@ public class BoardService {
 //            throw new RuntimeException(e);
 //        }
         Resort resort = resortRepository.findByResortName(dto.getResortName());
-        boardEntity = dto.toEntity(user, resort);
+        boardEntity = dto.toEntityIfImageNull(user, resort);
         // boardEntity = dto.toEntity(imageFileName, user);
 
     }

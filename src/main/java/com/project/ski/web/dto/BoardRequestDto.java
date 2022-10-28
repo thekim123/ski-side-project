@@ -17,7 +17,7 @@ public class BoardRequestDto {
     private Long id;
     private String title;
     private String content;
-    //private MultipartFile file;
+    private MultipartFile file;
     private String username;
     private String resortName;
     private LocalDateTime createDate;
@@ -32,8 +32,18 @@ public class BoardRequestDto {
     }
 
     //    public Board toEntity(String postImageUrl, User user) {
-    public Board toEntity(User user, Resort resort) {
+    public Board toEntity(User user, Resort resort, String postImageUrl) {
 
+        return Board.builder()
+                .user(user)
+                .postImageUrl(postImageUrl)
+                .resort(resort)
+                .content(content)
+                .title(title)
+                .build();
+    }
+
+    public Board toEntityIfImageNull(User user, Resort resort) {
         return Board.builder()
                 .user(user)
                 //.postImageUrl(postImageUrl)

@@ -54,6 +54,8 @@ public class Board {
     private boolean likeState;
     private LocalDateTime createDate;
 
+    private long pageCount;
+
     @PrePersist
     public void createDate() {
         this.createDate = LocalDateTime.now();
