@@ -76,4 +76,11 @@ public class Club {
      */
 
     private String memo;
+
+    public void update(String clubNm, AgeGrp ageGrp, String openYn, String memo) {
+        this.clubNm = clubNm;
+        this.ageGrp = ageGrp;
+        this.openYn = openYn;
+        this.memo = memo;
+    }
 }

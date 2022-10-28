@@ -26,7 +26,7 @@ public class ClubService {
 
     // 동호회 생성
     @Transactional
-    public void createClub(ClubRequestDto dto,User user) {
+    public void create(ClubRequestDto dto,User user) {
 
         Club clubs = dto.toEntity(user);
         clubRepository.save(clubs);
@@ -34,12 +34,24 @@ public class ClubService {
 
     // 동호회 삭제
     @Transactional
-    public void deleteClub(long clubId) {
+    public void delete(long clubId) {
         Club club = clubRepository.findById(clubId).orElseThrow(()->{
             return new IllegalArgumentException("동호회 삭제 실패");
         });
         clubRepository.delete(club);
 
+    }
+
+    // 동호회 수정
+    @Transactional
+    public Long update(long clubId, ClubRequestDto dto) {
+
+        Club clubs = clubRepository.findById(clubId).orElseThrow(()->{
+            return new IllegalArgumentException("동호회 수정 실패");
+        });
+        clubs.update(dto.getClubNm(),dto.getAgeGrp(), dto.getOpenYn(), dto.getMemo());
+
+        return clubId;
     }
 
 }
