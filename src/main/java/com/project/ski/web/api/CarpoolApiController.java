@@ -1,9 +1,11 @@
 package com.project.ski.web.api;
 
+import com.project.ski.domain.carpool.Carpool;
 import com.project.ski.service.CarpoolService;
 import com.project.ski.web.dto.CarpoolRequestDto;
 import com.project.ski.web.dto.CmRespDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -36,7 +38,8 @@ public class CarpoolApiController {
     }
 
     @GetMapping
-    public void getAll(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        carpoolService.getAll(pageable);
+    public CmRespDto<?> getAll(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<Carpool> pages =  carpoolService.getAll(pageable);
+        return new CmRespDto<>(1, "카풀 게시글 모두 불러오기 성공", pages);
     }
 }
