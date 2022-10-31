@@ -2,6 +2,7 @@ package com.project.ski.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.ski.domain.board.Board;
+import com.project.ski.domain.carpool.Carpool;
 import com.project.ski.domain.club.Club;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,6 +46,9 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Club> clubs = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = LAZY)
+    private List<Carpool> carpools;
 
     private String profileImageUrl;
 

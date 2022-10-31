@@ -1,5 +1,7 @@
 package com.project.ski.domain.carpool;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.project.ski.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +20,11 @@ public class Carpool {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @JsonIgnoreProperties({"carpools"})
+    @JoinColumn(name="userId")
+    @ManyToOne
+    private User user;
 
     private String departure;
     private String destination;

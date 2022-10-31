@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Data
 public class CarpoolRequestDto {
 
+    private Long id;
     private String departure;
     private String destination;
     private String boarding;
@@ -23,6 +24,7 @@ public class CarpoolRequestDto {
 
     public Carpool toEntity() {
         return Carpool.builder()
+                .id(id)
                 .departTime(departTime)
                 .boarding(boarding)
                 .departure(departure)
