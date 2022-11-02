@@ -1,6 +1,7 @@
 package com.project.ski.service;
 
 import com.project.ski.domain.carpool.Carpool;
+import com.project.ski.domain.user.User;
 import com.project.ski.repository.CarpoolRepository;
 import com.project.ski.web.dto.CarpoolRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,9 @@ public class CarpoolService {
     private final CarpoolRepository carpoolRepository;
 
     @Transactional
-    public void write(CarpoolRequestDto dto) {
+    public void write(CarpoolRequestDto dto, User user) {
         Carpool carpoolEntity = dto.toEntity();
+        carpoolEntity.setUser(user);
         carpoolRepository.save(carpoolEntity);
     }
 

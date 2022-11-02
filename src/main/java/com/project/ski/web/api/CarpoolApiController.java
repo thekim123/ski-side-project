@@ -1,6 +1,8 @@
 package com.project.ski.web.api;
 
+import com.project.ski.config.auth.PrincipalDetails;
 import com.project.ski.domain.carpool.Carpool;
+import com.project.ski.domain.user.User;
 import com.project.ski.service.CarpoolService;
 import com.project.ski.web.dto.CarpoolRequestDto;
 import com.project.ski.web.dto.CmRespDto;
@@ -9,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,8 +23,10 @@ public class CarpoolApiController {
 
 
     @PostMapping
-    public CmRespDto<?> insert(@RequestBody CarpoolRequestDto dto) {
-        carpoolService.write(dto);
+    public CmRespDto<?> insert(@RequestBody CarpoolRequestDto dto, Authentication authentication) {
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        User user = principalDetails.getUser();
+        carpoolService.write(dto, user);
         return new CmRespDto<>(1, "카풀 게시글 등록 성공", null);
     }
 
