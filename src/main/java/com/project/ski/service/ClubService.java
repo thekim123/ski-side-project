@@ -44,14 +44,12 @@ public class ClubService {
 
     // 동호회 수정
     @Transactional
-    public Long update(long clubId, ClubRequestDto dto) {
-
+    public void update(long clubId, ClubRequestDto dto) {
         Club clubs = clubRepository.findById(clubId).orElseThrow(()->{
             return new IllegalArgumentException("동호회 수정 실패");
         });
-        clubs.update(dto.getClubNm(),dto.getAgeGrp(), dto.getOpenYn(), dto.getMemo());
+        clubs.update(dto);
 
-        return clubId;
     }
 
 }
