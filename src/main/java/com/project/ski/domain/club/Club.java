@@ -2,6 +2,7 @@ package com.project.ski.domain.club;
 
 import com.project.ski.domain.resort.Resort;
 import com.project.ski.domain.user.User;
+import com.project.ski.web.dto.ClubRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -76,4 +77,13 @@ public class Club {
      */
 
     private String memo;
+
+    public void update(ClubRequestDto dto) {
+        this.clubNm = dto.getClubNm();
+        this.memberCnt =dto.getMemberCnt();
+        this.gender = dto.getGender();
+        this.ageGrp = dto.getAgeGrp();
+        this.openYn = dto.getOpenYn();
+        this.memo = dto.getMemo();
+    }
 }

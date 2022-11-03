@@ -1,6 +1,8 @@
 package com.project.ski.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.project.ski.domain.Tayo.Tayo;
 import com.project.ski.domain.board.Board;
 import com.project.ski.domain.carpool.Carpool;
 import com.project.ski.domain.club.Club;
@@ -44,11 +46,16 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = LAZY)
     private List<Board> boards;
 
+    @JsonIgnoreProperties({"user"})
     @OneToMany(mappedBy = "user")
     private List<Club> clubs = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = LAZY)
     private List<Carpool> carpools;
+
+    @JsonIgnoreProperties({"user"})
+    @OneToMany(mappedBy = "user")
+    private List<Tayo> tayos = new ArrayList<>();
 
     private String profileImageUrl;
 

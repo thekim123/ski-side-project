@@ -32,20 +32,25 @@ public class ClubApiController {
     }
 
     // 동호회 생성
-    @PostMapping("createClub")
-    public CmRespDto<Club> createClub(@RequestBody ClubRequestDto dto, Authentication auth) {
+    @PostMapping
+    public CmRespDto<Club> create(@RequestBody ClubRequestDto dto, Authentication auth) {
         PrincipalDetails principalDetails = (PrincipalDetails) auth.getPrincipal();
         User user = principalDetails.getUser();
-        clubService.createClub(dto, user);
+        clubService.create(dto, user);
         return new CmRespDto<>(1, "동호회 생성 완료", null);
     }
 
     // 동호회 삭제
-    @DeleteMapping("/deleteClub/{clubId}")
-    public CmRespDto<Club> deleteClub(@PathVariable long clubId) {
-        clubService.deleteClub(clubId);
+    @DeleteMapping("/delete/{clubId}")
+    public CmRespDto<Club> delete(@PathVariable long clubId) {
+        clubService.delete(clubId);
         return new CmRespDto<>(1, "동호회 삭제 완료", null);
     }
 
-
+    // 동호회 수정
+    @PutMapping("/update/{clubId}")
+    public CmRespDto<Club> update(@PathVariable long clubId, @RequestBody ClubRequestDto dto){
+        clubService.update(clubId, dto);
+        return new CmRespDto<>(1, "동호회 수정 완료", null);
+    }
 }
