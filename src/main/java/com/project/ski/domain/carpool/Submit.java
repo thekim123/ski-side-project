@@ -1,5 +1,6 @@
 package com.project.ski.domain.carpool;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.ski.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,6 +29,7 @@ public class Submit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @JsonIgnoreProperties("user")
     @JoinColumn(name = "fromUserId")
     @ManyToOne
     private User fromUser;

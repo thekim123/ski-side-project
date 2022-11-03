@@ -19,4 +19,5 @@ public interface SubmitRepository extends JpaRepository<Submit, Long> {
     void mUnSubmit(@Param("fromUserId") long fromUserId, @Param("toCarpoolId") long toCarpoolId);
 
     List<Submit> findByToCarpoolId(long carpoolId);
+    Submit findByFromUserIdAndToCarpoolId(long fromUserId, long toCarpoolId);
 }
