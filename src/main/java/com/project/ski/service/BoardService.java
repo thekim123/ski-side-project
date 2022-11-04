@@ -7,7 +7,7 @@ import com.project.ski.domain.resort.ResortName;
 import com.project.ski.domain.user.User;
 import com.project.ski.repository.BoardRepository;
 import com.project.ski.repository.ResortRepository;
-import com.project.ski.web.dto.BoardRequestDto;
+import com.project.ski.web.dto.BoardDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -41,7 +41,7 @@ public class BoardService {
     }
 
     @Transactional
-    public void write(BoardRequestDto dto, User user) {
+    public void write(BoardDto dto, User user) {
         Board board;
         Resort resort = resortRepository.findByResortName(dto.getResortName());
         if (dto.getFile() != null) {
@@ -73,7 +73,7 @@ public class BoardService {
     }
 
     @Transactional
-    public void update(BoardRequestDto dto, Authentication authentication) {
+    public void update(BoardDto dto, Authentication authentication) {
         User user = getUserFromPrincipal(authentication);
 
         Board boardEntity = boardRepository.findById(dto.getId()).orElseThrow(() -> {
@@ -130,6 +130,16 @@ public class BoardService {
     public User getUserFromPrincipal(Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         return principalDetails.getUser();
+    }
+
+    @Transactional(readOnly = true)
+    public BoardDto getBoardDetail(long id) {
+        Board boardEntity = boardRepository.findById(id).orElseThrow(() -> {
+            return new IllegalArgumentException("게시글의 등록번호를 찾을 수 없습니다.");
+        });
+
+        BoardDto dto = new BoardDto().toDto(boardEntity, boardEntity.getPostImageUrl());
+        return dto;
     }
 
 }

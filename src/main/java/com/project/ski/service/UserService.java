@@ -51,6 +51,13 @@ public class UserService {
 
     }
 
+    @Transactional(readOnly = true)
+    public String getUsername(Authentication authentication) {
+        User user = getUserFromPrincipal(authentication);
+        return user.getUsername();
+
+    }
+
     @Transactional
     public void updateProfileImage(Authentication authentication, MultipartFile profileImageFile) {
         User principal = getUserFromPrincipal(authentication);

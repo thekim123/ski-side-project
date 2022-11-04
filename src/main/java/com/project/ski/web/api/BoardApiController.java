@@ -7,7 +7,7 @@ import com.project.ski.domain.user.User;
 import com.project.ski.service.BoardService;
 import com.project.ski.service.CommentService;
 import com.project.ski.service.LikesService;
-import com.project.ski.web.dto.BoardRequestDto;
+import com.project.ski.web.dto.BoardDto;
 import com.project.ski.web.dto.CmRespDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -35,6 +35,12 @@ public class BoardApiController {
         return new CmRespDto<>(1, "즐겨찾기한 게시글 조회 완료", pages);
     }
 
+    @GetMapping("/{boardId}")
+    public CmRespDto<?> getBoardDetail(@PathVariable long boardId) {
+        BoardDto dto = boardService.getBoardDetail(boardId);
+        return new CmRespDto<>(1, "게시글 상세 보기 완료", dto);
+    }
+
     @GetMapping("/")
     public CmRespDto<?> getAllBoard(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable, Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
@@ -56,7 +62,7 @@ public class BoardApiController {
     }
 
     @PostMapping("write")
-    public CmRespDto<?> write(@RequestBody BoardRequestDto dto, Authentication authentication) {
+    public CmRespDto<?> write(@RequestBody BoardDto dto, Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         User user = principalDetails.getUser();
         boardService.write(dto, user);
@@ -70,7 +76,7 @@ public class BoardApiController {
     }
 
     @PutMapping("/update/")
-    public CmRespDto<?> update(BoardRequestDto dto, Authentication authentication) {
+    public CmRespDto<?> update(BoardDto dto, Authentication authentication) {
         boardService.update(dto, authentication);
         return new CmRespDto<>(HttpStatus.OK.value(), "글 수정 완료", null);
     }

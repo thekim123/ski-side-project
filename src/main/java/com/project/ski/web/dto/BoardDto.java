@@ -2,7 +2,6 @@ package com.project.ski.web.dto;
 
 import com.project.ski.domain.board.Board;
 import com.project.ski.domain.resort.Resort;
-import com.project.ski.domain.resort.ResortName;
 import com.project.ski.domain.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,7 @@ import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Data
-public class BoardRequestDto {
+public class BoardDto {
 
     private Long id;
     private String title;
@@ -22,7 +21,7 @@ public class BoardRequestDto {
     private String resortName;
     private LocalDateTime createDate;
 
-    public BoardRequestDto toDto(Board board, String postImageUrl) {
+    public BoardDto toDto(Board board, String postImageUrl) {
         this.id = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
