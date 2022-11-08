@@ -16,8 +16,8 @@ spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://localhost:3306/ski?serverTimezone=Asia/Seoul
-    username: root
-    password: syj8819!
+    username: ski
+    password: skip1234
 
   jpa:
     open-in-view: true
