@@ -1,0 +1,82 @@
+[
+        {
+            "id": 1,
+            "region": "포천",
+            "name": "베어스타운",
+            "lat": "37.592743370151304",
+            "lon": "127.37885492050826",
+            "time": "매일 09:00 ~ 17:00 야간 19:00 ~ 22:00",
+            "duration": "연중무휴",
+            "url": "https://www.yongpyong.co.kr/kor/skiNboard/introduce.do"
+        },
+        {
+            "id": 2,
+            "region": "광주",
+            "name": "곤지암리조트",
+            "lat": "37.3376855996158",
+            "lon": "127.27921367854688",
+            "time": "매일 09:00 ~ 17:00 야간 19:00 ~ 22:00",
+            "duration": "연중무휴",
+            "url": "https://www.yongpyong.co.kr/kor/skiNboard/introduce.do"
+        },
+        {
+            "id": 3,
+            "region": "이천",
+            "name": "지산포레스트",
+            "lat": "37.21528939460325",
+            "lon": "127.34002429398413",
+            "time": "매일 09:00 ~ 17:00 야간 19:00 ~ 22:00",
+            "duration": "연중무휴",
+            "url": "https://www.yongpyong.co.kr/kor/skiNboard/introduce.do"
+        },
+        {
+            "id": 4,
+            "region": "무주",
+            "name": "덕유산리조트",
+            "lat": "35.886078372101544",
+            "lon": "127.72949017805212",
+            "time": "매일 09:00 ~ 17:00 야간 19:00 ~ 22:00",
+            "duration": "연중무휴",
+            "url": "https://www.yongpyong.co.kr/kor/skiNboard/introduce.do"
+        },
+        {
+            "id": 5,
+            "region": "원주",
+            "name": "엘리시안",
+            "lat": "37.81673119999963",
+            "lon": "127.58246947546381",
+            "time": "매일 09:00 ~ 17:00 야간 19:00 ~ 22:00",
+            "duration": "연중무휴",
+            "url": "https://www.yongpyong.co.kr/kor/skiNboard/introduce.do"
+        },
+        {
+            "id": 6,
+            "region": "홍천",
+            "name": "비발디파크",
+            "lat": "37.64078769999922",
+            "lon": "127.68344735393771",
+            "time": "매일 09:00 ~ 17:00 야간 19:00 ~ 22:00",
+            "duration": "연중무휴",
+            "url": "https://www.yongpyong.co.kr/kor/skiNboard/introduce.do"
+        },
+        {
+            "id": 7,
+            "region": "평창",
+            "name": "용평리조트",
+            "lat": "37.63026579998478",
+            "lon": "128.67130175393777",
+            "time": "매일 09:00 ~ 17:00 야간 19:00 ~ 22:00",
+            "term": "연중무휴",
+            "url": "https://www.yongpyong.co.kr/kor/skiNboard/introduce.do"
+        },
+        {
+            "id": 8,
+            "region": "평창",
+            "name": "휘닉스파크",
+            "lat": "37.57369100000068",
+            "lon": "128.33745065393663",
+            "time": "24시간 운영",
+            "duration": "연중무휴",
+            "url": "http://휘닉스파크스키강습.com"
+        }
+    ]
