@@ -21,12 +21,14 @@ import resortSlice from './slice/resort';
 //import { apiSlice } from './app/api/apiSlice';
 //import authSlice from './features/auth/authSlice';
 import authSlice from './slice/auth';
+import tayoSlice from './slice/tayo';
 
 const store = configureStore({
     reducer: {
         resort: resortSlice.reducer,
         board: boardSlice.reducer,
         club: clubSlice.reducer,
+        tayo: tayoSlice.reducer,
         //[apiSlice.reducerPath]: apiSlice.reducer,
         auth: authSlice.reducer,
     },

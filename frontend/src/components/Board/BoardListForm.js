@@ -3,9 +3,11 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { BiSearch } from 'react-icons/bi'
+import shortid from 'shortid'
 
 function BoardListForm(props) {
-    const resorts = useSelector(state => state.resort.resorts);
+    //const resorts = useSelector(state => state.resort.resorts);
+    const resort_kor = ["[하이원]", "[대명]", "[곤지암]", "[베어스]", "[지산]", "[덕유산]", "[에덴벨리]", "[비발디]", "[휘닉스]", "[웰리힐리]", "[용평]", "[엘리시안]"];
     const [input, setInput] = useState('');
 
     const changeParent = e => {
@@ -31,8 +33,8 @@ function BoardListForm(props) {
         <Wrapper>
             <ResortBtn>
                 <div></div><Resort onClick={changeParent}>[전체]</Resort><Link to="/board/write"><Button>글쓰기</Button></Link>
-                {resorts.map(resort => (
-                    <Resort key={resort.id} onClick={changeParent}>{resort.name}</Resort>
+                {resort_kor.map(resort => (
+                    <Resort key={shortid.generate()} onClick={changeParent}>{resort}</Resort>
                 ))}
             </ResortBtn>
             <Form onSubmit={handleSubmit}>
@@ -63,7 +65,6 @@ const ResortBtn = styled.div`
 display:grid;
 grid-template-columns: 1fr 1fr 1fr;
 align-items: center;
-background-color: white;
 `
 const Resort = styled.div`
 font-size: 12px;
@@ -71,6 +72,7 @@ text-align: center;
 margin: 5px;
 border-bottom: 1px solid #CCCCCC;
 padding: 5px;
+width: 70%;
 `
 const Button = styled.button`
 `
@@ -78,7 +80,6 @@ const Button = styled.button`
 const Form = styled.form`
     display: flex;
     padding-top: 10px;
-    background-color: white;
     padding-bottom: 20px;
 
     .boardForm-input {
@@ -86,13 +87,14 @@ const Form = styled.form`
         height: 30px;
         padding: 3px 7px;
         background-color: #FAFAFA;
-        border: 1px solid #CCCCCC;
+        border: none;
         border-radius: 5px;
+        box-shadow: 5px 2px 7px -2px rgba(17, 20, 24, 0.15);
     }
 
     button{
-        background-color:#543A3A;
-        border: #CCCCCC;
+        background-color:#6B89A5;
+        border: none;
         border-radius: 5px;
         width: 2rem;
         margin-left: 7px;

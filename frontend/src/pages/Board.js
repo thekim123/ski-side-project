@@ -43,7 +43,6 @@ export function Board() {
 }
 
 const BoardContainer = styled.div`
-background-color: white;
     color: black;
     padding-top: 20px;
 `

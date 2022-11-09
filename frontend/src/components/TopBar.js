@@ -28,7 +28,7 @@ position: fixed;
     right: 0;
     top: 0;
     background-color: #FAFAFA;
-    border-bottom: 0.01rem solid #CCCCCC;
+    //border-bottom: 0.01rem solid #CCCCCC;
     height: 48px;
     margin-top: 0;
     display: flex;
@@ -40,6 +40,7 @@ position: fixed;
         height: 1rem;
         margin: 7px;
         color: #543A3A;
+        //color: #6B89A5;
     }
 `
 
@@ -56,6 +57,7 @@ const RightSide = styled.div`
         width: 1.5rem;
         height: 1.5rem;
         color: #543A3A;
+        //color: #6B89A5;
     }
 `
 

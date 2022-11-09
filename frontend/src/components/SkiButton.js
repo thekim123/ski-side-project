@@ -88,27 +88,45 @@ export function SkiButton(props) {
             //setIsLoading(false);
         }
     };
+    const testtest = e => {
+        console.log(e.target.className);
+    }
 
     return (
         <>
+        {props.id ? 
+        <>
         <Button>
-            <Region>{props.region}</Region>
+            <Region className={props.color ? "kang" : "else"} onClick={testtest}>{props.region}</Region>
             <ResortName onClick={openResort}>{props.name}</ResortName>
         </Button>
         <ResortModal open={resortOpen} close={closeResort} header={props.name} engCity="Seoul" dayState={dayState} />
         </>
+        : <Empty></Empty>}
+        </>
     )
 }
-
+const Empty = styled.div`
+width: 10px;
+`
 const Button = styled.div`
 display: flex;
-font-size: 14px;
-margin: 20px;
+font-size: 12px;
+margin: 10px;
+margin-left: 20px;
+.kang{
+    //background-color: #94ABBA;
+    background-color: #F5EFE6;
+}
+.else{
+    background-color: #C2CFD8;
+}
 `
 
 const Region = styled.div`
-    background-color: #C2CFD8;
-    padding: 10px;
+    
+    //background-color: #94ABBA;
+    padding: 8px;
     border-radius: 10px 0 0 10px;
     //border: 1px solid #48494B;
     box-shadow: 4px 6px 6px -2px rgba(17, 20, 24, 0.15);
@@ -117,7 +135,8 @@ const Region = styled.div`
 const ResortName = styled.div`
     background-color: #FAFAFA;
     border-radius: 0 10px 10px 0;
-    padding: 10px;
+    padding: 8px;
     //border: 1px solid #48494B;
     box-shadow: 4px 6px 6px -2px rgba(17, 20, 24, 0.15);
+    
 `

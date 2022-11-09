@@ -7,6 +7,7 @@ import {FaSkiing} from 'react-icons/fa'
 import { SkiButton } from '../components/SkiButton'
 import resortData from '../data/resort.json'
 import { useEffect, useState } from 'react'
+import Grid from '@material-ui/core/Grid';
 
 export function Home() {
     const dispatch = useDispatch();
@@ -55,11 +56,18 @@ export function Home() {
             </Wrapper>
 
             <Map>
-                {
+                {/* {
                     resortData.map(resort => (
                         <SkiButton {...resort} />
                     ))
+                } */}
+                <Grid container className="home-grid">
+                {
+                    resortData.map(resort => (
+                        <Grid item xs={6} className="home-grid-item"><SkiButton {...resort} /></Grid>
+                    ))
                 }
+            </Grid>
             </Map>
         </Container>
     )
@@ -132,10 +140,14 @@ font-weight: bold;
 
 
 const Map = styled.div`
-background-image: url(${img});
-background-size: cover;
+//background-image: url(${img});
+background:url(${img}) no-repeat center;
+background-size: fill;
 width: 100%;
-height: 100%;
+height: 450px;
+.home-grid-item{
+    height: 50px;
+}
 `
 
 const Button = styled.div`

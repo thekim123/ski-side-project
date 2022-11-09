@@ -16,6 +16,7 @@ import { ClubRegister } from './components/Club/ClubRegister';
 import { BoardDetail } from './components/Board/BoardDetail';
 import { ClubDetail } from './components/Club/ClubDetail';
 import { ClubSecret } from './components/Club/ClubSecret';
+import { Tayo } from './pages/Tayo';
 
 function App() {
   const dispatch = useDispatch();
@@ -46,6 +47,7 @@ function App() {
             <Route path="club/register" element={<ClubRegister />} />
             <Route path="club/detail/:id" element={<ClubDetail />} />
             <Route path="club/secret/:id" element={<ClubSecret />} />
+            <Route path="tayo" element={<Tayo />} />
           </Route>
         </Route>
       </Routes>

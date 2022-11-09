@@ -5,14 +5,16 @@ import styled from 'styled-components'
 import { HiPencil } from 'react-icons/hi'
 import { BsTrashFill, BsFilePost } from 'react-icons/bs'
 import { AiOutlineLike } from 'react-icons/ai'
+import { BsPeopleFill } from 'react-icons/bs'
+import { MdEmojiPeople } from 'react-icons/md'
 import { deletePost } from '../../action/board'
 
-function BoardListItem(props) {
+function TayoListItem(props) {
     const user = useSelector(state => state.auth.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [isMine, setIsMine] = useState(false);
-
+    const [isMine, setIsMine] = useState(true);
+    const [title, setTitle] = useState("");
     const [timePass, setTimePass] = useState("");
 
     const detailDate = (create_dt) => {
@@ -34,7 +36,17 @@ function BoardListItem(props) {
     }
 
     const showIcon = () => {
-        if (user === props.user.username) setIsMine(true);
+        //if (user === props.user.username) setIsMine(true);
+        console.log(props);
+    }
+
+    const setScreenTitle = () => {
+        console.log(props.title.length > 16)
+        if (props.title.length > 16) {
+        setTitle(props.title.slice(0, 16)+"...")
+        } else {
+            setTitle(props.title)
+        }
     }
 
     const handlePencil = e => {
@@ -51,8 +63,9 @@ function BoardListItem(props) {
     }
 
     useEffect(() => {
-        setTimePass(detailDate(props.createDate));
+        setTimePass(detailDate(props.createDt));
         showIcon();
+        setScreenTitle();
     }, []);
 
     return (
@@ -64,35 +77,47 @@ function BoardListItem(props) {
                     {isMine && <BsTrashFill className="boardPost-icon" onClick={handleTrash}/>}
                 </div>
             </Top>
-            <Content onClick={showDetail}>
-                <Img>{/*<BsFilePost className="boardPost-imgIcon" />*/}</Img>
-                <div>
-                    <Title>{props.title}</Title>
-                    <Detail>{props.content}</Detail>
-                    <Bottom>
-                        <Empty></Empty>
-                        <Real>
-                            <AiOutlineLike className="boardPost-likeIcon"/>
-                            <LikeCnt>{props.likeCount}</LikeCnt>
-                            <div className="boardPost-bottomText">{props.user.nickname}</div>
-                            <div className="boardPost-bottomText">{timePass}</div>
-                        </Real>
-                    </Bottom>
-                </div>
+            <Content>
+                <Count>
+                    <BsPeopleFill className="tayo-count"/>
+                    {!props.tayoMemCnt ? "무제한" :  <div>0 / {props.tayoMemCnt}</div>}
+                </Count>
+                <Age>
+                    <MdEmojiPeople className="tayo-age" />
+                    {props.age}
+                </Age>
+                <TitleTime>
+                    <Title>{title}</Title>
+                    <Time>{timePass}</Time>
+                </TitleTime>
             </Content>
             
         </PostContainer>
     )
 }
+const TitleTime = styled.div`
 
+`
+const Title = styled.div`
+font-weight:bold;
+font-size: 15px;
+padding:10px 10px;
+color: black;
+`
+const Time = styled.div`
+text-align: right;
+font-size: 12px;
+padding-top: 10px;
+padding-left: 10px;
+`
 const PostContainer = styled.div`
     background-color: #FAFAFA;
     //border: 0.1rem solid #CCCCCC;
     border-radius: 10px;
     margin: 10px 20px;
-    box-shadow: 5px 2px 7px -2px rgba(17, 20, 24, 0.15);
+    padding: 3px;
     color: gray;
-    padding-bottom: 7px;
+    box-shadow: 5px 2px 7px -2px rgba(17, 20, 24, 0.15);
 `
 
 const Top = styled.div`
@@ -113,63 +138,34 @@ const SkiName = styled.div`
 `
 
 const Content = styled.div`
-    display: grid;
-    grid-template-columns: 80px 1fr;
-    margin-left: 10px;
+display: flex;
+padding: 5px 10px;
+`
+const Count = styled.div`
+display: grid;
+font-size:12px;
+text-align: center;
+padding-bottom: 18px;
+.tayo-count{
+    width: 2rem;
+    height: 2rem;
+    color: #6B89A5;
+    padding-left: 10px;
+    padding-right: 10px;
+}
 
-    .boardPost-imgIcon {
-        width:80%;
-        height: 80%;
-    }
 `
-
-const Img = styled.div`
-    background-color: #C2CFD8;
-    width: 70px;
-    height: 70px;
-    align-items: center;
-`
-
-const Title = styled.div`
-    margin-left: 10px;
-    font-weight: bold;
-    color: black;
-`
-
-const Detail = styled.div`
-    font-size: 0.7rem;
-    margin-left: 10px;
-    margin-top: 4px;
-`
-
-const Bottom = styled.div`
-    display: flex;
-    justify-content: space-between;
-    padding-top: 10px;
-
-    .boardPost-likeIcon {
-        color: gray;
-        width: 1.1rem;
-        height: 1.1rem;
-        padding-top: 2px;
-    }
-    .boardPost-bottomText {
-        font-size: 0.7rem;
-        padding: 5px 7px;
-    }
-`
-const Empty = styled.div`
-    width:5px;
-    height:5px;
-`
-const Real = styled.div`
-    display:flex;
-    margin-right: 5px;
-    margin-bottom: 4px;
-`
-const LikeCnt = styled.div`
-    padding: 5px 7px 5px 2px;
-    font-size: 0.7rem;
+const Age = styled.div`
+display: grid;
+font-size:12px;
+text-align: center;
+padding-bottom: 20px;
+.tayo-age{
+    width: 3rem;
+    height: 1.9rem;
+    color: #6B89A5;
+    padding-top: 3px;
+}
 `
 
-export default BoardListItem
+export default TayoListItem

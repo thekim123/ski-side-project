@@ -25,7 +25,7 @@ export function NavBar() {
             <Link to="/" className="nav-link">
                 <NavList><GrHomeRounded className="navBar-icon" /></NavList>
             </Link>
-            <Link to="/board" className="nav-link">
+            <Link to="/tayo" className="nav-link">
                 <NavList>같이 타요!</NavList>
             </Link>
             <Link to="/club" className="nav-link">
@@ -43,7 +43,7 @@ const Container = styled.div`
     bottom: 0;
     height: 4rem;
     background-color: #FAFAFA;
-    border-top: 0.01rem solid #CCCCCC;
+    //border-top: 0.01rem solid #CCCCCC;
     border-radius: 20px 20px 0 0;
     align-items: center;
 `
@@ -72,7 +72,7 @@ const NavList = styled.li`
         height: 1.6rem;
         //background-color: #C2CFD8;
         //border-radius: 20px;
-        color: #86B0B4;
+        color: #6B89A5;
     }
 `
 
