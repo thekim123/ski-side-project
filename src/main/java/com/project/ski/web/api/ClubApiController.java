@@ -2,9 +2,9 @@ package com.project.ski.web.api;
 
 import com.project.ski.config.auth.PrincipalDetails;
 import com.project.ski.domain.club.Club;
+import com.project.ski.domain.club.ClubUser;
 import com.project.ski.domain.user.User;
 import com.project.ski.service.ClubService;
-import com.project.ski.service.ReplyService;
 import com.project.ski.web.dto.ClubRequestDto;
 import com.project.ski.web.dto.ClubResponseDto;
 import com.project.ski.web.dto.CmRespDto;
@@ -49,13 +49,17 @@ public class ClubApiController {
     public CmRespDto<ClubRequestDto> create(@RequestBody ClubRequestDto dto, Authentication auth) {
         PrincipalDetails principalDetails = (PrincipalDetails) auth.getPrincipal();
         User user = principalDetails.getUser();
+
         clubService.create(dto, user);
+
         return new CmRespDto<>(1, "동호회 생성 완료", null);
     }
+
 
     // 동호회 삭제
     @DeleteMapping("/delete/{clubId}")
     public CmRespDto<ClubResponseDto> delete(@PathVariable long clubId) {
+
         clubService.delete(clubId);
         return new CmRespDto<>(1, "동호회 삭제 완료", null);
     }
@@ -68,9 +72,9 @@ public class ClubApiController {
     }
 
     // 동호회 탈퇴
-    @DeleteMapping("/leave/{userId}")
-    public CmRespDto<ClubResponseDto> deleteMember(@PathVariable long userId) {
-        clubService.deleteMember(userId);
+    @DeleteMapping("/leave/{userId}/{clubId}")
+    public CmRespDto<ClubResponseDto> deleteMember(@PathVariable long userId , @PathVariable long clubId) {
+        clubService.deleteMember(userId,clubId);
         return new CmRespDto<>(1, "동호회 탈퇴 완료", null);
     }
 

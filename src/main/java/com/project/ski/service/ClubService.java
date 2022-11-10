@@ -1,23 +1,28 @@
 package com.project.ski.service;
 
 import com.project.ski.domain.club.Club;
+import com.project.ski.domain.club.ClubUser;
 import com.project.ski.domain.user.User;
 import com.project.ski.repository.ClubRepository;
+import com.project.ski.repository.ClubUserRepository;
+import com.project.ski.repository.UserRepository;
 import com.project.ski.web.dto.ClubRequestDto;
 import com.project.ski.web.dto.ClubResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 @RequiredArgsConstructor
 public class ClubService {
 
     private final ClubRepository clubRepository;
+    private final ClubUserRepository clubUserRepository;
 
+    private final UserRepository userRepository;
 
     // 동호회 첫 화면 목록조회
     @Transactional(readOnly = true)
@@ -38,10 +43,17 @@ public class ClubService {
     // 동호회 생성
     @Transactional
     public void create(ClubRequestDto dto,User user) {
+        User findUser = userRepository.findById(user.getId()).orElseThrow(()->{
+            return new IllegalArgumentException("실패");
+        });
+        Club club = dto.toEntity(user);
+        clubRepository.save(club);
+        ClubUser clubUser = new ClubUser(club, findUser);
+        findUser.getClubUsers().add(clubUser);
 
-        Club clubs = dto.toEntity(user);
-        clubRepository.save(clubs);
     }
+
+
 
     // 동호회 삭제
     @Transactional
@@ -64,10 +76,14 @@ public class ClubService {
     }
 
     // 동호회 탈퇴
-    public void deleteMember(long userId) {
-        Club club = clubRepository.findById(userId).orElseThrow(()->{
+    public void deleteMember(long userId, long clubId) {
+        ClubUser clubUser = clubUserRepository.findByUserIdAndClubId(userId,clubId).orElseThrow(()->{
             return new IllegalArgumentException("동호회 탈퇴 실패");
         });
-        clubRepository.deleteByUser_Id(userId);
+
+        clubUserRepository.delete(clubUser);
     }
+
+
+
 }

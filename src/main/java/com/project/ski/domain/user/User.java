@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.ski.domain.Tayo.Tayo;
 import com.project.ski.domain.board.Board;
 import com.project.ski.domain.club.Club;
+import com.project.ski.domain.club.ClubUser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -45,9 +46,9 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = LAZY)
     private List<Board> boards;
 
-    @JsonIgnoreProperties({"user"})
-    @OneToMany(mappedBy = "user")
-    private List<Club> clubs = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user",fetch = LAZY, cascade = CascadeType.ALL)
+    private List<ClubUser> clubUsers = new ArrayList<>();
 
     @JsonIgnoreProperties({"user"})
     @OneToMany(mappedBy = "user")
@@ -64,4 +65,8 @@ public class User {
         this.createDate = LocalDateTime.now();
     }
 
+    public void removeClub(ClubUser clubUser) {
+        clubUsers.remove(clubUser);
+
+    }
 }
