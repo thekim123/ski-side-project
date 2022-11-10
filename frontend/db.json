@@ -1,0 +1,185 @@
+{
+  "board": [
+    {
+      "title": "오늘 춥나요?",
+      "content": "먼저 가신 분들~~ 오늘 춥나요?",
+      "resortName": "비발디파크",
+      "create_dt": "2022-10-24T16:33:44.936Z",
+      "cnt": 0,
+      "like": 0,
+      "comments": [],
+      "id": 1
+    },
+    {
+      "title": "얼른!!",
+      "content": "타고!! 싶다!! 너무 기대됑",
+      "resortName": "덕유산리조트",
+      "create_dt": "2022-10-24T16:34:29.302Z",
+      "id": 2
+    },
+    {
+      "title": "스키 초보자",
+      "content": "타다가 넘어졌는데 넘 아파요..",
+      "resortName": "엘리시안",
+      "create_dt": "2022-10-26T16:47:15.836Z",
+      "cnt": 0,
+      "like": 0,
+      "comments": [],
+      "id": 3
+    },
+    {
+      "title": "스키 재밌다!!",
+      "content": "재밌어 재밌어!!",
+      "resortName": "베어스타운",
+      "create_dt": "2022-10-27T12:19:35.572Z",
+      "cnt": 0,
+      "like": 0,
+      "comments": [],
+      "id": 4
+    },
+    {
+      "title": "사용자 아이디",
+      "content": "사용자 아이디가 들어가는지 체크",
+      "resortName": "베어스타운",
+      "create_dt": "2022-11-02T08:58:14.607Z",
+      "cnt": 0,
+      "like": 0,
+      "comments": [],
+      "id": 5
+    }
+  ],
+  "resort": [
+    {
+      "id": 1,
+      "region": "포천",
+      "name": "베어스타운",
+      "lat": "37.592743370151304",
+      "lon": "127.37885492050826",
+      "time": "매일 09:00 ~ 17:00 야간 19:00 ~ 22:00",
+      "duration": "연중무휴",
+      "url": "https://www.yongpyong.co.kr/kor/skiNboard/introduce.do"
+    },
+    {
+      "id": 2,
+      "region": "광주",
+      "name": "곤지암리조트",
+      "lat": "37.3376855996158",
+      "lon": "127.27921367854688",
+      "time": "매일 09:00 ~ 17:00 야간 19:00 ~ 22:00",
+      "duration": "연중무휴",
+      "url": "https://www.yongpyong.co.kr/kor/skiNboard/introduce.do"
+    },
+    {
+      "id": 3,
+      "region": "이천",
+      "name": "지산포레스트",
+      "lat": "37.21528939460325",
+      "lon": "127.34002429398413",
+      "time": "매일 09:00 ~ 17:00 야간 19:00 ~ 22:00",
+      "duration": "연중무휴",
+      "url": "https://www.yongpyong.co.kr/kor/skiNboard/introduce.do"
+    },
+    {
+      "id": 4,
+      "region": "무주",
+      "name": "덕유산리조트",
+      "lat": "35.886078372101544",
+      "lon": "127.72949017805212",
+      "time": "매일 09:00 ~ 17:00 야간 19:00 ~ 22:00",
+      "duration": "연중무휴",
+      "url": "https://www.yongpyong.co.kr/kor/skiNboard/introduce.do"
+    },
+    {
+      "id": 5,
+      "region": "원주",
+      "name": "엘리시안",
+      "lat": "37.81673119999963",
+      "lon": "127.58246947546381",
+      "time": "매일 09:00 ~ 17:00 야간 19:00 ~ 22:00",
+      "duration": "연중무휴",
+      "url": "https://www.yongpyong.co.kr/kor/skiNboard/introduce.do"
+    },
+    {
+      "id": 6,
+      "region": "홍천",
+      "name": "비발디파크",
+      "lat": "37.64078769999922",
+      "lon": "127.68344735393771",
+      "time": "매일 09:00 ~ 17:00 야간 19:00 ~ 22:00",
+      "duration": "연중무휴",
+      "url": "https://www.yongpyong.co.kr/kor/skiNboard/introduce.do"
+    },
+    {
+      "id": 7,
+      "region": "평창",
+      "name": "용평리조트",
+      "lat": "37.63026579998478",
+      "lon": "128.67130175393777",
+      "time": "매일 09:00 ~ 17:00 야간 19:00 ~ 22:00",
+      "term": "연중무휴",
+      "url": "https://www.yongpyong.co.kr/kor/skiNboard/introduce.do"
+    },
+    {
+      "id": 8,
+      "region": "평창",
+      "name": "휘닉스파크",
+      "lat": "37.57369100000068",
+      "lon": "128.33745065393663",
+      "time": "24시간 운영",
+      "duration": "연중무휴",
+      "url": "http://휘닉스파크스키강습.com"
+    }
+  ],
+  "club": [
+    {
+      "club_nm": "스키씽씽",
+      "words": "베어스타운 스키 동호회입니다~!",
+      "memCnt": 0,
+      "resort_id": "베어스타운",
+      "age": "20대",
+      "gender": "성별 무관",
+      "openYn": true,
+      "id": 1
+    },
+    {
+      "club_nm": "슝슝슝",
+      "words": "동호회입니다",
+      "memCnt": 0,
+      "resort_id": "덕유산리조트",
+      "age": "제한 없음",
+      "gender": "남",
+      "openYn": true,
+      "id": 2
+    },
+    {
+      "club_nm": "스키동호회",
+      "words": "동호회 등록~~",
+      "memCnt": 0,
+      "resort_id": "휘닉스파크",
+      "age": "제한 없음",
+      "gender": "성별 무관",
+      "openYn": true,
+      "id": 3
+    },
+    {
+      "club_nm": "비밀 동호회",
+      "words": "비밀 페이지로 가는지 확인~~",
+      "memCnt": 0,
+      "resort_id": "덕유산리조트",
+      "age": "40대",
+      "gender": "성별 무관",
+      "openYn": false,
+      "id": 4
+    },
+    {
+      "club_nm": "동호회 임시",
+      "words": "비밀방입니다",
+      "memCnt": 0,
+      "resort_id": "베어스타운",
+      "age": "40대",
+      "gender": "성별 무관",
+      "openYn": false,
+      "id": 5
+    }
+  ]
+}
