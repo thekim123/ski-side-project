@@ -35,7 +35,7 @@ public class BoardApiController {
         return new CmRespDto<>(1, "즐겨찾기한 게시글 조회 완료", pages);
     }
 
-    @GetMapping("/{boardId}")
+    @GetMapping("/detail/{boardId}")
     public CmRespDto<?> getBoardDetail(@PathVariable long boardId) {
         BoardDto dto = boardService.getBoardDetail(boardId);
         return new CmRespDto<>(1, "게시글 상세 보기 완료", dto);
@@ -55,7 +55,7 @@ public class BoardApiController {
         return new CmRespDto<>(1, "인기페이지 조회 완료", pages);
     }
 
-    @GetMapping("/{resortName}")
+    @GetMapping("/resort/{resortName}")
     public CmRespDto<?> getBoardByResort(@PathVariable String resortName, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<Board> pages = boardService.getBoardByResort(resortName.toUpperCase(), pageable);
         return new CmRespDto<>(1, "리조트별 게시글 조회 완료", pages);

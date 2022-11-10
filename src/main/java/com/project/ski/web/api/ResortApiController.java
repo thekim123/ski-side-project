@@ -15,17 +15,6 @@ public class ResortApiController {
 
     private final ResortService resortService;
 
-    @GetMapping("/weather")
-    public Resort getWeather(@RequestBody Resort resort) {
-        try {
-           resort = resortService.getWeather(resort);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-
-        return resort;
-    }
-
     @PostMapping("/insert")
     public void insertResort(@RequestBody Resort resort){
         resortService.insert(resort);

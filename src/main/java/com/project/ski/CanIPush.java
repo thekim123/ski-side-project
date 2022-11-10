@@ -1,2 +1,4 @@
-package com.project.ski;public class CanIPush {
+package com.project.ski;
+
+public class CanIPush {
 }
