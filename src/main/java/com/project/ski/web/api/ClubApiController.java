@@ -4,13 +4,13 @@ import com.project.ski.config.auth.PrincipalDetails;
 import com.project.ski.domain.club.Club;
 import com.project.ski.domain.user.User;
 import com.project.ski.service.ClubService;
+import com.project.ski.service.ReplyService;
 import com.project.ski.web.dto.ClubRequestDto;
 import com.project.ski.web.dto.ClubResponseDto;
 import com.project.ski.web.dto.CmRespDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +23,7 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 public class ClubApiController {
 
     private final ClubService clubService;
+
 
 
     @GetMapping
@@ -67,9 +68,10 @@ public class ClubApiController {
     }
 
     // 동호회 탈퇴
-    @DeleteMapping("/delete/{userId}")
-    public CmRespDto<ClubResponseDto> deleteMember(@PathVariable long userId, @RequestBody ClubRequestDto dto) {
+    @DeleteMapping("/leave/{userId}")
+    public CmRespDto<ClubResponseDto> deleteMember(@PathVariable long userId) {
         clubService.deleteMember(userId);
         return new CmRespDto<>(1, "동호회 탈퇴 완료", null);
     }
+
 }
