@@ -14,7 +14,6 @@ import java.util.List;
 public class BookmarkService {
 
     private final BookmarkRepository bookmarkRepository;
-    private final EntityManager entityManager;
 
     @Transactional
     public void onBookmark(long fromUserId, long toResortId) {

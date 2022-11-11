@@ -34,10 +34,16 @@ public class UserApiController {
         return principalDetails;
     }
 
-    @PostMapping("get")
+    @GetMapping("get")
     public CmRespDto<?> get(Authentication authentication) {
         UserRespDto dto = userService.get(authentication);
         return new CmRespDto<>(1, "회원정보 조회 완료", dto);
+    }
+
+    @GetMapping("username")
+    public CmRespDto<?> getUsername(Authentication authentication) {
+        String username = userService.getUsername(authentication);
+        return new CmRespDto<>(1, "회원정보 조회 완료", username);
     }
 
     @PutMapping("update")

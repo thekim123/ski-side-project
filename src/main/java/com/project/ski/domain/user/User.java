@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.ski.domain.Tayo.Tayo;
 import com.project.ski.domain.board.Board;
+import com.project.ski.domain.carpool.Carpool;
 import com.project.ski.domain.club.Club;
 import com.project.ski.domain.club.ClubUser;
 import lombok.AllArgsConstructor;
@@ -32,6 +33,8 @@ public class User {
 
     @Column(unique = true, nullable = false)
     private String username;
+    @Column(unique = true, nullable = false)
+    private String nickname;
 
     @Column(nullable = false)
     private String password;
@@ -49,6 +52,9 @@ public class User {
 
     @OneToMany(mappedBy = "user",fetch = LAZY, cascade = CascadeType.ALL)
     private List<ClubUser> clubUsers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = LAZY)
+    private List<Carpool> carpools;
 
     @JsonIgnoreProperties({"user"})
     @OneToMany(mappedBy = "user")

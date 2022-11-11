@@ -24,6 +24,7 @@ public class CreateUser {
         User user = User.builder()
                 .email("test@test.com")
                 .roles(Role.ROLE_USER)
+                .nickname("test")
                 .username("test")
                 .password("test")
                 .build();
