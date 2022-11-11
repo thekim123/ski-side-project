@@ -1,5 +1,6 @@
 package com.project.ski.domain.club;
 
+
 import com.project.ski.domain.user.User;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -19,6 +20,7 @@ public class ClubUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
 
     @ManyToOne(fetch = LAZY)  // 개인이 여러개의 클럽에 속할 수 있으니까
     @JoinColumn(name = "club_id")
