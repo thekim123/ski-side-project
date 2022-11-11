@@ -1,12 +1,12 @@
 package com.project.ski.web.api;
 
 import com.project.ski.config.auth.PrincipalDetails;
-import com.project.ski.domain.club.Club;
-import com.project.ski.domain.club.ClubUser;
+
 import com.project.ski.domain.user.User;
 import com.project.ski.service.ClubService;
 import com.project.ski.web.dto.ClubRequestDto;
 import com.project.ski.web.dto.ClubResponseDto;
+import com.project.ski.web.dto.ClubUserRespDto;
 import com.project.ski.web.dto.CmRespDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,15 +32,15 @@ public class ClubApiController {
         return new CmRespDto<>(1, "동호회 리스트 조회 완료", clubPage);
     }
 
-    // 목록 조회
-    @GetMapping("/{userId}")
-    public CmRespDto<Page<ClubResponseDto>> getUserClubList(@PageableDefault(sort = "id", direction = DESC) Pageable pageable, Authentication auth, String tempFlag) {
+    // 동호회별 유저목록 조회
+    @GetMapping("/{clubId}/user")
+    public CmRespDto<Page<ClubUserRespDto>> getUserClubList(@PageableDefault(sort = "id", direction = DESC) Pageable pageable, Authentication auth,@PathVariable Long clubId) {
 
         PrincipalDetails principalId = (PrincipalDetails) auth.getPrincipal();
         User user = principalId.getUser();
 
-        Page<Club> clubPage = clubService.getUserClubList(pageable, user, tempFlag);
-        return new CmRespDto<>(1, "유저별 동호회 리스트 조회 완료", clubPage.map(ClubResponseDto::new));
+        Page<ClubUserRespDto> clubPage = clubService.getUserClubList(pageable, clubId);
+        return new CmRespDto<>(1, "유저별 동호회 리스트 조회 완료",clubPage);
     }
 
 
@@ -76,6 +76,14 @@ public class ClubApiController {
     public CmRespDto<ClubResponseDto> deleteMember(@PathVariable long userId , @PathVariable long clubId) {
         clubService.deleteMember(userId,clubId);
         return new CmRespDto<>(1, "동호회 탈퇴 완료", null);
+    }
+
+
+    // 동호회 글 상세 조회
+    @GetMapping("/{clubId}")
+    public CmRespDto<ClubResponseDto> clubDetail(@PathVariable Long clubId) {
+        clubService.clubDetail(clubId);
+        return new CmRespDto<>(1, "동호회 상세보기 완료", null);
     }
 
 }

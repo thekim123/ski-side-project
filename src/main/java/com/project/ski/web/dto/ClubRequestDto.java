@@ -38,8 +38,6 @@ public class ClubRequestDto {
     // 홍보 문구
     private String memo;
 
-    // 임시저장 여부
-    private String tempFlag;
 
 
 
@@ -60,21 +58,19 @@ public class ClubRequestDto {
         this.ageGrp = club.getAgeGrp();
         this.openYn = club.getOpenYn();
         this.memo = club.getMemo();
-        this.tempFlag = club.getTempFlag();
         return this;
     }
 
-    public Club toEntity(User user) {
+    public Club toEntity(User user, Resort resort) {
         return Club.builder()
                 .clubNm(clubNm)
                 .user(user)
                 .memberCnt(memberCnt)
-                .resort(new Resort())
+                .resort(resort)
                 .gender(gender)
                 .ageGrp(ageGrp)
                 .openYn(openYn)
                 .memo(memo)
-                .tempFlag(tempFlag)
                 .build();
     }
 

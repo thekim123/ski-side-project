@@ -78,14 +78,9 @@ public class Club {
     /**
      * 홍보문구
      */
-
+    @Column(nullable = false)
     private String memo;
 
-    /**
-     *  임시저장 Flag
-     *  default - N
-     */
-    private String tempFlag;
 
     @CreationTimestamp
     private LocalDateTime createDt;
@@ -96,6 +91,5 @@ public class Club {
         this.ageGrp = dto.getAgeGrp();
         this.openYn = dto.getOpenYn();
         this.memo = dto.getMemo();
-        this.tempFlag = dto.getTempFlag();
     }
 }

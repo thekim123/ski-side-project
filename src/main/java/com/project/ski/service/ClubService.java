@@ -2,12 +2,15 @@ package com.project.ski.service;
 
 import com.project.ski.domain.club.Club;
 import com.project.ski.domain.club.ClubUser;
+import com.project.ski.domain.resort.Resort;
 import com.project.ski.domain.user.User;
 import com.project.ski.repository.ClubRepository;
 import com.project.ski.repository.ClubUserRepository;
+import com.project.ski.repository.ResortRepository;
 import com.project.ski.repository.UserRepository;
 import com.project.ski.web.dto.ClubRequestDto;
 import com.project.ski.web.dto.ClubResponseDto;
+import com.project.ski.web.dto.ClubUserRespDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +27,8 @@ public class ClubService {
 
     private final UserRepository userRepository;
 
+    private final ResortRepository resortRepository;
+
     // 동호회 첫 화면 목록조회
     @Transactional(readOnly = true)
     public Page<ClubResponseDto> clubList(Pageable pageable) {
@@ -32,10 +37,10 @@ public class ClubService {
         return dto;
 
     }
-    // user별 동호회목록 조회
+    // 동호회별 유저목록 조회
     @Transactional(readOnly = true)
-    public Page<Club> getUserClubList(Pageable pageable, User user, String tempFlag) {
-        return clubRepository.findByTempFlagAndUser_Id(pageable, user.getId(), tempFlag);
+    public Page<ClubUserRespDto> getUserClubList(Pageable pageable, Long clubId) {
+        return clubUserRepository.findByUser_Id(pageable,clubId).map(ClubUserRespDto::new);
 
     }
 
@@ -46,7 +51,10 @@ public class ClubService {
         User findUser = userRepository.findById(user.getId()).orElseThrow(()->{
             return new IllegalArgumentException("실패");
         });
-        Club club = dto.toEntity(user);
+        Resort resort = resortRepository.findById(dto.getResortId()).orElseThrow(()->{
+            return new IllegalArgumentException("리조트명 찾기 실패");
+        });
+        Club club = dto.toEntity(user,resort);
         clubRepository.save(club);
         ClubUser clubUser = new ClubUser(club, findUser);
         findUser.getClubUsers().add(clubUser);
@@ -84,6 +92,16 @@ public class ClubService {
         clubUserRepository.delete(clubUser);
     }
 
+    // 동호회 상세페이지
+    @Transactional
+    public Club clubDetail(Long clubId) {
+        Club dto = clubRepository.findById(clubId).orElseThrow(()->{
+            return new IllegalArgumentException("글 상세보기 실패: 해당게시글을 찾을 수 없습니다.");
+        });
+
+        return dto;
+
+    }
 
 
 }

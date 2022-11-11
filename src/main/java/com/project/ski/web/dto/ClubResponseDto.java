@@ -51,6 +51,5 @@ public class ClubResponseDto {
         this.ageGrp = club.getAgeGrp();
         this.openYn = club.getOpenYn();
         this.memo = club.getMemo();
-        this.tempFlag = club.getTempFlag();
     }
 }
