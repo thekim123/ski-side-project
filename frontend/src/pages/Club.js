@@ -30,7 +30,7 @@ export function Club() {
 
     useEffect(() => {
         dispatch(loadClubs());
-    }, [clubs]);
+    }, [dispatch]);
 
     useEffect(() => { //나중에 회원 많은 순으로 정렬하는 기능 넣기
         if (selectedResort === "[전체]") setFilteredResorts(clubs);

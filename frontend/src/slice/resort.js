@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     resorts: [],
+    my: null,
 }
 const resortSlice = createSlice({
     name: 'resort',
@@ -9,6 +10,12 @@ const resortSlice = createSlice({
     reducers: {
         getResorts(state, action) {
             state.resorts = action.payload;
+        },
+        addMyResort(state) {
+
+        },
+        deleteMyResort(state) {
+            
         }
     }
 });

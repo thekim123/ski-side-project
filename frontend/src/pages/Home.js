@@ -7,25 +7,27 @@ import {FaSkiing} from 'react-icons/fa'
 import { SkiButton } from '../components/SkiButton'
 import resortData from '../data/resort.json'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 
 export function Home() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const posts = useSelector(state => state.board.posts);
+    const isAuth = useSelector(state => state.auth.isAuth);
     const [top3, setTop3] = useState([]);
     const MyResort = ["엘리시안", "스키장2", "스키장3"];
-    const resorts = [
-        {"region": "경기", "name": "엘리시안"},
-        {"region": "경기", "name": "엘리시안"},
-        {"region": "경기", "name": "엘리시안"},
-        {"region": "경기", "name": "엘리시안"},
-        {"region": "경기", "name": "엘리시안"},
-    ];
+
+    const clickLogin = e => {
+        navigate('/login');
+    }
 
     useEffect(() => {
-        dispatch(loadPosts());
-        if (posts) setTop3(posts.slice(-3).reverse());
-    }, [dispatch]);
+        if (isAuth) {
+            dispatch(loadPosts());
+            if (posts) setTop3(posts.slice(-3).reverse());
+        }
+    }, [isAuth]);
     return(
         <Container>
             <Wrapper>
@@ -33,9 +35,9 @@ export function Home() {
                 <BoardBox>
                     {/* loadPost(id)로 최근 3개 불러와서, 배열에 저장? */}
                     {/* 배열로 map */}
-                    {top3 && top3.map(post => (
+                    {/*top3 && top3.map(post => (
                         <Row><div>{post.title}</div></Row>
-                    ))}
+                    ))*/}
                 </BoardBox>
             </Wrapper>
 
@@ -43,6 +45,7 @@ export function Home() {
                 <Index>내 스키장</Index>
                 <Box>
                     {
+                        isAuth ? 
                         MyResort.map((resort) => (
                             <MySkiWrap>
                             <MySki>
@@ -51,6 +54,18 @@ export function Home() {
                             <div className="home-resort-name">{resort}</div>
                             </MySkiWrap>
                         ))
+                        : 
+                        // <MySkiWrap>
+                        <NoAuthWrap>
+                            <MySki>
+                                <FaSkiing className="home-ski-icon" />
+                            </MySki>
+                            <NoAuthMySki>
+                                <NoAuthText>로그인 후 자주 가는 스키장을 추가해보세요 !</NoAuthText>
+                                <span><NoAuthBtn className="home-login" onClick={clickLogin}>로그인</NoAuthBtn><NoAuthReg className="home-login">회원가입</NoAuthReg> </span>
+                            </NoAuthMySki>
+                            </NoAuthWrap>
+                        //</MySkiWrap>
                     }
                 </Box>
             </Wrapper>
@@ -144,9 +159,9 @@ const Map = styled.div`
 background:url(${img}) no-repeat center;
 background-size: fill;
 width: 100%;
-height: 450px;
+height: 490px;
 .home-grid-item{
-    height: 50px;
+    height: 55px;
 }
 `
 
@@ -170,4 +185,37 @@ const ResortName = styled.div`
     padding: 10px;
     //border: 1px solid #48494B;
     box-shadow: 4px 6px 6px -2px rgba(17, 20, 24, 0.15);
+`
+const NoAuthWrap = styled.div`
+border-bottom: 1px solid gray;
+display: flex;
+padding-bottom: 20px;
+`
+const NoAuthMySki = styled.div`
+font-size: 12px;
+display: flex;
+flex-direction: column;
+justify-content: center;
+text-align: center;
+padding-left: 10px;
+padding-top: 10px;
+.home-login{
+    border-radius: 15px;
+    padding: 8px;
+    border: none;
+    box-shadow: 2px 4px 4px -2px rgba(17, 20, 24, 0.15);
+    margin: 10px 3px;
+}
+`
+const NoAuthBtn = styled.button`
+background-color: #6B89A5;
+color: #FAFAFA;
+    
+`
+const NoAuthReg = styled.button`
+background-color: #FAFAFA;
+color: #6B89A5;
+`
+const NoAuthText = styled.div`
+
 `

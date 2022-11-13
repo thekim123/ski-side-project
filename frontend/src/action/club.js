@@ -24,7 +24,7 @@ export const regClub = (post) => {
         }).then((resp) => {
             console.log("resp", resp);
             dispatch(clubActions.createClub());
-            //dispatch(loadPosts)
+            dispatch(loadClubs())
         })
         .catch(error => console.log(error));
     }
