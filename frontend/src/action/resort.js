@@ -13,3 +13,29 @@ export const loadResorts = () => {
 
     }
 }
+
+export const addMyResort = (id) => {
+    return function (dispatch) {
+        Send({
+            url: `/bookmark/${id}`,
+            method: 'post',
+        }).then((resp) => {
+            console.log(resp);
+            dispatch(resortActions.addMyResort());
+        })
+        .catch(error => console.log(error));
+    }
+}
+
+export const deleteMyResort = (id) => {
+    return function (dispatch) {
+        Send({
+            url: `/bookmark/${id}`,
+            method: 'delete',
+        }).then((resp) => {
+            console.log(resp);
+            dispatch(resortActions.deleteMyResort());
+        })
+        .catch(error => console.log(error));
+    }
+}

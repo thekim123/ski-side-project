@@ -1,19 +1,29 @@
 import axios from 'axios';
 import React, {useState} from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { AiOutlineStar, AiFillStar } from 'react-icons/ai'
+import { addMyResort, deleteMyResort } from '../action/resort'
 import styled from 'styled-components'
+import shortid from 'shortid';
 
 export function ResortModal(props) {
-    // const days = ['일', '월', '화', '수', '목', '금', '토', '일', '월', '화', '수', '목', '금', '토'];
-    // const idx = days.indexOf(props.dayState.day);
-    // const days_5 = {
-    //     "tt": days.slice(idx, idx+5),
-    //     "minmax": props.dayState.week,
-    // }
+    const dispatch = useDispatch();
+    const [emptyStar, setEmptyStar] = useState(true);
 
     const clickOutside = (e) => {
         if (e.target.className === "openModal skiModal") {
             props.close();
         }
+    }
+    const toggleStar = (e) => {
+        if (emptyStar) {
+            dispatch(addMyResort(props.resortId));
+        } else {
+            dispatch(deleteMyResort(props.resortId));
+        }
+        //dispatch(loadMyResorts)
+        setEmptyStar(!emptyStar);
+        console.log(props);
     }
     return (
     <Wrapper>
@@ -21,7 +31,7 @@ export function ResortModal(props) {
         {props.open ? (
             <Section>
                 <Header>
-                    <div></div>
+                    <div onClick={toggleStar}>{emptyStar ? <AiOutlineStar className="modal-star"/> : <AiFillStar className="modal-star"/>}</div>
                     <div className="modal-resortName">{props.header}</div>
                     <Button onClick={props.close}>&times;</Button>
                 </Header>
@@ -43,7 +53,7 @@ export function ResortModal(props) {
                 <WeekWeather>
                     {
                         props.dayState.week.map((elem) => (
-                            <EachDay>
+                            <EachDay key={shortid.generate()}>
                                 <TempDate>{elem.day}</TempDate>
                                 <MaxC>{elem.max}&deg;</MaxC>
                                 <MinC>{elem.min}&deg;</MinC>
@@ -99,11 +109,16 @@ const Header = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-
+    padding-top: 5px;
+    .modal-star {
+        width: 1.5rem;
+        height: 1.5rem;
+        padding-left: 9px;
+        color: #6B89A5;
+    }
     .modal-resortName {
         font-weight: bold;
         font-size: 15px;
-        margin-left: 20px;
     }
 `
 

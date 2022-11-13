@@ -88,19 +88,16 @@ export function SkiButton(props) {
             //setIsLoading(false);
         }
     };
-    const testtest = e => {
-        console.log(e.target.className);
-    }
 
     return (
         <>
         {props.id ? 
         <>
         <Button>
-            <Region className={props.color ? "kang" : "else"} onClick={testtest}>{props.region}</Region>
+            <Region className={props.color ? "kang" : "else"}>{props.region}</Region>
             <ResortName onClick={openResort}>{props.name}</ResortName>
         </Button>
-        <ResortModal open={resortOpen} close={closeResort} header={props.name} engCity="Seoul" dayState={dayState} />
+        <ResortModal open={resortOpen} close={closeResort} resortId={props.id} header={props.name} engCity="Seoul" dayState={dayState} />
         </>
         : <Empty></Empty>}
         </>
@@ -115,8 +112,10 @@ font-size: 12px;
 margin: 10px;
 margin-left: 20px;
 .kang{
-    //background-color: #94ABBA;
-    background-color: #F5EFE6;
+    background-color: #C2CFD8;
+    //background-color: #F5EFE6;
+    //background-color: gray;
+    //color: #FAFAFA;
 }
 .else{
     background-color: #C2CFD8;
@@ -126,7 +125,7 @@ margin-left: 20px;
 const Region = styled.div`
     
     //background-color: #94ABBA;
-    padding: 8px;
+    padding: 10px;
     border-radius: 10px 0 0 10px;
     //border: 1px solid #48494B;
     box-shadow: 4px 6px 6px -2px rgba(17, 20, 24, 0.15);
@@ -135,8 +134,8 @@ const Region = styled.div`
 const ResortName = styled.div`
     background-color: #FAFAFA;
     border-radius: 0 10px 10px 0;
-    padding: 8px;
+    padding: 10px;
     //border: 1px solid #48494B;
     box-shadow: 4px 6px 6px -2px rgba(17, 20, 24, 0.15);
-    
+    color: gray;
 `
