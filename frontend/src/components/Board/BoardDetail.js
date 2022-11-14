@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom';
-import { getSinglePost, deletePost } from '../../action/board';
+import { getSinglePost, deletePost, addComment } from '../../action/board';
 import { HiPencil } from 'react-icons/hi'
 import { BsTrashFill } from 'react-icons/bs'
 import { FiSend } from 'react-icons/fi'
@@ -12,10 +12,11 @@ export function BoardDetail(props) {
     const post = useSelector(state => state.board.post);
     const user = useSelector(state => state.auth.user);
     const [date, setDate] = useState(null);
-    const [isMine, setIsMine] = useState(true);
+    const [isMine, setIsMine] = useState(false);
     const [commentCnt, setCommentCnt] = useState(0);
     const [like, setLike] = useState(false);
     const [dislike, setDislike] = useState(false);
+    const [commentInput, setCommentInput] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
     let {id} = useParams();
@@ -30,15 +31,34 @@ export function BoardDetail(props) {
     }
 
     const toggleLike = e => {
-        setLike(!like);
+        if (like) {
+            setLike(false);
+        }
+        else {
+            if (dislike) setDislike(false);
+            setLike(true);
+        }
     }
 
     const toggleDislike = e => {
-        setDislike(!dislike);
+        if (dislike) setDislike(false);
+        else {
+            if (like) setLike(false);
+            setDislike(true);
+        }
+    }
+
+    const handleInputChange = e => {
+        setCommentInput(e.target.value);
     }
 
     const handleSubmit = e => {
         e.preventDefault();
+        const sendComment = {
+            content: commentInput
+        }
+        dispatch(addComment(id, sendComment));
+        setCommentInput("");
     }
 
     useEffect(() => {
@@ -49,9 +69,13 @@ export function BoardDetail(props) {
     
     useEffect(() => {
         if (post) {
-            const dt = post.create_dt.slice(0, 10);
-            const t = new Date(post.create_dt).toString().slice(16, 21);
+            const dt = post.createDate.slice(0, 10);
+            const t = new Date(post.createDate).toString().slice(16, 21);
             setDate(dt + " " + t);
+            
+            if (post.username === user) { //나중엔 post.nickname으로 바꾸고 authSlice에서도 setUser에 nickname으로 넣기
+                setIsMine(true);
+            }
         }
     }, [post])
     
@@ -60,11 +84,11 @@ export function BoardDetail(props) {
         {post && 
         <Container>
             <Top>
-                <Resort>[{post.resortName}]</Resort>
+                {/* <Resort>[{post.resortName}]</Resort> */}
                 <Title>{post.title}</Title>
                 <NameDate>
                     <div className="boardDetail-nd">
-                        <Name>{user.username}</Name>
+                        <Name>{post.username}</Name>
                         <DateForm>{date}</DateForm>
                     </div>
                     <Icon>
@@ -74,7 +98,7 @@ export function BoardDetail(props) {
                 </NameDate>
             </Top>
             <PostInfo>
-                <div className="boardDetail-info"><Cnt>조회수 ({post.cnt})</Cnt><Like>좋아요 ({post.like})</Like><CommentCnt>댓글 ({commentCnt})</CommentCnt></div>
+                {/* <div className="boardDetail-info"><Cnt>조회수 ({post.cnt})</Cnt><Like>좋아요 ({post.like})</Like><CommentCnt>댓글 ({commentCnt})</CommentCnt></div> */}
                 <div></div>
             </PostInfo>
             <Content>
@@ -82,20 +106,29 @@ export function BoardDetail(props) {
             </Content>
             <ContentBottom>
                 <LikeDislike>
-                    <div onClick={toggleLike}>{like ? <AiFillLike className="boardDetail-likeIcon"/> 
+                    <Like>
+                        <div onClick={toggleLike}>{like ? <AiFillLike className="boardDetail-likeIcon"/> 
                         : <AiOutlineLike className="boardDetail-likeIcon"/>}</div>
-                    <div onClick={toggleDislike}>{dislike ? <AiFillDislike className="boardDetail-likeIcon"/> 
+                        <LikeCnt>10</LikeCnt>
+                    </Like>
+                    <DisLike>
+                        <div onClick={toggleDislike}>{dislike ? <AiFillDislike className="boardDetail-likeIcon"/> 
                         : <AiOutlineDislike className="boardDetail-likeIcon"/>}</div>
+                        <DisLikeCnt>0</DisLikeCnt>
+                    </DisLike>
+                    
                 </LikeDislike>
             </ContentBottom>
+
+
             <Form onSubmit={handleSubmit}>
                 <input
                     type='text'
                     placeholder='댓글 입력'
-                    //value={input}
+                    value={commentInput}
                     name='text'
                     className='boardDetail-input'
-                    //onChange={handleChange}
+                    onChange={handleInputChange}
                 />
                 <button><FiSend className='boardDetail-sendIcon' /></button>
             </Form>
@@ -125,27 +158,33 @@ export function BoardDetail(props) {
 
 const Container = styled.div`
     margin-top: 30px;
-    padding: 20px;
+    //padding: 20px;
 `
 const Top = styled.div`
 padding-bottom: 4px;
 border-bottom: 1px solid #CCCCCC;
+//background-color: #6B89A5;
+background-color: #57748F;
+padding: 20px;
+//margin: 0 20px;
+//border-radius: 10px 10px 0 0;
 `
 const Resort = styled.div`
 
 `
 const Title = styled.div`
-font-weight: bold;
+font-weight: 500;
 font-size: 20px;
 padding-top: 10px;
 padding-bottom: 19px;
+color: #E8E8E8;
 `
 const NameDate = styled.div`
 display: flex;
 justify-content: space-between;
 font-size: 13px;
-font-weight: bold;
-color: gray;
+//font-weight: bold;
+color: #FAFAFA;
 .boardDetail-nd{
     display:flex;
 }
@@ -158,9 +197,11 @@ const DateForm = styled.div`
 `
 const Icon = styled.div`
     .boardDetail-icon {
-        width: 1.2rem;
-        height: 1.2rem;
-        color: black;
+        width: 1.4rem;
+        height: 1.4rem;
+        //color: #6B89A5;
+        color: #E8E8E8;
+        padding-left: 8px;
     }
 `
 const PostInfo = styled.div`
@@ -176,51 +217,68 @@ const Cnt = styled.div`
 padding-right:15px;
 `
 const Like = styled.div`
-padding-right:15px;
+//padding-right:15px;
+`
+const LikeCnt = styled.div`
+text-align: center;
+font-size: 12px;
+`
+const DisLike = styled.div`
+
+`
+const DisLikeCnt = styled.div`
+text-align: center;
+font-size: 12px;
 `
 const CommentCnt = styled.div`
 
 `
 const Content = styled.div`
 padding-top: 40px;
-padding-bottom: 130px;
-
+padding-bottom: 100px;
+padding-left: 20px;
+padding-right: 20px;
 `
 const ContentBottom = styled.div`
-border-bottom: 1px solid #CCCCCC;
-padding-bottom: 15px;
+//border-bottom: 1px solid #CCCCCC;
+margin: 15px 20px 0 20px;
 .boardDetail-likeIcon{
     width: 2rem;
     height: 2rem;
-    color: black;
-    padding: 5px;
+    padding: 0 5px;
+    color: #6B89A5;
 }
 `
 const LikeDislike = styled.div`
 display:flex;
 justify-content: center;
+padding-bottom: 10px;
 `
 const Form = styled.form`
     display: flex;
-    padding-top: 10px;
-    background-color: white;
-    padding-bottom: 10px;
+    //background-color: white;
+    padding: 10px 20px;
 
     .boardDetail-input {
         flex: 1 1;
         height: 30px;
         padding: 3px 7px;
         background-color: #FAFAFA;
-        border: 1px solid #CCCCCC;
+        border: none;
         border-radius: 5px;
+        box-shadow: 5px 2px 7px -2px rgba(17, 20, 24, 0.15);
+    }
+    input:focus{
+        outline: none;
     }
 
     button{
-        background-color:#543A3A;
+        background-color:#6B89A5;
         border: #CCCCCC;
         border-radius: 5px;
         width: 2rem;
         margin-left: 7px;
+        box-shadow: 5px 2px 7px -2px rgba(17, 20, 24, 0.15);
     }
 
     .boardDetail-sendIcon {
@@ -230,15 +288,18 @@ const Form = styled.form`
     }
 `
 const CommentList = styled.div`
-
+margin: 0 20px 10px 20px;
 `
 const Comment = styled.div`
 display:grid;
 grid-template-columns: 70px 6fr 1fr;
 align-items: center;
-border-bottom: 1px solid #CCCCCC;
-padding-bottom: 10px;
-padding-top: 10px;
+//border-bottom: 1px solid #CCCCCC;
+padding: 12px 0 12px 10px;
+background-color: #FAFAFA;
+border-radius: 10px;
+margin-bottom: 10px;
+box-shadow: 5px 2px 7px -2px rgba(17, 20, 24, 0.15);
 .boardDetail-combox {
     color: gray;
     padding-right:15px;

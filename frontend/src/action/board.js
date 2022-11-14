@@ -15,6 +15,7 @@ export const loadPosts = () => {
             url: '/board/',
             method: 'get',
         }).then((resp) => {
+            console.log("resp", resp);
             dispatch(boardActions.getBoards(resp.data.data.content));
         })
         .catch(error => console.log(error));
@@ -39,11 +40,11 @@ export const addPost = (post) => {
 export const getSinglePost = (id) => {
     return function (dispatch) {
         Send({
-            url: `/board/${id}`,
+            url: `/board/detail/${id}`,
             method: 'get',
         }).then((resp) => {
             console.log("resp", resp);
-            dispatch(boardActions.getPost(resp.data));
+            dispatch(boardActions.getPost(resp.data.data));
         })
         .catch(error => console.log(error));
         
@@ -52,15 +53,6 @@ export const getSinglePost = (id) => {
 
 export const updatePost = (post, id) => {
     return function (dispatch) {
-        /*
-        axios
-            .put(`${process.env.REACT_APP_API}/board/${id}`, post)
-            .then((resp) => {
-                console.log("resp", resp);
-                dispatch(boardActions.editPost());
-            })
-            .catch(error => console.log(error));*/
-
         Send({
             url: '/board/update/',
             method: 'put',
@@ -82,6 +74,34 @@ export const deletePost = (id) => {
             console.log("resp", resp);
             dispatch(boardActions.deletePost());
             dispatch(loadPosts());
+        })
+        .catch(error => console.log(error));
+    }
+}
+
+export const unlikes = (id) => {
+    return function (dispatch) {
+        Send({
+            url: `/board/${id}/unlikes`,
+            method: 'delete',
+        }).then((resp) => {
+            console.log("resp", resp);
+            dispatch(boardActions.unlikes());
+        })
+        .catch(error => console.log(error));
+    }
+}
+
+export const addComment = (id, content) => {
+    return function (dispatch) {
+        Send({
+            url: `/board/${id}/comment`,
+            method: 'post',
+            data: content,
+        }).then((resp) => {
+            console.log("resp", resp);
+            dispatch(boardActions.addComment());
+            dispatch(getSinglePost(id));
         })
         .catch(error => console.log(error));
     }

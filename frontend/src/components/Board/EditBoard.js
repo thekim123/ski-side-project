@@ -99,6 +99,7 @@ export function EditBoard() {
 
     useEffect(() => {
         if(originalPost) {
+            console.log(originalPost);
             setState({...originalPost});
             setSelectedResort(originalPost.resortName);
         }

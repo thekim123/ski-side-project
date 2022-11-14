@@ -22,6 +22,12 @@ const boardSlice = createSlice({
         },
         deletePost(state) {
             
+        },
+        unlikes(state) {
+            
+        },
+        addComment(state) {
+            
         }
     }
 });

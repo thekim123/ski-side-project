@@ -2,6 +2,7 @@ import axios from 'axios';
 import { resortActions } from '../slice/resort';
 import Send from '../components/common/Send';
 
+/*
 export const loadResorts = () => {
     return function (dispatch) {
         axios
@@ -12,7 +13,7 @@ export const loadResorts = () => {
             .catch(error => console.log(error));
 
     }
-}
+}*/
 
 export const addMyResort = (id) => {
     return function (dispatch) {

@@ -23,10 +23,6 @@ function App() {
   //const cors = require('cors');
   //App.use(cors())
 
-  useEffect(() => {
-    dispatch(loadResorts());
-  }, [dispatch]);
-
   return (
     <div>
       <TopBar />

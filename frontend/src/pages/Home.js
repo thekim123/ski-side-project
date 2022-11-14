@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { loadPosts } from '../action/board';
 import styled from 'styled-components'
-import { Card } from "react-bootstrap"
 import img from '../imgs/한반도.png'
 import {FaSkiing} from 'react-icons/fa'
 import { SkiButton } from '../components/SkiButton'
@@ -9,6 +8,7 @@ import resortData from '../data/resort.json'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
+import shortid from 'shortid';
 
 export function Home() {
     const dispatch = useDispatch();
@@ -69,17 +69,12 @@ export function Home() {
                     }
                 </Box>
             </Wrapper>
-
+            
             <Map>
-                {/* {
-                    resortData.map(resort => (
-                        <SkiButton {...resort} />
-                    ))
-                } */}
-                <Grid container className="home-grid">
+            <Grid container className="home-grid">
                 {
                     resortData.map(resort => (
-                        <Grid item xs={6} className="home-grid-item"><SkiButton {...resort} /></Grid>
+                        <Grid item xs={6} className="home-grid-item" key={shortid.generate()}><SkiButton {...resort} /></Grid>
                     ))
                 }
             </Grid>
