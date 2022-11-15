@@ -4,10 +4,7 @@ import com.project.ski.domain.club.Club;
 import com.project.ski.domain.club.ClubUser;
 import com.project.ski.domain.resort.Resort;
 import com.project.ski.domain.user.User;
-import com.project.ski.repository.ClubRepository;
-import com.project.ski.repository.ClubUserRepository;
-import com.project.ski.repository.ResortRepository;
-import com.project.ski.repository.UserRepository;
+import com.project.ski.repository.*;
 import com.project.ski.web.dto.ClubRequestDto;
 import com.project.ski.web.dto.ClubResponseDto;
 import com.project.ski.web.dto.ClubUserRespDto;
@@ -16,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 
 @Service
@@ -44,7 +43,6 @@ public class ClubService {
 
     }
 
-
     // 동호회 생성
     @Transactional
     public void create(ClubRequestDto dto,User user) {
@@ -54,14 +52,13 @@ public class ClubService {
         Resort resort = resortRepository.findById(dto.getResortId()).orElseThrow(()->{
             return new IllegalArgumentException("리조트명 찾기 실패");
         });
+
         Club club = dto.toEntity(user,resort);
         clubRepository.save(club);
         ClubUser clubUser = new ClubUser(club, findUser);
         findUser.getClubUsers().add(clubUser);
 
     }
-
-
 
     // 동호회 삭제
     @Transactional
@@ -93,6 +90,11 @@ public class ClubService {
     }
 
     // 동호회 상세페이지
+
+//    @Transactional
+//    public Optional<ClubResponseDto> clubDetail(Long clubId) {
+//        return clubRepository.findById(clubId).map(ClubResponseDto::new);
+//    }
     @Transactional
     public Club clubDetail(Long clubId) {
         Club dto = clubRepository.findById(clubId).orElseThrow(()->{
@@ -100,8 +102,8 @@ public class ClubService {
         });
 
         return dto;
-
     }
+
 
 
 }

@@ -2,6 +2,7 @@ package com.project.ski.web.dto;
 
 
 import com.project.ski.domain.Tayo.Tayo;
+import com.project.ski.domain.club.AgeGrp;
 import com.project.ski.domain.resort.Resort;
 import com.project.ski.domain.user.User;
 import lombok.Getter;
@@ -20,7 +21,7 @@ public class TayoRequestDto {
 
     private String title;
 
-    private String age;
+    private AgeGrp age;
 
     private int tayoMemCnt;
 

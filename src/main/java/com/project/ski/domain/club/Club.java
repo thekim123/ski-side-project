@@ -76,6 +76,11 @@ public class Club {
     private String openYn;
 
     /**
+     * 오픈카톡 UR
+     */
+    private String url;
+
+    /**
      * 홍보문구
      */
     @Column(nullable = false)
@@ -91,5 +96,6 @@ public class Club {
         this.ageGrp = dto.getAgeGrp();
         this.openYn = dto.getOpenYn();
         this.memo = dto.getMemo();
+        this.url = dto.getUrl();
     }
 }

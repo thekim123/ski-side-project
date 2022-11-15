@@ -79,11 +79,13 @@ public class ClubApiController {
     }
 
 
-    // 동호회 글 상세 조회
+    // 동호회 글 상세 조회 -- > 해당 동호회 게시판 목록조회
     @GetMapping("/{clubId}")
     public CmRespDto<ClubResponseDto> clubDetail(@PathVariable Long clubId) {
         clubService.clubDetail(clubId);
         return new CmRespDto<>(1, "동호회 상세보기 완료", null);
     }
+
+    // 동호회 게시판 생성
 
 }

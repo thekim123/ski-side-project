@@ -2,6 +2,7 @@ package com.project.ski.domain.Tayo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.project.ski.domain.club.AgeGrp;
 import com.project.ski.domain.resort.Resort;
 import com.project.ski.domain.user.User;
 import com.project.ski.web.dto.TayoRequestDto;
@@ -39,11 +40,24 @@ public class Tayo {
     @JoinColumn(name = "resort_id")
     private Resort resort;
 
+    // 보드 / 스키
+    @Column(nullable = false)
+    private String rideDevice;
+
+    // 제목
+    @Column(nullable = false)
     private String title;
 
-    private String age;
+    // 나이
+    @Column(nullable = false)
+    private AgeGrp age;
 
+    // 모집 인원 수
     private int tayoMemCnt;
+
+    // 현재 인원 수
+    private int curTayoMemCnt;
+
 
     @CreationTimestamp
     private LocalDateTime createDt;

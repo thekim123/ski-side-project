@@ -38,6 +38,8 @@ public class ClubRequestDto {
     // 홍보 문구
     private String memo;
 
+    // 오픈카톡 URL
+    private String url;
 
 
 
@@ -71,6 +73,7 @@ public class ClubRequestDto {
                 .ageGrp(ageGrp)
                 .openYn(openYn)
                 .memo(memo)
+                .url(url)
                 .build();
     }
 
