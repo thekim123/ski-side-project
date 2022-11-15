@@ -47,7 +47,7 @@ export function Home() {
                     {
                         isAuth ? 
                         MyResort.map((resort) => (
-                            <MySkiWrap>
+                            <MySkiWrap key={shortid.generate()}>
                             <MySki>
                                 <FaSkiing className="home-ski-icon" />
                             </MySki>

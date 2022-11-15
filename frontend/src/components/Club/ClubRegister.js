@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { regClub } from '../../action/club';
 import styled from 'styled-components'
 import { SelectBox } from '../common/SelectBox';
+import resorts from '../../data/resort.json'
 
 export function ClubRegister() {
     const dispatch = useDispatch();
@@ -14,7 +15,7 @@ export function ClubRegister() {
     const [selectedAge, setSelectedAge] = useState("--");
     const [selectedGender, setSelectedGender] = useState("--");
     const [selectedRoom, setSelectedRoom] = useState("--");
-    const resorts = useSelector(state => state.resort.resorts);
+    //const resorts = useSelector(state => state.resort.resorts);
     const resort_name = resorts.map(resort => resort.name);
     const age = ["10대", "20대", "30대", "40대", "50대", "60대", "70대", "80대", "제한 없음"]
     const gender = ["남", "여", "성별 무관"];

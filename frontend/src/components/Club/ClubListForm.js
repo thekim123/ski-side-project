@@ -15,12 +15,12 @@ export function ClubListForm(props) {
 
     return (
     <Wrapper>
-        <ResortBtn>
+        {/* <ResortBtn>
             <div></div><Resort onClick={changeParent}>[전체]</Resort><div></div>
             {resorts.map(resort => (
                 <Resort key={resort.id} onClick={changeParent}>{resort.name}</Resort>
             ))}
-        </ResortBtn>
+        </ResortBtn> */}
         <Top>
             <div></div><div className="clubList-title">동호회 리스트</div><Link to="/club/register"><HiPlus className="clubList-plus" /></Link>
         </Top>
@@ -51,9 +51,10 @@ display: flex;
 justify-content: space-between;
 padding: 20px 50px;
 .clubList-title{
-    font-weight: bold;
+    font-weight: 200;
     padding-top: 13px;
     padding-left: 13px;
+    font-size: 18px;
 }
 .clubList-plus{
     width: 1.1rem;
@@ -63,5 +64,6 @@ padding: 20px 50px;
     padding: 7px;
     border-radius: 15px;
     margin: 4px;
+    margin-top: 7px;
 }
 `

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { MapModal } from '../common/MapModal'
 import styled from 'styled-components'
 import { BiSearch } from 'react-icons/bi'
@@ -9,6 +9,7 @@ import { FiFilter } from 'react-icons/fi';
 import { HiPlus } from 'react-icons/hi';
 
 function BoardListForm(props) {
+    const navigate = useNavigate();
     //const resorts = useSelector(state => state.resort.resorts);
     const resort_kor = ["[하이원]", "[대명]", "[곤지암]", "[베어스]", "[지산]", "[덕유산]", "[에덴벨리]", "[비발디]", "[휘닉스]", "[웰리힐리]", "[용평]", "[엘리시안]"];
     const [input, setInput] = useState('');
@@ -16,6 +17,10 @@ function BoardListForm(props) {
 
     const changeParent = e => {
         props.change(e.target.innerText);
+    }
+
+    const clickPlus = e => {
+        navigate('/board/write');
     }
 
     const handleChange = e => {
@@ -53,7 +58,7 @@ function BoardListForm(props) {
                 <Title>자유게시판</Title>
                 <Icons>
                     <FiFilter className="tayo-filter" onClick={openModal}/>
-                    <HiPlus className="tayo-plus" />
+                    <HiPlus className="tayo-plus" onClick={clickPlus}/>
                 </Icons>
             </Top>
             <MapModal open={modalOpen} close={closeModal} />
