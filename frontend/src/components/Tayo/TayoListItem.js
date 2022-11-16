@@ -58,8 +58,7 @@ function TayoListItem(props) {
     }
 
     const showDetail = e => {
-        //console.log("show");
-        navigate(`/board/detail/${props.id}`);
+        navigate(`/tayo/detail/${props.id}`);
     }
 
     useEffect(() => {
@@ -77,7 +76,7 @@ function TayoListItem(props) {
                     {isMine && <BsTrashFill className="boardPost-icon" onClick={handleTrash}/>}
                 </div>
             </Top>
-            <Content>
+            <Content onClick={showDetail}>
                 <Count>
                     <BsPeopleFill className="tayo-count"/>
                     {!props.tayoMemCnt ? "무제한" :  <div>0 / {props.tayoMemCnt}</div>}

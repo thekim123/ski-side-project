@@ -84,7 +84,7 @@ export function BoardDetail(props) {
         {post && 
         <Container>
             <Top>
-                {/* <Resort>[{post.resortName}]</Resort> */}
+                <ResortBox><Resort>[웰리힐리]</Resort></ResortBox>
                 <Title>{post.title}</Title>
                 <NameDate>
                     <div className="boardDetail-nd">
@@ -162,29 +162,38 @@ const Container = styled.div`
 `
 const Top = styled.div`
 padding-bottom: 4px;
-border-bottom: 1px solid #CCCCCC;
-//background-color: #6B89A5;
-background-color: #57748F;
+//border-bottom: 1px solid #CCCCCC;
+//background-color: #57748F;
 padding: 20px;
+padding-top: 0;
 //margin: 0 20px;
 //border-radius: 10px 10px 0 0;
 `
+const ResortBox = styled.div`
+display: flex;
+justify-content: center;
+`
 const Resort = styled.div`
-
+font-size: 14px;
+font-weight: bold;
+padding-bottom: 5px;
 `
 const Title = styled.div`
-font-weight: 500;
-font-size: 20px;
-padding-top: 10px;
-padding-bottom: 19px;
-color: #E8E8E8;
+font-weight: 900;
+font-size: 19px;
+//padding-top: 10px;
+//padding-bottom: 19px;
+padding-bottom: 7px;
+//color: #E8E8E8;
+color: black;
 `
 const NameDate = styled.div`
 display: flex;
 justify-content: space-between;
 font-size: 13px;
 //font-weight: bold;
-color: #FAFAFA;
+//color: #FAFAFA;
+color: black;
 .boardDetail-nd{
     display:flex;
 }
@@ -199,8 +208,8 @@ const Icon = styled.div`
     .boardDetail-icon {
         width: 1.4rem;
         height: 1.4rem;
-        //color: #6B89A5;
-        color: #E8E8E8;
+        //color: #E8E8E8;
+        color: #6B89A5;
         padding-left: 8px;
     }
 `

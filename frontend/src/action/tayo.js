@@ -22,7 +22,7 @@ export const loadTayos = () => {
     }
 }
 
-export const addPost = (post) => {
+export const addTayo = (post) => {
     return function (dispatch) {
         Send({
             url: '/tayo',

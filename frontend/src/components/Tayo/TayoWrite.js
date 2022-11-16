@@ -7,8 +7,13 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { ko } from 'date-fns/esm/locale'
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { addTayo } from '../../action/tayo';
 
 export function TayoWrite() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const type = ["스키", "보드"];
     const resort_name = resorts.map(resort => resort.name);
     const age = ["연령 무관", "10대", "20대", "30대", "40대", "50대", "60대", "70대", "80대", "90대"]
@@ -110,9 +115,8 @@ export function TayoWrite() {
         if (selectedAge === '--') local_error.age = "연령대를 선택하세요.";
 
         setError({...local_error});
-        console.log(error);
         for (let c in local_error) {
-            if (!local_error[c]) return false;
+            if (local_error[c]) return false;
         }
         return true;
     }
@@ -127,10 +131,21 @@ export function TayoWrite() {
         if (!validateInput(enteredTitle, enteredContent, enteredCnt)) return;
 
         //body에 넣을 data
+        let cnt = cntBtn ? "제한 없음" : enteredCnt;
         const tayo = {
-
+            selectedType,
+            selectedResort,
+            startDate,
+            startTime,
+            endTime,
+            cnt,
+            selectedAge,
+            enteredTitle,
+            enteredContent
         }
-        //dispatch, navigate
+        console.log(tayo);
+        //dispatch(addTayo(tayo));
+        //navigate("/tayo");
     }
 
     //선택된 날짜가 오늘인지 확인
@@ -151,21 +166,30 @@ export function TayoWrite() {
     }
     //시작 시간 조정. 날짜가 오늘일 경우에만 해당하고, 그렇지 않으면 9시
     const calMinHour = () => {
+        /*
         if (isDateToday()) {
-            if (new Date().getHours < 22) {
+            if (new Date().getHours() < 22) {
                 let curHour = new Date().getHours();
+                if (curHour < 9) return 9;
                 let curMin = new Date().getMinutes();
                 if (curMin < 30) return curHour;
                 else return curHour+1;
             }
+            return 24;
         }
-        else return 9;
+        else return 9;*/
+        let curHour = new Date().getHours();
+        let curMin = new Date().getMinutes();
+        if (curMin < 30) return curHour;
+            else return curHour+1;
     }
     const calMaxHour = () => {
         //선택된 날짜가 오늘이고 밤 10시를 넘었다면 모두 불가능.
+        /*
         if (isDateToday() && new Date().getHours >= 22)
             return 24; 
-        else return 21;
+        else return 21;*/
+        return 24;
     }
 
     return (
@@ -201,8 +225,9 @@ export function TayoWrite() {
                     showTimeSelect
                     showTimeSelectOnly
                     timeIntervals={30}
+                    //minTime={setHours(setMinutes(new Date(), calMinute()), calMinHour())}
                     minTime={setHours(setMinutes(new Date(), calMinute()), calMinHour())}
-                    maxTime={setHours(setMinutes(new Date(), 30), calMaxHour())}
+                    maxTime={setHours(setMinutes(new Date(), 30), 23)}
                     dateFormat="aa h:mm 부터"
                     placeholderText='시작 시간'
                     className='tayoWrite-startT'
@@ -214,9 +239,8 @@ export function TayoWrite() {
                     showTimeSelect
                     showTimeSelectOnly
                     timeIntervals={30}
-                    //30분 이상이면 시간+1, 미만이면 시간은 그대로, 분을 30분.
                     minTime={startTime}
-                    maxTime={setHours(setMinutes(new Date(), 0), 22)}
+                    maxTime={setHours(setMinutes(new Date(), 30), 23)}
                     dateFormat="aa h:mm 까지"
                     placeholderText='종료 시간'
                     className='tayoWrite-endT'

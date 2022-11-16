@@ -18,6 +18,7 @@ import { ClubDetail } from './components/Club/ClubDetail';
 import { ClubSecret } from './components/Club/ClubSecret';
 import { Tayo } from './pages/Tayo';
 import { TayoWrite } from './components/Tayo/TayoWrite';
+import { TayoDetail } from './components/Tayo/TayoDetail';
 
 function App() {
   const dispatch = useDispatch();
@@ -46,6 +47,7 @@ function App() {
             <Route path="club/secret/:id" element={<ClubSecret />} />
             <Route path="tayo" element={<Tayo />} />
             <Route path="tayo/write" element={<TayoWrite />} />
+            <Route path="tayo/detail" element={<TayoDetail />} />
           </Route>
         </Route>
       </Routes>
