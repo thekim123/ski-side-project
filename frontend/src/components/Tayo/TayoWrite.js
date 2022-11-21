@@ -38,7 +38,18 @@ export function TayoWrite() {
         title: "",
         content: "",
     })
+    const [isDone, setIsDone] = useState({
+        type: false,
+        resort: false,
+        date: false,
+        time: false,
+        cnt: false,
+        age: false,
+        title: false,
+        content: false
+    })
     const toggleDate = e => {
+        setError({...error, date: ""})
         setShowDate(!showDate);
     }
 
@@ -50,13 +61,13 @@ export function TayoWrite() {
 
     // set Selection & reset SelectBox error
     const reflectType = (selection) => {
-        if (type.indexOf(selection) !== -1) {setSelectedType(selection); setError({...error, type: ""})}
+        if (type.indexOf(selection) !== -1) {setSelectedType(selection); setError({...error, type: ""}); setIsDone({...isDone, type: true})}
     }
     const reflectResort = (selection) => {
-        if (resort_name.indexOf(selection) !== -1) {setSelectedResort(selection); setError({...error, resort: ""})}
+        if (resort_name.indexOf(selection) !== -1) {setSelectedResort(selection); setError({...error, resort: ""}); setIsDone({...isDone, resort: true})}
     }
     const reflectAge = (selection) => {
-        if (age.indexOf(selection) !== -1) {setSelectedAge(selection); setError({...error, age: ""})}
+        if (age.indexOf(selection) !== -1) {setSelectedAge(selection); setError({...error, age: ""}); setIsDone({...isDone, age: true})}
     }
 
     // reset Input error
@@ -178,10 +189,13 @@ export function TayoWrite() {
             return 24;
         }
         else return 9;*/
+        if (isDateToday()) {
         let curHour = new Date().getHours();
         let curMin = new Date().getMinutes();
         if (curMin < 30) return curHour;
             else return curHour+1;
+        }
+        else return 0;
     }
     const calMaxHour = () => {
         //선택된 날짜가 오늘이고 밤 10시를 넘었다면 모두 불가능.
@@ -192,6 +206,12 @@ export function TayoWrite() {
         return 24;
     }
 
+    const setCntDone = e => {
+        if (e.target.value !== "") {
+            setIsDone({...isDone, cnt: true})
+        } else setIsDone({...isDone, cnt: false})
+    }
+
     return (
     <Wrapper>
         <Title><div className="clubReg-top">같이타요 등록</div></Title>
@@ -199,9 +219,11 @@ export function TayoWrite() {
             <SelectBox list={type} label="스키/보드" func={reflectType} state={selectedType} />
             <Error><Dummy></Dummy><div>{error.type ? error.type : null}</div></Error>
 
-            <SelectBox list={resort_name} label="활동 스키장" func={reflectResort} state={selectedResort} />
+            {isDone.type && 
+            <SelectBox list={resort_name} label="활동 스키장" func={reflectResort} state={selectedResort} />}
             <Error><Dummy></Dummy><div>{error.resort ? error.resort : null}</div></Error>
 
+            {isDone.resort &&
             <DatePick>
                 <label>날짜</label>
                 <span onClick={toggleDate}><SDatePicker 
@@ -213,8 +235,10 @@ export function TayoWrite() {
                     onChange={date => setStartDate(date)} 
                     
                     /></span>
-            </DatePick>
+            </DatePick>}
+            <Error><Dummy></Dummy><div>{error.date ? error.date : null}</div></Error>
 
+            {isDone.resort && 
             <DatePick>
                 <label>시간</label>
                 <div>
@@ -234,7 +258,7 @@ export function TayoWrite() {
                 />
                 {startTime ? <SDatePicker
                     selected={endTime}
-                    onChange={time => setEndTime(time)}
+                    onChange={time => {setEndTime(time); setIsDone({...isDone, time: true})}}
                     locale={ko}
                     showTimeSelect
                     showTimeSelectOnly
@@ -251,14 +275,16 @@ export function TayoWrite() {
                     className='tayoWrite-endT'
                 />}
                 </div>
-            </DatePick>
+            </DatePick>}
             <Error><Dummy></Dummy><div>{error.time ? error.time : null}</div></Error>
             
+            {isDone.time &&
             <Input>
                 <label>최대 인원</label>
                 <input 
                     type="text" 
                     ref={cntInput} 
+                    onChange={setCntDone}
                     onClick={resetCntError} 
                     placeholder="입력 예시) 5"
                     disabled={cntBtn ? true : false}
@@ -271,19 +297,23 @@ export function TayoWrite() {
                     />
                     <label>제한 없음</label>
                 </CheckBox>
-            </Input>
+            </Input>}
             <Error><Dummy></Dummy><div>{error.cnt ? error.cnt : null}</div></Error>
 
-            <SelectBox list={age} label="연령" func={reflectAge} state={selectedAge} />
+            {(cntBtn || isDone.cnt) &&
+            <SelectBox list={age} label="연령" func={reflectAge} state={selectedAge} />}
             <Error><Dummy></Dummy><div>{error.age ? error.age : null}</div></Error>
 
-            <Input><label>제목</label><input type="text" ref={titleInput} onClick={resetTitleError} /></Input>
+            {isDone.age &&
+            <Input><label>제목</label><input type="text" ref={titleInput} onClick={resetTitleError} /></Input>}
             <Error><Dummy></Dummy><div>{error.title ? error.title : null}</div></Error>
 
-            <Input><label>홍보 문구</label><textarea type="text" ref={contentInput} onClick={resetContentError} /></Input>
+            {isDone.age &&
+            <Input><label>홍보 문구</label><textarea type="text" ref={contentInput} onClick={resetContentError} /></Input>}
             <Error><Dummy></Dummy><div>{error.content ? error.content : null}</div></Error>
 
-            <BtnWrap><Button>개설하기</Button></BtnWrap>
+            {isDone.age &&
+            <BtnWrap><Button>개설하기</Button></BtnWrap>}
         </form>
     </Wrapper>
     )
