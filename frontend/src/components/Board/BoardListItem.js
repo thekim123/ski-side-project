@@ -104,7 +104,7 @@ const Top = styled.div`
     .boardPost-icon{
         width: 1.2rem;
         height: 1.2rem;
-        color: #6B89A5;
+        color: var(--button-sub-color);
         padding-right: 3px;
     }
 `

@@ -89,7 +89,7 @@ right: 0;
 const Top = styled.div`
 display: flex;
 justify-content: space-between;
-background-color: #E1EEFF;
+background-color: #EEF3F7;
 `
 const Title = styled.div`
 padding-top: 10px;
@@ -101,6 +101,7 @@ const Icons = styled.div`
     width: 1.1rem;
     height: 1.1rem;
     background-color: #6B89A5;
+    background-color: var(--button-color);
     color: #FAFAFA;
     padding: 7px;
     border-radius: 15px;
@@ -130,7 +131,7 @@ const Form = styled.form`
     display: flex;
     padding-top: 10px;
     padding-bottom: 20px;
-    background-color: #E1EEFF;
+    background-color: #EEF3F7;
 
     .boardForm-input {
         flex: 1 1;
@@ -143,7 +144,7 @@ const Form = styled.form`
     }
 
     button{
-        background-color:#6B89A5;
+        background-color: var(--button-color);
         border: none;
         border-radius: 5px;
         width: 2rem;

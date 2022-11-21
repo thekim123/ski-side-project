@@ -1,16 +1,26 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
 import { GoSearch } from 'react-icons/go'
+import { FiFilter } from 'react-icons/fi';
+import { HiPlus } from 'react-icons/hi';
 import { FaHouseUser, FaLongArrowAltRight, FaSkiing } from 'react-icons/fa'
+import { BsArrowRight } from 'react-icons/bs'
 import { IoMdArrowDropdown } from 'react-icons/io';
 import resorts from '../data/resort.json'
 import shortid from 'shortid'
+import { CarPoolListItem } from '../components/CarPool/CarPoolListItem';
 
 export function CarPool() {
+    const navigate = useNavigate();
     const [routeType, setRouteType] = useState("house");
     const [selectedResort, setSelectedResort] = useState("--");
     const [showSelectBox, setShowSelectBox] = useState(false);
     const resortsData = resorts.filter(resort => resort.id !== null);
+
+    const clickPlus = e => {
+        navigate('/board/write');
+    }
 
     const handleRouteChange = e => {
         setRouteType(e.target.value);
@@ -24,11 +34,17 @@ export function CarPool() {
     }
     return (
     <Wrapper>
+        <Top>
+            <Title>카풀</Title>
+            <Icons>
+                <HiPlus className="tayo-plus" onClick={clickPlus}/>
+            </Icons>
+        </Top>
         <SearchWrapper>
             <SearchHeader>
                 {/* <SearchTitle>Car Pool </SearchTitle> */}
                 {/* <TGoSearch /> */}
-                카풀 조회
+                {/* <Title>카풀 조회</Title> */}
                 <SearchBox>
                 <SearchBoxInner>
                     <SearchWhat>1. 경로를 선택하세요.</SearchWhat>
@@ -41,7 +57,7 @@ export function CarPool() {
                                 onChange={handleRouteChange}
                             />
                             <FaHouseUser className='carpool-root-icon'/>
-                            <FaLongArrowAltRight className='carpool-root-arrow'/>
+                            <BsArrowRight className='carpool-root-arrow'/>
                             <FaSkiing className='carpool-root-icon'/>
                         </RouteWrapper>
                         <RouteWrapper>
@@ -52,7 +68,7 @@ export function CarPool() {
                                 onChange={handleRouteChange}
                             />
                             <FaSkiing className='carpool-root-icon'/>
-                            <FaLongArrowAltRight className='carpool-root-arrow'/>
+                            <BsArrowRight className='carpool-root-arrow'/>
                             <FaHouseUser className='carpool-root-icon'/>
                         </RouteWrapper>
                     </SearchContent>
@@ -77,8 +93,12 @@ export function CarPool() {
                 <Button>조회하기</Button>
             </SearchBox>
             </SearchHeader>
-            
         </SearchWrapper>
+
+        <Posts>
+            <CarPoolListItem />
+            {/* <CarPoolListItem /> */}
+        </Posts>
     </Wrapper>
     )
 }
@@ -89,24 +109,57 @@ font-weight: bold;
 padding: 8px;
 `
 const Wrapper = styled.div`
-margin-top: 30px;
+margin-top: 20px;
+`
+const Top = styled.div`
+padding: 0 35px;
+display: flex;
+justify-content: space-between;
+background-color: #EEF3F7;
+`
+const Title = styled.div`
+padding-top: 10px;
+font-size: 19px;
+font-weight: 200;
+`
+const Icons = styled.div`
+.tayo-filter, .tayo-plus{
+    width: 1.1rem;
+    height: 1.1rem;
+    background-color: #6B89A5;
+    background-color: var(--button-color);
+    color: #FAFAFA;
+    padding: 7px;
+    border-radius: 15px;
+    margin: 4px 0 4px 4px;
+}
+.tayo-plus{
+    margin-left: 10px;
+    margin-top: 7px;
+}
 `
 const SearchWrapper = styled.div`
 
 `
 const SearchHeader = styled.div`
-//background-color: #6B89A5;
-background-color: #C2CFD8;
+//background-color: #333F50;
+//background-color: #C2CFD8;
 display:flex;
 flex-direction: column;
 align-items: center;
 color: black;
 padding: 15px;
-padding-top: 20px;
+padding-top: 10px;
 height: 120px;
 font-size: 13px;
 font-weight: bold;
 `
+/*
+const Title = styled.div`
+color: black;
+font-weight: 300;
+font-size: 18px;
+`*/
 const TGoSearch = styled(GoSearch)`
 width:2rem;
 height:2rem;
@@ -119,7 +172,7 @@ background-color: #FAFAFA;
 border-radius: 15px;
 box-shadow: 3px 3px 10px 6px rgba(0, 0, 0, 0.06);
 //margin: 30px;
-margin-top: 20px;
+//margin-top: 20px;
 width: 90%;
 `
 const SearchBoxInner = styled.div`
@@ -138,7 +191,7 @@ padding: 10px;
 .carpool-root-icon{
     width:1.2rem;
     height:1.2rem;
-    color: #6B89A5;
+    color: #002060;
     padding: 0 1px;
 }
 .carpool-root-arrow{
@@ -201,7 +254,9 @@ grid-template-columns: 110px 1fr;
 
 //button
 const Button = styled.div`
-background-color: #6B89A5;
+//background-color: #6B89A5;
+//background-color: rgb(59, 59, 59);
+background-color: #002060;
 color: #FAFAFA;
 font-size: 14px;
 margin: 15px;
@@ -209,4 +264,9 @@ margin-top: 0;
 border-radius: 10px;
 text-align: center;
 padding: 10px;
+`
+
+//POSTS
+const Posts = styled.div`
+margin-top: 160px;
 `

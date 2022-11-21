@@ -208,8 +208,8 @@ const Icon = styled.div`
     .boardDetail-icon {
         width: 1.4rem;
         height: 1.4rem;
-        //color: #E8E8E8;
-        color: #6B89A5;
+        //color: #6B89A5;
+        color: --button-color;
         padding-left: 8px;
     }
 `
@@ -255,7 +255,7 @@ margin: 15px 20px 0 20px;
     width: 2rem;
     height: 2rem;
     padding: 0 5px;
-    color: #6B89A5;
+    color:--button-color;
 }
 `
 const LikeDislike = styled.div`
@@ -282,7 +282,7 @@ const Form = styled.form`
     }
 
     button{
-        background-color:#6B89A5;
+        background-color: #002060;
         border: #CCCCCC;
         border-radius: 5px;
         width: 2rem;

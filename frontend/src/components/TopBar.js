@@ -29,6 +29,7 @@ position: fixed;
     top: 0;
     z-index: 99;
     background-color: #E1EEFF;
+    background-color: #EEF3F7;
     //border-bottom: 0.01rem solid #CCCCCC;
     height: 48px;
     margin-top: 0;
