@@ -19,7 +19,7 @@ export function CarPool() {
     const resortsData = resorts.filter(resort => resort.id !== null);
 
     const clickPlus = e => {
-        navigate('/board/write');
+        navigate('/carpool/write');
     }
 
     const handleRouteChange = e => {
@@ -104,7 +104,7 @@ export function CarPool() {
 }
 
 const SearchWhat = styled.div`
-font-size: 13px;
+font-size: 14px;
 font-weight: bold;
 padding: 8px;
 `
@@ -180,6 +180,7 @@ margin: 15px;
 margin-bottom: 10px;
 border: 1px solid #CCCCCC;
 border-radius: 15px;
+padding: 5px;
 `
 const SearchContent = styled.div`
 display:flex;
@@ -263,7 +264,7 @@ margin: 15px;
 margin-top: 0;
 border-radius: 10px;
 text-align: center;
-padding: 10px;
+padding: 12px;
 `
 
 //POSTS

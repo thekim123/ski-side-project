@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import img from '../imgs/한반도.png'
+import img from '../assets/imgs/한반도.png'
 import { ResortModal } from './ResortModal';
 import shortid from 'shortid';
 

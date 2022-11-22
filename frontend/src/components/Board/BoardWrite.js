@@ -209,6 +209,9 @@ const Title = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    input{
+        background-color: var(--background-color);
+    }
     .boardWrite-title{
         width: 85%;
         border: none;
@@ -231,11 +234,13 @@ const Content = styled.div`
     flex-direction: column;
     align-items: center;
     textarea {
-        width: 70%;
-        height: 200px;
+        width: 80%;
+        height: 300px;
         padding: 10px;
-        border: 1px solid gray;
+        border: 1px solid #CCCCCC;
+        border-radius: 10px;
         margin: 10px;
+        //background-color: var(--background-color);
     }
     textarea:focus{
         outline: none;
@@ -258,11 +263,11 @@ const Buttons = styled.div`
 
     .boardWrite-tempSave{
         background-color: #FAFAFA;
-        border: 1px solid #6B89A5;
-        color: #6B89A5;
+        border: 1px solid var(--button-color);
+        color: var(--button-color);
     }
     .boardWrite-save{
-        background-color: #6B89A5;
+        background-color: var(--button-color);
         border: 1px solid #FAFAFA;
         color: #FAFAFA;
     }

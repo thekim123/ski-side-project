@@ -2,7 +2,7 @@ import React from 'react'
 import resortData from '../../data/resort.json'
 import Grid from '@material-ui/core/Grid';
 import { SkiButton } from '../SkiButton'
-import img from '../../imgs/한반도.png'
+import img from '../../assets/imgs/한반도.png'
 import styled from 'styled-components'
 import shortid from 'shortid';
 

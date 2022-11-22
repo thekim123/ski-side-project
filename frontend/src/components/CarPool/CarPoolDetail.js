@@ -124,6 +124,8 @@ grid-template-columns: 1fr 50px 1fr;
 //justify-items: center;
 color: black;
 font-weight: 900;
+font-size: 18px;
+padding: 7px 0 5px 0;
 `
 const Start = styled.div`
 justify-self: end;
@@ -140,7 +142,7 @@ const TimeWrap = styled.div`
 display:grid;
 justify-content: center;
 color: black;
-padding-top: 4px;
+//padding-top: 4px;
 padding-bottom: 6px;
 `
 const ItemTime = styled.div`
@@ -169,7 +171,7 @@ padding-bottom: 10px;
 const TalkTag = styled.div`
 background-color: #005C00;
 font-size: 12px;
-padding: 3px 5px;
+padding: 4px 6px;
 margin-right: 5px;
 border-radius: 3px;
 margin-bottom: 5px;
@@ -179,7 +181,7 @@ text-align: center;
 const Tag = styled.div`
 background-color: var(--button-sub-color);
 font-size: 12px;
-padding: 3px 5px;
+padding: 4px 6px;
 margin-right: 5px;
 border-radius: 3px;
 margin-top: 5px;
@@ -196,7 +198,7 @@ margin: 10px 0;
 `
 const Button = styled.div`
 background-color: var(--button-color);
-padding: 10px;
+padding: 12px;
 margin-top: 20px;
 color: #FAFAFA;
 border-radius: 10px;
