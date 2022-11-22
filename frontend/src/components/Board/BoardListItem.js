@@ -38,7 +38,7 @@ function BoardListItem(props) {
     }
 
     const handlePencil = e => {
-        //navigate(`/board/edit/${props.id}`);
+        navigate(`/board/edit/${props.id}`);
     }
 
     const handleTrash = e => {
@@ -53,12 +53,13 @@ function BoardListItem(props) {
     useEffect(() => {
         setTimePass(detailDate(props.createDate));
         showIcon();
+        console.log("item", props);
     }, []);
 
     return (
         <PostContainer>
             <Top>
-                <SkiName>{props.resortName}[엘리시안]</SkiName>
+                <SkiName>[{props.resort.resortName}]</SkiName>
                 <div>
                     {isMine && <HiPencil className="boardPost-icon" onClick={handlePencil}/>}
                     {isMine && <BsTrashFill className="boardPost-icon" onClick={handleTrash}/>}
@@ -103,7 +104,7 @@ const Top = styled.div`
     .boardPost-icon{
         width: 1.2rem;
         height: 1.2rem;
-        color: #6B89A5;
+        color: var(--button-sub-color);
         padding-right: 3px;
     }
 `
@@ -137,7 +138,7 @@ const Title = styled.div`
 `
 
 const Detail = styled.div`
-    font-size: 0.7rem;
+    font-size: 0.9rem;
     margin-left: 10px;
     margin-top: 4px;
 `

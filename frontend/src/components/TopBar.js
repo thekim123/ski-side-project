@@ -27,7 +27,9 @@ position: fixed;
     left: 0;
     right: 0;
     top: 0;
-    background-color: #FAFAFA;
+    z-index: 99;
+    background-color: #E1EEFF;
+    background-color: #EEF3F7;
     //border-bottom: 0.01rem solid #CCCCCC;
     height: 48px;
     margin-top: 0;
@@ -39,8 +41,7 @@ position: fixed;
         width: 1rem;
         height: 1rem;
         margin: 7px;
-        color: #543A3A;
-        //color: #6B89A5;
+        color: var(--button-color);
     }
 `
 
@@ -56,8 +57,7 @@ const RightSide = styled.div`
         margin-right: 4px;
         width: 1.5rem;
         height: 1.5rem;
-        color: #543A3A;
-        //color: #6B89A5;
+        color: var(--button-color);
     }
 `
 

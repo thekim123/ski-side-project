@@ -47,5 +47,5 @@ const BoardContainer = styled.div`
     padding-top: 20px;
 `
 const POSTS = styled.div`
-    padding-top: 260px;
+    padding-top: 110px;
 `

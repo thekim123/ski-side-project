@@ -4,13 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import { addPost } from '../../action/board';
 import styled from 'styled-components'
 import { IoMdArrowDropdown } from 'react-icons/io';
+import resorts from '../../data/resort.json'
+import shortid from 'shortid';
 
 export function BoardWrite() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const resorts = useSelector(state => state.resort.resorts);
+    // const resorts = useSelector(state => state.resort.resorts);
     const [showSelectBox, setShowSelectBox] = useState(false);
-    const [selectedResort, setSelectedResort] = useState("ELYSIAN");
+    const [selectedResort, setSelectedResort] = useState("스키장 선택");
     const titleInput = useRef();
     const contentInput = useRef();
     const [error, setError] = useState({
@@ -23,6 +25,7 @@ export function BoardWrite() {
     };
 
     const handleResortClick = (e) => {
+        console.log(e.target.id);
         setSelectedResort(e.target.id);
         setShowSelectBox(false);
     }
@@ -66,10 +69,12 @@ export function BoardWrite() {
         if (!validateInput(enteredTitle, enteredContent)){
             return;
         } else {
+            let postedResort = selectedResort !== "스키장 선택" ? selectedResort : null;
+            console.log(postedResort)
             const post = {
                 title: enteredTitle,
                 content: enteredContent,
-                resortName: selectedResort,
+                resortName: postedResort,
                 //create_dt: new Date(),
                 // 여기서부턴 백엔드와 연결 후 지울 예정
                 //cnt: 0,
@@ -92,7 +97,9 @@ export function BoardWrite() {
                     {showSelectBox && <div className="dropdown-content">
                         {
                             resorts.map(resort => (
+                                resort.id ?
                                 <div key={resort.id} id={resort.name} className="dropdown-item" onClick={handleResortClick}>{resort.name}</div>
+                                : null
                             ))
                         }
                         

@@ -19,7 +19,7 @@ export function NavBar() {
             <Link to="/board" className="nav-link">
                 <NavList>자유게시판</NavList>
             </Link>
-            <Link to="/board" className="nav-link">
+            <Link to="/carpool" className="nav-link">
                 <NavList>카풀</NavList>
             </Link>
             <Link to="/" className="nav-link">
