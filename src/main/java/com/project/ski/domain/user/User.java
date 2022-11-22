@@ -46,7 +46,7 @@ public class User {
     private Role roles;
 
     @JsonIgnoreProperties({"user"})
-    @OneToMany(mappedBy = "user", fetch = LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Board> boards;
 
 

@@ -22,7 +22,7 @@ spring:
   jpa:
     open-in-view: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
@@ -30,9 +30,6 @@ spring:
   h2:
     console:
       enabled: true
-
-weather:
-  key: 5e3bf77ce9a0a4bd03da20cdf524e02d
 
 file:
   path: C:/workspace/image/

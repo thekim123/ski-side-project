@@ -19,46 +19,45 @@ import java.util.List;
 @AllArgsConstructor
 public class Board {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
+	@Column(nullable = false)
+	private String title;
+	private String content;
+	private String postImageUrl;
 
-    @Column(nullable = false)
-    private String title;
-    private String content;
-    private String postImageUrl;
+	@JoinColumn(name = "resortId")
+	@ManyToOne
+	private Resort resort;
 
-    @JoinColumn(name = "resortId")
-    @ManyToOne
-    private Resort resort;
+	@JsonIgnoreProperties({ "boards" })
+	@JoinColumn(name = "userId")
+	@ManyToOne(fetch = FetchType.EAGER)
+	private User user;
 
-    @JsonIgnoreProperties({"boards"})
-    @JoinColumn(name = "userId")
-    @ManyToOne
-    private User user;
+	@OrderBy("id desc")
+	@JsonIgnoreProperties("board")
+	@OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
+	private List<Comment> comment;
 
-    @OrderBy("id desc")
-    @JsonIgnoreProperties("board")
-    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
-    private List<Comment> comment;
+	@JsonIgnoreProperties({ "board" })
+	@OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
+	private List<Likes> likes;
 
-    @JsonIgnoreProperties({"board"})
-    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
-    private List<Likes> likes;
+	@Transient
+	private long likeCount;
 
-    @Transient
-    private long likeCount;
+	@Transient
+	private boolean likeState;
+	private LocalDateTime createDate;
 
-    @Transient
-    private boolean likeState;
-    private LocalDateTime createDate;
+	private long pageCount;
 
-    private long pageCount;
-
-    @PrePersist
-    public void createDate() {
-        this.createDate = LocalDateTime.now();
-    }
+	@PrePersist
+	public void createDate() {
+		this.createDate = LocalDateTime.now();
+	}
 
 }

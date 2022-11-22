@@ -37,6 +37,16 @@ public class BoardService {
     public Page<Board> getHomeBoard(Authentication authentication, Pageable pageable) {
         long principalId = getUserFromPrincipal(authentication).getId();
         Page<Board> boards = boardRepository.homeBoard(principalId, pageable);
+        
+        boards.forEach((board)->{
+        	board.setLikeCount(board.getLikes().size());
+        	
+        	board.getLikes().forEach((like)->{
+        		if(like.getUser().getId() == principalId) {
+        			board.setLikeState(true);
+        		}
+        	});
+        });
         return boards;
     }
 
