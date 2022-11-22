@@ -20,6 +20,7 @@ import { Tayo } from './pages/Tayo';
 import { TayoWrite } from './components/Tayo/TayoWrite';
 import { TayoDetail } from './components/Tayo/TayoDetail';
 import { CarPool } from './pages/CarPool';
+import { CarPoolDetail } from './components/CarPool/CarPoolDetail';
 
 function App() {
   const dispatch = useDispatch();
@@ -50,6 +51,7 @@ function App() {
             <Route path="tayo/write" element={<TayoWrite />} />
             <Route path="tayo/detail" element={<TayoDetail />} />
             <Route path="carpool" element={<CarPool />} />
+            <Route path="carpool/detail" element={<CarPoolDetail />} />
           </Route>
         </Route>
       </Routes>

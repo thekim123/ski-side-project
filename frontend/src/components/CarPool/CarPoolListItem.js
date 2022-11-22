@@ -33,7 +33,7 @@ export function CarPoolListItem() {
 const Wrapper = styled.div`
 background-color: #FAFAFA;
 border-radius: 10px;
-margin: 10px 20px;
+margin-bottom: 10px;
 padding: 10px;
 padding-bottom: 6px;
 box-shadow: 5px 2px 7px -2px rgba(17, 20, 24, 0.15);

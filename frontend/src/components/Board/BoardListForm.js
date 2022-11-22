@@ -144,6 +144,7 @@ const Form = styled.form`
     }
 
     button{
+        //background-color:#6B89A5;
         background-color: var(--button-color);
         border: none;
         border-radius: 5px;

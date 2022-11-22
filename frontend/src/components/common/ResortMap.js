@@ -39,7 +39,8 @@ font-size: 13px;
 `
 const Region = styled.div`
 padding: 7px;
-background-color: rgba(0, 0, 0, 0.6);
+//background-color: rgba(0, 0, 0, 0.6);
+background-color: var(--button-color);
 border-radius: 6px;
 color: #FAFAFA;
 `

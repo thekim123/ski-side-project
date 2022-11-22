@@ -268,5 +268,5 @@ padding: 10px;
 
 //POSTS
 const Posts = styled.div`
-margin-top: 160px;
+margin: 160px 20px 0 20px;
 `

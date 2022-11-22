@@ -41,8 +41,7 @@ position: fixed;
         width: 1rem;
         height: 1rem;
         margin: 7px;
-        color: #543A3A;
-        //color: #6B89A5;
+        color: var(--button-color);
     }
 `
 
@@ -58,8 +57,7 @@ const RightSide = styled.div`
         margin-right: 4px;
         width: 1.5rem;
         height: 1.5rem;
-        color: #543A3A;
-        //color: #6B89A5;
+        color: var(--button-color);
     }
 `
 

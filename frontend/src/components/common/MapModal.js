@@ -57,7 +57,7 @@ const Section = styled.div`
     border-radius: 0.9rem;
     //animation: modal-show 0.3s;
     overflow: hidden;
-    background-color: #E1EEFF;
+    background-color: var(--background-color);
     padding-top: 15px;
     padding-left: 15px;
 `
