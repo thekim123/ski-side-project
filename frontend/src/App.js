@@ -17,15 +17,15 @@ import { BoardDetail } from './components/Board/BoardDetail';
 import { ClubDetail } from './components/Club/ClubDetail';
 import { ClubSecret } from './components/Club/ClubSecret';
 import { Tayo } from './pages/Tayo';
+import { TayoWrite } from './components/Tayo/TayoWrite';
+import { TayoDetail } from './components/Tayo/TayoDetail';
+import { CarPool } from './pages/CarPool';
+import { CarPoolDetail } from './components/CarPool/CarPoolDetail';
 
 function App() {
   const dispatch = useDispatch();
   //const cors = require('cors');
   //App.use(cors())
-
-  useEffect(() => {
-    dispatch(loadResorts());
-  }, [dispatch]);
 
   return (
     <div>
@@ -48,6 +48,10 @@ function App() {
             <Route path="club/detail/:id" element={<ClubDetail />} />
             <Route path="club/secret/:id" element={<ClubSecret />} />
             <Route path="tayo" element={<Tayo />} />
+            <Route path="tayo/write" element={<TayoWrite />} />
+            <Route path="tayo/detail" element={<TayoDetail />} />
+            <Route path="carpool" element={<CarPool />} />
+            <Route path="carpool/detail" element={<CarPoolDetail />} />
           </Route>
         </Route>
       </Routes>

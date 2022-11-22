@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { loadPosts } from '../action/board';
 import styled from 'styled-components'
-import { Card } from "react-bootstrap"
 import img from '../imgs/한반도.png'
 import {FaSkiing} from 'react-icons/fa'
 import { SkiButton } from '../components/SkiButton'
@@ -9,6 +8,7 @@ import resortData from '../data/resort.json'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
+import shortid from 'shortid';
 
 export function Home() {
     const dispatch = useDispatch();
@@ -47,7 +47,7 @@ export function Home() {
                     {
                         isAuth ? 
                         MyResort.map((resort) => (
-                            <MySkiWrap>
+                            <MySkiWrap key={shortid.generate()}>
                             <MySki>
                                 <FaSkiing className="home-ski-icon" />
                             </MySki>
@@ -69,17 +69,12 @@ export function Home() {
                     }
                 </Box>
             </Wrapper>
-
+            
             <Map>
-                {/* {
-                    resortData.map(resort => (
-                        <SkiButton {...resort} />
-                    ))
-                } */}
-                <Grid container className="home-grid">
+            <Grid container className="home-grid">
                 {
                     resortData.map(resort => (
-                        <Grid item xs={6} className="home-grid-item"><SkiButton {...resort} /></Grid>
+                        <Grid item xs={6} className="home-grid-item" key={shortid.generate()}><SkiButton {...resort} /></Grid>
                     ))
                 }
             </Grid>
@@ -131,8 +126,7 @@ const MySkiWrap = styled.div`
 `
 
 const MySki = styled.button`
-//background-color: #86B0B4;
-background-color: #6B89A5;
+background-color: var(--button-color);
 box-shadow: 0 0 1px 1px rgba(17, 20, 24, 0.1);
 border-radius: 45px;
 border: none;
@@ -148,7 +142,7 @@ font-weight: bold;
 .home-ski-icon {
     width: 25px;
     height: 25px;
-    color: black;
+    color: #FAFAFA;
 }
 `
 

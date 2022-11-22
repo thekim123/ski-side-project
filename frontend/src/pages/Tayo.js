@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { loadTayos } from '../action/tayo';
 import styled from 'styled-components';
 import TayoListItem from '../components/Tayo/TayoListItem';
@@ -9,6 +10,7 @@ import shortid from 'shortid'
 
 export function Tayo() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const posts = useSelector(state => state.tayo.posts);
     const [selectedResort, setSelectedResort] = useState("[전체]"); 
     const [filteredResorts, setFilteredResorts] = useState(posts); 
@@ -16,6 +18,10 @@ export function Tayo() {
 
     const changeSelection = (resort) => {
         setSelectedResort(resort);
+    }
+
+    const clickPlus = e => {
+        navigate('/tayo/write');
     }
 
     
@@ -42,7 +48,7 @@ export function Tayo() {
             </Resorts> */}
             <Icons>
                 <FiFilter className="tayo-filter" />
-                <HiPlus className="tayo-plus" />
+                <HiPlus className="tayo-plus" onClick={clickPlus} />
             </Icons>
             <POSTS>
             {posts.length > 0 && posts.map((post) => (

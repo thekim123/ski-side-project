@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import img from '../imgs/한반도.png'
 import { ResortModal } from './ResortModal';
+import shortid from 'shortid';
 
 export function SkiButton(props) {
     const [resortOpen, setResortOpen] = useState(false);
@@ -90,7 +91,7 @@ export function SkiButton(props) {
     };
 
     return (
-        <>
+        <div key={shortid.generate()}>
         {props.id ? 
         <>
         <Button>
@@ -100,7 +101,7 @@ export function SkiButton(props) {
         <ResortModal open={resortOpen} close={closeResort} resortId={props.id} header={props.name} engCity="Seoul" dayState={dayState} />
         </>
         : <Empty></Empty>}
-        </>
+        </div>
     )
 }
 const Empty = styled.div`
