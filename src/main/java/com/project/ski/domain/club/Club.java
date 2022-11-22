@@ -7,8 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+
+import java.time.LocalDateTime;
 
 import static javax.persistence.EnumType.*;
 import static javax.persistence.FetchType.*;
@@ -73,11 +76,19 @@ public class Club {
     private String openYn;
 
     /**
+     * 오픈카톡 UR
+     */
+    private String url;
+
+    /**
      * 홍보문구
      */
-
+    @Column(nullable = false)
     private String memo;
 
+
+    @CreationTimestamp
+    private LocalDateTime createDt;
     public void update(ClubRequestDto dto) {
         this.clubNm = dto.getClubNm();
         this.memberCnt =dto.getMemberCnt();
@@ -85,5 +96,6 @@ public class Club {
         this.ageGrp = dto.getAgeGrp();
         this.openYn = dto.getOpenYn();
         this.memo = dto.getMemo();
+        this.url = dto.getUrl();
     }
 }

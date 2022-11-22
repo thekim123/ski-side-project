@@ -7,10 +7,11 @@ import com.project.ski.domain.resort.Resort;
 import com.project.ski.domain.resort.ResortName;
 import com.project.ski.domain.user.User;
 import com.project.ski.service.ClubService;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class ClubRequestDto {
 
@@ -23,7 +24,7 @@ public class ClubRequestDto {
     private String clubNm;
 
     // 스키장
-    private Long resortId;
+    private long resortId;
 
     // 성별
     private Gender gender;
@@ -37,6 +38,18 @@ public class ClubRequestDto {
     // 홍보 문구
     private String memo;
 
+    // 오픈카톡 URL
+    private String url;
+
+
+
+    public ClubRequestDto getDto(Club club) {
+        this.memberCnt = club.getMemberCnt();
+        this.clubNm = club.getClubNm();
+        this.resortId = club.getResort().getId();
+        return this;
+    }
+
 
     public ClubRequestDto clubDto(Club club) {
         this.id = club.getId();
@@ -47,20 +60,22 @@ public class ClubRequestDto {
         this.ageGrp = club.getAgeGrp();
         this.openYn = club.getOpenYn();
         this.memo = club.getMemo();
-
         return this;
     }
 
-    public Club toEntity(User user) {
+    public Club toEntity(User user, Resort resort) {
         return Club.builder()
                 .clubNm(clubNm)
                 .user(user)
                 .memberCnt(memberCnt)
-                .resort(new Resort())
+                .resort(resort)
                 .gender(gender)
                 .ageGrp(ageGrp)
                 .openYn(openYn)
                 .memo(memo)
+                .url(url)
                 .build();
     }
+
+
 }

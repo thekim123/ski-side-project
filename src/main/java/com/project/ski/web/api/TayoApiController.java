@@ -43,16 +43,16 @@ public class TayoApiController {
 
     // 타요 생성
     @PostMapping
-    public CmRespDto<?> create(@RequestBody TayoRequestDto dto, Authentication auth) {
+    public CmRespDto<TayoRequestDto> create(@RequestBody TayoRequestDto dto, Authentication auth) {
         PrincipalDetails principalDetails = (PrincipalDetails) auth.getPrincipal();
         User user = principalDetails.getUser();
         tayoService.create(dto, user);
-        return new CmRespDto<>(1, "같이 타요 생성 완료", null);
+        return new CmRespDto<>(1, "같이 타요 생성 완료", dto);
     }
 
     // 타요 삭제
     @DeleteMapping("/delete/{tayoId}")
-    public CmRespDto<?> delete(@PathVariable long tayoId) {
+    public CmRespDto<Void> delete(@PathVariable long tayoId) {
         tayoService.delete(tayoId);
 
         return new CmRespDto<>(1, "같이 타요 삭제 완료", null);
@@ -60,7 +60,7 @@ public class TayoApiController {
 
     // 타요 수정
     @PutMapping("/update/{tayoId}")
-    public CmRespDto<?> update(@PathVariable long tayoId, @RequestBody TayoRequestDto dto) {
+    public CmRespDto<TayoRequestDto> update(@PathVariable long tayoId, @RequestBody TayoRequestDto dto) {
         tayoService.update(tayoId,dto);
 
         return new CmRespDto<>(1, "같이 타요 수정 완료", dto);
