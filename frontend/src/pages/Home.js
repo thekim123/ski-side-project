@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { loadPosts } from '../action/board';
 import styled from 'styled-components'
-import img from '../imgs/한반도.png'
+import img from '../assets/imgs/한반도.png'
 import {FaSkiing} from 'react-icons/fa'
 import { SkiButton } from '../components/SkiButton'
 import resortData from '../data/resort.json'

@@ -46,6 +46,7 @@ const Top = styled.div`
 display:flex;
 justify-content: space-between;
 font-size: 12px;
+padding-bottom: 3px;
 `
 const TakeCnt = styled.div`
 
@@ -69,7 +70,7 @@ const TalkTag = styled.div`
 //background-color: #C00000;
 background-color: #005C00;
 font-size: 11px;
-padding: 3px;
+padding: 4px;
 border-radius: 3px;
 margin-bottom: 2px;
 color: #FAFAFA;
@@ -80,6 +81,8 @@ grid-template-columns: 1fr 50px 1fr;
 //justify-items: center;
 color: black;
 font-weight: 900;
+font-size: 18px;
+padding: 3px;
 `
 const Start = styled.div`
 justify-self: end;
@@ -96,8 +99,8 @@ const TimeWrap = styled.div`
 display:grid;
 justify-content: center;
 color: black;
-padding-top: 4px;
-padding-bottom: 6px;
+padding-top: 6px;
+padding-bottom: 8px;
 `
 const Time = styled.div`
 //background-color: #C0C0C0;
@@ -117,7 +120,7 @@ display: flex;
 const Tag = styled.div`
 background-color: var(--button-sub-color);
 font-size: 11px;
-padding: 3px 5px;
+padding: 4px 6px;
 margin-right: 5px;
 border-radius: 3px;
 margin-bottom: 2px;
