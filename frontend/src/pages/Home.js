@@ -9,12 +9,15 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import shortid from 'shortid';
+import { loadBookmarks } from '../action/bookmark';
+import { ResortModal } from '../components/ResortModal';
 
 export function Home() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const posts = useSelector(state => state.board.posts);
     const isAuth = useSelector(state => state.auth.isAuth);
+    const bookmarks = useSelector(state => state.bookmarks.bookmarks);
     const [top3, setTop3] = useState([]);
     const MyResort = ["엘리시안", "스키장2", "스키장3"];
 
@@ -28,6 +31,14 @@ export function Home() {
             if (posts) setTop3(posts.slice(-3).reverse());
         }
     }, [isAuth]);
+
+    useEffect(() => {
+        dispatch(loadBookmarks());
+    }, [dispatch]);
+
+    useEffect(() => {
+        console.log(bookmarks);
+    }, [bookmarks])
     return(
         <Container>
             <Wrapper>
@@ -46,16 +57,32 @@ export function Home() {
                 <Box>
                     {
                         isAuth ? 
-                        MyResort.map((resort) => (
-                            <MySkiWrap key={shortid.generate()}>
+                        bookmarks.length > 0 ? 
+                            bookmarks.map((resort) => (
+                                <SkiButton 
+                                    key={shortid.generate()}
+                                    id={resort.toResort.id}
+                                    name={resort.toResort.resortName}
+                                    lat={resortData.find(r => r.id === resort.toResort.id).lat}
+                                    lon={resortData.find(r => r.id === resort.toResort.id).lat}
+                                    like={true}
+                                    isMyBtn={true}
+                                />
+                            // <MySkiWrap key={shortid.generate()}>
+                            // <MySki>
+                            //     <FaSkiing className="home-ski-icon" />
+                            // </MySki>
+                            // <div className="home-resort-name">{resort.toResort.resortName}</div>
+                            // </MySkiWrap>
+                        ))
+                        :
+                        <NoMineWrap>
                             <MySki>
                                 <FaSkiing className="home-ski-icon" />
                             </MySki>
-                            <div className="home-resort-name">{resort}</div>
-                            </MySkiWrap>
-                        ))
+                            <NoMineText>아래의 스키장 버튼을 눌러 <div className='home-next-line'>자주 가는 스키장을 추가해보세요 !</div></NoMineText>
+                        </NoMineWrap>
                         : 
-                        // <MySkiWrap>
                         <NoAuthWrap>
                             <MySki>
                                 <FaSkiing className="home-ski-icon" />
@@ -64,8 +91,7 @@ export function Home() {
                                 <NoAuthText>로그인 후 자주 가는 스키장을 추가해보세요 !</NoAuthText>
                                 <span><NoAuthBtn className="home-login" onClick={clickLogin}>로그인</NoAuthBtn><NoAuthReg className="home-login">회원가입</NoAuthReg> </span>
                             </NoAuthMySki>
-                            </NoAuthWrap>
-                        //</MySkiWrap>
+                        </NoAuthWrap>
                     }
                 </Box>
             </Wrapper>
@@ -74,7 +100,13 @@ export function Home() {
             <Grid container className="home-grid">
                 {
                     resortData.map(resort => (
-                        <Grid item xs={6} className="home-grid-item" key={shortid.generate()}><SkiButton {...resort} /></Grid>
+                        <Grid item xs={6} className="home-grid-item" key={shortid.generate()}>
+                            <SkiButton 
+                                {...resort} 
+                                like={bookmarks.find(bookmark => bookmark.toResort.id === resort.id) ? true : false} 
+                                isMyBtn={false}
+                            />
+                        </Grid>
                     ))
                 }
             </Grid>
@@ -107,11 +139,7 @@ const Row = styled.div`
 const Box = styled.div`
 display: flex;
 border-radius: 10px;
-padding: 15px 0;
-
-//height: 8rem;
-
-
+padding-top: 15px;
 }
 `
 
@@ -145,7 +173,18 @@ font-weight: bold;
     color: #FAFAFA;
 }
 `
-
+const NoMineWrap = styled.div`
+display: flex;
+align-items: center;
+`
+const NoMineText = styled.div`
+padding-left: 10px;
+font-size: 14px;
+color: gray;
+.home-next-line{
+    padding-top: 3px;
+}
+`
 
 
 const Map = styled.div`
@@ -153,7 +192,7 @@ const Map = styled.div`
 background:url(${img}) no-repeat center;
 background-size: fill;
 width: 100%;
-height: 490px;
+height: 480px;
 .home-grid-item{
     height: 55px;
 }
@@ -202,13 +241,13 @@ padding-top: 10px;
 }
 `
 const NoAuthBtn = styled.button`
-background-color: #6B89A5;
+background-color: var(--button-color);
 color: #FAFAFA;
     
 `
 const NoAuthReg = styled.button`
 background-color: #FAFAFA;
-color: #6B89A5;
+color: var(--button-color);
 `
 const NoAuthText = styled.div`
 

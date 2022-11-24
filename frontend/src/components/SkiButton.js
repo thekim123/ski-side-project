@@ -4,8 +4,12 @@ import styled from 'styled-components'
 import img from '../assets/imgs/한반도.png'
 import { ResortModal } from './ResortModal';
 import shortid from 'shortid';
+import { loadBookmarks } from '../action/bookmark';
+import { useDispatch } from 'react-redux';
+import {FaSkiing} from 'react-icons/fa'
 
 export function SkiButton(props) {
+    const dispatch = useDispatch();
     const [resortOpen, setResortOpen] = useState(false);
     const [dayState, setDayState] = useState({
         date: "",
@@ -25,6 +29,7 @@ export function SkiButton(props) {
     }
 
     const closeResort = () => {
+        dispatch(loadBookmarks());
         setResortOpen(false);
     }
 
@@ -90,15 +95,32 @@ export function SkiButton(props) {
         }
     };
 
+    const MapButton = <Button>
+                            <Region className={props.color ? "kang" : "else"}>{props.region}</Region>
+                            <ResortName onClick={openResort}>{props.name}</ResortName>
+                        </Button>
+
+    const MyResortBtn = <MySkiWrap key={shortid.generate()} onClick={openResort}>
+                        <MySki>
+                            <FaSkiing className="home-ski-icon" />
+                        </MySki>
+                        <div className="home-resort-name">{props.name}</div>
+                        </MySkiWrap>
+
     return (
         <div key={shortid.generate()}>
         {props.id ? 
         <>
-        <Button>
-            <Region className={props.color ? "kang" : "else"}>{props.region}</Region>
-            <ResortName onClick={openResort}>{props.name}</ResortName>
-        </Button>
-        <ResortModal open={resortOpen} close={closeResort} resortId={props.id} header={props.name} engCity="Seoul" dayState={dayState} />
+        {props.isMyBtn ? MyResortBtn : MapButton}
+        <ResortModal 
+            open={resortOpen} 
+            close={closeResort} 
+            resortId={props.id} 
+            header={props.name} 
+            engCity="Seoul" 
+            dayState={dayState} 
+            like={props.like}
+        />
         </>
         : <Empty></Empty>}
         </div>
@@ -139,4 +161,34 @@ const ResortName = styled.div`
     //border: 1px solid #48494B;
     box-shadow: 4px 6px 6px -2px rgba(17, 20, 24, 0.15);
     color: gray;
+`
+
+const MySkiWrap = styled.div`
+    display: block;
+    text-align: center;
+
+    .home-resort-name {
+        font-size: 14px;
+        padding-top: 7px;
+    }
+`
+const MySki = styled.button`
+background-color: var(--button-color);
+box-shadow: 0 0 1px 1px rgba(17, 20, 24, 0.1);
+border-radius: 45px;
+border: none;
+margin-right: 7px;
+margin-left: 7px;
+width: 90px;
+height: 90px;
+text-align: center;
+font-size: 14px;
+line-height: 100px;
+font-weight: bold;
+
+.home-ski-icon {
+    width: 25px;
+    height: 25px;
+    color: #FAFAFA;
+}
 `
