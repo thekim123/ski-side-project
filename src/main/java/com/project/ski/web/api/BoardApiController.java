@@ -37,8 +37,8 @@ public class BoardApiController {
 
     @GetMapping("/detail/{boardId}")
     public CmRespDto<?> getBoardDetail(@PathVariable long boardId) {
-        BoardDto dto = boardService.getBoardDetail(boardId);
-        return new CmRespDto<>(1, "게시글 상세 보기 완료", dto);
+        Board board = boardService.getBoardDetail(boardId);
+        return new CmRespDto<>(1, "게시글 상세 보기 완료", board);
     }
 
     @GetMapping("/")

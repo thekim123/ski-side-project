@@ -18,6 +18,7 @@ public class BoardDto {
     private String content;
     private MultipartFile file;
     private String username;
+    private String nickname;
     private String resortName;
     private LocalDateTime createDate;
 
@@ -26,6 +27,7 @@ public class BoardDto {
         this.title = board.getTitle();
         this.content = board.getContent();
         this.username = board.getUser().getUsername();
+        this.nickname = board.getUser().getNickname();
         this.createDate = board.getCreateDate();
         return this;
     }

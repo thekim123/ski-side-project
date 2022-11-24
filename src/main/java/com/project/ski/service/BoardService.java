@@ -53,7 +53,8 @@ public class BoardService {
     @Transactional
     public void write(BoardDto dto, User user) {
         Board board;
-        Resort resort = resortRepository.findByResortName(dto.getResortName());
+        ResortName resortName = ResortName.valueOf(dto.getResortName());
+        Resort resort = resortRepository.findByResortName(resortName);
         if (dto.getFile() != null) {
 
             UUID uuid = UUID.randomUUID();
@@ -99,7 +100,8 @@ public class BoardService {
 //        } catch (IOException e) {
 //            throw new RuntimeException(e);
 //        }
-        Resort resort = resortRepository.findByResortName(dto.getResortName());
+        ResortName resortName = ResortName.valueOf(dto.getResortName());
+        Resort resort = resortRepository.findByResortName(resortName);
         boardEntity = dto.toEntityIfImageNull(user, resort);
         // boardEntity = dto.toEntity(imageFileName, user);
 
@@ -125,7 +127,7 @@ public class BoardService {
     @Transactional(readOnly = true)
     public Page<Board> getBoardByResort(String resortName, Pageable pageable) {
         ResortName name = ResortName.valueOf(resortName);
-        Resort resort = resortRepository.findByResortName(resortName);
+        Resort resort = resortRepository.findByResortName(name);
         long resortId = resort.getId();
         Page<Board> pages = boardRepository.findByResortId(resortId, pageable);
         return pages;
@@ -143,13 +145,12 @@ public class BoardService {
     }
 
     @Transactional(readOnly = true)
-    public BoardDto getBoardDetail(long id) {
+    public Board getBoardDetail(long id) {
         Board boardEntity = boardRepository.findById(id).orElseThrow(() -> {
             return new IllegalArgumentException("게시글의 등록번호를 찾을 수 없습니다.");
         });
 
-        BoardDto dto = new BoardDto().toDto(boardEntity, boardEntity.getPostImageUrl());
-        return dto;
+        return boardEntity;
     }
 
 }
