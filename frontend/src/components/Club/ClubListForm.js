@@ -11,7 +11,7 @@ export function ClubListForm(props) {
     const [modalOpen, setModalOpen] = useState(false);
 
     const clickPlus = () => {
-        navigate('club/write');
+        navigate('/club/register');
     }
 
     const openModal = () => {
@@ -39,7 +39,8 @@ export function ClubListForm(props) {
 }
 
 const Wrapper = styled.div`
-margin: 60px 40px;
+padding: 60px 40px 10px 40px;
+background-color: var(--background-color);
 position: fixed;
 top: 0;
 left: 0;

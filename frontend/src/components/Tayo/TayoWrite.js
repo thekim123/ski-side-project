@@ -463,7 +463,7 @@ justify-content: center;
 margin: 30px;
 `
 const Button = styled.button`
-background-color:#6B89A5;
+background-color:var(--button-color);
 color: #FAFAFA;
 padding: 13px 20px;
 border-radius: 19px;
