@@ -29,16 +29,17 @@ public class Submit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @JsonIgnoreProperties("user")
+    @JsonIgnoreProperties({"user", "boards"})
     @JoinColumn(name = "fromUserId")
     @ManyToOne
     private User fromUser;
 
+    @JsonIgnoreProperties({"user"})
     @JoinColumn(name = "toCarpoolId")
     @ManyToOne
     private Carpool toCarpool;
 
-    private int state;
+    private String state;
     private LocalDateTime createDate;
 
     @PrePersist

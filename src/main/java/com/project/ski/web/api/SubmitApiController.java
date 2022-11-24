@@ -1,6 +1,8 @@
 package com.project.ski.web.api;
 
 import com.project.ski.config.auth.PrincipalDetails;
+import com.project.ski.domain.carpool.Carpool;
+import com.project.ski.domain.carpool.Submit;
 import com.project.ski.service.SubmitService;
 import com.project.ski.web.dto.AdmitDto;
 import com.project.ski.web.dto.CmRespDto;
@@ -33,24 +35,23 @@ public class SubmitApiController {
         return new CmRespDto<>(1, "삭제 성공", null);
     }
 
-
-    // entity를 직접 반환했음. 수정 해야함
     @GetMapping("{toCarpoolId}")
     public CmRespDto<?> getSubmit(@PathVariable long toCarpoolId, Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         long userId = principalDetails.getUser().getId();
-        return new CmRespDto<>(1, "카풀 제출 리스트 가져오기 성공", submitService.getSubmit(toCarpoolId));
+        List<Submit> submitList = submitService.getSubmit(toCarpoolId);
+        return new CmRespDto<>(1, "카풀 제출 리스트 가져오기 성공", submitList);
     }
 
-    @PostMapping("admit")
+    @PutMapping("admit")
     public CmRespDto<?> admit(@RequestBody AdmitDto dto) {
         submitService.admit(dto);
         return new CmRespDto<>(1, "승인 성공", null);
     }
 
-    @DeleteMapping("admit")
+    @PutMapping("refuse")
     public CmRespDto<?> unAdmit(@RequestBody AdmitDto dto) {
-        submitService.deleteAdmit(dto);
+        submitService.refuseAdmit(dto);
         return new CmRespDto<>(1, "거부 성공", null);
     }
 }

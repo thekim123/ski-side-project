@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 @Service
@@ -39,13 +38,13 @@ public class SubmitService {
     @Transactional
     public void admit(AdmitDto dto){
         Submit submitEntity = submitRepository.findByFromUserIdAndToCarpoolId(dto.getAdmitUserId(), dto.getToCarpoolId());
-        submitEntity.setState(1);
+        submitEntity.setState("승인");
     }
 
     @Transactional
-    public void deleteAdmit(AdmitDto dto){
+    public void refuseAdmit(AdmitDto dto){
         Submit submitEntity = submitRepository.findByFromUserIdAndToCarpoolId(dto.getAdmitUserId(), dto.getToCarpoolId());
-        submitRepository.delete(submitEntity);
-        submitEntity.setState(-1);
+        submitEntity.setState("거절");
     }
+
 }

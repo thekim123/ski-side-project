@@ -18,8 +18,9 @@ public class Resort {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(length = 100, unique = true)
-    private String resortName;
+    private ResortName resortName;
 
     private LocalDateTime createDate;
     private LocalDateTime updateDate;

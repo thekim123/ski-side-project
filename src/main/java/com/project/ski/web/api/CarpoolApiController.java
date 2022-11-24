@@ -21,7 +21,6 @@ public class CarpoolApiController {
 
     private final CarpoolService carpoolService;
 
-
     @PostMapping
     public CmRespDto<?> insert(@RequestBody CarpoolRequestDto dto, Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
