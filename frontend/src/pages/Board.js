@@ -33,12 +33,12 @@ export function Board() {
     return(
         <BoardContainer>
             <BoardListForm change={changeSelection} />
-            {/* <POSTS>
+            <POSTS>
             {filteredResorts.length > 0 && filteredResorts.map((post) => (
                 <BoardListItem key={post.id} {...post} />
             ))
             }
-            </POSTS> */}
+            </POSTS>
         </BoardContainer>
     )
 }

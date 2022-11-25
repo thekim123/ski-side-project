@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom';
-import { getSinglePost, deletePost, addComment } from '../../action/board';
+import { getSinglePost, deletePost, addComment, unlikes, likes } from '../../action/board';
 import { HiPencil } from 'react-icons/hi'
 import { BsTrashFill } from 'react-icons/bs'
 import { FiSend } from 'react-icons/fi'
 import { AiOutlineLike, AiFillLike, AiOutlineDislike, AiFillDislike } from 'react-icons/ai'
+import { BsFillPersonFill } from 'react-icons/bs'
 import styled from 'styled-components'
 
-export function BoardDetail(props) {
+export function BoardDetail() {
     const post = useSelector(state => state.board.post);
     const user = useSelector(state => state.auth.user);
     const [date, setDate] = useState(null);
@@ -33,10 +34,15 @@ export function BoardDetail(props) {
     const toggleLike = e => {
         if (like) {
             setLike(false);
+            dispatch(unlikes(id));
         }
         else {
-            if (dislike) setDislike(false);
+            if (dislike) {
+                setDislike(false);
+                // dislike 취소
+            }
             setLike(true);
+            dispatch(likes(id));
         }
     }
 
@@ -61,11 +67,28 @@ export function BoardDetail(props) {
         setCommentInput("");
     }
 
+    const splitContent = (content) => {
+
+        let str = '": "';
+        return content.split(str)[1].slice(0, -4);
+    }
+
+    const handleCommentTrash = e => {
+        //댓글 삭제
+    }
+
     useEffect(() => {
         if (id) {
             dispatch(getSinglePost(id));
         }
     }, [dispatch, id]);
+
+    useEffect(() => {
+        if (post) {
+            setLike(post.likeState);
+            if (user === post.user.username) setIsMine(true);
+        }
+    }, [post]);
     
     useEffect(() => {
         if (post) {
@@ -84,11 +107,11 @@ export function BoardDetail(props) {
         {post && 
         <Container>
             <Top>
-                <ResortBox><Resort>[웰리힐리]</Resort></ResortBox>
+                <ResortBox><Resort>[{post.resort.resortName}]</Resort></ResortBox>
                 <Title>{post.title}</Title>
                 <NameDate>
                     <div className="boardDetail-nd">
-                        <Name>{post.username}</Name>
+                        <Name>{post.user.nickname}</Name>
                         <DateForm>{date}</DateForm>
                     </div>
                     <Icon>
@@ -109,7 +132,7 @@ export function BoardDetail(props) {
                     <Like>
                         <div onClick={toggleLike}>{like ? <AiFillLike className="boardDetail-likeIcon"/> 
                         : <AiOutlineLike className="boardDetail-likeIcon"/>}</div>
-                        <LikeCnt>10</LikeCnt>
+                        <LikeCnt>{post.likeCount}</LikeCnt>
                     </Like>
                     <DisLike>
                         <div onClick={toggleDislike}>{dislike ? <AiFillDislike className="boardDetail-likeIcon"/> 
@@ -120,6 +143,26 @@ export function BoardDetail(props) {
                 </LikeDislike>
             </ContentBottom>
 
+            <CommentList>
+                {post &&
+                    post.comment.map(c => (
+                        <Comment key={c.id}>
+                            <ComNameIcon>
+                                <ComNameBox>
+                                <SBsFillPersonFill />
+                                <ComName>{c.user.nickname}</ComName>
+                                </ComNameBox>
+                                <NotiBox>
+                                <ComNoti>신고</ComNoti>
+                                {<SBsTrashFill onClick={handleCommentTrash}/>}
+                                </NotiBox>
+                            </ComNameIcon>
+                            <ComContent>{c.content}</ComContent>
+                            <ComDate>{new Date(c.createDate).getMonth()+1}/{new Date(c.createDate).getDate()} {c.createDate.slice(11, 16)}</ComDate>
+                        </Comment>
+                    ))
+                }
+            </CommentList>
 
             <Form onSubmit={handleSubmit}>
                 <input
@@ -132,24 +175,6 @@ export function BoardDetail(props) {
                 />
                 <button><FiSend className='boardDetail-sendIcon' /></button>
             </Form>
-            <CommentList>
-                <Comment>
-                    <div className="boardDetail-combox">
-                        <ComName>닉네임</ComName>
-                        <ComDate>12.23 22:32</ComDate>
-                    </div>
-                    <ComContent>댓글!! 같이 타요</ComContent>
-                    <ComNoti>신고</ComNoti>
-                </Comment>
-                <Comment>
-                    <div className="boardDetail-combox">
-                        <ComName>닉네임</ComName>
-                        <ComDate>12.23 22:32</ComDate>
-                    </div>
-                    <ComContent>댓글 임시</ComContent>
-                    <ComNoti>신고</ComNoti>
-                </Comment>
-            </CommentList>
         </Container>
         }
         </>
@@ -267,10 +292,15 @@ const Form = styled.form`
     display: flex;
     //background-color: white;
     padding: 10px 20px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-bottom: 85px;
 
     .boardDetail-input {
         flex: 1 1;
-        height: 30px;
+        height: 40px;
         padding: 3px 7px;
         background-color: #FAFAFA;
         border: none;
@@ -285,7 +315,7 @@ const Form = styled.form`
         background-color: var(--button-color);
         border: #CCCCCC;
         border-radius: 5px;
-        width: 2rem;
+        width: 2.8rem;
         margin-left: 7px;
         box-shadow: 5px 2px 7px -2px rgba(17, 20, 24, 0.15);
     }
@@ -297,14 +327,14 @@ const Form = styled.form`
     }
 `
 const CommentList = styled.div`
-margin: 0 20px 10px 20px;
+margin: 15px 20px 10px 20px;
 `
 const Comment = styled.div`
 display:grid;
-grid-template-columns: 70px 6fr 1fr;
+//grid-template-columns: 70px 6fr 1fr;
 align-items: center;
 //border-bottom: 1px solid #CCCCCC;
-padding: 12px 0 12px 10px;
+padding: 12px 10px 12px 10px;
 background-color: #FAFAFA;
 border-radius: 10px;
 margin-bottom: 10px;
@@ -314,17 +344,47 @@ box-shadow: 5px 2px 7px -2px rgba(17, 20, 24, 0.15);
     padding-right:15px;
 }
 `
+const ComNameIcon = styled.div`
+display: flex;
+justify-content: space-between;
+`
+const ComNameBox = styled.div`
+display:flex;
+align-items: center;
+padding-bottom: 2px;
+`
 const ComName = styled.div`
 font-size:12px;
 text-align:center;
+padding-top: 2px;
+color: gray;
+`
+const SBsFillPersonFill = styled(BsFillPersonFill)`
+color: #FAFAFA;
+margin-right: 3px;
+padding: 1px;
+background-color: var(--button-sub-color);
+border-radius: 4px;
+width: 13px;
+height: 13px;
+`
+const NotiBox = styled.div`
+display: flex;
+`
+const SBsTrashFill = styled(BsTrashFill)`
+margin-left: 6px;
+color: var(--button-sub-color);
 `
 const ComDate = styled.div`
 font-size:8px;
-text-align:center;
+//text-align:center;
+color: var(--button-sub-color);
 `
 const ComContent = styled.div`
-
+padding: 3px 0;
+font-size: 15px;
 `
 const ComNoti = styled.div`
 font-size:13px;
+color: var(--button-sub-color);
 `
