@@ -1,5 +1,6 @@
 package com.project.ski.domain.club;
 
+import com.project.ski.domain.BaseTimeEntity;
 import com.project.ski.domain.resort.Resort;
 import com.project.ski.domain.user.User;
 import com.project.ski.web.dto.ClubRequestDto;
@@ -27,7 +28,7 @@ import static javax.persistence.FetchType.*;
                 columnNames = "clubNm"
         )
 })
-public class Club {
+public class Club extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -87,8 +88,6 @@ public class Club {
     private String memo;
 
 
-    @CreationTimestamp
-    private LocalDateTime createDt;
     public void update(ClubRequestDto dto) {
         this.clubNm = dto.getClubNm();
         this.memberCnt =dto.getMemberCnt();

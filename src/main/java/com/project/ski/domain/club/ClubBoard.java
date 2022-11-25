@@ -1,5 +1,6 @@
 package com.project.ski.domain.club;
 
+import com.project.ski.domain.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class ClubBoard {
+public class ClubBoard extends BaseTimeEntity {
 
     // 동호회 게시판 식별값
     @Id
@@ -65,5 +66,6 @@ public class ClubBoard {
      *
      */
     private String role;
+
 
 }

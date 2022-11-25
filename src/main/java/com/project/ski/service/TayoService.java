@@ -2,6 +2,7 @@ package com.project.ski.service;
 
 
 import com.project.ski.domain.Tayo.Tayo;
+import com.project.ski.domain.resort.Resort;
 import com.project.ski.domain.user.User;
 import com.project.ski.repository.ResortRepository;
 import com.project.ski.repository.TayoRepository;
@@ -20,6 +21,7 @@ public class TayoService {
 
     private final TayoRepository tayoRepository;
 
+    private final ResortRepository resortRepository;
 
     // 목록조회
     @Transactional(readOnly = true)
@@ -34,7 +36,10 @@ public class TayoService {
 
     @Transactional
     public void create(TayoRequestDto dto, User user) {
-        Tayo tayos = dto.toEntity(user);
+        Resort resort = resortRepository.findById(dto.getResortId()).orElseThrow(()->{
+            return new IllegalArgumentException("리조트명 찾기 실패");
+        });
+        Tayo tayos = dto.toEntity(user,resort);
         tayoRepository.save(tayos);
     }
 

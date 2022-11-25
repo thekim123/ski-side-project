@@ -1,30 +1,37 @@
 package com.project.ski.service;
 
 
+import com.project.ski.domain.club.Club;
 import com.project.ski.domain.club.ClubBoard;
 import com.project.ski.domain.club.ClubUser;
 import com.project.ski.domain.user.User;
 import com.project.ski.repository.ClubBoardRepository;
+import com.project.ski.repository.ClubRepository;
 import com.project.ski.repository.ClubUserRepository;
+import com.project.ski.repository.UserRepository;
 import com.project.ski.web.dto.ClubBoardDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 @RequiredArgsConstructor
 public class ClubBoardService {
 
     private final ClubBoardRepository clubBoardRepository;
-    private final ClubUserRepository clubUserRepository;
-
+    private final UserRepository userRepository;
+    private final ClubRepository clubRepository;
     /**
      * 동호회 게시판
      * 상세 조회 -{boardId}
      */
     @Transactional(readOnly = true)
-    public ClubBoardDto getClubBoard(long clubBoardId) {
-        return clubBoardRepository.findById(clubBoardId);
+    public Page<ClubBoardDto> getClubBoard(Pageable pageable,long clubBoardId) {
+        Page<ClubBoard> byId = clubBoardRepository.findById(pageable,clubBoardId);
+        return byId.map(e -> new ClubBoardDto(clubBoardId));
     }
 
 
@@ -34,19 +41,19 @@ public class ClubBoardService {
      *
      */
     @Transactional(readOnly = true)
-    public ClubBoardDto createClubBoard(ClubBoardDto dto, User user, long clubId ) {
-        // clubUser의 clubId 와 같은지 체크
-        ClubUser findUser = clubUserRepository.findByUserIdAndClubId(user.getId(),clubId).orElseThrow(()->{
+    public ClubBoardDto createClubBoard(ClubBoardDto dto, User user) {
+
+        User findUser = userRepository.findById(user.getId()).orElseThrow(()->{
             return new IllegalArgumentException("실패");
         });
-        ClubBoard clubBoard = dto.toEntity();
 
-        clubBoardRepository.save(clubBoard);
+        Club club = clubRepository.findById(dto.getClub().getId()).orElseThrow(()->{
+            return new IllegalArgumentException("동호회 찾기 실패");
+        });
 
-
+        ClubBoard cb = dto.toEntity(findUser, club);
+        clubBoardRepository.save(cb);
         return dto;
     }
-
-
 
 }

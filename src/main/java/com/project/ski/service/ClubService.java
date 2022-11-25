@@ -32,7 +32,7 @@ public class ClubService {
     @Transactional(readOnly = true)
     public Page<ClubResponseDto> clubList(Pageable pageable) {
         Page<Club> clubPage =clubRepository.findAll(pageable);
-        Page<ClubResponseDto> dto = clubPage.map(e -> new ClubResponseDto(e.getMemberCnt(), e.getClubNm(), e.getResort().getId()));
+        Page<ClubResponseDto> dto = clubPage.map(e -> new ClubResponseDto(e.getId(),e.getMemberCnt(), e.getClubNm(), e.getResort().getId(),e.getOpenYn()));
         return dto;
 
     }
@@ -95,6 +95,7 @@ public class ClubService {
 //    public Optional<ClubResponseDto> clubDetail(Long clubId) {
 //        return clubRepository.findById(clubId).map(ClubResponseDto::new);
 //    }
+
     @Transactional
     public Club clubDetail(Long clubId) {
         Club dto = clubRepository.findById(clubId).orElseThrow(()->{
