@@ -15,7 +15,7 @@ export function ClubDetail() {
         dispatch(register());
     }
 
-    useEffect(() => {
+    useEffect(() => { 
         if (id) {
             dispatch(getSingleClub(id));
         }

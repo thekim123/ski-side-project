@@ -1,30 +1,32 @@
 import axios from 'axios';
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AiOutlineStar, AiFillStar } from 'react-icons/ai'
 import { addMyResort, deleteMyResort } from '../action/resort'
+import { addBookmark, deleteBookmark, loadBookmarks } from '../action/bookmark';
 import styled from 'styled-components'
 import shortid from 'shortid';
 
 export function ResortModal(props) {
     const dispatch = useDispatch();
-    const [emptyStar, setEmptyStar] = useState(true);
+    const [emptyStar, setEmptyStar] = useState(!props.like);
 
     const clickOutside = (e) => {
         if (e.target.className === "openModal skiModal") {
+            dispatch(loadBookmarks());
             props.close();
         }
     }
     const toggleStar = (e) => {
         if (emptyStar) {
-            dispatch(addMyResort(props.resortId));
+            dispatch(addBookmark(props.resortId));
         } else {
-            dispatch(deleteMyResort(props.resortId));
+            dispatch(deleteBookmark(props.resortId));
         }
         //dispatch(loadMyResorts)
         setEmptyStar(!emptyStar);
-        console.log(props);
     }
+
     return (
     <Wrapper>
         <div className={props.open ? "openModal skiModal" : "skiModal"} onClick={clickOutside}>
@@ -114,7 +116,7 @@ const Header = styled.div`
         width: 1.5rem;
         height: 1.5rem;
         padding-left: 9px;
-        color: #6B89A5;
+        color: var(--button-color);
     }
     .modal-resortName {
         font-weight: bold;

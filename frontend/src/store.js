@@ -22,6 +22,7 @@ import resortSlice from './slice/resort';
 //import authSlice from './features/auth/authSlice';
 import authSlice from './slice/auth';
 import tayoSlice from './slice/tayo';
+import bookmarkSlice from './slice/bookmark';
 
 const store = configureStore({
     reducer: {
@@ -30,6 +31,7 @@ const store = configureStore({
         club: clubSlice.reducer,
         tayo: tayoSlice.reducer,
         //[apiSlice.reducerPath]: apiSlice.reducer,
+        bookmarks: bookmarkSlice.reducer,
         auth: authSlice.reducer,
     },
     // middleware: getDefaultMiddleware =>

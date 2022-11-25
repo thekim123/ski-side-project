@@ -11,14 +11,16 @@ export function ClubRegister() {
     const navigate = useNavigate();
     const nameInput = useRef();
     const contentInput = useRef();
-    const [selectedResort, setSelectedResort] = useState("Elysian");
+    const [selectedResort, setSelectedResort] = useState("--");
     const [selectedAge, setSelectedAge] = useState("--");
     const [selectedGender, setSelectedGender] = useState("--");
     const [selectedRoom, setSelectedRoom] = useState("--");
     //const resorts = useSelector(state => state.resort.resorts);
-    const resort_name = resorts.map(resort => resort.name);
-    const age = ["10대", "20대", "30대", "40대", "50대", "60대", "70대", "80대", "제한 없음"]
+    const resortData = resorts.filter(resort => resort.id !== null);
+    const resortName = resortData.map(resort => resort.name);
+    const age = ["제한 없음", "10대", "20대", "30대", "40대", "50대", "60대", "70대", "80대"]
     const gender = ["남", "여", "성별 무관"];
+    const genderBack = ["MEN", "WOMEN", "NO"];
     const roomType = ["오픈방", "비밀방"];
     const [error, setError] = useState({
         name: "",
@@ -30,7 +32,7 @@ export function ClubRegister() {
     })
 
     const reflectSelection = (selection) => {
-        if (resort_name.indexOf(selection) !== -1) {setSelectedResort(selection); setError({...error, resort: ""})}
+        if (resortName.indexOf(selection) !== -1) {setSelectedResort(selection); setError({...error, resort: ""})}
         else if (age.indexOf(selection) !== -1) {setSelectedAge(selection); setError({...error, age: ""})}
         else if (gender.indexOf(selection) !== -1) {setSelectedGender(selection); setError({...error, gender: ""})}
         else if (roomType.indexOf(selection) !== -1) {setSelectedRoom(selection); setError({...error, room: ""})}
@@ -89,18 +91,21 @@ export function ClubRegister() {
         if (!validateInput(enteredName, enteredContent)){
             return;
         }
+        let resortId = resortData.filter(resort => resort.name === selectedResort)[0].id;
         let openYn = selectedRoom === "오픈방" ? "Y" : "N";
         let ageGrp = age.indexOf(selectedAge) + 1;
-        let genderFix = gender.indexOf(selectedGender) + 1;
+        let genderIdx = gender.indexOf(selectedGender);
+        let genderFix = genderBack[genderIdx];
         //스키장 넣기
         const club = {
             clubNm: enteredName,
-            resort: selectedResort,
+            resortId: resortId,
             gender: genderFix,
             ageGrp: ageGrp,
             openYn: openYn,
             memo: enteredContent,
         }
+        console.log(club);
         dispatch(regClub(club));
         navigate("/club");
     }
@@ -112,7 +117,7 @@ export function ClubRegister() {
             <Input><label>동호회 명</label><input className="clubReg-name" type="text" ref={nameInput} onClick={resetError} /></Input>
             <Error><Dummy></Dummy><div>{error.name ? error.name : null}</div></Error>
             
-            <SelectBox list={resort_name} label="활동 스키장" func={reflectSelection} state={selectedResort} />
+            <SelectBox list={resortName} label="활동 스키장" func={reflectSelection} state={selectedResort} />
             <Error><Dummy></Dummy><div>{error.resort ? error.resort : null}</div></Error>
             
             <SelectBox list={age} label="연령" func={reflectSelection} state={selectedAge} />
@@ -183,7 +188,7 @@ justify-content: center;
 margin: 50px;
 `
 const Button = styled.button`
-background-color:#6B89A5;
+background-color:var(--button-color);
 color: #FAFAFA;
 padding: 13px 20px;
 border-radius: 19px;
