@@ -36,11 +36,11 @@ public class TayoRequestDto {
         return this;
     }
 
-    public Tayo toEntity(User user) {
+    public Tayo toEntity(User user,Resort resort) {
         return Tayo.builder()
                 .user(user)
                 .title(title)
-                .resort(new Resort())
+                .resort(resort)
                 .age(age)
                 .tayoMemCnt(tayoMemCnt)
                 .build();

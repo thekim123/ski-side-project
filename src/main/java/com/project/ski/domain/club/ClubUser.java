@@ -2,6 +2,7 @@ package com.project.ski.domain.club;
 
 
 import com.project.ski.domain.user.User;
+import com.project.ski.web.dto.ClubBoardDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,6 +32,9 @@ public class ClubUser {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne(fetch = LAZY)// 여러 사용자가 한 클럽에 속할 수 있으니까
+    @JoinColumn(name = "clubBoard_id")
+    private ClubBoard clubBoard;
 
     public ClubUser(Club club, User user) {
         this.club = club;

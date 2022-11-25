@@ -37,10 +37,12 @@ public class ClubResponseDto {
     // 임시저장 여부
     private String tempFlag;
 
-    public ClubResponseDto(int memberCnt, String clubNm, long resortName) {
+    public ClubResponseDto(long clubId, int memberCnt, String clubNm, long resortName, String openYn) {
+        this.id = clubId;
         this.memberCnt = memberCnt;
         this.clubNm = clubNm;
         this.resortId = resortName;
+        this.openYn = openYn;
     }
     public ClubResponseDto(Club club) {
         this.id = club.getId();

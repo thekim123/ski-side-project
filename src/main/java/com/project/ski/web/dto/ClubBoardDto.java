@@ -5,6 +5,7 @@ import com.project.ski.domain.club.Club;
 import com.project.ski.domain.club.ClubBoard;
 import com.project.ski.domain.club.Reply;
 
+import com.project.ski.domain.user.User;
 import lombok.*;
 
 
@@ -30,7 +31,6 @@ public class ClubBoardDto {
     private String title;
 
     // 내용
-
     private String content;
 
     /**
@@ -68,7 +68,11 @@ public class ClubBoardDto {
         this.role = role;
     }
 
-    public ClubBoard toEntity() {
+    public ClubBoardDto(Long id) {
+        this.id = id;
+    }
+
+    public ClubBoard toEntity(User user,Club club) {
         return ClubBoard.builder()
                 .id(id)
                 .club(club)
