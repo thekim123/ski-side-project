@@ -9,13 +9,14 @@ import { BsPeopleFill } from 'react-icons/bs'
 import { MdEmojiPeople } from 'react-icons/md'
 import { deletePost } from '../../action/board'
 
-function TayoListItem(props) {
+function TayoListItem(props) { 
     const user = useSelector(state => state.auth.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isMine, setIsMine] = useState(true);
     const [title, setTitle] = useState("");
     const [timePass, setTimePass] = useState("");
+    const age_kor = ["제한 없음", "10대", "20대", "30대", "40대", "50대", "60대", "70대", "80대"]
 
     const detailDate = (create_dt) => {
         const milliSeconds = new Date() - Date.parse(create_dt);
@@ -58,7 +59,7 @@ function TayoListItem(props) {
     }
 
     const showDetail = e => {
-        navigate(`/tayo/detail/${props.id}`);
+        navigate(`/tayo/detail/${props.tayo_id}`);
     }
 
     useEffect(() => {
@@ -127,7 +128,7 @@ const Top = styled.div`
     .boardPost-icon{
         width: 1.2rem;
         height: 1.2rem;
-        color: #6B89A5;
+        color: var(--button-color);
         padding-right: 3px;
     }
 `
@@ -138,7 +139,7 @@ const SkiName = styled.div`
 
 const Content = styled.div`
 display: flex;
-padding: 5px 10px;
+padding: 0 10px;
 `
 const Count = styled.div`
 display: grid;
@@ -148,7 +149,7 @@ padding-bottom: 18px;
 .tayo-count{
     width: 2rem;
     height: 2rem;
-    color: #6B89A5;
+    color: var(--button-color);
     padding-left: 10px;
     padding-right: 10px;
 }
@@ -162,7 +163,7 @@ padding-bottom: 20px;
 .tayo-age{
     width: 3rem;
     height: 1.9rem;
-    color: #6B89A5;
+    color: var(--button-color);
     padding-top: 3px;
 }
 `
