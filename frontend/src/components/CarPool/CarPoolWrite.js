@@ -162,7 +162,9 @@ export function CarPoolWrite() {
             <Error><Dummy></Dummy><div>{error.route ? error.route : null}</div></Error>
 
             {selectedRoute !== '--' && startPlace}
+            <Error><Dummy></Dummy><div>{error.content ? error.content : null}</div></Error>
             {selectedRoute !== '--' && endPlace}
+            <Error><Dummy></Dummy><div>{error.content ? error.content : null}</div></Error>
             
             {isDone.startEnd && 
             <DatePick>
@@ -195,7 +197,7 @@ export function CarPoolWrite() {
                 placeholder="입력 예시) 서울역 1번 출구"
                 />
             </Input>
-            }
+            }<Error><Dummy></Dummy><div>{error.place ? error.place : null}</div></Error>
 
             {isDone.place &&
             <SelectBox list={smoking} label="흡연 / 금연" func={reflectSmoke} state={selectedSmoking} />}
@@ -212,7 +214,7 @@ export function CarPoolWrite() {
                 placeholder="입력 예시) 4"
                 />
             </Input>
-            }
+            }<Error><Dummy></Dummy><div>{error.cnt ? error.cnt : null}</div></Error>
 
             {isDone.cnt &&
             <Input><label>추가 사항</label><textarea type="text" ref={contentInput} onClick={resetContentError} /></Input>}
