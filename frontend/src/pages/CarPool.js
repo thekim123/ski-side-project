@@ -56,9 +56,10 @@ export function CarPool() {
                                 checked={routeType === "house"}
                                 onChange={handleRouteChange}
                             />
-                            <FaHouseUser className='carpool-root-icon'/>
+                            <span>도착지가 스키장</span>
+                            {/* <FaHouseUser className='carpool-root-icon'/>
                             <BsArrowRight className='carpool-root-arrow'/>
-                            <FaSkiing className='carpool-root-icon'/>
+                            <FaSkiing className='carpool-root-icon'/> */}
                         </RouteWrapper>
                         <RouteWrapper>
                             <input 
@@ -67,9 +68,10 @@ export function CarPool() {
                                 checked={routeType === "resort"}
                                 onChange={handleRouteChange}
                             />
-                            <FaSkiing className='carpool-root-icon'/>
+                            <span>출발지가 스키장</span>
+                            {/* <FaSkiing className='carpool-root-icon'/>
                             <BsArrowRight className='carpool-root-arrow'/>
-                            <FaHouseUser className='carpool-root-icon'/>
+                            <FaHouseUser className='carpool-root-icon'/> */}
                         </RouteWrapper>
                     </SearchContent>
 
@@ -189,6 +191,8 @@ padding: 5px;
 `
 const RouteWrapper = styled.div`
 padding: 10px;
+display: flex;
+align-items: center;
 .carpool-root-icon{
     width:1.2rem;
     height:1.2rem;
@@ -198,6 +202,9 @@ padding: 10px;
 .carpool-root-arrow{
     color: black;
     padding: 0 1px;
+}
+span{
+    color: gray;
 }
 `
 
