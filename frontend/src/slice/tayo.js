@@ -1,22 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    posts: [/*{
+    posts: [{
         tayo_id: 2,
-        age: "TWENTY",
+        age: "20대",
         createDt: "2022-10-24T16:33:44.936Z",
         tayoMemCnt: 5,
         title: "겨울방학도 했는데 스키장은 가야지!",
         resort_id: 1,
-    }*/],
-    post: /*{
+    }],
+    post: {
         tayo_id: 2,
-        age: "TWENTY",
+        age: "20대",
         createDt: "2022-10-24T16:33:44.936Z",
         tayoMemCnt: 5,
         title: "겨울방학도 했는데 스키장은 가야지!",
         resort_id: 1,
-    }*/null,
+    }
+    // null,
 }
 const tayoSlice = createSlice({
     name: 'tayo',

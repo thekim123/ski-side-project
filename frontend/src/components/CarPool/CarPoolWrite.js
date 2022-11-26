@@ -16,15 +16,16 @@ export function CarPoolWrite() {
     const route = ["도착지가 스키장", "출발지가 스키장"];
     const resortsData = resorts.filter(resort => resort.id !== null);
     const resortName = resortsData.map(resort => resort.name);
+    //const city = ["서울", "경기", "인천", "부산", "대구", "대전"]
     const space = ["적어요", "보통이에요", "많아요"];
     const smoking = ["금연 차량", "흡연 차량"];
     const [date, setDate] = useState(new Date());
     const [showDate, setShowDate] = useState(false);
     const [selectedRoute, setSelectedRoute] = useState("--");
     const [selectedResort, setSelectedResort] = useState("스키장 선택");
+    const startEndInput = useRef();
     const placeInput = useRef();
     const [startTime, setStartTime] = useState(null);
-    const [selectedSpace, setSelectedSpace] = useState("--");
     const [selectedSmoking, setSelectedSmoking] = useState("--");
     const cntInput = useRef();
     const contentInput = useRef();
@@ -32,6 +33,7 @@ export function CarPoolWrite() {
         date:"",
         route: "",
         resort: "",
+        startEnd: "",
         place: "",
         time: "",
         space: "",
@@ -39,26 +41,77 @@ export function CarPoolWrite() {
         cnt: "",
         content: "",
     })
+    const [isDone, setIsDone] = useState({
+        startEnd: false,
+        time: false,
+        smoking: false,
+        cnt: false,
+    })
 
     const toggleDate = e => {
         setError({...error, date: ""})
         setShowDate(!showDate);
+    }
+    const onSelect = (time) => {
+        setStartTime(time);
+        setError({...error, time: null});
+        setIsDone({...isDone, time: true});
     }
 
     const reflectRoute = (selection) => {
         if (route.indexOf(selection) !== -1) {setSelectedRoute(selection); setError({...error, route: ""});}
     }
     const reflectResort = (selection) => {
-        if (resortName.indexOf(selection) !== -1) {setSelectedResort(selection); setError({...error, resort: ""});}
+        if (resortName.indexOf(selection) !== -1) {
+            setSelectedResort(selection); 
+            setError({...error, resort: ""});
+            if (startEndInput.current.value !== "") {
+                setIsDone({...isDone, startEnd: true})
+            }
+        }
+    }
+    const reflectSmoke = (selection) => {
+        if (smoking.indexOf(selection) !== -1) {
+            setSelectedSmoking(selection);
+            setError({...error, smoking: ""})
+            setIsDone({...isDone, smoking: true})
+        }
     }
 
     // reset Input error
+    const resetStartEndError = e => {
+        setError({...error, startEnd: ""})
+    }
     const resetPlaceError = e => {
         setError({...error, place: ""})
+    }
+    const resetCntError = e => {
+        setError({...error, cnt: ""})
+    }
+    const resetContentError = e => {
+        setError({...error, content: ""})
+    }
+
+
+    const startEndDone = e => {
+        if (e.target.value !== "" && selectedResort !== "스키장 선택") {
+            setIsDone({...isDone, startEnd: true})
+        } else setIsDone({...isDone, startEnd: false})
+    }
+    const placeDone = e => {
+        if (e.target.value !== "") {
+            setIsDone({...isDone, place: true})
+        } else setIsDone({...isDone, place: false})
+    }
+    const cntDone = e => {
+        if (e.target.value !== "") {
+            setIsDone({...isDone, cnt: true})
+        } else setIsDone({...isDone, cnt: false})
     }
 
     const handleSubmit = e => {
         e.preventDefault();
+        console.log(error);
     }
 
     const startPlace = selectedRoute === route[0] ?
@@ -66,9 +119,10 @@ export function CarPoolWrite() {
             <label>출발지</label>
             <input
                 type="text"
-                ref={placeInput}
-                onClick={resetPlaceError}
-                placeholder="입력 예시) 서울역 1번 출구"
+                ref={startEndInput}
+                onClick={resetStartEndError}
+                onChange={startEndDone}
+                placeholder="입력 예시) 서울"
                 />
         </Input> :
         <SelectBox list={resortName} label="출발지" func={reflectResort} state={selectedResort} />
@@ -79,9 +133,10 @@ export function CarPoolWrite() {
             <label>도착지</label>
             <input
                 type="text"
-                ref={placeInput}
-                onClick={resetPlaceError}
-                placeholder="입력 예시) 서울역 1번 출구"
+                ref={startEndInput}
+                onClick={resetStartEndError}
+                onChange={startEndDone}
+                placeholder="입력 예시) 서울"
                 />
         </Input>
 
@@ -106,13 +161,66 @@ export function CarPoolWrite() {
             <SelectBox list={route} label="경로" func={reflectRoute} state={selectedRoute} />
             <Error><Dummy></Dummy><div>{error.route ? error.route : null}</div></Error>
 
-            {/* {selectedRoute !== '--' && 
-            <SelectBox list={resortName} label="활동 스키장" func={reflectResort} state={selectedResort} />}
-            <Error><Dummy></Dummy><div>{error.resort ? error.resort : null}</div></Error> */}
-
             {selectedRoute !== '--' && startPlace}
             {selectedRoute !== '--' && endPlace}
             
+            {isDone.startEnd && 
+            <DatePick>
+                <label>출발 시간</label>
+                <SDatePicker
+                    selected={startTime}
+                    onChange={onSelect}
+                    locale={ko}
+                    showTimeSelect
+                    showTimeSelectOnly
+                    timeIntervals={30}
+                    //minTime={setHours(setMinutes(new Date(), calMinute()), calMinHour())}
+                    minTime={setHours(30, 23)}
+                    maxTime={setHours(0, 0)}
+                    dateFormat="aa h:mm 출발"
+                    placeholderText='출발 시간'
+                    className='tayoWrite-startT'
+                />
+            </DatePick>
+            }
+
+            {isDone.time &&
+            <Input>
+            <label>탑승 장소</label>
+            <input
+                type="text"
+                ref={placeInput}
+                onClick={resetPlaceError}
+                onChange={placeDone}
+                placeholder="입력 예시) 서울역 1번 출구"
+                />
+            </Input>
+            }
+
+            {isDone.place &&
+            <SelectBox list={smoking} label="흡연 / 금연" func={reflectSmoke} state={selectedSmoking} />}
+            <Error><Dummy></Dummy><div>{error.smoking ? error.smoking : null}</div></Error>
+
+            {isDone.smoking &&
+            <Input>
+            <label>탑승 가능 인원</label>
+            <input
+                type="text"
+                ref={cntInput}
+                onClick={resetCntError}
+                onChange={cntDone}
+                placeholder="입력 예시) 4"
+                />
+            </Input>
+            }
+
+            {isDone.cnt &&
+            <Input><label>추가 사항</label><textarea type="text" ref={contentInput} onClick={resetContentError} /></Input>}
+            <Error><Dummy></Dummy><div>{error.content ? error.content : null}</div></Error>
+
+            {isDone.cnt &&
+            <BtnWrap><Button>개설하기</Button></BtnWrap>
+            }
         </form>
     </Wrapper>
     )
@@ -262,7 +370,7 @@ justify-content: center;
 margin: 30px;
 `
 const Button = styled.button`
-background-color:#6B89A5;
+background-color:var(--button-color);
 color: #FAFAFA;
 padding: 13px 20px;
 border-radius: 19px;

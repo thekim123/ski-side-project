@@ -15,7 +15,8 @@ export function TayoWrite() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const type = ["스키", "보드"];
-    const resort_name = resorts.map(resort => resort.name);
+    const resortData = resorts.filter(resort => resort.id !== null);
+    const resort_name = resortData.map(resort => resort.name);
     const age = ["연령 무관", "10대", "20대", "30대", "40대", "50대", "60대", "70대", "80대", "90대"]
     const [selectedType, setSelectedType] = useState("--");
     const [selectedResort, setSelectedResort] = useState("--");

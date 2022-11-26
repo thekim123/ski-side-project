@@ -50,7 +50,7 @@ function App() {
             <Route path="club/secret/:id" element={<ClubSecret />} />
             <Route path="tayo" element={<Tayo />} />
             <Route path="tayo/write" element={<TayoWrite />} />
-            <Route path="tayo/detail" element={<TayoDetail />} />
+            <Route path="tayo/detail/:id" element={<TayoDetail />} />
             <Route path="carpool" element={<CarPool />} />
             <Route path="carpool/write" element={<CarPoolWrite />} />
             <Route path="carpool/detail" element={<CarPoolDetail />} />

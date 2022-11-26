@@ -286,7 +286,8 @@ margin: 15px 20px 0 20px;
 const LikeDislike = styled.div`
 display:flex;
 justify-content: center;
-padding-bottom: 10px;
+padding-bottom: 15px;
+border-bottom: 1px solid #CCCCCC;
 `
 const Form = styled.form`
     display: flex;
