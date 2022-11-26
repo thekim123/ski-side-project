@@ -1,8 +1,8 @@
 package com.project.ski.domain.board;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.project.ski.domain.board.Board;
 import com.project.ski.domain.user.User;
+import com.project.ski.web.dto.CommentDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -27,12 +27,15 @@ public class CommentApiController {
         return new CmRespDto<>(1, "댓글쓰기 완료", null);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public CmRespDto<?> delete(@PathVariable long id, Authentication authentication) {
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        User user = principalDetails.getUser();
-        commentService.delete(id, user);
+    @DeleteMapping("/delete/{commentId}")
+    public CmRespDto<?> delete(@PathVariable long commentId, Authentication authentication) {
+        commentService.delete(commentId, authentication);
         return new CmRespDto<>(1, "댓글 삭제 완료",null);
+    }
+    @PutMapping("/update")
+    public CmRespDto<?> update(@RequestBody CommentDto dto, Authentication authentication) {
+        commentService.update(dto, authentication);
+        return new CmRespDto<>(1, "댓글 수정 완료",null);
     }
 
 }

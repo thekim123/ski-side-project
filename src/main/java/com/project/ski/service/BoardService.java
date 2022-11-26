@@ -9,7 +9,6 @@ import com.project.ski.repository.BoardRepository;
 import com.project.ski.repository.ResortRepository;
 import com.project.ski.web.dto.BoardDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -24,9 +23,6 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final ResortRepository resortRepository;
-
-    @Value("${file.path}")
-    private String uploadFolder;
 
     @Transactional(readOnly = true)
     public Page<Board> getHomeBoard(Authentication authentication, Pageable pageable) {

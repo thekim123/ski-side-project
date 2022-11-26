@@ -1,17 +1,14 @@
 package com.project.ski.domain.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.ski.domain.Tayo.Tayo;
 import com.project.ski.domain.board.Board;
 import com.project.ski.domain.carpool.Carpool;
-import com.project.ski.domain.club.Club;
 import com.project.ski.domain.club.ClubUser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.repository.Query;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -74,6 +71,5 @@ public class User {
 
     public void removeClub(ClubUser clubUser) {
         clubUsers.remove(clubUser);
-
     }
 }
