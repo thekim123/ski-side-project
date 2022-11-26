@@ -50,6 +50,7 @@ public class User {
     private List<Board> boards;
 
 
+    @JsonIgnoreProperties({"user"})
     @OneToMany(mappedBy = "user",fetch = LAZY, cascade = CascadeType.ALL)
     private List<ClubUser> clubUsers = new ArrayList<>();
 

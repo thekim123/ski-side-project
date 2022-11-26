@@ -102,8 +102,7 @@ public class BoardService {
 //        }
         ResortName resortName = ResortName.valueOf(dto.getResortName());
         Resort resort = resortRepository.findByResortName(resortName);
-        boardEntity = dto.toEntityIfImageNull(user, resort);
-        // boardEntity = dto.toEntity(imageFileName, user);
+        boardEntity.setResort(resort);
 
     }
 

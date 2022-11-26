@@ -1,5 +1,6 @@
 package com.project.ski.domain.club;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.ski.domain.resort.Resort;
 import com.project.ski.domain.user.User;
 import com.project.ski.web.dto.ClubRequestDto;
@@ -34,6 +35,7 @@ public class Club {
     @Column(name = "club_id")
     private long id;
 
+    @JsonIgnoreProperties({"club", "board"})
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name="user_id")
     private User user;

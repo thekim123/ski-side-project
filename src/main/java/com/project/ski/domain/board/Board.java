@@ -32,7 +32,7 @@ public class Board {
 	@ManyToOne
 	private Resort resort;
 
-	@JsonIgnoreProperties({"boards", "password"})
+	@JsonIgnoreProperties({"boards", "password","clubUsers"})
 	@JoinColumn(name = "userId")
 	@ManyToOne(fetch = FetchType.EAGER)
 	private User user;
