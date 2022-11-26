@@ -37,41 +37,24 @@ public class BoardService {
     public Page<Board> getHomeBoard(Authentication authentication, Pageable pageable) {
         long principalId = getUserFromPrincipal(authentication).getId();
         Page<Board> boards = boardRepository.homeBoard(principalId, pageable);
-        
-        boards.forEach((board)->{
-        	board.setLikeCount(board.getLikes().size());
-        	
-        	board.getLikes().forEach((like)->{
-        		if(like.getUser().getId() == principalId) {
-        			board.setLikeState(true);
-        		}
-        	});
+
+        boards.forEach((board) -> {
+            board.setLikeCount(board.getLikes().size());
+
+            board.getLikes().forEach((like) -> {
+                if (like.getUser().getId() == principalId) {
+                    board.setLikeState(true);
+                }
+            });
         });
         return boards;
     }
 
     @Transactional
     public void write(BoardDto dto, User user) {
-        Board board;
         ResortName resortName = ResortName.valueOf(dto.getResortName());
         Resort resort = resortRepository.findByResortName(resortName);
-        if (dto.getFile() != null) {
-
-            UUID uuid = UUID.randomUUID();
-            String imageFileName = uuid + "_" + dto.getFile().getOriginalFilename();
-
-            Path imageFilePath = Paths.get(uploadFolder + imageFileName);
-
-            try {
-                Files.write(imageFilePath, dto.getFile().getBytes());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            board = dto.toEntity(user, resort, imageFileName);
-        } else {
-            board = dto.toEntityIfImageNull(user, resort);
-        }
+        Board board = dto.toEntity(user, resort);
         boardRepository.save(board);
     }
 
@@ -91,15 +74,6 @@ public class BoardService {
             return new IllegalArgumentException("글 수정 실패 : 게시글의 ID를 찾을 수 없습니다.");
         });
 
-//        UUID uuid = UUID.randomUUID();
-//        String imageFileName = uuid + "_" + dto.getFile().getOriginalFilename();
-//        Path imageFilePath = Paths.get(uploadFolder + imageFileName);
-//
-//        try {
-//            Files.write(imageFilePath, dto.getFile().getBytes());
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
         ResortName resortName = ResortName.valueOf(dto.getResortName());
         Resort resort = resortRepository.findByResortName(resortName);
         boardEntity.setResort(resort);
@@ -144,12 +118,25 @@ public class BoardService {
     }
 
     @Transactional(readOnly = true)
-    public Board getBoardDetail(long id) {
+    public Board getBoardDetail(long id, Authentication authentication) {
+
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        long principalId = principalDetails.getUser().getId();
+
         Board boardEntity = boardRepository.findById(id).orElseThrow(() -> {
             return new IllegalArgumentException("게시글의 등록번호를 찾을 수 없습니다.");
         });
 
+        boardEntity.setLikeCount(boardEntity.getLikes().size());
+
+        boardEntity.getLikes().forEach((like) -> {
+            if (like.getUser().getId() == principalId) {
+                boardEntity.setLikeState(true);
+            }
+        });
+
         return boardEntity;
+
     }
 
 }

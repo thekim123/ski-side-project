@@ -9,6 +9,7 @@ import com.project.ski.service.CommentService;
 import com.project.ski.service.LikesService;
 import com.project.ski.web.dto.BoardDto;
 import com.project.ski.web.dto.CmRespDto;
+import com.project.ski.web.dto.CommentDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,8 +37,8 @@ public class BoardApiController {
     }
 
     @GetMapping("/detail/{boardId}")
-    public CmRespDto<?> getBoardDetail(@PathVariable long boardId) {
-        Board board = boardService.getBoardDetail(boardId);
+    public CmRespDto<?> getBoardDetail(@PathVariable long boardId, Authentication authentication) {
+        Board board = boardService.getBoardDetail(boardId, authentication);
         return new CmRespDto<>(1, "게시글 상세 보기 완료", board);
     }
 
@@ -95,15 +96,5 @@ public class BoardApiController {
         likesService.unlike(boardId, principalId);
     }
 
-    @PostMapping("/{boardId}/comment")
-    public CmRespDto<?> writeComment(
-            @PathVariable long boardId,
-            @RequestBody String content,
-            Authentication authentication) {
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        User principal = principalDetails.getUser();
-        commentService.write(principal, content, boardId);
-        return new CmRespDto<>(1, "댓글쓰기 완료", null);
-    }
 
 }

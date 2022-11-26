@@ -2,7 +2,7 @@ package com.project.ski.domain.resort;
 
 public enum ResortName {
     엘리시안,
-    피닉스파크,
+    휘닉스파크,
     비발디파크,
     용평리조트,
     하이원리조트,
@@ -11,5 +11,6 @@ public enum ResortName {
     지산포레스트,
     웰리힐리,
     오크벨리,
-    덕유산리조트
+    덕유산리조트,
+    에덴벨리
 }

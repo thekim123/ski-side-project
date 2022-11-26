@@ -15,7 +15,6 @@ public class ResortService {
 
     @Transactional
     public void insert(Resort resort) {
-        System.out.println(resort.getResortName());
         resortRepository.save(resort);
     }
 }

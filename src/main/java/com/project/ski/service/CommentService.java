@@ -3,7 +3,9 @@ package com.project.ski.service;
 import com.project.ski.domain.board.Board;
 import com.project.ski.domain.board.Comment;
 import com.project.ski.domain.user.User;
+import com.project.ski.repository.BoardRepository;
 import com.project.ski.repository.CommentRepository;
+import com.project.ski.web.dto.CommentDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,17 +14,19 @@ import org.springframework.stereotype.Service;
 public class CommentService {
 
     private final CommentRepository commentRepository;
+    private final BoardRepository boardRepository;
 
-    public void write(User principal, String content, long boardId) {
-        Board board = Board.builder()
-                .id(boardId)
-                .build();
+    public void write(User principal, CommentDto dto) {
+        Board boardEntity = boardRepository.findById(dto.getBoardId()).orElseThrow(() -> {
+            return new IllegalArgumentException("게시글을 찾을 수 없습니다.");
+        });
 
         Comment comment = Comment.builder()
-                .content(content)
-                .board(board)
+                .content(dto.getContent())
+                .board(boardEntity)
                 .user(principal)
                 .build();
+        
         commentRepository.save(comment);
     }
 

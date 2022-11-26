@@ -7,6 +7,7 @@ import com.project.ski.domain.user.Role;
 import com.project.ski.domain.user.User;
 import com.project.ski.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -17,16 +18,19 @@ import java.util.Date;
 public class CreateUser {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @PostConstruct
     public void createUserAndGenToken() {
+
+        String password = bCryptPasswordEncoder.encode("password");
 
         User user = User.builder()
                 .email("test@test.com")
                 .roles(Role.ROLE_USER)
                 .nickname("test")
                 .username("test")
-                .password("test")
+                .password(password)
                 .build();
         if (userRepository.findByUsername(user.getUsername())==null) {
             userRepository.save(user);
