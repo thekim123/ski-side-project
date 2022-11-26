@@ -143,7 +143,7 @@ const Icon = styled.div`
     .boardDetail-icon {
         width: 1.4rem;
         height: 1.4rem;
-        color: #57748F;
+        color: var(--button-color);
         padding-left: 8px;
     }
 `
@@ -243,7 +243,7 @@ const Button = styled.button`
 border-radius: 10px;
 padding: 13px 20px;
 color: #FAFAFA;
-background-color: #57748F;
+background-color: var(--button-color);
 border: none;
 margin: 100px;
 margin-bottom: 15px;

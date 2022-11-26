@@ -48,7 +48,7 @@ export function Club() {
     return (
     <ClubContainer>
         <ClubListForm change={changeSelection} />
-        {filteredResorts.length > 0 && <ClubTop>
+        {filteredResorts.length > 3 && <ClubTop>
             <Top3>
                 <Rank2 id={filteredResorts[1].id} className="club-top3" onClick={e => showDetail(e, filteredResorts[1].openYn)}>
                     <Rank id={filteredResorts[1].id}>2</Rank>
@@ -128,7 +128,7 @@ border-radius: 50%;
 const TopResort = styled.div`
 font-size: 13px;
 color: gray;
-padding-top: 2px;
+padding-top: 7px;
 `
 const TopCnt = styled.div`
 font-size: 12px;

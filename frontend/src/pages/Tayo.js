@@ -35,7 +35,7 @@ export function Tayo() {
 
     
     useEffect(() => {
-        dispatch(loadTayos());
+        //dispatch(loadTayos());
     }, [dispatch]);
 
     useEffect(() => {
@@ -52,7 +52,7 @@ export function Tayo() {
         <Container>
             <TopWrapper>
                 <Top>
-                <Title>같이 타요!</Title>
+                <Title>같이 타요!</Title> 
                 <Icons>
                     <FiFilter className="tayo-filter" onClick={openModal}/>
                     <HiPlus className="tayo-plus" onClick={clickPlus}/>
@@ -63,7 +63,7 @@ export function Tayo() {
 
             <POSTS>
             {posts.length > 0 && posts.map((post) => (
-                <TayoListItem key={post.id} {...post} />
+                <TayoListItem key={post.tayo_id} {...post} />
             ))
             }
             </POSTS>
@@ -109,7 +109,7 @@ text-align: right;
 `
 
 const POSTS = styled.div`
-    //padding-top: 20px;
+    padding-top: 60px;
 `
 const Resorts = styled.div`
 display:grid;

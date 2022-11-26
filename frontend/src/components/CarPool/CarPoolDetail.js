@@ -49,10 +49,14 @@ export function CarPoolDetail() {
         {/* Content */}
         <Middle>
             <Tags>
+                <div>
                 <TalkTag>출발지 협의 가능</TalkTag>
                 <TalkTag>출발 시간 협의 가능</TalkTag>
+                </div>
+                <TagBox>
                 <Tag>흡연 차량</Tag>
                 <Tag>여유공간 많아요</Tag>
+                </TagBox>
             </Tags>
             <Content>
                 휴게소 한번 들러서 10분정도 쉬었다가 갈게요~ <br /> 
@@ -168,7 +172,7 @@ const Tags = styled.div`
 display: inline-block;
 padding-bottom: 10px;
 `
-const TalkTag = styled.div`
+const TalkTag = styled.span`
 background-color: #005C00;
 font-size: 12px;
 padding: 4px 6px;
@@ -178,7 +182,10 @@ margin-bottom: 5px;
 color: #FAFAFA;
 text-align: center;
 `
-const Tag = styled.div`
+const TagBox = styled.div`
+padding-top: 10px;
+`
+const Tag = styled.span`
 background-color: var(--button-sub-color);
 font-size: 12px;
 padding: 4px 6px;
