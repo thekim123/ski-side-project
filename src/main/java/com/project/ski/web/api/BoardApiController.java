@@ -71,13 +71,13 @@ public class BoardApiController {
     }
 
     @DeleteMapping("/delete/{boardId}")
-    public CmRespDto<?> delete(@PathVariable long boardId) {
-        boardService.delete(boardId);
+    public CmRespDto<?> delete(@PathVariable long boardId, Authentication authentication) {
+        boardService.delete(boardId, authentication);
         return new CmRespDto<>(HttpStatus.OK.value(), "글 삭제 완료", null);
     }
 
     @PutMapping("/update/")
-    public CmRespDto<?> update(BoardDto dto, Authentication authentication) {
+    public CmRespDto<?> update(@RequestBody BoardDto dto, Authentication authentication) {
         boardService.update(dto, authentication);
         return new CmRespDto<>(HttpStatus.OK.value(), "글 수정 완료", null);
     }

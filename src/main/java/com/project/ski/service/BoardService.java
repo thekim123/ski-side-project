@@ -16,12 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -35,48 +30,45 @@ public class BoardService {
 
     @Transactional(readOnly = true)
     public Page<Board> getHomeBoard(Authentication authentication, Pageable pageable) {
-        long principalId = getUserFromPrincipal(authentication).getId();
+        long principalId = getPrincipalId(authentication);
         Page<Board> boards = boardRepository.homeBoard(principalId, pageable);
 
         boards.forEach((board) -> {
-            board.setLikeCount(board.getLikes().size());
-
-            board.getLikes().forEach((like) -> {
-                if (like.getUser().getId() == principalId) {
-                    board.setLikeState(true);
-                }
-            });
+            board.loadLikes(principalId);
         });
         return boards;
     }
 
     @Transactional
     public void write(BoardDto dto, User user) {
-        ResortName resortName = ResortName.valueOf(dto.getResortName());
-        Resort resort = resortRepository.findByResortName(resortName);
+        Resort resort = findResort(dto);
         Board board = dto.toEntity(user, resort);
         boardRepository.save(board);
     }
 
     @Transactional
-    public void delete(long boardId) {
-        Board boardEntity = boardRepository.findById(boardId).orElseThrow(() -> {
-            return new IllegalArgumentException("글 삭제 실패 : 게시글의 ID를 찾을 수 없습니다.");
-        });
+    public void delete(long boardId, Authentication authentication) {
+        Board boardEntity = findBoardEntityById(boardId);
+        long principalId = getPrincipalId(authentication);
+
+        if (isMyBoard(boardEntity.getId(), principalId)) {
+            throw new IllegalArgumentException("선생님의 글이 아니잖아요!!!!");
+        }
+
         boardRepository.delete(boardEntity);
     }
 
     @Transactional
     public void update(BoardDto dto, Authentication authentication) {
-        User user = getUserFromPrincipal(authentication);
+        long principalId = getPrincipalId(authentication);
+        Board boardEntity = findBoardEntityById(dto.getId());
 
-        Board boardEntity = boardRepository.findById(dto.getId()).orElseThrow(() -> {
-            return new IllegalArgumentException("글 수정 실패 : 게시글의 ID를 찾을 수 없습니다.");
-        });
+        if (isMyBoard(boardEntity.getId(), principalId)) {
+            throw new IllegalArgumentException("선생님의 글이 아니잖아요!!!!");
+        }
 
-        ResortName resortName = ResortName.valueOf(dto.getResortName());
-        Resort resort = resortRepository.findByResortName(resortName);
-        boardEntity.setResort(resort);
+        Resort resort = findResort(dto);
+        boardEntity.changeData(dto, resort);
 
     }
 
@@ -86,14 +78,9 @@ public class BoardService {
         Page<Board> boards = boardRepository.findAll(pageable);
 
         boards.forEach((board) -> {
-            board.setLikeCount(board.getLikes().size());
-
-            board.getLikes().forEach((like) -> {
-                if (like.getUser().getId() == principalId) {
-                    board.setLikeState(true);
-                }
-            });
+            board.loadLikes(principalId);
         });
+
         return boards;
     }
 
@@ -112,31 +99,35 @@ public class BoardService {
         return boardRepository.getPopular();
     }
 
-    public User getUserFromPrincipal(Authentication authentication) {
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        return principalDetails.getUser();
+    @Transactional(readOnly = true)
+    public Board getBoardDetail(long boardId, Authentication authentication) {
+        long principalId = getPrincipalId(authentication);
+        Board boardEntity = findBoardEntityById(boardId);
+        boardEntity.loadLikes(principalId);
+        return boardEntity;
     }
 
-    @Transactional(readOnly = true)
-    public Board getBoardDetail(long id, Authentication authentication) {
-
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        long principalId = principalDetails.getUser().getId();
-
-        Board boardEntity = boardRepository.findById(id).orElseThrow(() -> {
+    public Board findBoardEntityById(long boardId) {
+        return boardRepository.findById(boardId).orElseThrow(() -> {
             return new IllegalArgumentException("게시글의 등록번호를 찾을 수 없습니다.");
         });
-
-        boardEntity.setLikeCount(boardEntity.getLikes().size());
-
-        boardEntity.getLikes().forEach((like) -> {
-            if (like.getUser().getId() == principalId) {
-                boardEntity.setLikeState(true);
-            }
-        });
-
-        return boardEntity;
-
     }
+
+    public long getPrincipalId(Authentication authentication) {
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        long principalId = principalDetails.getUser().getId();
+        return principalId;
+    }
+
+    public boolean isMyBoard(long boardId, long principalId) {
+        return boardId == principalId;
+    }
+
+    public Resort findResort(BoardDto dto) {
+        ResortName resortName = ResortName.valueOf(dto.getResortName());
+        Resort resort = resortRepository.findByResortName(resortName);
+        return resort;
+    }
+
 
 }
