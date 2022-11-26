@@ -27,7 +27,7 @@ export const addPost = (post) => {
         Send({
             url: '/board/write',
             method: 'post',
-            data: post,
+            data: post, 
         }).then((resp) => {
             console.log("resp", resp);
             dispatch(boardActions.addBoard());
@@ -74,6 +74,19 @@ export const deletePost = (id) => {
             console.log("resp", resp);
             dispatch(boardActions.deletePost());
             dispatch(loadPosts());
+        })
+        .catch(error => console.log(error));
+    }
+}
+
+export const likes = (id) => {
+    return function (dispatch) {
+        Send({
+            url: `/board/${id}/likes`,
+            method: 'post',
+        }).then((resp) => {
+            console.log("resp", resp);
+            dispatch(boardActions.likes());
         })
         .catch(error => console.log(error));
     }

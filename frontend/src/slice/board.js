@@ -23,6 +23,9 @@ const boardSlice = createSlice({
         deletePost(state) {
             
         },
+        likes(state) {
+
+        },
         unlikes(state) {
             
         },

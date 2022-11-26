@@ -15,10 +15,12 @@ export function Board() {
         setSelectedResort(resort);
     }
 
+    
     useEffect(() => {
         dispatch(loadPosts());
     }, [dispatch]);
 
+    
     useEffect(() => {
         if (selectedResort === "[전체]") {setFilteredResorts(posts);}
         else {
@@ -32,7 +34,6 @@ export function Board() {
         <BoardContainer>
             <BoardListForm change={changeSelection} />
             <POSTS>
-            {/* {filteredResorts.length > 0 && filteredResorts.slice(0).reverse().map((post) => ( */}
             {filteredResorts.length > 0 && filteredResorts.map((post) => (
                 <BoardListItem key={post.id} {...post} />
             ))

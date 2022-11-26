@@ -32,11 +32,12 @@ export const regClub = (post) => {
 
 export const getSingleClub = (id) => {
     return function (dispatch) {
-        axios
-            .get(`${process.env.REACT_APP_API}/club/${id}`)
-            .then((resp) => {
-                dispatch(clubActions.getClub(resp.data));
-            })
-            .catch(error => console.log(error));
+        Send({
+            url:`/club/${id}`,
+            method: 'get',
+        }).then((resp) => {
+            console.log("resp", resp);
+        })
+        .catch(error => console.log(error));
     }
 }

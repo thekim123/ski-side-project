@@ -2,6 +2,7 @@ package com.project.ski.domain.Tayo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.project.ski.domain.BaseTimeEntity;
 import com.project.ski.domain.club.AgeGrp;
 import com.project.ski.domain.resort.Resort;
 import com.project.ski.domain.user.User;
@@ -11,10 +12,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.*;
 
+import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -23,7 +28,7 @@ import static javax.persistence.FetchType.LAZY;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Tayo {
+public class Tayo extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,9 +63,17 @@ public class Tayo {
     // 현재 인원 수
     private int curTayoMemCnt;
 
+    // 홍보 문구
+    private String comment;
 
-    @CreationTimestamp
-    private LocalDateTime createDt;
+    // 출발날짜
+    private LocalDate tayoDt;
+
+    // 시간
+    private LocalDateTime tayoStrTime;
+
+    private LocalDateTime tayoEndTime;
+
 
     public void update(TayoRequestDto dto) {
         this.title = dto.getTitle();
