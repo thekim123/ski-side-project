@@ -5,7 +5,6 @@ import com.project.ski.domain.resort.Resort;
 import com.project.ski.domain.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 

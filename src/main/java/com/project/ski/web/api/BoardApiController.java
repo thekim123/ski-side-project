@@ -9,7 +9,6 @@ import com.project.ski.service.CommentService;
 import com.project.ski.service.LikesService;
 import com.project.ski.web.dto.BoardDto;
 import com.project.ski.web.dto.CmRespDto;
-import com.project.ski.web.dto.CommentDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

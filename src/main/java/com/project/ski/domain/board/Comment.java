@@ -27,7 +27,7 @@ public class Comment {
     @ManyToOne
     private Board board;
 
-    @JsonIgnoreProperties({"boards"})
+    @JsonIgnoreProperties({"boards","clubUsers", "carpools", "tayos", "password"})
     @JoinColumn(name = "userId")
     @ManyToOne
     private User user;
