@@ -23,6 +23,7 @@ import resortSlice from './slice/resort';
 import authSlice from './slice/auth';
 import tayoSlice from './slice/tayo';
 import bookmarkSlice from './slice/bookmark';
+import carpoolSlice from './slice/carpool';
 
 const store = configureStore({
     reducer: {
@@ -30,7 +31,7 @@ const store = configureStore({
         board: boardSlice.reducer,
         club: clubSlice.reducer,
         tayo: tayoSlice.reducer,
-        //[apiSlice.reducerPath]: apiSlice.reducer,
+        carpool: carpoolSlice.reducer,
         bookmarks: bookmarkSlice.reducer,
         auth: authSlice.reducer,
     },

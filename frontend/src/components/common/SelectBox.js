@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { IoMdArrowDropdown } from 'react-icons/io';
+import shortid from 'shortid'
 
 export function SelectBox(props) {
     //props: toggleSelectBox(), showSelectBox state, 선택지 배열. default value
@@ -22,7 +23,7 @@ export function SelectBox(props) {
             {showSelectBox && <div className="dropdown-content">
                 {
                     props.list.map(item => (
-                        <div id={item} className="dropdown-item" onClick={handleItemClick}>{item}</div>
+                        <div key={shortid.generate()} id={item} className="dropdown-item" onClick={handleItemClick}>{item}</div>
                     ))
                 }
                 

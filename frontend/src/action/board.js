@@ -87,6 +87,7 @@ export const likes = (id) => {
         }).then((resp) => {
             console.log("resp", resp);
             dispatch(boardActions.likes());
+            dispatch(getSinglePost(id));
         })
         .catch(error => console.log(error));
     }
@@ -100,6 +101,7 @@ export const unlikes = (id) => {
         }).then((resp) => {
             console.log("resp", resp);
             dispatch(boardActions.unlikes());
+            dispatch(getSinglePost(id));
         })
         .catch(error => console.log(error));
     }
@@ -108,7 +110,7 @@ export const unlikes = (id) => {
 export const addComment = (id, content) => {
     return function (dispatch) {
         Send({
-            url: `/board/${id}/comment`,
+            url: `/board/comment/write`,
             method: 'post',
             data: content,
         }).then((resp) => {

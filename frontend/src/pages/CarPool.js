@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
 import { GoSearch } from 'react-icons/go'
@@ -10,9 +10,13 @@ import { IoMdArrowDropdown } from 'react-icons/io';
 import resorts from '../data/resort.json'
 import shortid from 'shortid'
 import { CarPoolListItem } from '../components/CarPool/CarPoolListItem';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadCarpools } from '../action/carpool';
 
 export function CarPool() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const carpools = useSelector(state => state.carpool.carpools);
     const [routeType, setRouteType] = useState("house");
     const [selectedResort, setSelectedResort] = useState("--");
     const [showSelectBox, setShowSelectBox] = useState(false);
@@ -32,6 +36,10 @@ export function CarPool() {
         setSelectedResort(e.target.id);
         setShowSelectBox(false);
     }
+
+    useEffect(() => {
+        dispatch(loadCarpools());
+    }, [dispatch]);
     return (
     <Wrapper>
         <Top>
@@ -98,8 +106,9 @@ export function CarPool() {
         </SearchWrapper>
 
         <Posts>
-            <CarPoolListItem />
-            {/* <CarPoolListItem /> */}
+            {carpools.length > 0 && carpools.map(carpool => (
+                <CarPoolListItem  key={carpool.id}{...carpool} />
+            ))}
         </Posts>
     </Wrapper>
     )

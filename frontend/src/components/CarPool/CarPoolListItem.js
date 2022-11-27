@@ -2,20 +2,20 @@ import React from 'react'
 import styled from 'styled-components'
 import { BsArrowRight } from 'react-icons/bs'
 
-export function CarPoolListItem() {
+export function CarPoolListItem(props) {
     return (
     <Wrapper>
         <Top>
-            <TakeCnt>인원 0/4</TakeCnt>
+            <TakeCnt>인원 0/{props.passenger}</TakeCnt>
             <CarCnt>운행건수 (2회)</CarCnt>
         </Top>
 
         <Middle>
             <MiddleTag><TalkTag className="carPoolItem-middleTag">협의 가능</TalkTag><div></div><div></div></MiddleTag>
             <Place>
-                <Start>서울역</Start>
+                <Start>{props.departure}</Start>
                 <SBsArrowRight />
-                <End>엘리시안</End>
+                <End>{props.destination}</End>
             </Place>
             <TimeWrap>
                 <Time>12/1 07:00 <TimeText>출발</TimeText></Time>
@@ -23,8 +23,8 @@ export function CarPoolListItem() {
         </Middle>
 
         <Bottom>
-            <Tag>흡연 차량</Tag>
-            <Tag>여유공간 많아요</Tag>
+            <Tag>{props.smoke}</Tag>
+            {/* <Tag>여유공간 많아요</Tag> */}
         </Bottom>
     </Wrapper>
     )

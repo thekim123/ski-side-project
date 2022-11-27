@@ -61,6 +61,7 @@ export function BoardDetail() {
     const handleSubmit = e => {
         e.preventDefault();
         const sendComment = {
+            boardId: id,
             content: commentInput
         }
         dispatch(addComment(id, sendComment));
@@ -153,8 +154,10 @@ export function BoardDetail() {
                                 <ComName>{c.user.nickname}</ComName>
                                 </ComNameBox>
                                 <NotiBox>
-                                <ComNoti>신고</ComNoti>
-                                {<SBsTrashFill onClick={handleCommentTrash}/>}
+                                    {/* 다른 사람의 댓글일 때 신고 버튼 */}
+                                {c.user.username !== user ? <ComNoti>신고</ComNoti> : null}
+                                {/* 내 댓글일 때 삭제 버튼 */}
+                                {c.user.username === user ? <SBsTrashFill onClick={handleCommentTrash}/> : null}
                                 </NotiBox>
                             </ComNameIcon>
                             <ComContent>{c.content}</ComContent>
@@ -382,7 +385,7 @@ font-size:8px;
 color: var(--button-sub-color);
 `
 const ComContent = styled.div`
-padding: 3px 0;
+padding: 6px 0;
 font-size: 15px;
 `
 const ComNoti = styled.div`
