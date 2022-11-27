@@ -9,6 +9,7 @@ import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { addCarpool } from '../../action/carpool';
 
 export function CarPoolWrite() {
     const dispatch = useDispatch();
@@ -17,7 +18,6 @@ export function CarPoolWrite() {
     const resortsData = resorts.filter(resort => resort.id !== null);
     const resortName = resortsData.map(resort => resort.name);
     //const city = ["서울", "경기", "인천", "부산", "대구", "대전"]
-    const space = ["적어요", "보통이에요", "많아요"];
     const smoking = ["금연 차량", "흡연 차량"];
     const [date, setDate] = useState(new Date());
     const [showDate, setShowDate] = useState(false);
@@ -32,11 +32,10 @@ export function CarPoolWrite() {
     const [error, setError] = useState({
         date:"",
         route: "",
-        resort: "",
-        startEnd: "",
+        departure: "",
+        destination: "",
         place: "",
         time: "",
-        space: "",
         smoking: "",
         cnt: "",
         content: "",
@@ -79,8 +78,11 @@ export function CarPoolWrite() {
     }
 
     // reset Input error
-    const resetStartEndError = e => {
-        setError({...error, startEnd: ""})
+    const resetDepartureError = e => {
+        setError({...error, departure: ""})
+    }
+    const resetDestinationError = e => {
+        setError({...error, destination: ""})
     }
     const resetPlaceError = e => {
         setError({...error, place: ""})
@@ -109,9 +111,93 @@ export function CarPoolWrite() {
         } else setIsDone({...isDone, cnt: false})
     }
 
+    // 입력 유효성 검사
+    const validateInput = (startEnd, place, content, cnt) => {
+        let local_error = {
+            date:"",
+            route: "",
+            departure: "",
+            destination: "",
+            place: "",
+            time: "",
+            smoking: "",
+            cnt: "",
+            content: "",
+        }
+        
+        // 제목, 홍보 문구, 최대 인원
+        if (startEnd.trim() === '') {
+            if (selectedRoute === '출발지가 스키장') {
+                local_error.destination = "도착지를 입력하세요."
+            } else local_error.departure = "출발지를 입력하세요."
+        } else if (startEnd.length > 30) {
+            if (selectedRoute === '출발지가 스키장') {
+                local_error.destination = "30자 이하여야 합니다."
+            } else local_error.departure = "30자 이하여야 합니다."
+        } 
+        if (place.trim() === '') {
+            local_error.place = "탑승 장소를 입력하세요."
+        } else if (place.length > 30) {
+            local_error.place = "30자 이하여야 합니다."
+        }
+        if (content.trim() === '') {
+            local_error.content = "추가 사항을 입력하세요."
+        } else if (content.length > 1000) {
+            local_error.content = "추가 사항은 1000자 이하여야 합니다."
+        }
+        if (cnt.trim() === '') local_error.cnt = "탑승 가능 인원을 입력하세요.";
+        else {
+            let replacedCnt = cnt.replace(/[0-9]/g, '');
+            //console.log(replacedCnt.search(digitRegex) > -1)
+            //console.log('hmm'.search(digitRegex) > -1);
+            if (replacedCnt.length !== 0) local_error.cnt = "숫자만 입력 가능합니다.";
+        }
+
+        //날짜, 시간
+        if (!date) local_error.date = "날짜를 선택하세요."
+        if (!selectedRoute) local_error.route = "경로를 선택하세요."
+        if (!selectedResort) {
+            if (selectedRoute === '출발지가 스키장')
+                local_error.departure = "출발지를 선택하세요."
+            else local_error.destination = "도착지를 선택하세요."
+        }
+        if (!startTime) local_error.time = "출발 시간을 선택하세요."
+        if (!selectedSmoking) local_error.smoking = "흡연 / 금연을 선택하세요."
+
+        setError({...local_error});
+        for (let c in local_error) {
+            if (local_error[c]) return false;
+        }
+        return true;
+    }
+
     const handleSubmit = e => {
         e.preventDefault();
-        console.log(error);
+
+        const enteredStartEnd = startEndInput.current.value;
+        const enteredPlace = placeInput.current.value;
+        const enteredContent = contentInput.current.value;
+        const enteredCnt = cntInput.current.value;
+        if (!validateInput(enteredStartEnd, enteredPlace, enteredContent, enteredCnt)) return;
+
+        const departure = selectedRoute === '도착지가 스키장' ? enteredStartEnd : selectedResort;
+        const destination = selectedRoute === '도착지가 스키장' ? selectedResort : enteredStartEnd;
+
+        const carpool = {
+            departure: departure,
+            destination: destination,
+            departTime: startTime,
+            boarding: enteredPlace,
+            //space: "임시",
+            smoke: selectedSmoking,
+            //phoneNumber: "임시",
+            //cost: "100",
+            passenger: enteredCnt,
+            memo: enteredContent
+        }
+        console.log(carpool);
+        dispatch(addCarpool(carpool));
+        navigate('/carpool');
     }
 
     const startPlace = selectedRoute === route[0] ?
@@ -120,7 +206,7 @@ export function CarPoolWrite() {
             <input
                 type="text"
                 ref={startEndInput}
-                onClick={resetStartEndError}
+                onClick={resetDepartureError}
                 onChange={startEndDone}
                 placeholder="입력 예시) 서울"
                 />
@@ -134,14 +220,14 @@ export function CarPoolWrite() {
             <input
                 type="text"
                 ref={startEndInput}
-                onClick={resetStartEndError}
+                onClick={resetDestinationError}
                 onChange={startEndDone}
                 placeholder="입력 예시) 서울"
                 />
         </Input>
 
     return (
-    <Wrapper>
+    <Wrapper> 
         <Title><div className="clubReg-top">카풀 등록</div></Title>
         <form onSubmit={handleSubmit}>
             <DatePick>
@@ -162,9 +248,9 @@ export function CarPoolWrite() {
             <Error><Dummy></Dummy><div>{error.route ? error.route : null}</div></Error>
 
             {selectedRoute !== '--' && startPlace}
-            <Error><Dummy></Dummy><div>{error.content ? error.content : null}</div></Error>
+            <Error><Dummy></Dummy><div>{error.departure ? error.departure : null}</div></Error>
             {selectedRoute !== '--' && endPlace}
-            <Error><Dummy></Dummy><div>{error.content ? error.content : null}</div></Error>
+            <Error><Dummy></Dummy><div>{error.destination ? error.destination : null}</div></Error>
             
             {isDone.startEnd && 
             <DatePick>
@@ -184,7 +270,7 @@ export function CarPoolWrite() {
                     className='tayoWrite-startT'
                 />
             </DatePick>
-            }
+            }<Error><Dummy></Dummy><div>{error.time ? error.time : null}</div></Error>
 
             {isDone.time &&
             <Input>
