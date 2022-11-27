@@ -6,6 +6,7 @@ import { addMyResort, deleteMyResort } from '../action/resort'
 import { addBookmark, deleteBookmark, loadBookmarks } from '../action/bookmark';
 import styled from 'styled-components'
 import shortid from 'shortid';
+import { Loading } from './common/Loading';
 
 export function ResortModal(props) {
     const dispatch = useDispatch();
@@ -32,6 +33,8 @@ export function ResortModal(props) {
         <div className={props.open ? "openModal skiModal" : "skiModal"} onClick={clickOutside}>
         {props.open ? (
             <Section>
+                {!props.dayState.icon ? <Loading /> :
+                <>
                 <Header>
                     <div onClick={toggleStar}>{emptyStar ? <AiOutlineStar className="modal-star"/> : <AiFillStar className="modal-star"/>}</div>
                     <div className="modal-resortName">{props.header}</div>
@@ -40,8 +43,9 @@ export function ResortModal(props) {
 
                 
                 {/* {isLoading || error */}
-                    {/* ? <div>Waiting..</div>  */}
-                    {/* :  */}
+                {/* {!props.dayState.icon ?
+                    <div>Waiting..</div>
+                    : */}
                     <TempWeather>
                         <TempImg src={props.dayState.icon} />
                         <TempDate>{props.dayState.date} ({props.dayState.day})</TempDate>
@@ -71,6 +75,8 @@ export function ResortModal(props) {
                         <Row><Label>이용 요금</Label><Url>https://www.yongpyong.co.kr/kor/skiNboard/introduce.do</Url></Row>
                         
                 </ResortInfo>
+                </>
+            }
             </Section>
         ): null}
         </div>
@@ -113,8 +119,8 @@ const Header = styled.div`
     align-items: center;
     padding-top: 5px;
     .modal-star {
-        width: 1.5rem;
-        height: 1.5rem;
+        width: 1.8rem;
+        height: 1.8rem;
         padding-left: 9px;
         color: var(--button-color);
     }
