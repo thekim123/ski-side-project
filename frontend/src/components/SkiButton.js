@@ -21,7 +21,8 @@ export function SkiButton(props) {
         icon: "",
         week: []
     })
-    const API_KEY = '465b890d740de2877b1582f311306e35';
+    const [isLoading, setIsLoading] = useState(false);
+    const API_KEY = process.env.REACT_APP_WEATHER_KEY;
 
     const openResort = () => {
         setResortOpen(true);
@@ -35,6 +36,7 @@ export function SkiButton(props) {
 
     const getWeather = async (lat, lon) => {
         try{
+            setIsLoading(true);
             //현재 날씨 정보
             const resWeather = await axios.get(
                 //`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
@@ -87,11 +89,12 @@ export function SkiButton(props) {
                 icon: _test,
                 week: minMax
             })
+            setIsLoading(false);
         } catch (error) {
             console.log(error);
             console.log("날씨 정보 get 실패");
             //setError(true);
-            //setIsLoading(false);
+            setIsLoading(false);
         }
     };
 
@@ -120,6 +123,7 @@ export function SkiButton(props) {
             engCity="Seoul" 
             dayState={dayState} 
             like={props.like}
+            loading={isLoading}
         />
         </>
         : <Empty></Empty>}
