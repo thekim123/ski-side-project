@@ -22,7 +22,7 @@ public class ClubBoardDto {
 
     // 동호회
 
-    private Club club;
+    private Long clubId;
 
     // 댓글
     private List<Reply> replies = new ArrayList<>();
@@ -58,9 +58,9 @@ public class ClubBoardDto {
     private String role;
 
 
-    public ClubBoardDto(Long id, Club club, String title, String content, String tempFlag, String sortScope, String role) {
+    public ClubBoardDto(Long id, Long clubId, String title, String content, String tempFlag, String sortScope, String role) {
         this.id = id;
-        this.club = club;
+        this.clubId = clubId;
         this.title = title;
         this.content = content;
         this.tempFlag = tempFlag;
@@ -74,7 +74,6 @@ public class ClubBoardDto {
 
     public ClubBoard toEntity(User user,Club club) {
         return ClubBoard.builder()
-                .id(id)
                 .club(club)
                 .title(title)
                 .content(content)

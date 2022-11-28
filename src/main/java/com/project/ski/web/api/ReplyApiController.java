@@ -19,13 +19,13 @@ public class ReplyApiController {
     private final ReplyService replyService;
 
     @PostMapping("/{clubBoardId}/reply")
-    public CmRespDto<?> saveReply(@PathVariable long clubBoardId, @RequestBody Reply reply, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public CmRespDto<ClubBoardDto> saveReply(@PathVariable long clubBoardId, @RequestBody Reply reply, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         replyService.saveReply(clubBoardId, reply, principalDetails.getUser());
         return new CmRespDto<>(1, "동호회 댓글 작성 완료", null);
     }
 //
     @DeleteMapping("/{clubBoardId}/reply/{replyId}")
-    public CmRespDto<ClubBoardDto> delteReply(@PathVariable long replyId) {
+    public CmRespDto<ClubBoardDto> deleteReply(@PathVariable long replyId) {
         replyService.deleteReply(replyId);
         return new CmRespDto<>(1, "동호회 댓글 삭제 완료", null);
     }

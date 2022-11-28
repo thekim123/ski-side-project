@@ -40,18 +40,18 @@ public class ClubBoardService {
      * 해당 동호회에 가입한 유저만이 게시판에 글을 쓸 수 있음
      *
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public ClubBoardDto createClubBoard(ClubBoardDto dto, User user) {
 
         User findUser = userRepository.findById(user.getId()).orElseThrow(()->{
             return new IllegalArgumentException("실패");
         });
 
-        Club club = clubRepository.findById(dto.getClub().getId()).orElseThrow(()->{
+        Club club = clubRepository.findById(dto.getClubId()).orElseThrow(()->{
             return new IllegalArgumentException("동호회 찾기 실패");
         });
 
-        ClubBoard cb = dto.toEntity(findUser, club);
+        ClubBoard cb = dto.toEntity(user, club);
         clubBoardRepository.save(cb);
         return dto;
     }
