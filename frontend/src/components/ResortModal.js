@@ -49,10 +49,10 @@ export function ResortModal(props) {
                     <TempWeather>
                         <TempImg src={props.dayState.icon} />
                         <TempDate>{props.dayState.date} ({props.dayState.day})</TempDate>
-                        <div><TempC>{props.dayState.tempCelcius}&deg;</TempC>
-                        {/* <TempDesc>{props.dayState.currentWeather}</TempDesc> */}
-                        </div>
-                        <div><MaxC>최고 {props.dayState.tempMax}&deg;</MaxC><MinC>최저 {props.dayState.tempMin}&deg;</MinC></div>
+                        <CBox><TempC>{props.dayState.tempCelcius}&deg;</TempC>
+                        <TempDesc>{props.dayState.currentWeather}</TempDesc>
+                        </CBox>
+                        <div><MaxC className='temp-max'>최고 {props.dayState.tempMax}&deg;</MaxC><MinC>최저 {props.dayState.tempMin}&deg;</MinC></div>
                 </TempWeather>
                 {/* } */}
 
@@ -107,7 +107,7 @@ const Section = styled.div`
     width: 90%;
     margin: 0 auto;
     border-radius: 0.3rem;
-    background-color: #fff;
+    background-color: var(--background-color);
     //animation: modal-show 0.3s;
     overflow: hidden;
 `
@@ -143,6 +143,16 @@ const TempWeather = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
+    background-color: #FAFAFA;
+    box-shadow: 5px 2px 7px -2px rgba(17, 20, 24, 0.15);
+    border-radius: 10px;
+    margin: 10px;
+    margin-bottom: 0;
+    padding-bottom: 20px;
+
+    .temp-max{
+        margin-right: 5px;
+    }
 `
 
 const TempImg = styled.img`
@@ -152,43 +162,60 @@ const TempImg = styled.img`
 const TempDate = styled.div`
     font-weight: bold;
     font-size: 14px;
+    padding-bottom: 10px;
 `
-const TempDesc = styled.span`
+const CBox = styled.div`
+padding-bottom: 10px;
+display: grid;
+justify-items: center;
+`
+const TempDesc = styled.div`
     font-size: 14px;
+    margin-right: 4px;
 `
 
-const TempC = styled.span`
+const TempC = styled.div`
     font-weight: bold;
-    font-size: 20px;
+    font-size: 22px;
 `
 
 const MaxC = styled.span`
     font-size: 12px;
-    font-weight: bold;
-    color: #CD5C5C;
+    //font-weight: bold;
+    background-color: #CD5C5C;
+    background-color: #B73E3E;
+    color: #FAFAFA;
+    padding: 3px 5px;
+    border-radius: 5px;
     margin-right: 7px;
 `
 const MinC = styled.span`
     font-size: 12px;
     font-weight: bold;
-    color: #447F96;
+    //background-color: #447F96;
+    background-color: #628E90;
+    color: #FAFAFA;
+    padding: 3px 5px;
+    border-radius: 5px;
     margin-left: 7px;
+    margin-top: 3px;
 `
 
 // 주간 날씨
 const WeekWeather = styled.div`
     display: flex;
     justify-content: space-between;
-    margin: 20px;
-    border-top: 1px solid #CCCCCC;
-    border-bottom: 1px solid #CCCCCC;
+    //border-top: 1px solid #CCCCCC;
+    //border-bottom: 1px solid #CCCCCC;
+    margin: 10px 10px;
+    //margin-top: 8px;
 `
 const EachDay = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 15px;
+    padding: 10px;
 `
 
 const ResortInfo = styled.div`

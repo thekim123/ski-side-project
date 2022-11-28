@@ -7,6 +7,7 @@ import { HiPlus } from 'react-icons/hi';
 import { FaHouseUser, FaLongArrowAltRight, FaSkiing } from 'react-icons/fa'
 import { BsArrowRight } from 'react-icons/bs'
 import { IoMdArrowDropdown } from 'react-icons/io';
+import { BsFillCheckCircleFill } from 'react-icons/bs'
 import resorts from '../data/resort.json'
 import shortid from 'shortid'
 import { CarPoolListItem } from '../components/CarPool/CarPoolListItem';
@@ -106,6 +107,10 @@ export function CarPool() {
         </SearchWrapper>
 
         <Posts>
+            <TagBox>
+                <SBsFillCheckCircleFill />
+                <div>협의 가능</div>
+            </TagBox>
             {carpools.length > 0 && carpools.map(carpool => (
                 <CarPoolListItem  key={carpool.id}{...carpool} />
             ))}
@@ -286,4 +291,19 @@ padding: 12px;
 //POSTS
 const Posts = styled.div`
 margin: 160px 20px 0 20px;
+`
+const TagBox = styled.div`
+display: flex;
+padding: 0 0 10px 5px;
+div{
+    //color: gray;
+    font-size: 12px;
+}
+`
+const SBsFillCheckCircleFill = styled(BsFillCheckCircleFill)`
+align-self: center;
+margin-right: 3px;
+width: 13px;
+height: 13px;
+color: #005C00;
 `

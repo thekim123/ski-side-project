@@ -13,7 +13,8 @@ export function Club() {
     const clubs = useSelector(state => state.club.clubs);
     const resortData = resorts.filter(resort => resort.id !== null);
     const [selectedResort, setSelectedResort] = useState("[전체]"); 
-    const [filteredResorts, setFilteredResorts] = useState(clubs); 
+    //const [filteredResorts, setFilteredResorts] = useState(clubs); 
+    const [sortedClubs, setSortedClubs] = useState(clubs);
     const top3Clubs = clubs.slice(0, 3);
     const fromFourthClubs = clubs.slice(3, );
     const [clubNum, setClubNum] = useState([]);
@@ -38,49 +39,61 @@ export function Club() {
 
     
     useEffect(() => { //나중에 회원 많은 순으로 정렬하는 기능 넣기
+        /*
         if (selectedResort === "[전체]") setFilteredResorts(clubs);
         else {
             let filteredResort = clubs.filter(club => club.resort_id === selectedResort);
             setFilteredResorts(filteredResort);
-        } 
+        } */
+
+        if (clubs.length > 0) {
+            const newArr = [...clubs];
+            newArr.sort(function(a, b) {
+            return b.memberCnt - a.memberCnt
+            })
+            setSortedClubs(newArr);
+        }
 
     }, [selectedResort, clubs]);
     return (
-    <ClubContainer>
-        <ClubListForm change={changeSelection} />
-        {filteredResorts.length > 3 && <ClubTop>
-            <Top3>
-                <Rank2 id={filteredResorts[1].id} className="club-top3" onClick={e => showDetail(e, filteredResorts[1].openYn)}>
-                    <Rank id={filteredResorts[1].id}>2</Rank>
-                    <div id={filteredResorts[1].id}>{filteredResorts[1].clubNm}</div>
-                    <TopResort id={filteredResorts[1].id}>{resortData.find(resort => resort.id === filteredResorts[1].resortId).name}</TopResort>
-                    <TopCnt id={filteredResorts[1].id}>{filteredResorts[1].memberCnt}명</TopCnt>
-                </Rank2>
-                <Rank1 id={filteredResorts[0].id} className="club-top3" onClick={e => showDetail(e, filteredResorts[0].openYn)}>
-                    <Rank id={filteredResorts[0].id}>1</Rank>
-                    <div id={filteredResorts[0].id}>{filteredResorts[0].clubNm}</div>
-                    <TopResort id={filteredResorts[0].id}>{resortData.find(resort => resort.id === filteredResorts[0].resortId).name}</TopResort>
-                    <TopCnt id={filteredResorts[0].id}>{filteredResorts[0].memberCnt}명</TopCnt>
-                </Rank1>
-                <Rank3 id={filteredResorts[2].id} className="club-top3" onClick={e => showDetail(e, filteredResorts[2].openYn)}>
-                    <Rank id={filteredResorts[2].id}>3</Rank>
-                    <div id={filteredResorts[2].id}>{filteredResorts[2].clubNm}</div>
-                    <TopResort id={filteredResorts[2].id}>{resortData.find(resort => resort.id === filteredResorts[2].resortId).name}</TopResort>
-                    <TopCnt id={filteredResorts[2].id}>{filteredResorts[2].memberCnt}명</TopCnt>
-                </Rank3>
-            </Top3>
-        </ClubTop>}
-        <ClubList>
-            {fromFourthClubs.length > 0 && fromFourthClubs.map((club, i) => (
+        <ClubContainer>
+            <ClubListForm change={changeSelection} />
+            <ClubTop>
+                <Top3>
+                    {sortedClubs.length > 1 &&
+                    <Rank2 id={sortedClubs[1].id} className="club-top3" onClick={e => showDetail(e, sortedClubs[1].openYn)}>
+                        <Rank id={sortedClubs[1].id}>2</Rank>
+                        <div id={sortedClubs[1].id}>{sortedClubs[1].clubNm}</div>
+                        <TopResort id={sortedClubs[1].id}>{resortData.find(resort => resort.id === sortedClubs[1].resortId).name}</TopResort>
+                        <TopCnt id={sortedClubs[1].id}>{sortedClubs[1].memberCnt}명</TopCnt>
+                    </Rank2>}
+                    <Rank1 id={sortedClubs[0].id} className="club-top3" onClick={e => showDetail(e, sortedClubs[0].openYn)}>
+                        <Rank id={sortedClubs[0].id}>1</Rank>
+                        <div id={sortedClubs[0].id}>{sortedClubs[0].clubNm}</div>
+                        <TopResort id={sortedClubs[0].id}>{resortData.find(resort => resort.id === sortedClubs[0].resortId).name}</TopResort>
+                        <TopCnt id={sortedClubs[0].id}>{sortedClubs[0].memberCnt}명</TopCnt>
+                    </Rank1>
+                    {sortedClubs.length > 2 &&
+                    <Rank3 id={sortedClubs[2].id} className="club-top3" onClick={e => showDetail(e, sortedClubs[2].openYn)}>
+                        <Rank id={sortedClubs[2].id}>3</Rank>
+                        <div id={sortedClubs[2].id}>{sortedClubs[2].clubNm}</div>
+                        <TopResort id={sortedClubs[2].id}>{resortData.find(resort => resort.id === sortedClubs[2].resortId).name}</TopResort>
+                        <TopCnt id={sortedClubs[2].id}>{sortedClubs[2].memberCnt}명</TopCnt>
+                    </Rank3>}
+                </Top3>
+            </ClubTop>
+
+            <ClubList>
+                {sortedClubs.length > 3 && sortedClubs.slice(3, ).map((club, i) => (
                 <ClubListItem key={i} id={club.id} onClick={e => showDetail(e, club.openYn)}>
-                    <Order id={club.id}>{i + 4}</Order>
-                    <ClubName id={club.id}>{club.clubNm}</ClubName>
-                    <ClubResort id={club.id}>{resortData.find(resort => resort.id === club.resortId).name}</ClubResort>
-                    <MemCnt id={club.id}>{club.memberCnt}명</MemCnt>
+                        <Order id={club.id}>{i + 4}</Order>
+                        <ClubName id={club.id}>{club.clubNm}</ClubName>
+                        <ClubResort id={club.id}>{resortData.find(resort => resort.id === club.resortId).name}</ClubResort>
+                        <MemCnt id={club.id}>{club.memberCnt}명</MemCnt>
                 </ClubListItem>
-            ))}
-        </ClubList>
-    </ClubContainer>
+                ))}
+            </ClubList>
+        </ClubContainer>
     )
 }
 

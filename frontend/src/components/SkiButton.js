@@ -40,7 +40,7 @@ export function SkiButton(props) {
             //현재 날씨 정보
             const resWeather = await axios.get(
                 //`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
-                `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+                `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=kr`
             );
 
             //if (mounted) {
@@ -77,6 +77,10 @@ export function SkiButton(props) {
                 let i_max = Math.max.apply(null, max_arr.slice(i, i + 8));
                 minMax.push({"day": weekSlice[i / 8], "min": Math.floor(i_min * 10) / 10, "max": Math.ceil(i_max * 10) / 10});
             }
+
+            // const thirtyDays = await axios.get(
+            // `https://api.openweathermap.org/data/2.5/forecast/climate?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+            // )
             
             setDayState({
                 ...dayState,

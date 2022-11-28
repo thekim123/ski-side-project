@@ -13,6 +13,9 @@ const carpoolSlice = createSlice({
         },
         addCarpool(state) {
             
+        },
+        editCarpool(state) {
+            
         }
     }
 })

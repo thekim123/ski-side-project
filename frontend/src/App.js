@@ -22,6 +22,7 @@ import { TayoDetail } from './components/Tayo/TayoDetail';
 import { CarPool } from './pages/CarPool';
 import { CarPoolDetail } from './components/CarPool/CarPoolDetail';
 import { CarPoolWrite } from './components/CarPool/CarPoolWrite';
+import { EditCarPool } from './components/CarPool/EditCarPool';
 
 function App() {
   const dispatch = useDispatch();
@@ -54,6 +55,7 @@ function App() {
             <Route path="carpool" element={<CarPool />} />
             <Route path="carpool/write" element={<CarPoolWrite />} />
             <Route path="carpool/detail" element={<CarPoolDetail />} />
+            <Route path="carpool/edit/:id" element={<EditCarPool />} />
           </Route>
         </Route>
       </Routes>
