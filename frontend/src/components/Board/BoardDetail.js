@@ -294,13 +294,13 @@ border-bottom: 1px solid #CCCCCC;
 `
 const Form = styled.form`
     display: flex;
-    //background-color: white;
-    padding: 10px 20px;
+    background-color: var(--background-color);
+    padding: 0px 20px;
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    margin-bottom: 85px;
+    padding-bottom: 95px;
 
     .boardDetail-input {
         flex: 1 1;

@@ -28,3 +28,25 @@ export const addCarpool = (carpool) => {
         .catch((error) => console.log(error));
     }
 }
+
+export const getCarpool = (id) => {
+    return function (dispatch) {
+        Send({
+            url: '/carpool'
+        })
+    }
+}
+
+export const editCarpool = (id, carpool) => {
+    return function (dispatch) {
+        Send({
+            url:`/carpool/update/${id}`,
+            method: 'put',
+            data: carpool,
+        }).then((resp) => {
+            console.log("resp", resp);
+            dispatch(carpoolActions.editCarpool());
+        })
+        .catch(error => console.log(error));
+    }
+} 

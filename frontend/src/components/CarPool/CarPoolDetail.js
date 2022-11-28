@@ -3,12 +3,16 @@ import styled from 'styled-components'
 import { CarPoolListItem } from './CarPoolListItem'
 import { HiPencil } from 'react-icons/hi'
 import { BsTrashFill, BsFilePost, BsArrowRight } from 'react-icons/bs'
+import { useNavigate, useParams } from 'react-router-dom'
 
 export function CarPoolDetail() {
+    const navigate = useNavigate();
     const [isMine, setIsMine] = useState(true);
+    //const id = useParams();
 
     const handlePencil = e => {
-
+        //navigate(`/carpool/edit/${id}`)
+        navigate('/carpool/edit/1')
     }
     const handleTrash = e => {
 

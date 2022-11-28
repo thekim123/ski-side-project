@@ -107,7 +107,7 @@ export function EditBoard() {
 
     return (
     <Wrapper>
-        <div className="boardWrite-top">글 작성</div>
+        <div className="boardWrite-top">글 수정</div>
         <form onSubmit={handleSubmit}>
         <Top>
             <SelectBox>
