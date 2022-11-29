@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { clubActions } from '../slice/club';
 import Send from '../components/common/Send';
 
@@ -37,6 +36,19 @@ export const getSingleClub = (id) => {
             method: 'get',
         }).then((resp) => {
             console.log("resp", resp);
+        })
+        .catch(error => console.log(error));
+    }
+}
+
+export const getClubUser = (clubId) => {
+    return function (dispatch) {
+        Send({
+            url: `/club/${clubId}/user`,
+            method: 'get',
+        }).then((resp) => {
+            console.log("resp", resp);
+            dispatch(clubActions.getUsers(resp.data.data.content))
         })
         .catch(error => console.log(error));
     }

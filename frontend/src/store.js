@@ -24,12 +24,14 @@ import authSlice from './slice/auth';
 import tayoSlice from './slice/tayo';
 import bookmarkSlice from './slice/bookmark';
 import carpoolSlice from './slice/carpool';
+import clubBoardSlice from './slice/clubBoard';
 
 const store = configureStore({
     reducer: {
         resort: resortSlice.reducer,
         board: boardSlice.reducer,
         club: clubSlice.reducer,
+        clubBoard: clubBoardSlice.reducer,
         tayo: tayoSlice.reducer,
         carpool: carpoolSlice.reducer,
         bookmarks: bookmarkSlice.reducer,

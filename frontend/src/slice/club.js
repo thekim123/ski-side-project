@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
     clubs: [],
     club: null,
+    users: [],
 }
 const clubSlice = createSlice({
     name: 'club',
@@ -15,6 +16,9 @@ const clubSlice = createSlice({
         getClub(state, action) {
             state.club = action.payload;
         },
+        getUsers(state, action) {
+            state.users = action.payload;
+        }
     }
 });
 

@@ -1,17 +1,22 @@
 import React, { forwardRef, useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { getSingleClub } from '../../action/club';
 import styled from 'styled-components';
 import { HiPlus } from 'react-icons/hi';
 import { BsCircle } from 'react-icons/bs';
 import { AiFillRightCircle } from 'react-icons/ai';
 import { IoMdAddCircle } from 'react-icons/io';
+import resorts from '../../data/resort.json';
+import { BsPeopleFill } from 'react-icons/bs'
+import { loadPosts } from '../../action/clubBoard';
 
-export function ClubDetail() {
+export function ClubDetail(props) {
     const dispatch = useDispatch();
-    const club = useSelector(state => state.club.club);
-    let {id} = useParams();
+    const navigate = useNavigate();
+    const club = useLocation().state;
+    const clubBoards = useSelector(state => state.clubBoard.clubBoards);
 
     const cutText = (text, margin) => {
         if (text.length > margin) {
@@ -19,35 +24,44 @@ export function ClubDetail() {
         } else return text;
     }
 
+    const clickNoticePlus = e => {
+        console.log(club);
+
+        navigate('/club/board/write', { state: club });
+    }
     const clickPlus = e => {
 
     }
 
     useEffect(() => { 
-        if (id) { 
-            //dispatch(getSingleClub(id));
-        }
-    }, [dispatch, id]);
+        dispatch(loadPosts(club.id));
+    }, [dispatch]);
 
     return (
     <>
     {/* {club &&  */}
     <Container>
         <ClubName onClick={cutText}>
-            {/* {club.club_nm} */}
-            스키씽씽
+            {props.clubNm}
         </ClubName>
         <ClubResort>
-            {/* {club.resort_id} */}
-            엘리시안
+            {resorts.find(resort => resort.id === club.resortId).name}
         </ClubResort>
+        <InfoBox>
+            <CntBox>
+                <SBsPeopleFill />
+                <Cnt>{club.memberCnt}명</Cnt>
+            </CntBox>
+
+        </InfoBox>
         <TopLine> </TopLine>
+
         <NoticeBox>
             <NoticeTop>
                 <ButtonBox>
                 <Notice>공지</Notice>
                 {/* 공지는 방장이나 부방장만 보이게. */}
-                <SHiPlus className="tayo-plus" onClick={clickPlus}/>
+                <SHiPlus className="tayo-plus" onClick={clickNoticePlus}/>
                 </ButtonBox>
                 <MoreBox><Button>more...</Button></MoreBox>
             </NoticeTop>
@@ -122,11 +136,28 @@ font-size: 25px;
 const ClubResort = styled.div`
 padding-top: 8px;
 `
+const InfoBox = styled.div`
+margin-top: 70px;
+display: flex;
+`
+const CntBox = styled.div`
+display: flex;
+color: gray;
+justify-items: center;
+align-items: center;
+padding: 0 5px;
+`
+const SBsPeopleFill = styled(BsPeopleFill)`
+
+`
+const Cnt = styled.div`
+font-size: 13px;
+padding-left: 3px;
+`
 const TopLine = styled.div`
 border-bottom: 1px solid #CCCCCC;
 width: 90%;
 font-size: 14px;
-margin-top: 40px;
 padding: 5px;
 `
 const NoticeBox = styled.div`
