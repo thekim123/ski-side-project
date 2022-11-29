@@ -23,12 +23,14 @@ export function Club() {
         setSelectedResort(resort);
     }
 
-    const showDetail = (e, openYn) => {
+    const showDetail = (e, club) => {
         //만약 동호회가 오픈방이면 detail, 비밀방이면 secret 페이지로 이동.
         let clubId = e.target.id;
-        if (openYn === "Y") { 
+
+        if (club.openYn === "Y") { 
             navigate(`/club/detail/${clubId}`);
         } else {
+            //비밀방이지만 해당 동호회의 회원이면 detail page로 이동.
             navigate(`/club/secret/${clubId}`);
         }
     }
@@ -59,33 +61,34 @@ export function Club() {
         <ClubContainer>
             <ClubListForm change={changeSelection} />
             <ClubTop>
+                {sortedClubs.length > 0 &&
                 <Top3>
                     {sortedClubs.length > 1 &&
-                    <Rank2 id={sortedClubs[1].id} className="club-top3" onClick={e => showDetail(e, sortedClubs[1].openYn)}>
+                    <Rank2 id={sortedClubs[1].id} className="club-top3" onClick={e => showDetail(e, sortedClubs[1])}>
                         <Rank id={sortedClubs[1].id}>2</Rank>
                         <div id={sortedClubs[1].id}>{sortedClubs[1].clubNm}</div>
                         <TopResort id={sortedClubs[1].id}>{resortData.find(resort => resort.id === sortedClubs[1].resortId).name}</TopResort>
                         <TopCnt id={sortedClubs[1].id}>{sortedClubs[1].memberCnt}명</TopCnt>
                     </Rank2>}
-                    <Rank1 id={sortedClubs[0].id} className="club-top3" onClick={e => showDetail(e, sortedClubs[0].openYn)}>
+                    <Rank1 id={sortedClubs[0].id} className="club-top3" onClick={e => showDetail(e, sortedClubs[0])}>
                         <Rank id={sortedClubs[0].id}>1</Rank>
                         <div id={sortedClubs[0].id}>{sortedClubs[0].clubNm}</div>
                         <TopResort id={sortedClubs[0].id}>{resortData.find(resort => resort.id === sortedClubs[0].resortId).name}</TopResort>
                         <TopCnt id={sortedClubs[0].id}>{sortedClubs[0].memberCnt}명</TopCnt>
                     </Rank1>
                     {sortedClubs.length > 2 &&
-                    <Rank3 id={sortedClubs[2].id} className="club-top3" onClick={e => showDetail(e, sortedClubs[2].openYn)}>
+                    <Rank3 id={sortedClubs[2].id} className="club-top3" onClick={e => showDetail(e, sortedClubs[2])}>
                         <Rank id={sortedClubs[2].id}>3</Rank>
                         <div id={sortedClubs[2].id}>{sortedClubs[2].clubNm}</div>
                         <TopResort id={sortedClubs[2].id}>{resortData.find(resort => resort.id === sortedClubs[2].resortId).name}</TopResort>
                         <TopCnt id={sortedClubs[2].id}>{sortedClubs[2].memberCnt}명</TopCnt>
                     </Rank3>}
-                </Top3>
+                </Top3>}
             </ClubTop>
 
             <ClubList>
                 {sortedClubs.length > 3 && sortedClubs.slice(3, ).map((club, i) => (
-                <ClubListItem key={i} id={club.id} onClick={e => showDetail(e, club.openYn)}>
+                <ClubListItem key={i} id={club.id} onClick={e => showDetail(e, club)}>
                         <Order id={club.id}>{i + 4}</Order>
                         <ClubName id={club.id}>{club.clubNm}</ClubName>
                         <ClubResort id={club.id}>{resortData.find(resort => resort.id === club.resortId).name}</ClubResort>
