@@ -72,6 +72,7 @@ public class ClubBoardDto {
         this.id = id;
     }
 
+
     public ClubBoard toEntity(User user,Club club) {
         return ClubBoard.builder()
                 .club(club)

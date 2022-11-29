@@ -24,6 +24,7 @@ public class ClubBoardService {
     private final ClubBoardRepository clubBoardRepository;
     private final UserRepository userRepository;
     private final ClubRepository clubRepository;
+
     /**
      * 동호회 게시판
      * 상세 조회 -{boardId}
@@ -32,6 +33,15 @@ public class ClubBoardService {
     public Page<ClubBoardDto> getClubBoard(Pageable pageable,long clubBoardId) {
         Page<ClubBoard> byId = clubBoardRepository.findById(pageable,clubBoardId);
         return byId.map(e -> new ClubBoardDto(clubBoardId));
+    }
+
+    /**
+     * 동호회 게시판 전체 조회
+     */
+    @Transactional
+    public Page<ClubBoardDto> getAllClubBoard(Pageable pageable, long clubId) {
+        Page<ClubBoard> id = clubBoardRepository.findByClubId(pageable, clubId);
+        return id.map(e -> new ClubBoardDto(clubId));
     }
 
 

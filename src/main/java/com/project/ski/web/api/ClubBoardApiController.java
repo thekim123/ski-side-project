@@ -30,9 +30,15 @@ public class ClubBoardApiController {
         return new CmRespDto<>(1, "클럽게시판 생성 완료", clubBoard);
     }
 
-    @GetMapping("/{clubBoardId}")
+    @GetMapping("/detail/{clubBoardId}")
     public CmRespDto<Page<ClubBoardDto>> getClubBoard(@PageableDefault(sort = "id", direction = DESC) Pageable pageable, @PathVariable long clubBoardId) {
         Page<ClubBoardDto> clubBoard = clubBoardService.getClubBoard(pageable, clubBoardId);
-        return new CmRespDto<>(1, "클럽게시판 조회 완료",clubBoard);
+        return new CmRespDto<>(1, "클럽게시판 조회 완료", clubBoard);
+    }
+
+    @GetMapping("/{clubId}")
+    public CmRespDto<Page<ClubBoardDto>> getAllClubBoard(@PageableDefault(sort = "id", direction = DESC) Pageable pageable, @PathVariable long clubId) {
+        Page<ClubBoardDto> clubBoardDtos = clubBoardService.getAllClubBoard(pageable, clubId);
+        return new CmRespDto<>(1, "클럽게시판 전체조회 완료", clubBoardDtos);
     }
 }
