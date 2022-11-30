@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
-import { loadClubs } from '../action/club';
+import { getClubUser, loadClubs } from '../action/club';
 import styled from 'styled-components'
 import { ClubListForm } from '../components/Club/ClubListForm'
 import resorts from '../data/resort.json'
@@ -23,19 +23,20 @@ export function Club() {
         setSelectedResort(resort);
     }
 
+
     const showDetail = (e, club) => {
         //만약 동호회가 오픈방이면 detail, 비밀방이면 secret 페이지로 이동.
         let clubId = e.target.id;
 
-        if (club.openYn === "Y") { 
-            navigate(`/club/detail/${clubId}`);
-        } else {
-            //비밀방이지만 해당 동호회의 회원이면 detail page로 이동.
-            navigate(`/club/secret/${clubId}`);
-        }
+        //if 동호회 회원이 아니면, <- 유저의 동호회 목록을 미리 불러왔다가..!
+        dispatch(getClubUser(clubId));
+        navigate(`/club/detail/${clubId}`, { state: club })
+        //navigate('/club/secret', { state: club })
+        //동호회 회원이면
+        //navigate(`/club/detail/${clubId}`, { state: club })
     }
 
-    useEffect(() => {
+    useEffect(() => { 
         dispatch(loadClubs());
     }, [dispatch]);
 
