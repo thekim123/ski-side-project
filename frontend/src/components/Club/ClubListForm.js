@@ -39,7 +39,7 @@ export function ClubListForm(props) {
 }
 
 const Wrapper = styled.div`
-padding: 60px 40px 10px 40px;
+padding: 60px 20px 10px 20px;
 background-color: var(--background-color);
 position: fixed;
 top: 0;

@@ -1,20 +1,33 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { AiFillLock } from 'react-icons/ai';
 import resorts from '../../data/resort.json';
-import { BsPeopleFill } from 'react-icons/bs'
+import { BsPeopleFill } from 'react-icons/bs';
+import { MdEmojiPeople } from 'react-icons/md'
+import { TbGenderBigender } from 'react-icons/tb'
+import { getSingleClub } from '../../action/club';
 
 export function ClubSecret() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const club = useLocation().state;
+    const age = ["나이 제한 없음", "10대", "20대", "30대", "40대", "50대", "60대", "70대", "80대"]
+    const dataAge = ["ANY", "TEN", "TWENTY", "THIRTY", "FORTY", "FIFTY", "SIXTY", "SEVENTY", "EIGHTY"]
+    const gender = ["남", "여", "성별 무관"]
+    const dataGender = ["MEN", "WOMEN", "NO"]
+    const club = useSelector(state => state.club.club);
+    const {id} = useParams();
+    //const club = useLocation().state;
 
     const gotoDetail = e => {
-        navigate(`/club/detail/${club.id}`, { state: club });
+        //navigate(`/club/detail/${club.id}`, { state: club });
         //동호회 인원 추가
     }
+
+    useEffect(() => {
+        dispatch(getSingleClub(id));
+    }, [id]);
 
     return (
     <>
@@ -30,7 +43,16 @@ export function ClubSecret() {
                 <SBsPeopleFill />
                 <Cnt>{club.memberCnt}명</Cnt>
             </CntBox>
-
+            {/* 연령대 */}
+            <CntBox>
+                <MdEmojiPeople className='clubSecret-icon'/>
+                <Cnt>{age[dataAge.indexOf(club.ageGrp)]}</Cnt>
+            </CntBox>
+            {/* 성별 */}
+            <CntBox>
+                <TbGenderBigender className='clubSecret-icon'/>
+                <Cnt>{gender[dataGender.indexOf(club.gender)]}</Cnt>
+            </CntBox>
         </InfoBox>
         <ContentBox>
             <ClubContent>{club.memo}</ClubContent>
@@ -77,13 +99,19 @@ color: gray;
 justify-items: center;
 align-items: center;
 padding: 0 5px;
+.clubSecret-icon{
+    width: 20px;
+    height: 20px;
+    color: var(--button-color);
+}
 `
 const SBsPeopleFill = styled(BsPeopleFill)`
-
+padding-right: 3px;
+color: var(--button-color);
 `
 const Cnt = styled.div`
 font-size: 13px;
-padding-left: 3px;
+//padding-left: 3px;
 `
 const ContentBox = styled.div`
 height: 180px;
@@ -94,6 +122,9 @@ margin-bottom: 40px;
 `
 const ClubContent = styled.div`
 padding: 20px;
+line-height: 23px;
+//text-align: center;
+color: #404040;
 `
 const Button = styled.button`
 background-color:var(--button-color);

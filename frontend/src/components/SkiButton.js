@@ -43,7 +43,7 @@ export function SkiButton(props) {
                 `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=kr`
             );
 
-            //if (mounted) {
+            //if (mounted) { 
                 let _main = resWeather.data.weather[0].main;
                 let _icon = resWeather.data.weather[0].icon;
                 let _temp = resWeather.data.main.temp;

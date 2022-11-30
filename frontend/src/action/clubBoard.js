@@ -23,7 +23,7 @@ export const addPost = (post) => {
         }).then((resp) => {
             console.log("resp", resp);
             dispatch(clubBoardActions.addBoard());
-            //dispatch(loadPosts());
+            dispatch(loadPosts(post.clubId));
         })
         .catch((error) => console.log(error));
     }

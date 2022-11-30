@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { addPost } from '../../action/clubBoard';
 
@@ -14,6 +14,7 @@ export function ClubBoardWrite() {
         title: "",
         content: "",
     });
+    const {isNotice} = useParams();
 
     const resetTitleError = () => {
         setError({...error, title: ""})
@@ -57,7 +58,7 @@ export function ClubBoardWrite() {
                 clubId: club.id,
                 title: enteredTitle,
                 content: enteredContent,
-                sortScope: "notice",
+                sortScope: isNotice === "true" ? "notice" : "general",
                 tempFlag: "N",
             }
             dispatch(addPost(post));
@@ -65,14 +66,14 @@ export function ClubBoardWrite() {
         }
     }
     const test = e => {
-        console.log(club);
+        console.log(typeof(isNotice));
     }
     return (
     <Wrapper onSubmit={handleSubmit}>
         <Top>
             <Text>
                 <TopText>{club.clubNm}</TopText>
-                <Exp onClick={test}>공지 작성</Exp>
+                <Exp onClick={test}>{isNotice === "true" ? "공지" : "글"} 작성</Exp>
             </Text>
             <Button>완료</Button>
         </Top>
