@@ -1,6 +1,7 @@
 package com.project.ski.service;
 
 import com.project.ski.domain.club.Club;
+import com.project.ski.domain.club.ClubBoard;
 import com.project.ski.domain.club.ClubUser;
 import com.project.ski.domain.resort.Resort;
 import com.project.ski.domain.user.User;
@@ -27,6 +28,7 @@ public class ClubService {
     private final UserRepository userRepository;
 
     private final ResortRepository resortRepository;
+
 
     // 동호회 첫 화면 목록조회
     @Transactional(readOnly = true)
@@ -66,6 +68,8 @@ public class ClubService {
         Club club = clubRepository.findById(clubId).orElseThrow(()->{
             return new IllegalArgumentException("동호회 삭제 실패");
         });
+
+
         clubRepository.delete(club);
 
     }
@@ -91,20 +95,13 @@ public class ClubService {
 
     // 동호회 상세페이지
 
-//    @Transactional
-//    public Optional<ClubResponseDto> clubDetail(Long clubId) {
-//        return clubRepository.findById(clubId).map(ClubResponseDto::new);
-//    }
-
     @Transactional
-    public Club clubDetail(Long clubId) {
+    public Optional<ClubResponseDto> clubDetail(Long clubId) {
         Club dto = clubRepository.findById(clubId).orElseThrow(()->{
             return new IllegalArgumentException("글 상세보기 실패: 해당게시글을 찾을 수 없습니다.");
         });
-
-        return dto;
+        return clubRepository.findById(clubId).map(ClubResponseDto::new);
     }
-
 
 
 }

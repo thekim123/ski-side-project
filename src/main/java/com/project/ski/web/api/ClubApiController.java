@@ -15,6 +15,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @RestController
@@ -81,11 +83,11 @@ public class ClubApiController {
 
     // 동호회 글 상세 조회 -- > 해당 동호회 게시판 목록조회
     @GetMapping("/{clubId}")
-    public CmRespDto<ClubResponseDto> clubDetail(@PathVariable Long clubId) {
-        clubService.clubDetail(clubId);
-        return new CmRespDto<>(1, "동호회 상세보기 완료", null);
+    public CmRespDto<Optional<ClubResponseDto>> clubDetail(@PathVariable Long clubId) {
+        Optional<ClubResponseDto> dto = clubService.clubDetail(clubId);
+        return new CmRespDto<>(1, "동호회 상세보기 완료", dto);
     }
 
-    // 동호회 게시판 생성
+
 
 }

@@ -72,6 +72,17 @@ public class ClubBoardDto {
         this.id = id;
     }
 
+    public ClubBoardDto(ClubBoard clubBoard) {
+        this.id = clubBoard.getId();
+        this.clubId =clubBoard.getClub().getId();
+        this.replies =clubBoard.getReplies();
+        this.title =clubBoard.getTitle();
+        this.content =clubBoard.getContent();
+        this.tempFlag =clubBoard.getTempFlag();
+        this.sortScope =clubBoard.getSortScope();
+        this.role =clubBoard.getRole();
+    }
+
 
     public ClubBoard toEntity(User user,Club club) {
         return ClubBoard.builder()

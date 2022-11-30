@@ -39,6 +39,7 @@ public class ClubBoardApiController {
     @GetMapping("/{clubId}")
     public CmRespDto<Page<ClubBoardDto>> getAllClubBoard(@PageableDefault(sort = "id", direction = DESC) Pageable pageable, @PathVariable long clubId) {
         Page<ClubBoardDto> clubBoardDtos = clubBoardService.getAllClubBoard(pageable, clubId);
+        System.out.println("clubBoardDtos = " + clubBoardDtos);
         return new CmRespDto<>(1, "클럽게시판 전체조회 완료", clubBoardDtos);
     }
 }

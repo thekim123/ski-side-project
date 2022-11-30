@@ -32,7 +32,7 @@ public class ClubBoardService {
     @Transactional(readOnly = true)
     public Page<ClubBoardDto> getClubBoard(Pageable pageable,long clubBoardId) {
         Page<ClubBoard> byId = clubBoardRepository.findById(pageable,clubBoardId);
-        return byId.map(e -> new ClubBoardDto(clubBoardId));
+        return byId.map(ClubBoardDto::new);
     }
 
     /**
@@ -41,7 +41,7 @@ public class ClubBoardService {
     @Transactional
     public Page<ClubBoardDto> getAllClubBoard(Pageable pageable, long clubId) {
         Page<ClubBoard> id = clubBoardRepository.findByClubId(pageable, clubId);
-        return id.map(e -> new ClubBoardDto(clubId));
+        return id.map(ClubBoardDto::new);
     }
 
 
