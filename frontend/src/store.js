@@ -14,6 +14,11 @@ const store = createStore(rootReducer, applyMiddleware(...middlewares));
 
 export default store;*/
 
+//createAsyncThunk는 비동기 작업을 처리하는 action을 만들어준다.
+//createAsyncThunk를 사용하면 pending, fulfilled, rejected가 자동으로 만들어짐.
+//동기적인 작업은 reducers를 사용 - 
+//비동기적인 작업은 extraReducers를 사용 - 
+
 import { configureStore } from '@reduxjs/toolkit';
 import boardSlice from './slice/board';
 import clubSlice from './slice/club';

@@ -1,8 +1,8 @@
 import React, { forwardRef, useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import { getSingleClub } from '../../action/club';
+import { asyncGetClub, getSingleClub } from '../../action/club';
 import styled from 'styled-components';
 import { HiPlus } from 'react-icons/hi';
 import { BsCircle } from 'react-icons/bs';
@@ -12,11 +12,13 @@ import resorts from '../../data/resort.json';
 import { BsPeopleFill } from 'react-icons/bs'
 import { loadPosts } from '../../action/clubBoard';
 
-export function ClubDetail(props) {
+export function ClubDetail() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const club = useLocation().state;
+    //const club = useLocation().state;
+    const club = useSelector(state => state.club.club);
     const clubBoards = useSelector(state => state.clubBoard.clubBoards);
+    const {id} = useParams();
 
     const cutText = (text, margin) => {
         if (text.length > margin) {
@@ -25,32 +27,31 @@ export function ClubDetail(props) {
     }
 
     const clickNoticePlus = e => {
-        console.log(club);
-
-        navigate('/club/board/write', { state: club });
+        navigate(`/club/board/write/${true}`, { state: club });
     }
     const clickPlus = e => {
-
+        navigate(`/club/board/write/${false}`, { state: club });
     }
 
-    useEffect(() => { 
-        dispatch(loadPosts(club.id));
-    }, [dispatch]);
+    useEffect(() => { //새로 로그인 한 후 라든지.. 그럴때를 대비해 state.club이 null인 경우에만 dispatch 호출.
+        dispatch(loadPosts(id));
+        dispatch(getSingleClub(id));
+    }, [dispatch, id]);
 
     return (
     <>
     {/* {club &&  */}
     <Container>
         <ClubName onClick={cutText}>
-            {props.clubNm}
+            {club && club.clubNm}
         </ClubName>
         <ClubResort>
-            {resorts.find(resort => resort.id === club.resortId).name}
+            {club && resorts.find(resort => resort.id === club.resortId).name}
         </ClubResort>
         <InfoBox>
             <CntBox>
                 <SBsPeopleFill />
-                <Cnt>{club.memberCnt}명</Cnt>
+                <Cnt>{club && club.memberCnt}명</Cnt>
             </CntBox>
 
         </InfoBox>
@@ -63,27 +64,21 @@ export function ClubDetail(props) {
                 {/* 공지는 방장이나 부방장만 보이게. */}
                 <SHiPlus className="tayo-plus" onClick={clickNoticePlus}/>
                 </ButtonBox>
-                <MoreBox><Button>more...</Button></MoreBox>
+                <MoreBox>{clubBoards.filter(board => board.sortScope === "notice").length > 2 && <Button>more...</Button>}</MoreBox>
             </NoticeTop>
             
-            <NoticeItem>
+            {clubBoards.length > 0 && clubBoards.filter(board => board.sortScope === "notice").map((board, i) => (
+                i < 2 && <NoticeItem key={board.id}>
                     <NoticeItemWrap>
                         <TitleWho>
-                        <NoticeContent>{cutText("특별 강습 있습니다 10분 선착순 접수 받습니다아", 25)}</NoticeContent>
+                        <NoticeContent>{cutText(board.title, 25)}</NoticeContent>
                         <NoticeWho>관리자</NoticeWho>
                         </TitleWho>
                         <NoticeDate>2022.11.02</NoticeDate>
                     </NoticeItemWrap>
-            </NoticeItem>
-            <NoticeItem>
-                    <NoticeItemWrap>
-                        <TitleWho>
-                        <NoticeContent>특별 강습 있습니다</NoticeContent>
-                        <NoticeWho>방장</NoticeWho>
-                        </TitleWho>
-                        <NoticeDate>2022.11.02</NoticeDate>
-                    </NoticeItemWrap>
-            </NoticeItem>
+                </NoticeItem>
+            ))               
+            }
 
             <BoardTop>
                 <ButtonBox>
@@ -91,26 +86,21 @@ export function ClubDetail(props) {
                 {/* 공지는 방장이나 부방장만 보이게. */}
                 <SHiPlus className="tayo-plus" onClick={clickPlus}/>
                 </ButtonBox>
-                <MoreBox><Button>more...</Button></MoreBox>
+                <MoreBox>{clubBoards.filter(board => board.sortScope === "general").length > 2 && <Button>more...</Button>}</MoreBox>
             </BoardTop>
-            <NoticeItem>
+
+            {clubBoards.length > 0 && clubBoards.filter(board => board.sortScope === "general").map((board, i) => (
+                i < 2 && <NoticeItem key={board.id}>
                     <NoticeItemWrap className='club-normal'>
                         <TitleWho>
-                        <NoticeContent>{cutText("이번주 토요일 엘리시안 갑니다~ 벌써 기대되고 떨리고 흐엉", 23)}</NoticeContent>
+                        <NoticeContent>{cutText(board.title, 23)}</NoticeContent>
                         <BoardWho>{cutText("스키넘좋아", 4)}</BoardWho>
                         </TitleWho>
                         <NoticeDate>2022.11.02</NoticeDate>
                     </NoticeItemWrap>
-            </NoticeItem>
-            <NoticeItem>
-                    <NoticeItemWrap className='club-normal'>
-                        <TitleWho>
-                        <NoticeContent>{cutText("이번주 토요일 엘리시안", 23)}</NoticeContent>
-                        <BoardWho>{cutText("예진", 4)}</BoardWho>
-                        </TitleWho>
-                        <NoticeDate>2022.11.02</NoticeDate>
-                    </NoticeItemWrap>
-            </NoticeItem>
+                </NoticeItem>
+                ))
+            }
         </NoticeBox>
     </Container>
     {/* } */}
