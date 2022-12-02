@@ -143,21 +143,22 @@ export function TayoWrite() {
         if (!validateInput(enteredTitle, enteredContent, enteredCnt)) return;
 
         //body에 넣을 data
-        let cnt = cntBtn ? "제한 없음" : enteredCnt;
+        let resortId = resortData.find(resort => resort.name === selectedResort).id;
+        let cnt = cntBtn ? 0 : enteredCnt;
+        let ageNum = age.indexOf(selectedAge);
         const tayo = {
-            selectedType,
-            selectedResort,
-            startDate,
-            startTime,
-            endTime,
-            cnt,
-            selectedAge,
-            enteredTitle,
-            enteredContent
+            rideDevice: selectedType,
+            resortId: resortId,
+            tayoDt: startDate,
+            tayoStrTime: startTime,
+            tayoEndTime: endTime,
+            tayoMemCnt: cnt,
+            age: ageNum,
+            title: enteredTitle,
+            comment: enteredContent
         }
-        console.log(tayo);
-        //dispatch(addTayo(tayo));
-        //navigate("/tayo");
+        dispatch(addTayo(tayo));
+        navigate("/tayo");
     }
 
     //선택된 날짜가 오늘인지 확인
@@ -176,35 +177,15 @@ export function TayoWrite() {
         if (curMinute < 30) return 30;
         else return 0;
     }
-    //시작 시간 조정. 날짜가 오늘일 경우에만 해당하고, 그렇지 않으면 9시
+    //시작 시간 조정. 날짜가 오늘일 경우에만 해당하고, 그렇지 않으면 0시
     const calMinHour = () => {
-        /*
-        if (isDateToday()) {
-            if (new Date().getHours() < 22) {
-                let curHour = new Date().getHours();
-                if (curHour < 9) return 9;
-                let curMin = new Date().getMinutes();
-                if (curMin < 30) return curHour;
-                else return curHour+1;
-            }
-            return 24;
-        }
-        else return 9;*/
         if (isDateToday()) {
         let curHour = new Date().getHours();
         let curMin = new Date().getMinutes();
         if (curMin < 30) return curHour;
             else return curHour+1;
         }
-        else return 0;
-    }
-    const calMaxHour = () => {
-        //선택된 날짜가 오늘이고 밤 10시를 넘었다면 모두 불가능.
-        /*
-        if (isDateToday() && new Date().getHours >= 22)
-            return 24; 
-        else return 21;*/
-        return 24;
+        else return 23;
     }
 
     const setCntDone = e => {
@@ -252,7 +233,7 @@ export function TayoWrite() {
                     timeIntervals={30}
                     //minTime={setHours(setMinutes(new Date(), calMinute()), calMinHour())}
                     minTime={setHours(setMinutes(new Date(), calMinute()), calMinHour())}
-                    maxTime={setHours(setMinutes(new Date(), 30), 23)}
+                    maxTime={setHours(0, 0)}
                     dateFormat="aa h:mm 부터"
                     placeholderText='시작 시간'
                     className='tayoWrite-startT'

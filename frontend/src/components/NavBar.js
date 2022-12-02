@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import {GrHomeRounded} from 'react-icons/gr'
 import { FaRegClipboard, FaSkiing } from 'react-icons/fa'
@@ -9,55 +9,48 @@ import { BsPeopleFill } from 'react-icons/bs'
 import { FiHome } from 'react-icons/fi'
 
 export function NavBar() {
-    const [btnActive, setBtnActive] = useState("home");
-    const toggleActive = e => {
-        //id로 해서 해당 id를 state에 넣기.
-        console.log(e.target.id)
-        setBtnActive(e.target.id);
-        console.log(btnActive);
-    }
+    const navigate = useNavigate();
+    const url = useParams()['*'];
+    const [btnActive, setBtnActive] = useState(null);
+
+    useEffect(() => {
+        if (url === '') setBtnActive("home");
+        else {
+            let sliceUrl = url.slice(0, 4);
+            if (sliceUrl === 'boar') setBtnActive("board"); 
+            else if (sliceUrl === 'carp') setBtnActive("carpool");
+            else if (sliceUrl === 'tayo') setBtnActive("tayo");
+            else if (sliceUrl === 'club') setBtnActive("club");
+        }
+    }, [])
 
     return (
     <Container>
         <UL>
-            {/* {
-                Menus.map((menu,i) => (
-                    <li key={i}>
-                        
-                    </li>
-                ))
-            } */}
-        
-            <Link to="/board" className="nav-link">
-                <NavBox id="board" onClick={toggleActive}>
-                <FaRegClipboard className={"nav-icons" + (btnActive === 'board' ? " active" : "")} id="board" />
-                <NavList id="board" className={btnActive === 'board' ? " active" : ""}>자유게시판</NavList>
+                <NavBox onClick={e => {navigate('/board'); setBtnActive("board")}}>
+                <FaRegClipboard className={"nav-icons" + (btnActive === 'board' ? " active" : "")}/>
+                <NavList className={btnActive === 'board' ? " active" : ""}>자유게시판</NavList>
                 </NavBox>
-            </Link>
-            <Link to="/carpool" className="nav-link">
-                <NavBox id='carpool' onClick={toggleActive}>
-                <RiCarLine className={'nav-icons-small' + (btnActive === 'carpool' ? " active" : "")} id='carpool'/>
-                <NavList id='carpool' className={btnActive === 'carpool' ? " active" : ""}>카풀</NavList>
+
+                <NavBox onClick={e => {navigate('/carpool'); setBtnActive("carpool")}}>
+                <RiCarLine className={'nav-icons-small' + (btnActive === 'carpool' ? " active" : "")} />
+                <NavList className={btnActive === 'carpool' ? " active" : ""}>카풀</NavList>
                 </NavBox>
-            </Link>
-            <Link to="/" className="nav-link">
-                <NavBox id="home" onClick={toggleActive}>
-                <FiHome className={"nav-icons" + (btnActive === 'home' ? " active" : "")} id="home"/> 
-                <NavList className={'nav-home' + (btnActive === 'home' ? " active" : "")} id="home">HOME</NavList>
+
+                <NavBox onClick={e => {navigate('/'); setBtnActive("home")}}>
+                <FiHome className={"nav-icons" + (btnActive === 'home' ? " active" : "")} /> 
+                <NavList className={'nav-home' + (btnActive === 'home' ? " active" : "")}>HOME</NavList>
                 </NavBox>
-            </Link>
-            <Link to="/tayo" className="nav-link">
-                <NavBox onClick={toggleActive} id='tayo'>
+
+                <NavBox onClick={e => {navigate('/tayo'); setBtnActive("tayo")}}>
                 <FaSkiing id='tayo' className={"nav-icons-big" + (btnActive === 'tayo' ? " active" : "")}/>
                 <NavList id='tayo' className={btnActive === 'tayo' ? 'active' : ''}>같이 타요!</NavList>
                 </NavBox>
-            </Link>
-            <Link to="/club" className="nav-link">
-                <NavBox id='club' onClick={toggleActive}>
-                <BsPeopleFill id='club' className={'nav-icons' + (btnActive === 'club' ? ' active' : '')} onClick={toggleActive}/>
-                <NavList id='club' className={btnActive === 'club' ? 'active' : ''}>동호회</NavList>
+
+                <NavBox onClick={e => {navigate('/club'); setBtnActive("club")}}>
+                <BsPeopleFill className={'nav-icons' + (btnActive === 'club' ? ' active' : '')} />
+                <NavList className={btnActive === 'club' ? 'active' : ''}>동호회</NavList>
                 </NavBox>
-            </Link>
         </UL>
     </Container>
     )
@@ -131,5 +124,12 @@ const UL = styled.ul`
         color: var(--button-color);
         font-family: "nanum-square-bold";
         font-weight: 900;
+        NavList {
+            color: red;
+        }
+    }
+
+    NavList{
+        color: red;
     }
 `

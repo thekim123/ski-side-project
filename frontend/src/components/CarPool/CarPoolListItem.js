@@ -11,7 +11,8 @@ export function CarPoolListItem(props) {
     const showDetail = e => {
         //dispatch()
         //navigate(`/carpool/detail/${props.id}`)
-        navigate('/carpool/detail');
+        console.log(props);
+        navigate('/carpool/detail', {state: props});
     }
     return (
     <Wrapper>

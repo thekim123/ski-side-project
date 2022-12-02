@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { HiPencil } from 'react-icons/hi'
@@ -8,12 +8,13 @@ import { MdSnowboarding } from 'react-icons/md'
 import { GiHills } from 'react-icons/gi'
 import { BsPeopleFill } from 'react-icons/bs'
 import { MdEmojiPeople } from 'react-icons/md'
+import { getSinglePost } from '../../action/tayo'
 
 export function TayoDetail() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [isMine, setIsMine] = useState(true);
-    //let {id} = useParams();
+    let {id} = useParams();
 
     const handlePencil = e => {
         //navigate(`/tayo/edit/${id}`);
@@ -23,6 +24,10 @@ export function TayoDetail() {
         //navigate("/board")
         //dispatch(deletePost(id));
     }
+
+    useEffect(() => {
+        //dispatch(getSinglePost(id));
+    }, [dispatch])
     return (
     <Wrapper>
         <TopInfo>

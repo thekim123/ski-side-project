@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getSingleClub, regClub } from '../../action/club';
+import { asyncEditClub, editClub, getSingleClub, regClub } from '../../action/club';
 import styled from 'styled-components'
 import { SelectBox } from '../common/SelectBox';
 import resorts from '../../data/resort.json'
@@ -19,9 +19,12 @@ export function EditClub() {
     const resortData = resorts.filter(resort => resort.id !== null);
     const resortName = resortData.map(resort => resort.name);
     const age = ["제한 없음", "10대", "20대", "30대", "40대", "50대", "60대", "70대", "80대"]
+    const ageData = ["ANY", "TEN", "TWENTY", "THIRTY", "FORTY", "FIFTY", "SIXTY", "SEVENTY", "EIGHTY"]
     const gender = ["남", "여", "성별 무관"];
+    const genderData = ["MEN", "WOMEN", "NO"];
     const genderBack = ["MEN", "WOMEN", "NO"];
     const roomType = ["오픈방", "비밀방"];
+    const roomData = ["Y", "N"];
     const [error, setError] = useState({
         name: "",
         content: "",
@@ -33,6 +36,14 @@ export function EditClub() {
 
     const {id} = useParams();
     const original = useSelector(state => state.club.club);
+    const [newInput, setNewInput] = useState({
+        name: "",
+        memo: "",
+    })
+    const handleInputChange = e => {
+        const {name, value} = e.target;
+        setNewInput({...newInput, [name]: value})
+    }
 
     const reflectSelection = (selection) => {
         if (resortName.indexOf(selection) !== -1) {setSelectedResort(selection); setError({...error, resort: ""})}
@@ -87,7 +98,8 @@ export function EditClub() {
         }
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
+        try {
         e.preventDefault();
         const enteredName = nameInput.current.value;
         const enteredContent = contentInput.current.value;
@@ -96,11 +108,12 @@ export function EditClub() {
         }
         let resortId = resortData.filter(resort => resort.name === selectedResort)[0].id;
         let openYn = selectedRoom === "오픈방" ? "Y" : "N";
-        let ageGrp = age.indexOf(selectedAge) + 1;
+        let ageGrp = age.indexOf(selectedAge);
         let genderIdx = gender.indexOf(selectedGender);
         let genderFix = genderBack[genderIdx];
         //스키장 넣기
         const club = {
+            id: id,
             clubNm: enteredName,
             resortId: resortId,
             gender: genderFix,
@@ -109,19 +122,42 @@ export function EditClub() {
             memo: enteredContent,
         }
         console.log(club);
-        dispatch(regClub(club));
-        navigate("/club");
+        //이것도 마찬가지로 edit이 완료되기를 wait했다가 navigate
+        const done = await dispatch(asyncEditClub(club)).unwrap();
+        navigate(`/club/detail/${id}`);
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     useEffect(() => {
         dispatch(getSingleClub(id))
     }, [id]);
 
+    useEffect(() => {
+        if (original) {
+            console.log(original);
+            setSelectedResort(resortData.find(resort => resort.id === original.resortId).name);
+            setSelectedAge(age[ageData.indexOf(original.ageGrp)]);
+            setSelectedGender(gender[genderData.indexOf(original.gender)]);
+            setSelectedRoom(roomType[roomData.indexOf(original.openYn)]);
+            setNewInput({...newInput, name: original.clubNm, memo: original.memo});
+        }
+    }, [original])
+
     return (
     <Wrapper>
         <Title><div className="clubReg-top">동호회 수정</div></Title>
-        <form onSubmit={handleSubmit}>
-            <Input><label>동호회 명</label><input className="clubReg-name" type="text" ref={nameInput} onClick={resetError} /></Input>
+        <form onSubmit={handleSubmit}> 
+            <Input><label>동호회 명</label>
+                <input 
+                    name="name"
+                    className="clubReg-name" 
+                    type="text" ref={nameInput} 
+                    value={newInput.name || ""} 
+                    onClick={resetError} 
+                    onChange={handleInputChange}
+            /></Input>
             <Error><Dummy></Dummy><div>{error.name ? error.name : null}</div></Error>
             
             <SelectBox list={resortName} label="활동 스키장" func={reflectSelection} state={selectedResort} />
@@ -136,10 +172,18 @@ export function EditClub() {
             <SelectBox list={roomType} label="오픈방/비밀방" func={reflectSelection} state={selectedRoom} />
             <Error><Dummy></Dummy><div>{error.room ? error.room : null}</div></Error>
             
-            <Input><label>홍보 문구</label><textarea className="clubReg-content" ref={contentInput} onClick={resetError}></textarea></Input>
+            <Input><label>홍보 문구</label>
+                <textarea 
+                    name="memo"
+                    className="clubReg-content" 
+                    ref={contentInput} 
+                    value={newInput.memo || ""} 
+                    onClick={resetError}
+                    onChange={handleInputChange}>
+                </textarea></Input>
             <Error><Dummy></Dummy><div>{error.content ? error.content : null}</div></Error>
             
-            <BtnWrap><Button>개설하기</Button></BtnWrap>
+            <BtnWrap><Button>수정하기</Button></BtnWrap>
         </form>
     </Wrapper>
     )

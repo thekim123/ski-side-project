@@ -28,7 +28,7 @@ export const addTayo = (post) => {
             url: '/tayo',
             method: 'post',
             data: post,
-        }).then((resp) => {
+        }).then((resp) => { 
             console.log("resp", resp);
             dispatch(tayoActions.addTayo());
             dispatch(loadTayos());

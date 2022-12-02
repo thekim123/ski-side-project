@@ -224,6 +224,8 @@ font-size: 13px;
 color: black;
 .boardDetail-nd{
     display:flex;
+    color: gray;
+    padding-top: 5px;
 }
 `
 const Name = styled.div`

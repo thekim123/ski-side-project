@@ -26,6 +26,18 @@ export const asyncGetClubUser = createAsyncThunk(
         return resp.data.data.content;
     }
 )
+export const asyncEditClub = createAsyncThunk(
+    'clubSlice/asyncEditClub',
+    async (club) => {
+        const resp = await Send({
+            url: `/club/update/${club.id}`,
+            method: 'put',
+            data: club,
+        })
+        console.log("resp", resp);
+        return resp.data.data;
+    }
+)
 
 export const loadClubs = () => {
     return function (dispatch) {
@@ -54,7 +66,7 @@ export const regClub = (post) => {
         .catch(error => console.log(error));
     }
 }
-//async
+
 export const getSingleClub = (id) => {
     return function (dispatch) {
         Send({
@@ -68,6 +80,20 @@ export const getSingleClub = (id) => {
     }
 }
 
+export const editClub = (clubId, club) => {
+    return function (dispatch) {
+        Send({
+            url: `/club/update/${clubId}`,
+            method: 'put',
+            data: club,
+        }).then(resp => {
+            console.log("resp", resp);
+            dispatch(clubActions.editClub());
+        })
+        .catch(error => console.log(error));
+    }
+}
+
 export const getClubUser = (clubId) => {
     return function (dispatch) {
         Send({
@@ -76,6 +102,21 @@ export const getClubUser = (clubId) => {
         }).then((resp) => {
             console.log("resp", resp);
             dispatch(clubActions.getUsers(resp.data.data.content))
+        })
+        .catch(error => console.log(error));
+    }
+}
+
+export const deleteClub = (clubId) => {
+    return function (dispatch) {
+        Send({
+            url: `/club/delete/${clubId}`,
+            method: 'delete',
+        })
+        .then((resp) => {
+            console.log("resp", resp);
+            dispatch(clubActions.deleteClub());
+            loadClubs();
         })
         .catch(error => console.log(error));
     }

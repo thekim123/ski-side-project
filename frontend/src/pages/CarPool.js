@@ -136,7 +136,7 @@ background-color: #EEF3F7;
 const Title = styled.div`
 padding-top: 10px;
 font-size: 19px;
-font-weight: 200;
+font-family: nanum-square-bold;
 `
 const Icons = styled.div`
 .tayo-filter, .tayo-plus{

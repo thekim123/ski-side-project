@@ -26,6 +26,7 @@ import { EditCarPool } from './components/CarPool/EditCarPool';
 import { ClubRoute } from './components/Club/ClubRoute';
 import { ClubBoardWrite } from './components/Club/ClubBoardWrite';
 import { EditClub } from './components/Club/EditClub';
+import ClubBoardList from './components/Club/ClubBoardList';
 
 function App() {
   const dispatch = useDispatch();
@@ -55,6 +56,7 @@ function App() {
             <Route path="club/secret/:id" element={<ClubSecret />} />
             <Route path="club/edit/:id" element={<EditClub />} />
             <Route path="club/board/write/:isNotice" element={<ClubBoardWrite />} />
+            <Route path="club/board/list/:id" element={<ClubBoardList />} />
             <Route path="tayo" element={<Tayo />} />
             <Route path="tayo/write" element={<TayoWrite />} />
             <Route path="tayo/detail/:id" element={<TayoDetail />} />
