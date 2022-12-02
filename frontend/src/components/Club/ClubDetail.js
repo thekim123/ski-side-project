@@ -11,6 +11,7 @@ import { IoMdAddCircle } from 'react-icons/io';
 import resorts from '../../data/resort.json';
 import { BsPeopleFill } from 'react-icons/bs'
 import { loadPosts } from '../../action/clubBoard';
+import OkCancelModal from '../common/OkCancelModal';
 
 export function ClubDetail() {
     const dispatch = useDispatch();
@@ -19,6 +20,17 @@ export function ClubDetail() {
     const club = useSelector(state => state.club.club);
     const clubBoards = useSelector(state => state.clubBoard.clubBoards);
     const {id} = useParams();
+    const [delOpen, setDelOpen] = useState(false);
+
+    const gotoEdit = e => {
+        navigate(`/club/edit/${id}`);
+    }
+    const delClub = e => {
+        setDelOpen(true);
+    }
+    const closeDel = () => {
+        setDelOpen(false);
+    }
 
     const cutText = (text, margin) => {
         if (text.length > margin) {
@@ -32,6 +44,12 @@ export function ClubDetail() {
     const clickPlus = e => {
         navigate(`/club/board/write/${false}`, { state: club });
     }
+    const clickNoticeMore = e => {
+        navigate(`/club/board/list/${id}`, {state: "공지"});
+    }
+    const clickGeneralMore = e => {
+        navigate(`/club/board/list/${id}`, {state: "일반"});
+    }
 
     useEffect(() => { //새로 로그인 한 후 라든지.. 그럴때를 대비해 state.club이 null인 경우에만 dispatch 호출.
         dispatch(loadPosts(id));
@@ -40,8 +58,25 @@ export function ClubDetail() {
 
     return (
     <>
-    {/* {club &&  */}
+    {/* 방장한테만 보이게. */}
+    <EditDelBtn>
+    <div></div>
+            <BtnWrap>
+            <EditBtn onClick={gotoEdit} className='club-detail-topBtn'>수정</EditBtn>
+            <DelBtn onClick={delClub} className='club-detail-topBtn'>삭제</DelBtn>
+            {/* 모달창 */}
+            {club && <OkCancelModal 
+                open={delOpen}
+                close={closeDel}
+                message={`'${club.clubNm}' 동호회를 삭제하시겠습니까?`}
+                sub={'삭제하려면 동호회 명을 입력하세요.'}
+                name={club.clubNm}
+                ok={"삭제"}
+                clubId={id}/>}
+            </BtnWrap>
+    </EditDelBtn>
     <Container>
+            
         <ClubName onClick={cutText}>
             {club && club.clubNm}
         </ClubName>
@@ -64,7 +99,7 @@ export function ClubDetail() {
                 {/* 공지는 방장이나 부방장만 보이게. */}
                 <SHiPlus className="tayo-plus" onClick={clickNoticePlus}/>
                 </ButtonBox>
-                <MoreBox>{clubBoards.filter(board => board.sortScope === "notice").length > 2 && <Button>more...</Button>}</MoreBox>
+                <MoreBox>{clubBoards.filter(board => board.sortScope === "notice").length > 2 && <Button onClick={clickNoticeMore}>more...</Button>}</MoreBox>
             </NoticeTop>
             
             {clubBoards.length > 0 && clubBoards.filter(board => board.sortScope === "notice").map((board, i) => (
@@ -86,7 +121,7 @@ export function ClubDetail() {
                 {/* 공지는 방장이나 부방장만 보이게. */}
                 <SHiPlus className="tayo-plus" onClick={clickPlus}/>
                 </ButtonBox>
-                <MoreBox>{clubBoards.filter(board => board.sortScope === "general").length > 2 && <Button>more...</Button>}</MoreBox>
+                <MoreBox>{clubBoards.filter(board => board.sortScope === "general").length > 2 && <Button onClick={clickGeneralMore}>more...</Button>}</MoreBox>
             </BoardTop>
 
             {clubBoards.length > 0 && clubBoards.filter(board => board.sortScope === "general").map((board, i) => (
@@ -113,13 +148,38 @@ display: flex;
 justify-content: space-between;
 `
 const Container = styled.div`
-padding-top: 100px;
+
 display: flex;
 flex-direction: column;
 justify-content: center;
 align-items: center;
 `
+const EditDelBtn = styled.div`
+display: flex;
+justify-content: space-between;
+padding-top: 20px;
+padding-right: 10px;
+justify-self: end;
+`
+const BtnWrap = styled.div`
+display: flex;
+.club-detail-topBtn{
+    margin-left: 8px;
+    color: var(--button-color);
+    //border: 1px solid var(--button-color);
+    border: none;
+    border-radius: 3px;
+    padding: 4px 6px;
+    background-color: #FAFAFA;
+}
+`
+const EditBtn = styled.button`
+
+`
+const DelBtn = styled.button`
+`
 const ClubName = styled.div`
+padding-top: 70px;
 font-weight: bold;
 font-size: 25px;
 `

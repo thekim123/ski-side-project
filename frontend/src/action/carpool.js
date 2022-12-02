@@ -23,7 +23,7 @@ export const addCarpool = (carpool) => {
         }).then((resp) => {
             console.log("resp", resp);
             dispatch(carpoolActions.addCarpool());
-            //dispatch(loadCarpools());
+            dispatch(loadCarpools());
         })
         .catch((error) => console.log(error));
     }

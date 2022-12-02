@@ -16,7 +16,8 @@ function TayoListItem(props) {
     const [isMine, setIsMine] = useState(true);
     const [title, setTitle] = useState("");
     const [timePass, setTimePass] = useState("");
-    const age_kor = ["제한 없음", "10대", "20대", "30대", "40대", "50대", "60대", "70대", "80대"]
+    const ageData = ["ANY", "TEN", "TWENTY", "THIRTY", "FORTY", "FIFTY", "SIXTY", "SEVENTY", "EIGHTY"]
+    const age_kor = ["연령 무관", "10대", "20대", "30대", "40대", "50대", "60대", "70대", "80대"]
 
     const detailDate = (create_dt) => {
         const milliSeconds = new Date() - Date.parse(create_dt);
@@ -42,9 +43,8 @@ function TayoListItem(props) {
     }
 
     const setScreenTitle = () => {
-        console.log(props.title.length > 16)
-        if (props.title.length > 16) {
-        setTitle(props.title.slice(0, 16)+"...")
+        if (props.title.length > 18) {
+        setTitle(props.title.slice(0, 18)+"...")
         } else {
             setTitle(props.title)
         }
@@ -59,11 +59,11 @@ function TayoListItem(props) {
     }
 
     const showDetail = e => {
-        navigate(`/tayo/detail/${props.tayo_id}`);
+        navigate(`/tayo/detail/${props.id}`);
     }
 
     useEffect(() => {
-        setTimePass(detailDate(props.createDt));
+        setTimePass(detailDate(props.createdDate));
         showIcon();
         setScreenTitle();
     }, []);
@@ -72,50 +72,37 @@ function TayoListItem(props) {
         <PostContainer>
             <Top>
                 <SkiName>{props.resortName}[엘리시안]</SkiName>
+                <Time>{timePass}</Time>
+                {/*
                 <div>
                     {isMine && <HiPencil className="boardPost-icon" onClick={handlePencil}/>}
                     {isMine && <BsTrashFill className="boardPost-icon" onClick={handleTrash}/>}
-                </div>
+    </div>*/}
             </Top>
             <Content onClick={showDetail}>
                 <Count>
                     <BsPeopleFill className="tayo-count"/>
-                    {!props.tayoMemCnt ? "무제한" :  <div>0 / {props.tayoMemCnt}</div>}
+                    {!props.tayoMemCnt ? "인원 무제한" :  <div>0 / {props.tayoMemCnt}</div>}
                 </Count>
                 <Age>
                     <MdEmojiPeople className="tayo-age" />
-                    {props.age}
+                    {age_kor[ageData.indexOf(props.age)]}
                 </Age>
                 <TitleTime>
                     <Title>{title}</Title>
-                    <Time>{timePass}</Time>
                 </TitleTime>
             </Content>
-            
         </PostContainer>
     )
 }
-const TitleTime = styled.div`
 
-`
-const Title = styled.div`
-font-weight:bold;
-font-size: 15px;
-padding:10px 10px;
-color: black;
-`
-const Time = styled.div`
-text-align: right;
-font-size: 12px;
-padding-top: 10px;
-padding-left: 10px;
-`
 const PostContainer = styled.div`
     background-color: #FAFAFA;
     //border: 0.1rem solid #CCCCCC;
     border-radius: 10px;
     margin: 10px 20px;
     padding: 3px;
+    padding-bottom: 10px;
     color: gray;
     box-shadow: 5px 2px 7px -2px rgba(17, 20, 24, 0.15);
 `
@@ -139,13 +126,13 @@ const SkiName = styled.div`
 
 const Content = styled.div`
 display: flex;
+align-items: center;
 padding: 0 10px;
 `
 const Count = styled.div`
 display: grid;
 font-size:12px;
 text-align: center;
-padding-bottom: 18px;
 .tayo-count{
     width: 2rem;
     height: 2rem;
@@ -159,13 +146,26 @@ const Age = styled.div`
 display: grid;
 font-size:12px;
 text-align: center;
-padding-bottom: 20px;
+padding-left: 5px;
 .tayo-age{
     width: 3rem;
     height: 1.9rem;
     color: var(--button-color);
     padding-top: 3px;
 }
+`
+const TitleTime = styled.div`
+
+`
+const Title = styled.div`
+font-weight:bold;
+font-size: 15px;
+padding-left: 8px;
+color: black;
+`
+const Time = styled.div`
+text-align: right;
+font-size: 12px;
 `
 
 export default TayoListItem

@@ -1,21 +1,27 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { BiArrowBack, BiUser, BiBell } from "react-icons/bi"
 
 export function TopBar() {
     const navigate = useNavigate();
+    const t = useParams()['*'];
+
 
     const goback = () => {
         navigate(-1);
     }
+    const test = e => {
+        console.log(t);
+    }
     return(
         <Container>
             <LeftSide>
-                <BiArrowBack className="backBtn" onClick={goback} />
+                {t !== '' && t !== 'board' && t !== 'carpool' && t !== 'tayo' && t !== 'club' && 
+                    <BiArrowBack className="backBtn" onClick={goback} />}
                 <PageName></PageName>
             </LeftSide>
             <RightSide>
-                <BiBell className="bellBtn"/>
+                <BiBell className="bellBtn" onClick={test}/>
                 <BiUser className="myBtn"/>
             </RightSide>
         </Container>

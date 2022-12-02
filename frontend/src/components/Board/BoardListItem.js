@@ -53,7 +53,6 @@ function BoardListItem(props) {
     useEffect(() => {
         setTimePass(detailDate(props.createDate));
         showIcon();
-        console.log("item", props);
     }, []);
 
     return (

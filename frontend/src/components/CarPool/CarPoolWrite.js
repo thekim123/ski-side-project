@@ -191,7 +191,7 @@ export function CarPoolWrite() {
             //space: "임시",
             smoke: selectedSmoking,
             //phoneNumber: "임시",
-            //cost: "100",
+            //cost: "100", 
             passenger: enteredCnt,
             memo: enteredContent
         }

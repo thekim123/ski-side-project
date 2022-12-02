@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { asyncGetClub, asyncGetClubUser } from '../action/club';
+import { asyncEditClub, asyncGetClub, asyncGetClubUser } from '../action/club';
 
 const initialState = {
     clubs: [],
@@ -18,6 +18,8 @@ const clubSlice = createSlice({
         getClub(state, action) {
             state.club = action.payload;
         },
+        editClub(state) {},
+        deleteClub(state) {},
         getUsers(state, action) {
             state.users = action.payload;
         }
@@ -35,6 +37,9 @@ const clubSlice = createSlice({
         })
         builder.addCase(asyncGetClubUser.fulfilled, (state, action) => {
             state.users = action.payload;
+        })
+        builder.addCase(asyncEditClub.fulfilled, (state, action) => {
+            
         })
     }
 });

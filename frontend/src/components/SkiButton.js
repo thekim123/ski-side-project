@@ -119,7 +119,7 @@ export function SkiButton(props) {
         {props.id ? 
         <>
         {props.isMyBtn ? MyResortBtn : MapButton}
-        <ResortModal 
+        <ResortModal  
             open={resortOpen} 
             close={closeResort} 
             resortId={props.id} 

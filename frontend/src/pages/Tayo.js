@@ -35,18 +35,19 @@ export function Tayo() {
 
     
     useEffect(() => {
-        //dispatch(loadTayos());
+        console.log("t");
+        dispatch(loadTayos());
     }, [dispatch]);
 
+    /*
     useEffect(() => {
-        console.log(posts);
-        if (selectedResort === "[전체]") {setFilteredResorts(posts); console.log(filteredResorts.length)}
+        if (selectedResort === "[전체]") {setFilteredResorts(posts);}
         else {
             let filteredResort = posts.filter(post => post.resortName === selectedResort);
             setFilteredResorts(filteredResort);
         }
 
-    }, [selectedResort, posts])
+    }, [selectedResort, posts])*/
 
     return(
         <Container>
@@ -78,7 +79,7 @@ const Container = styled.div`
 `
 
 const TopWrapper = styled.div`
-padding: 60px 40px 10px 40px;
+padding: 60px 20px 10px 20px;
 background-color: var(--background-color);
 position: fixed;
 top: 0;
@@ -93,7 +94,7 @@ background-color: #EEF3F7;
 const Title = styled.div`
 padding-top: 10px;
 font-size: 19px;
-font-weight: 200;
+font-family: nanum-square-bold;
 `
 const Icons = styled.div`
 text-align: right;
