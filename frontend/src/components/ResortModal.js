@@ -7,16 +7,22 @@ import { addBookmark, deleteBookmark, loadBookmarks } from '../action/bookmark';
 import styled from 'styled-components'
 import shortid from 'shortid';
 import { Loading } from './common/Loading';
+import resorts  from '../data/resort.json';
+import { BsBoxArrowUpRight } from 'react-icons/bs';
 
 export function ResortModal(props) {
     const dispatch = useDispatch();
     const [emptyStar, setEmptyStar] = useState(!props.like);
+    const resortData = resorts.filter(resort => resort.id !== null);
+    const t_date = new Date();
+    let week = ['일', '월', '화', '수', '목', '금', '토', '일', '월', '화', '수', '목', '금', '토'];
 
     const clickOutside = (e) => {
         if (e.target.className === "openModal skiModal") {
             dispatch(loadBookmarks());
             props.close();
         }
+        console.log(props.dayState.hourly_info);
     }
     const toggleStar = (e) => {
         if (emptyStar) {
@@ -41,21 +47,26 @@ export function ResortModal(props) {
                     <Button onClick={props.close}>&times;</Button>
                 </Header>
 
-                
-                {/* {isLoading || error */}
-                {/* {!props.dayState.icon ?
-                    <div>Waiting..</div>
-                    : */}
                     <TempWeather>
                         <TempImg src={props.dayState.icon} />
-                        <TempDate>{props.dayState.date} ({props.dayState.day})</TempDate>
+                        {/* <TempDate>{props.dayState.date} ({props.dayState.day})</TempDate> */}
+                        <TempDate>{props.dayState.date.slice(5, 7)+"."+props.dayState.date.slice(8, 10)+" ("+week[t_date.getDay()]+")"}</TempDate>
                         <CBox><TempC>{props.dayState.tempCelcius}&deg;</TempC>
                         <TempDesc>{props.dayState.currentWeather}</TempDesc>
                         </CBox>
                         <div><MaxC className='temp-max'>최고 {props.dayState.tempMax}&deg;</MaxC><MinC>최저 {props.dayState.tempMin}&deg;</MinC></div>
                 </TempWeather>
-                {/* } */}
 
+                <WeekWeather>
+                    {props.dayState.hourly_info.slice(0,8).map(w => (
+                        <EachDay>
+                            <Img src={w.icon} />
+                        </EachDay>
+                    ))
+
+                    }
+                </WeekWeather>
+{/*
                 <WeekWeather>
                     {
                         props.dayState.week.map((elem) => (
@@ -66,13 +77,19 @@ export function ResortModal(props) {
                             </EachDay>
                         ))
                     }
-                </WeekWeather>
+                </WeekWeather>*/}
 
                 <ResortInfo>
                 
                         <Row><Label>운영 시간</Label><>매일 09:00 ~ 17:00 야간 19:00 ~ 22:00</></Row>
                         <Row><Label>운영 기간</Label><>연중무휴</></Row>
-                        <Row><Label>이용 요금</Label><Url>https://www.yongpyong.co.kr/kor/skiNboard/introduce.do</Url></Row>
+                        <Row><Label>이용 요금</Label>
+                            <OutButton 
+                                onClick={() => window.open(resortData.find(resort => resort.id === props.resortId).url, '_blank')}>
+                                    보러가기
+                                <SBsBoxArrowUpRight />
+                            </OutButton>
+                        </Row>
                         
                 </ResortInfo>
                 </>
@@ -83,7 +100,18 @@ export function ResortModal(props) {
     </Wrapper>
     )
 }
-
+const OutButton = styled.button`
+border: none;
+color: #FAFAFA;
+background-color: var(--button-color);
+padding: 6px 8px;
+border-radius: 4px;
+`
+const SBsBoxArrowUpRight = styled(BsBoxArrowUpRight)`
+width: 11px;
+height: 11px;
+padding-left: 4px;
+`
 const Wrapper = styled.div`
     .skiModal {
         display: none;
@@ -125,7 +153,7 @@ const Header = styled.div`
         color: var(--button-color);
     }
     .modal-resortName {
-        font-weight: bold;
+        font-family: nanum-square-bold;
         font-size: 15px;
     }
 `
@@ -143,8 +171,6 @@ const TempWeather = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background-color: #FAFAFA;
-    box-shadow: 5px 2px 7px -2px rgba(17, 20, 24, 0.15);
     border-radius: 10px;
     margin: 10px;
     margin-bottom: 0;
@@ -160,7 +186,7 @@ const TempImg = styled.img`
     height: 90px;
 `
 const TempDate = styled.div`
-    font-weight: bold;
+    font-family: nanum-square-bold;
     font-size: 14px;
     padding-bottom: 10px;
 `
@@ -175,7 +201,7 @@ const TempDesc = styled.div`
 `
 
 const TempC = styled.div`
-    font-weight: bold;
+    font-family: nanum-square-bold;
     font-size: 22px;
 `
 
@@ -204,11 +230,11 @@ const MinC = styled.span`
 // 주간 날씨
 const WeekWeather = styled.div`
     display: flex;
-    justify-content: space-between;
-    //border-top: 1px solid #CCCCCC;
+    //justify-content: space-between;
+    border-top: 1px solid #CCCCCC;
     //border-bottom: 1px solid #CCCCCC;
     margin: 10px 10px;
-    //margin-top: 8px;
+    padding-top: 8px;
 `
 const EachDay = styled.div`
     display: flex;
@@ -227,12 +253,17 @@ const Row = styled.div`
     display: flex;
     font-size: 12px;
     padding-bottom: 4px;
-
+    align-items: center;
 `
 const Label = styled.div`
     margin-right: 9px;
-    font-weight: bold;
+    font-family: nanum-square-bold;
 `
 const Url = styled.div`
     font-size: 9px;
+`
+
+
+const Img = styled.img`
+
 `

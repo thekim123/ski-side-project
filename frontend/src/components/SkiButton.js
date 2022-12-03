@@ -12,6 +12,7 @@ export function SkiButton(props) {
     const dispatch = useDispatch();
     const [resortOpen, setResortOpen] = useState(false);
     const [dayState, setDayState] = useState({
+        /*
         date: "",
         day: "",
         currentWeather: "",
@@ -19,7 +20,14 @@ export function SkiButton(props) {
         tempMax: "",
         tempMin: "",
         icon: "",
-        week: []
+        week: []*/
+        hourly_info: [],
+        date: "",
+        currentWeather: "",
+        tempCelcius: "",
+        tempMax: "",
+        tempMin: "",
+        icon: "",
     })
     const [isLoading, setIsLoading] = useState(false);
     const API_KEY = process.env.REACT_APP_WEATHER_KEY;
@@ -39,32 +47,62 @@ export function SkiButton(props) {
             setIsLoading(true);
             //현재 날씨 정보
             const resWeather = await axios.get(
-                //`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
                 `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=kr`
             );
 
-            //if (mounted) { 
                 let _main = resWeather.data.weather[0].main;
                 let _icon = resWeather.data.weather[0].icon;
                 let _temp = resWeather.data.main.temp;
 
                 let _test = "http://openweathermap.org/img/w/" + _icon + ".png";
-                //setIsLoading(false);
-            //} 
 
             // 5일 간 최저, 최고 기온
+            /*
             let date_now = new Date();
             let m = date_now.getMonth() + 1;
             let d = date_now.getDate();
             let idx = date_now.getDay();
             let week = ['일', '월', '화', '수', '목', '금', '토', '일', '월', '화', '수', '목', '금', '토'];
-            let weekSlice = week.slice(idx, idx+5);
+            let weekSlice = week.slice(idx, idx+5);*/
 
             const resWeek = await axios.get(
-                //`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`
-                `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+                `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=kr`
             );
 
+            let hourly_info = [];
+            /*
+            let w_object = {
+                dt: "",
+                temp_c: 0,
+                description: "",
+                icon: "",
+            }*/
+            let icon_str;
+            for (let i = 0; i < 40; i++) {
+                icon_str = resWeek.data.list[i].weather[0].icon;
+                let w_object = {
+                    dt: resWeek.data.list[i].dt_txt,
+                    temp_c: resWeek.data.list[i].main.temp,
+                    description: resWeek.data.list[i].weather[0].description,
+                    icon: "http://openweathermap.org/img/w/" + icon_str + ".png",
+                }
+                /*
+                w_object.dt = resWeek.data.list[i].dt_txt; //나중에 결과 보고 시간만 slice하기
+                w_object.temp_c = resWeek.data.list[i].main.temp;
+                w_object.description = resWeek.data.list[i].weather[0].description;
+
+                icon_str = resWeek.data.list[i].weather.icon;
+                w_object.icon = "http://openweathermap.org/img/w/" + icon_str + ".png";*/
+
+                hourly_info.push(w_object);
+            }
+
+            // 오늘 최고, 최저 기온
+            const today_hourly = hourly_info.slice(0, 8).map(w => w.temp_c);
+            const today_min = Math.min.apply(null, today_hourly);
+            const today_max = Math.max.apply(null, today_hourly);
+
+            /*
             let min_arr = [];
             let max_arr = [];
             for (let i = 0; i < 40; i++) {
@@ -76,22 +114,22 @@ export function SkiButton(props) {
                 let i_min = Math.min.apply(null, min_arr.slice(i, i + 8));
                 let i_max = Math.max.apply(null, max_arr.slice(i, i + 8));
                 minMax.push({"day": weekSlice[i / 8], "min": Math.floor(i_min * 10) / 10, "max": Math.ceil(i_max * 10) / 10});
-            }
-
-            // const thirtyDays = await axios.get(
-            // `https://api.openweathermap.org/data/2.5/forecast/climate?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
-            // )
+            }*/
             
             setDayState({
                 ...dayState,
-                date: m+'월 '+d+'일 ',
-                day: week[idx],
+                hourly_info,
+                //date: m+'월 '+d+'일 ',
+                //day: week[idx],
+                date: hourly_info[0].dt,
                 currentWeather: _main,
                 tempCelcius: Math.round(_temp * 10) / 10,
-                tempMax: minMax[0].max,
-                tempMin: minMax[0].min,
+                tempMax: Math.ceil(today_max * 10) / 10,
+                tempMin: Math.floor(today_min * 10) / 10,
+                //tempMax: minMax[0].max,
+                //tempMin: minMax[0].min,
                 icon: _test,
-                week: minMax
+                //week: minMax
             })
             setIsLoading(false);
         } catch (error) {
