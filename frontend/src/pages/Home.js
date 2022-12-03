@@ -37,7 +37,6 @@ export function Home() {
     }, [dispatch]);
 
     useEffect(() => {
-        console.log(bookmarks);
     }, [bookmarks])
     return(
         <Container>

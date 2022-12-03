@@ -11,14 +11,14 @@
         "lon": "127.58246947546381",
         "time": "매일 09:00 ~ 17:00 야간 19:00 ~ 22:00",
         "duration": "연중무휴",
-        "url": "https://www.yongpyong.co.kr/kor/skiNboard/introduce.do",
+        "url": "https://www.elysian.co.kr/gangchon/ski/ski_cost.asp",
         "color": "#94ABBA"
     },
     {
         "id": null
     },
     {
-        "id": 6,
+        "id": 3,
         "region": "홍천",
         "name": "비발디파크",
         "lat": "37.64078769999922",
@@ -29,7 +29,7 @@
         "color": "#94ABBA"
     },
         {
-            "id": 5,
+            "id": 6,
             "region": "포천",
             "name": "베어스타운",
             "lat": "37.592743370151304",
@@ -40,7 +40,7 @@
             "color": null
         },
         {
-            "id": 7,
+            "id": 4,
             "region": "평창",
             "name": "용평리조트",
             "lat": "37.63026579998478",
@@ -51,7 +51,7 @@
             "color": "#94ABBA"
         },
         {
-            "id": 2,
+            "id": 7,
             "region": "광주",
             "name": "곤지암리조트",
             "lat": "37.3376855996158",
@@ -62,7 +62,7 @@
             "color": null
         },
         {
-            "id": 8,
+            "id": 2,
             "region": "평창",
             "name": "휘닉스파크",
             "lat": "37.57369100000068",
@@ -73,7 +73,7 @@
             "color": "#94ABBA"
         },
         {
-            "id": 3,
+            "id": 8,
             "region": "이천",
             "name": "지산포레스트",
             "lat": "37.21528939460325",
@@ -84,7 +84,7 @@
             "color": null
         },
         {
-            "id": 9,
+            "id": 5,
             "region": "정선",
             "name": "하이원리조트",
             "color": "#94ABBA"
@@ -93,13 +93,13 @@
             "id": null
         },
         {
-            "id": 10,
+            "id": 9,
             "region": "횡성",
             "name": "웰리힐리",
             "color": "#94ABBA"
         },
         {
-            "id": 4,
+            "id": 11,
             "region": "무주",
             "name": "덕유산리조트",
             "lat": "35.886078372101544",
@@ -110,7 +110,7 @@
             "color": null
         },
         {
-            "id": 11,
+            "id": 10,
             "region": "원주",
             "name": "오크벨리",
             "color": "#94ABBA"

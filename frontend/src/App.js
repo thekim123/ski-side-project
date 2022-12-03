@@ -27,6 +27,7 @@ import { ClubRoute } from './components/Club/ClubRoute';
 import { ClubBoardWrite } from './components/Club/ClubBoardWrite';
 import { EditClub } from './components/Club/EditClub';
 import ClubBoardList from './components/Club/ClubBoardList';
+import styled from 'styled-components'
 
 function App() {
   const dispatch = useDispatch();
@@ -34,7 +35,7 @@ function App() {
   //App.use(cors())
 
   return (
-    <div>
+    <Wrapper>
       <TopBar />
       <Routes>
         <Route path="/" element={<Layout />}>
@@ -68,9 +69,14 @@ function App() {
         </Route>
       </Routes>
       <NavBar />
-    </div>
+    </Wrapper>
   );
 }
 
 export default App;
 
+const Wrapper = styled.div`
+button, input, textarea {
+  font-family: nanum-square;
+}
+`
