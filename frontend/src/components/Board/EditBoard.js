@@ -4,11 +4,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { updatePost, getSinglePost } from '../../action/board';
 import styled from 'styled-components'
 import { IoMdArrowDropdown } from 'react-icons/io';
+import resorts from '../../data/resort.json'
 
 export function EditBoard() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const resorts = useSelector(state => state.resort.resorts);
+    const resortData = resorts.filter(resort => resort.id !== null);
     const [showSelectBox, setShowSelectBox] = useState(false);
     const [selectedResort, setSelectedResort] = useState("스키장 선택");
     const titleInput = useRef();
@@ -81,12 +82,13 @@ export function EditBoard() {
             return;
         } else {
             const post = {
+                id: id,
                 title: enteredTitle,
                 content: enteredContent,
                 resortName: selectedResort,
                 //create_dt: originalPost.create_dt,
             }
-            dispatch(updatePost(post, id));
+            dispatch(updatePost(post));
             navigate("/board");
         }
     }
@@ -101,21 +103,26 @@ export function EditBoard() {
         if(originalPost) {
             console.log(originalPost);
             setState({...originalPost});
-            setSelectedResort(originalPost.resortName);
+            setSelectedResort(originalPost.resort.resortName);
         }
     }, [originalPost]);
 
     return (
-    <Wrapper>
-        <div className="boardWrite-top">글 수정</div>
-        <form onSubmit={handleSubmit}>
+    <Wrapper onSubmit={handleSubmit}>
         <Top>
-            <SelectBox>
+        <div className="boardWrite-top">글 수정</div>
+        <Buttons>
+            {/* <button className="boardWrite-tempSave">임시 저장</button> */}
+            <button className="boardWrite-save">저장</button>
+        </Buttons>
+        </Top>
+        <Top>
+        <SelectBox>
                 <div className="dropdown">
                     <div className="dropdown-btn" onClick={toggleSelectBox}>{selectedResort}<IoMdArrowDropdown className="boardWrite-icon"/></div>
                     {showSelectBox && <div className="dropdown-content">
                         {
-                            resorts.map(resort => (
+                            resortData.map(resort => (
                                 <div key={resort.id} id={resort.name} className="dropdown-item" onClick={handleResortClick}>{resort.name}</div>
                             ))
                         }
@@ -123,7 +130,6 @@ export function EditBoard() {
                     </div>}
                 </div>
             </SelectBox>
-            {/* <SelectBox toggle={toggleSelectBox} state={showSelectBox} list={resorts} /> */}
             <Title>
                 <input 
                     className="boardWrite-title"
@@ -149,30 +155,24 @@ export function EditBoard() {
             </textarea>
             <ContentError className="boardWrite-error">{error.content ? error.content : null}</ContentError>
         </Content>
-        <Buttons>
-            <button className="boardWrite-tempSave">임시 저장</button>
-            <button className="boardWrite-save">저장</button>
-        </Buttons>
-        </form>
     </Wrapper>
     )
 }
 
-const Wrapper = styled.div`
-    margin-top: 30px;
+const Wrapper = styled.form`
+    margin: 30px 20px;
 
     form {
         width: 100%;
-        display:flex;
-        flex-direction: column;
+        display: grid;
+        //flex-direction: column;
         align-items: center;
     }
 
 
     .boardWrite-top{
         text-align: center;
-        font-weight: bold;
-        margin-bottom: 10px;
+        font-family: nanum-square-bold;
     }
     .boardWrite-error{
         font-size: 12px;
@@ -181,16 +181,21 @@ const Wrapper = styled.div`
 `
 const Top = styled.div`
     display: flex;
-
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 8px;
 `
 const SelectBox = styled.div`
     .dropdown {
         position: relative;
         margin: 10px;
+        margin-left: 0;
+        width: 117px;
     }
 
     .dropdown-btn{
         background: #fff;
+        //background-color: var(--background-color);
         box-shadow: 3px 3px 10px 6px rgba(0, 0, 0, 0.06);
         padding: 10px 13px;
         font-size: 14px;
@@ -231,13 +236,16 @@ const SelectBox = styled.div`
 const Title = styled.div`
     display: flex;
     flex-direction: column;
+    //justify-content: space-between;
     align-items: center;
     .boardWrite-title{
         width: 85%;
         border: none;
-        border-bottom: 1px solid gray;
+        border-bottom: 1px solid var(--button-color);
         padding: 10px 13px;
-        margin: 10px;
+        margin: 0 10px;
+        background-color: var(--background-color);
+        align-self: end;
     }
     .boardWrite-title:focus{
         outline: none;
@@ -245,20 +253,21 @@ const Title = styled.div`
     }
 `
 const TitleError = styled.div`
-
+padding-top: 10px;
 `
 const Content = styled.div`
-    margin: 10px;
+    margin-top: 0;
     width: 100%;
     display:flex;
     flex-direction: column;
     align-items: center;
     textarea {
-        width: 70%;
+        width: 100%;
         height: 200px;
-        padding: 10px;
-        border: 1px solid gray;
+        padding-left: 10px;
+        border: none;
         margin: 10px;
+        background-color: var(--background-color);
     }
     textarea:focus{
         outline: none;
@@ -266,17 +275,16 @@ const Content = styled.div`
     }
 `
 const ContentError = styled.div`
-
+align-self: start;
 `
 const Buttons = styled.div`
     display: flex;
     align-items: center;
 
     button{
-        padding: 10px;
-        border-radius: 15px;
+        border-radius: 10px;
         border: 1px solid black;
-        margin: 5px;
+        background-color: var(--background-color);
     }
 
     .boardWrite-tempSave{
@@ -285,8 +293,10 @@ const Buttons = styled.div`
         color: #6B89A5;
     }
     .boardWrite-save{
-        background-color: #6B89A5;
-        border: 1px solid #FAFAFA;
-        color: #FAFAFA;
+        background-color: var(--background-color);
+        border: none;
+        color: var(--button-color);
+        font-family: nanum-square-bold;
+        font-size: 15px;
     }
 `

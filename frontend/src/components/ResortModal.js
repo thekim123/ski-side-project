@@ -9,20 +9,34 @@ import shortid from 'shortid';
 import { Loading } from './common/Loading';
 import resorts  from '../data/resort.json';
 import { BsBoxArrowUpRight } from 'react-icons/bs';
+import Slider from 'react-slick'
 
 export function ResortModal(props) {
     const dispatch = useDispatch();
     const [emptyStar, setEmptyStar] = useState(!props.like);
     const resortData = resorts.filter(resort => resort.id !== null);
+    const resortInfo = resortData.find(resort => resort.id === props.resortId);
     const t_date = new Date();
     let week = ['일', '월', '화', '수', '목', '금', '토', '일', '월', '화', '수', '목', '금', '토'];
 
+    const settings = {
+        className: "center",
+        infinite: false,
+        centerPadding: "6px",
+        slidesToShow: 5,
+        swipeToSlide: true,
+        afterChange: function(index) {
+            console.log(
+            `Slider Changed to: ${index + 1}, background: #222; color: #bada55`
+            );
+        }
+    }
+    
     const clickOutside = (e) => {
         if (e.target.className === "openModal skiModal") {
             dispatch(loadBookmarks());
             props.close();
         }
-        console.log(props.dayState.hourly_info);
     }
     const toggleStar = (e) => {
         if (emptyStar) {
@@ -50,42 +64,32 @@ export function ResortModal(props) {
                     <TempWeather>
                         <TempImg src={props.dayState.icon} />
                         {/* <TempDate>{props.dayState.date} ({props.dayState.day})</TempDate> */}
-                        <TempDate>{props.dayState.date.slice(5, 7)+"."+props.dayState.date.slice(8, 10)+" ("+week[t_date.getDay()]+")"}</TempDate>
+                        <TempDate>{t_date.getMonth() === 12 ? 1 : t_date.getMonth() + 1}.{t_date.getDate()+" ("+week[t_date.getDay()]+")"}</TempDate>
                         <CBox><TempC>{props.dayState.tempCelcius}&deg;</TempC>
-                        <TempDesc>{props.dayState.currentWeather}</TempDesc>
+                        {/* <TempDesc>{props.dayState.currentWeather}</TempDesc> */}
                         </CBox>
-                        <div><MaxC className='temp-max'>최고 {props.dayState.tempMax}&deg;</MaxC><MinC>최저 {props.dayState.tempMin}&deg;</MinC></div>
+                        <MinMaxBox><MaxC className='temp-max'>{props.dayState.tempMax}&deg;</MaxC>/<MinC>{props.dayState.tempMin}&deg;</MinC></MinMaxBox>
                 </TempWeather>
 
-                <WeekWeather>
-                    {props.dayState.hourly_info.slice(0,8).map(w => (
+                <Slider {...settings} className="hour-slider">
+                {props.dayState.hourly_info.slice(0,8).map(w => (
                         <EachDay>
+                            {w.dt.slice(11, 13) === "00" ? <EachDate>{w.dt.slice(5,7)}.{w.dt.slice(8,10)}</EachDate> : <EachDate></EachDate>}
+                            <EachTime>{w.dt.slice(11, 13)+"시"}</EachTime>
                             <Img src={w.icon} />
+                            <EachTemp>{w.temp_c}&deg;</EachTemp>
                         </EachDay>
                     ))
-
                     }
-                </WeekWeather>
-{/*
-                <WeekWeather>
-                    {
-                        props.dayState.week.map((elem) => (
-                            <EachDay key={shortid.generate()}>
-                                <TempDate>{elem.day}</TempDate>
-                                <MaxC>{elem.max}&deg;</MaxC>
-                                <MinC>{elem.min}&deg;</MinC>
-                            </EachDay>
-                        ))
-                    }
-                </WeekWeather>*/}
+                </Slider>
 
                 <ResortInfo>
                 
-                        <Row><Label>운영 시간</Label><>매일 09:00 ~ 17:00 야간 19:00 ~ 22:00</></Row>
+                        <Row><Label className='label-time'>운영 시간</Label><Box>{resortInfo.time.split('\n').map(s => <div className='box-inside'>{s}</div>)}</Box></Row>
                         <Row><Label>운영 기간</Label><>연중무휴</></Row>
                         <Row><Label>이용 요금</Label>
                             <OutButton 
-                                onClick={() => window.open(resortData.find(resort => resort.id === props.resortId).url, '_blank')}>
+                                onClick={() => window.open(resortInfo.url, '_blank')}>
                                     보러가기
                                 <SBsBoxArrowUpRight />
                             </OutButton>
@@ -100,6 +104,12 @@ export function ResortModal(props) {
     </Wrapper>
     )
 }
+const Box = styled.div`
+display: grid;
+.box-inside{
+    padding-bottom: 3px;
+}
+`
 const OutButton = styled.button`
 border: none;
 color: #FAFAFA;
@@ -138,6 +148,20 @@ const Section = styled.div`
     background-color: var(--background-color);
     //animation: modal-show 0.3s;
     overflow: hidden;
+
+    .hour-slider{
+        margin: 30px;
+        margin-top: 10px;
+        border-top: 1px solid var(--button-sub-color);
+        border-bottom: 1px solid var(--button-sub-color);
+        padding: 20px 0;
+    }
+    .slick-prev:before{
+        color: var(--button-color);
+    }
+    .slick-next:before{
+        color: var(--button-color);
+    }
 `
 
 const Header = styled.div`
@@ -207,53 +231,48 @@ const TempC = styled.div`
 
 const MaxC = styled.span`
     font-size: 12px;
-    //font-weight: bold;
-    background-color: #CD5C5C;
-    background-color: #B73E3E;
-    color: #FAFAFA;
-    padding: 3px 5px;
-    border-radius: 5px;
-    margin-right: 7px;
+    font-family: nanum-square-bold;
+    color: #B73E3E;
 `
 const MinC = styled.span`
     font-size: 12px;
-    font-weight: bold;
-    //background-color: #447F96;
-    background-color: #628E90;
-    color: #FAFAFA;
-    padding: 3px 5px;
-    border-radius: 5px;
-    margin-left: 7px;
-    margin-top: 3px;
+    font-family: nanum-square-bold;
+    color: #628E90;
+    padding-left: 5px;
+`
+const MinMaxBox = styled.div`
+color: gray;
 `
 
 // 주간 날씨
 const WeekWeather = styled.div`
     display: flex;
     //justify-content: space-between;
-    border-top: 1px solid #CCCCCC;
-    //border-bottom: 1px solid #CCCCCC;
+    border-top: 1px solid var(--button-color);
+    border-bottom: 1px solid var(--button-color);
     margin: 10px 10px;
-    padding-top: 8px;
 `
 const EachDay = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    display: grid;
+    //flex-direction: column;
+    justify-items: center;
     align-items: center;
-    padding: 10px;
+    padding-left: 5px;
 `
 
 const ResortInfo = styled.div`
-    border-top: 1px solid #CCCCCC;
+    //border-top: 1px solid var(--button-color);
     margin: 20px;
-    padding-top: 20px;
+    //padding-top: 20px;
 `
 const Row = styled.div`
     display: flex;
     font-size: 12px;
     padding-bottom: 4px;
     align-items: center;
+    .label-time{
+        align-self: start;
+    }
 `
 const Label = styled.div`
     margin-right: 9px;
@@ -263,7 +282,24 @@ const Url = styled.div`
     font-size: 9px;
 `
 
-
+const EachDate = styled.div`
+font-size: 11px;
+height: 16px;
+color: var(--button-sub-color);
+padding-left: 3px;
+`
+const EachTime = styled.div`
+font-size: 13px;
+color: var(--button-color);
+padding-left: 5px;
+`
 const Img = styled.img`
-
+width: 42px;
+height: 42px;
+margin-right: 0;
+`
+const EachTemp = styled.div`
+font-family: nanum-square-bold;
+font-size: 13px;
+padding-left: 5px;
 `

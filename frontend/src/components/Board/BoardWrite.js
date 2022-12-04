@@ -15,6 +15,7 @@ export function BoardWrite() {
     const [selectedResort, setSelectedResort] = useState("스키장 선택");
     const titleInput = useRef();
     const contentInput = useRef();
+    const imgRef = useRef();
     const [error, setError] = useState({
         title: "",
         content: ""
@@ -28,6 +29,11 @@ export function BoardWrite() {
         console.log(e.target.id);
         setSelectedResort(e.target.id);
         setShowSelectBox(false);
+    }
+
+    const onUploadImg = e => {
+        console.log(imgRef.current);
+        
     }
 
     const resetError = (e) => {
@@ -87,9 +93,14 @@ export function BoardWrite() {
     }
 
     return (
-    <Wrapper>
+    <Wrapper onSubmit={handleSubmit}>
+        <MostTop>
         <div className="boardWrite-top">글 작성</div>
-        <form onSubmit={handleSubmit}>
+        <Buttons>
+            {/* <button className="boardWrite-tempSave">임시 저장</button> */}
+            <button className="boardWrite-save">저장</button>
+        </Buttons>
+        </MostTop>
         <Top>
             <SelectBox>
                 <div className="dropdown">
@@ -126,18 +137,20 @@ export function BoardWrite() {
             </textarea>
             <ContentError className="boardWrite-error">{error.content ? error.content : null}</ContentError>
         </Content>
-        <Buttons>
-            <button className="boardWrite-tempSave">임시 저장</button>
-            <button className="boardWrite-save">저장</button>
-        </Buttons>
-        </form>
+        <ImgBox>
+            <input type="file" accept="image/*" ref={imgRef} onChange={onUploadImg} />
+        </ImgBox>
     </Wrapper>
     )
 }
+const ImgBox = styled.div`
 
-const Wrapper = styled.div`
-    margin-top: 30px;
+`
 
+const Wrapper = styled.form`
+    margin-top: 20px;
+    display: grid;
+    justify-items: center;
     form {
         width: 100%;
         display:flex;
@@ -148,22 +161,31 @@ const Wrapper = styled.div`
 
     .boardWrite-top{
         text-align: center;
+        align-self: center;
         font-weight: bold;
-        margin-bottom: 10px;
     }
     .boardWrite-error{
         font-size: 12px;
         color: #CD5C5C;
     }
 `
+const MostTop = styled.div`
+display: flex;
+justify-content: space-between;
+align-items: center;
+width: 90%;
+font-family: nanum-square-bold;
+`
 const Top = styled.div`
-    display: flex;
-
+    display: grid;
+    width: 90%;
+    grid-template-columns: 130px 1fr;
 `
 const SelectBox = styled.div`
     .dropdown {
         position: relative;
         margin: 10px;
+        margin-left: 0;
     }
 
     .dropdown-btn{
@@ -215,7 +237,7 @@ const Title = styled.div`
     .boardWrite-title{
         width: 85%;
         border: none;
-        border-bottom: 1px solid gray;
+        border-bottom: 1px solid var(--button-color);
         padding: 10px 13px;
         margin: 10px;
     }
@@ -234,13 +256,12 @@ const Content = styled.div`
     flex-direction: column;
     align-items: center;
     textarea {
-        width: 80%;
+        width: 90%;
         height: 300px;
         padding: 10px;
-        border: 1px solid #CCCCCC;
+        border: none;
         border-radius: 10px;
-        margin: 10px;
-        //background-color: var(--background-color);
+        background-color: var(--background-color);
     }
     textarea:focus{
         outline: none;
@@ -248,7 +269,8 @@ const Content = styled.div`
     }
 `
 const ContentError = styled.div`
-
+align-self: start;
+margin-left: 20px;
 `
 const Buttons = styled.div`
     display: flex;
@@ -267,8 +289,10 @@ const Buttons = styled.div`
         color: var(--button-color);
     }
     .boardWrite-save{
-        background-color: var(--button-color);
-        border: 1px solid #FAFAFA;
-        color: #FAFAFA;
+        background-color: var(--background-color);
+        border: none;
+        color: var(--button-color);
+        font-size: 14px;
+        font-family: nanum-square-bold;
     }
 `
