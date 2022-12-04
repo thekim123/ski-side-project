@@ -16,7 +16,7 @@ export default function OkCancelModal(props) {
             props.close();
         }
     }
-    const clickX = () => {
+    const clickX = () => { 
         setError(null);
         props.close();
     }

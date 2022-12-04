@@ -51,7 +51,7 @@ export const getSinglePost = (id) => {
     }
 }
 
-export const updatePost = (post, id) => {
+export const updatePost = (post) => {
     return function (dispatch) {
         Send({
             url: '/board/update/',
@@ -60,6 +60,7 @@ export const updatePost = (post, id) => {
         }).then((resp) => {
             console.log("resp", resp);
             dispatch(boardActions.editPost());
+            dispatch(loadPosts());
         })
         .catch(error => console.log(error));
     }

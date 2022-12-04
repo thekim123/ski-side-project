@@ -11,6 +11,7 @@ import Grid from '@material-ui/core/Grid';
 import shortid from 'shortid';
 import { loadBookmarks } from '../action/bookmark';
 import { ResortModal } from '../components/ResortModal';
+import Slider from 'react-slick'
 
 export function Home() {
     const dispatch = useDispatch();
@@ -20,6 +21,18 @@ export function Home() {
     const bookmarks = useSelector(state => state.bookmarks.bookmarks);
     const [top3, setTop3] = useState([]);
     const MyResort = ["엘리시안", "스키장2", "스키장3"];
+
+    const settings = {
+        className: "center",
+        infinite: true,
+        centerPadding: "60px",
+        slidesToShow: 5,
+        swipeToSlide: true,
+        afterChange: function(index) {
+          console.log(
+            `Slider Changed to: ${index + 1}, background: #222; color: #bada55`
+          );
+        }}
 
     const clickLogin = e => {
         navigate('/login');

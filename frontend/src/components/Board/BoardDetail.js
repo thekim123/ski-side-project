@@ -8,6 +8,7 @@ import { FiSend } from 'react-icons/fi'
 import { AiOutlineLike, AiFillLike, AiOutlineDislike, AiFillDislike } from 'react-icons/ai'
 import { BsFillPersonFill } from 'react-icons/bs'
 import styled from 'styled-components'
+import OkButtonModal from '../common/OkButtonModal'
 
 export function BoardDetail() {
     const post = useSelector(state => state.board.post);
@@ -21,14 +22,20 @@ export function BoardDetail() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     let {id} = useParams();
+    const [delOpen, setDelOpen] = useState(false);
+
+    const closeDel = () => {
+        setDelOpen(false);
+    }
 
     const handlePencil = e => {
         navigate(`/board/edit/${id}`);
     }
 
     const handleTrash = e => {
-        navigate("/board")
-        dispatch(deletePost(id));
+        //navigate("/board")
+        //dispatch(deletePost(id));
+        setDelOpen(true);
     }
 
     const toggleLike = e => {
@@ -118,6 +125,13 @@ export function BoardDetail() {
                     <Icon>
                         {isMine && <HiPencil className="boardDetail-icon" onClick={handlePencil}/>}
                         {isMine && <BsTrashFill className="boardDetail-icon" onClick={handleTrash}/>}
+                        {isMine && <OkButtonModal 
+                            open={delOpen}
+                            close={closeDel}
+                            message={"게시글을 삭제하시겠습니까?"}
+                            ok={"삭제"}
+                            usage={"boardDel"}
+                            targetId={id}/>}
                     </Icon>
                 </NameDate>
             </Top>

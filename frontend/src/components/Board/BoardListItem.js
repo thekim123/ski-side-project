@@ -6,14 +6,25 @@ import { HiPencil } from 'react-icons/hi'
 import { BsTrashFill, BsFilePost } from 'react-icons/bs'
 import { AiOutlineLike } from 'react-icons/ai'
 import { deletePost } from '../../action/board'
+import OkButtonModal from '../common/OkButtonModal'
 
 function BoardListItem(props) {
     const user = useSelector(state => state.auth.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isMine, setIsMine] = useState(false);
-
     const [timePass, setTimePass] = useState("");
+    const [delOpen, setDelOpen] = useState(false);
+
+    const cutText = (text, margin) => {
+        if (text.length > margin) {
+            return text.slice(0, margin-1) + "...";
+        } else return text;
+    }
+
+    const closeDel = () => {
+        setDelOpen(false);
+    }
 
     const detailDate = (create_dt) => {
         const milliSeconds = new Date() - Date.parse(create_dt);
@@ -42,7 +53,8 @@ function BoardListItem(props) {
     }
 
     const handleTrash = e => {
-        dispatch(deletePost(props.id));
+        //dispatch(deletePost(props.id));
+        setDelOpen(true);
     }
 
     const showDetail = e => {
@@ -62,13 +74,20 @@ function BoardListItem(props) {
                 <div>
                     {isMine && <HiPencil className="boardPost-icon" onClick={handlePencil}/>}
                     {isMine && <BsTrashFill className="boardPost-icon" onClick={handleTrash}/>}
+                    <OkButtonModal 
+                    open={delOpen}
+                    close={closeDel}
+                    message={"게시글을 삭제하시겠습니까?"}
+                    ok={"삭제"}
+                    usage={"boardDel"}
+                    targetId={props.id}/>
                 </div>
             </Top>
             <Content onClick={showDetail}>
                 <Img>{/*<BsFilePost className="boardPost-imgIcon" />*/}</Img>
                 <div>
-                    <Title>{props.title}</Title>
-                    <Detail>{props.content}</Detail>
+                    <Title>{cutText(props.title, 16)}</Title>
+                    <Detail>{cutText(props.content, 17)}</Detail>
                     <Bottom>
                         <Empty></Empty>
                         <Real>

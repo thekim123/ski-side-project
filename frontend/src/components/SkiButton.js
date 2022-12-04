@@ -82,7 +82,7 @@ export function SkiButton(props) {
                 icon_str = resWeek.data.list[i].weather[0].icon;
                 let w_object = {
                     dt: resWeek.data.list[i].dt_txt,
-                    temp_c: resWeek.data.list[i].main.temp,
+                    temp_c: Math.round(resWeek.data.list[i].main.temp * 10) / 10,
                     description: resWeek.data.list[i].weather[0].description,
                     icon: "http://openweathermap.org/img/w/" + icon_str + ".png",
                 }

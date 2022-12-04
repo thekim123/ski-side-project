@@ -9,7 +9,7 @@
         "name": "엘리시안",
         "lat": "37.81673119999963",
         "lon": "127.58246947546381",
-        "time": "매일 09:00 ~ 17:00 야간 19:00 ~ 22:00",
+        "time": "매일 09:00 ~ 17:00\n야간 19:00 ~ 22:00",
         "duration": "연중무휴",
         "url": "https://www.elysian.co.kr/gangchon/ski/ski_cost.asp",
         "color": "#94ABBA"
@@ -23,9 +23,9 @@
         "name": "비발디파크",
         "lat": "37.64078769999922",
         "lon": "127.68344735393771",
-        "time": "매일 09:00 ~ 17:00 야간 19:00 ~ 22:00",
+        "time": "매일 08:30 ~ 16:30\n(정설시간: 16:30 ~ 18:30)",
         "duration": "연중무휴",
-        "url": "https://www.yongpyong.co.kr/kor/skiNboard/introduce.do",
+        "url": "https://www.sonohotelsresorts.com/daemyung.vp.skiworld.04_04_01.ds/dmparse.dm",
         "color": "#94ABBA"
     },
         {
@@ -34,7 +34,7 @@
             "name": "베어스타운",
             "lat": "37.592743370151304",
             "lon": "127.37885492050826",
-            "time": "매일 09:00 ~ 17:00 야간 19:00 ~ 22:00",
+            "time": "매일 09:00 ~ 17:00\n야간 19:00 ~ 22:00",
             "duration": "연중무휴",
             "url": "https://www.yongpyong.co.kr/kor/skiNboard/introduce.do",
             "color": null
@@ -47,7 +47,7 @@
             "lon": "128.67130175393777",
             "time": "매일 09:00 ~ 17:00 야간 19:00 ~ 22:00",
             "term": "연중무휴",
-            "url": "https://www.yongpyong.co.kr/kor/skiNboard/introduce.do",
+            "url": "https://www.yongpyong.co.kr/kor/skiNboard/utilizationFee/rentCharge.do",
             "color": "#94ABBA"
         },
         {
@@ -56,9 +56,9 @@
             "name": "곤지암리조트",
             "lat": "37.3376855996158",
             "lon": "127.27921367854688",
-            "time": "매일 09:00 ~ 17:00 야간 19:00 ~ 22:00",
+            "time": "",
             "duration": "연중무휴",
-            "url": "https://www.yongpyong.co.kr/kor/skiNboard/introduce.do",
+            "url": "https://m.konjiamresort.co.kr/ski/skiInfo.dev",
             "color": null
         },
         {
@@ -67,9 +67,9 @@
             "name": "휘닉스파크",
             "lat": "37.57369100000068",
             "lon": "128.33745065393663",
-            "time": "24시간 운영",
+            "time": "9시 ~ 22시\n(정설시간: 16시 30분 ~ 18시)",
             "duration": "연중무휴",
-            "url": "http://휘닉스파크스키강습.com",
+            "url": "https://phoenixhnr.co.kr/static/pyeongchang/guide/price/snowpark",
             "color": "#94ABBA"
         },
         {
@@ -78,15 +78,22 @@
             "name": "지산포레스트",
             "lat": "37.21528939460325",
             "lon": "127.34002429398413",
-            "time": "매일 09:00 ~ 17:00 야간 19:00 ~ 22:00",
+            "time": "주간 09:00 ~ 17:00\n야간 18:30 ~ 23:00\n심야A 23:00 ~ 02:00\n심야B 24:00 ~ 04:00",
             "duration": "연중무휴",
-            "url": "https://www.yongpyong.co.kr/kor/skiNboard/introduce.do",
+            "planUrl": "https://www.jisanresort.co.kr/w/ski/slopes/schedule.asp?WeekMon=20221219#cal",
+            "url": "https://www.jisanresort.co.kr/w/ski/use/rental.asp",
             "color": null
         },
         {
             "id": 5,
             "region": "정선",
             "name": "하이원리조트",
+            "lat": "37.205524494630794",
+            "lon": "128.83112201282236",
+            "time": "",
+            "duration": "",
+            "planUrl": "",
+            "url": "http://www.hi-one.kr/sub/sub04_04.php",
             "color": "#94ABBA"
         },
         {
@@ -96,6 +103,12 @@
             "id": 9,
             "region": "횡성",
             "name": "웰리힐리",
+            "lat": "37.488326926448146",
+            "lon": "128.25207694092524",
+            "time": "",
+            "duration": "",
+            "planUrl": "",
+            "url": "https://www.wellihillipark.com/home/guide/pay/snowpark",
             "color": "#94ABBA"
         },
         {
@@ -104,15 +117,22 @@
             "name": "덕유산리조트",
             "lat": "35.886078372101544",
             "lon": "127.72949017805212",
-            "time": "매일 09:00 ~ 17:00 야간 19:00 ~ 22:00",
-            "duration": "연중무휴",
-            "url": "https://www.yongpyong.co.kr/kor/skiNboard/introduce.do",
+            "time": "주간 09:00 ~ 16:30\n야간 18:30 ~ 22:00",
+            "duration": "",
+            "planUrl": "https://www.mdysresort.com/ski/schedule.asp?dSYear=2022&dSMonth=12",
+            "url": "https://www.mdysresort.com/ski/charge_bk20211006.asp",
             "color": null
         },
         {
             "id": 10,
             "region": "원주",
             "name": "오크벨리",
+            "lat": "37.43737969957793",
+            "lon": "127.81372864083957",
+            "time": "",
+            "duration": "",
+            "planUrl": "",
+            "url": "https://oakvalley.co.kr/ski/ski_charge_info",
             "color": "#94ABBA"
         },
         {
@@ -122,6 +142,12 @@
             "id": 12,
             "region": "양산",
             "name": "에덴벨리",
+            "lat": "35.40521714043506",
+            "lon": "128.98691382562149",
+            "time": "",
+            "duration": "",
+            "planUrl": "",
+            "url": "http://www.hi-one.kr/sub/sub04_04.php",
             "color": null
         }
     ]

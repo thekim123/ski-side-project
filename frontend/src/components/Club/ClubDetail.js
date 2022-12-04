@@ -70,7 +70,7 @@ export function ClubDetail() {
                 close={closeDel}
                 message={`'${club.clubNm}' 동호회를 삭제하시겠습니까?`}
                 sub={'삭제하려면 동호회 명을 입력하세요.'}
-                name={club.clubNm}
+                name={club.clubNm} 
                 ok={"삭제"}
                 clubId={id}/>}
             </BtnWrap>

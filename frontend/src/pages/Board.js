@@ -22,6 +22,7 @@ export function Board() {
 
     
     useEffect(() => {
+        console.log("t")
         if (selectedResort === "[전체]") {setFilteredResorts(posts);}
         else {
             let filteredResort = posts.filter(post => post.resortName === selectedResort);
