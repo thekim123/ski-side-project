@@ -67,7 +67,11 @@ export function CarPoolDetail() {
                 휴게소 한번 들러서 10분정도 쉬었다가 갈게요~ <br /> 
                 새차 안한지 오래되어서 차가 좀 지저분 할 수 있어요 ㅜㅜ
             </Content>
-            <Button>문의 및 신청하기</Button>
+            <ButtonBox>
+            <Button>문의하기</Button>
+            <Button>신청하기</Button>
+            </ButtonBox>
+
         </Middle>
     </Wrapper>
     )
@@ -167,9 +171,9 @@ font-weight: 200;
 
 // Middle - content
 const Middle = styled.div`
-background-color: #FAFAFA;
-border-radius: 10px;
-box-shadow: 5px 2px 7px -2px rgba(17, 20, 24, 0.15);
+//background-color: #FAFAFA;
+//border-radius: 10px;
+//box-shadow: 5px 2px 7px -2px rgba(17, 20, 24, 0.15);
 margin-top: 10px;
 padding: 20px 10px;
 `
@@ -203,14 +207,24 @@ text-align: center;
 const Content = styled.div`
 font-size: 15px;
 font-weight: 300;
-padding: 30px;
-border: 1px solid #CCCCCC;
-border-radius: 10px;
+padding: 30px 0;
+//border: 1px solid #CCCCCC;
+//border-radius: 10px;
 margin: 10px 0;
+`
+const ButtonBox = styled.div`
+display: grid;
+grid-template-columns: 1fr 1fr;
+position: fixed;
+bottom: 0;
+left: 0;
+right: 0;
+padding-bottom: 85px;
 `
 const Button = styled.div`
 background-color: var(--button-color);
 padding: 12px;
+margin: 7px;
 margin-top: 20px;
 color: #FAFAFA;
 border-radius: 10px;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom';
-import { getSinglePost, deletePost, addComment, unlikes, likes } from '../../action/board';
+import { getSinglePost, deletePost, addComment, unlikes, likes, deleteComment } from '../../action/board';
 import { HiPencil } from 'react-icons/hi'
 import { BsTrashFill } from 'react-icons/bs'
 import { FiSend } from 'react-icons/fi'
@@ -23,9 +23,13 @@ export function BoardDetail() {
     const navigate = useNavigate();
     let {id} = useParams();
     const [delOpen, setDelOpen] = useState(false);
+    const [commentDelOpen, setCommentDelOpen] = useState(false);
 
     const closeDel = () => {
         setDelOpen(false);
+    }
+    const closeCommentDel = () => {
+        setCommentDelOpen(false);
     }
 
     const handlePencil = e => {
@@ -75,14 +79,9 @@ export function BoardDetail() {
         setCommentInput("");
     }
 
-    const splitContent = (content) => {
-
-        let str = '": "';
-        return content.split(str)[1].slice(0, -4);
-    }
-
-    const handleCommentTrash = e => {
-        //댓글 삭제
+    const handleCommentTrash = (commentId) => {
+        //dispatch(deleteComment(commentId, id));
+        setCommentDelOpen(true);
     }
 
     useEffect(() => {
@@ -171,11 +170,20 @@ export function BoardDetail() {
                                     {/* 다른 사람의 댓글일 때 신고 버튼 */}
                                 {c.user.username !== user ? <ComNoti>신고</ComNoti> : null}
                                 {/* 내 댓글일 때 삭제 버튼 */}
-                                {c.user.username === user ? <SBsTrashFill onClick={handleCommentTrash}/> : null}
+                                {c.user.username === user ? <SBsTrashFill onClick={() => handleCommentTrash(c.id)}/> : null}
                                 </NotiBox>
                             </ComNameIcon>
                             <ComContent>{c.content}</ComContent>
                             <ComDate>{new Date(c.createDate).getMonth()+1}/{new Date(c.createDate).getDate()} {c.createDate.slice(11, 16)}</ComDate>
+                            <OkButtonModal 
+                            open={commentDelOpen}
+                            close={closeCommentDel}
+                            message={"댓글을 삭제하시겠습니까?"}
+                            ok={"삭제"}
+                            usage={"commentDel"}
+                            targetId={c.id}
+                            targetId2={id}
+                            />
                         </Comment>
                     ))
                 }
@@ -204,16 +212,16 @@ const Container = styled.div`
 `
 const Top = styled.div`
 padding-bottom: 4px;
-//border-bottom: 1px solid #CCCCCC;
-//background-color: #57748F;
-padding: 20px;
+border-bottom: 1px solid var(--button-color);
+padding: 20px 10px;
 padding-top: 0;
-//margin: 0 20px;
+margin: 0 10px;
 //border-radius: 10px 10px 0 0;
 `
 const ResortBox = styled.div`
 display: flex;
-justify-content: center;
+//justify-content: center;
+padding-bottom: 4px;
 `
 const Resort = styled.div`
 font-size: 14px;
@@ -221,11 +229,9 @@ font-weight: bold;
 padding-bottom: 5px;
 `
 const Title = styled.div`
-font-weight: 900;
+font-family: nanum-square-bold;
 font-size: 19px;
-//padding-top: 10px;
-//padding-bottom: 19px;
-padding-bottom: 7px;
+padding-bottom: 3px;
 //color: #E8E8E8;
 color: black;
 `
@@ -306,7 +312,7 @@ const LikeDislike = styled.div`
 display:flex;
 justify-content: center;
 padding-bottom: 15px;
-border-bottom: 1px solid #CCCCCC;
+//border-bottom: 1px solid #CCCCCC;
 `
 const Form = styled.form`
     display: flex;

@@ -31,6 +31,9 @@ const boardSlice = createSlice({
         },
         addComment(state) {
             
+        },
+        deleteComment(state) {
+            
         }
     }
 });

@@ -16,6 +16,7 @@ const clubBoardSlice = createSlice({
         },
         getPost(state, action) {
             state.clubBoard = action.payload;
+            console.log(action.payload);
         },
         editPost(state) {
 

@@ -28,3 +28,16 @@ export const addPost = (post) => {
         .catch((error) => console.log(error));
     }
 }
+
+export const getPost = (id) => {
+    return function (dispatch) {
+        Send({
+            url: `/clubBoard/detail/${id}`,
+            method: 'get',
+        }).then((resp) => {
+            console.log("resp", resp);
+            dispatch(clubBoardActions.getPost(resp.data.data.content[0]));
+        })
+        .catch(error => console.log(error));
+    }
+}

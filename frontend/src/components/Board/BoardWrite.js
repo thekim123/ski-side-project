@@ -16,6 +16,7 @@ export function BoardWrite() {
     const titleInput = useRef();
     const contentInput = useRef();
     const imgRef = useRef();
+    const [img, setImg] = useState('');
     const [error, setError] = useState({
         title: "",
         content: ""
@@ -33,7 +34,8 @@ export function BoardWrite() {
 
     const onUploadImg = e => {
         console.log(imgRef.current);
-        
+        console.log(e.target.files);
+        setImg(e.target.files[0])
     }
 
     const resetError = (e) => {
@@ -76,17 +78,22 @@ export function BoardWrite() {
             return;
         } else {
             let postedResort = selectedResort !== "스키장 선택" ? selectedResort : null;
-            console.log(postedResort)
+            //console.log(postedResort)
+            //let sendImg = img !== '' ? img : null;
+            //const formData = new FormData()
+            //formData.append('image', sendImg);
             const post = {
                 title: enteredTitle,
                 content: enteredContent,
                 resortName: postedResort,
+                //formData,
                 //create_dt: new Date(),
                 // 여기서부턴 백엔드와 연결 후 지울 예정
                 //cnt: 0,
                 //like: 0,
                 //comments: [],
             }
+            //console.log(post);
             dispatch(addPost(post));
             navigate("/board");
         }
@@ -138,7 +145,7 @@ export function BoardWrite() {
             <ContentError className="boardWrite-error">{error.content ? error.content : null}</ContentError>
         </Content>
         <ImgBox>
-            <input type="file" accept="image/*" ref={imgRef} onChange={onUploadImg} />
+            {/* <input type="file" accept="image/*" ref={imgRef} onChange={onUploadImg} /> */}
         </ImgBox>
     </Wrapper>
     )

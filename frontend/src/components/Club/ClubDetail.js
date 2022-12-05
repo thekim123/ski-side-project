@@ -51,6 +51,10 @@ export function ClubDetail() {
         navigate(`/club/board/list/${id}`, {state: "일반"});
     }
 
+    const gotoDetail = (boardId) => {
+        navigate(`/club/board/detail/${boardId}`, {state: club.clubNm})
+    }
+
     useEffect(() => { //새로 로그인 한 후 라든지.. 그럴때를 대비해 state.club이 null인 경우에만 dispatch 호출.
         dispatch(loadPosts(id));
         dispatch(getSingleClub(id));
@@ -104,7 +108,7 @@ export function ClubDetail() {
             
             {clubBoards.length > 0 && clubBoards.filter(board => board.sortScope === "notice").map((board, i) => (
                 i < 2 && <NoticeItem key={board.id}>
-                    <NoticeItemWrap>
+                    <NoticeItemWrap onClick={() => gotoDetail(board.id)}>
                         <TitleWho>
                         <NoticeContent>{cutText(board.title, 25)}</NoticeContent>
                         <NoticeWho>관리자</NoticeWho>
@@ -126,7 +130,7 @@ export function ClubDetail() {
 
             {clubBoards.length > 0 && clubBoards.filter(board => board.sortScope === "general").map((board, i) => (
                 i < 2 && <NoticeItem key={board.id}>
-                    <NoticeItemWrap className='club-normal'>
+                    <NoticeItemWrap className='club-normal' onClick={() => gotoDetail(board.id)}>
                         <TitleWho>
                         <NoticeContent>{cutText(board.title, 23)}</NoticeContent>
                         <BoardWho>{cutText("스키넘좋아", 4)}</BoardWho>
