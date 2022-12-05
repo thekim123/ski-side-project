@@ -26,6 +26,7 @@ public class ClubRequestDto {
     // 스키장
     private long resortId;
 
+
     // 성별
     private Gender gender;
 

@@ -40,7 +40,7 @@ public class Club extends BaseTimeEntity {
     private User user;
 
 
-    @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = LAZY)
     @JoinColumn(name = "resort_id")
     private Resort resort;
 
@@ -88,7 +88,8 @@ public class Club extends BaseTimeEntity {
     private String memo;
 
 
-    public void update(ClubRequestDto dto) {
+
+    public void update(ClubRequestDto dto, Resort resort) {
         this.clubNm = dto.getClubNm();
         this.memberCnt =dto.getMemberCnt();
         this.gender = dto.getGender();
@@ -96,5 +97,6 @@ public class Club extends BaseTimeEntity {
         this.openYn = dto.getOpenYn();
         this.memo = dto.getMemo();
         this.url = dto.getUrl();
+        this.resort = resort;
     }
 }

@@ -37,8 +37,21 @@ public class ClubUser {
     @JoinColumn(name = "clubBoard_id")
     private ClubBoard clubBoard;
 
+    /**
+     * 방장만이 권할을 부여 할 수 있음
+     *
+     * 권한
+     * 관리자
+     *
+     */
+    private String role;
     public ClubUser(Club club, User user) {
         this.club = club;
+        this.user = user;
+    }
+
+    public ClubUser(ClubBoard clubBoard, User user) {
+        this.clubBoard = clubBoard;
         this.user = user;
     }
 }

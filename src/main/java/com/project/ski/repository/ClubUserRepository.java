@@ -1,6 +1,7 @@
 package com.project.ski.repository;
 
 import com.project.ski.domain.club.Club;
+import com.project.ski.domain.club.ClubBoard;
 import com.project.ski.domain.club.ClubUser;
 import com.project.ski.domain.user.User;
 import com.project.ski.web.dto.ClubUserRespDto;
@@ -21,4 +22,7 @@ public interface ClubUserRepository extends JpaRepository<ClubUser, Long> {
     @Query("select cu from ClubUser cu where cu.user.id = :userId and cu.club.id = :clubId")
     Optional<ClubUser> findByUserIdAndClubId(@Param("userId") long userId,@Param("clubId") long clubId);
 
+    Optional<ClubUser> findByClub(Club club);
+
+    Optional<ClubUser> findByClubBoard(ClubBoard clubBoard);
 }

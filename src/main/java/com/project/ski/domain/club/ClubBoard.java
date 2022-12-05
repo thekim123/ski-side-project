@@ -1,6 +1,7 @@
 package com.project.ski.domain.club;
 
 import com.project.ski.domain.BaseTimeEntity;
+import com.project.ski.web.dto.ClubBoardDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -52,20 +53,18 @@ public class ClubBoard extends BaseTimeEntity {
 
     /**
      * 공지 / 일반 분류
-     * ㄴ sort : notice  ; 공지
+     * ㄴ sort : notice  : 공지
      * ㄴ sort : general  : 일반
      */
     @Column(nullable = false)
     private String sortScope;
 
-    /**
-     * 방장만이 권할을 부여 할 수 있음
-     *
-     * 권한
-     * 관리자
-     *
-     */
-    private String role;
 
-
+    public void update( ClubBoardDto cb/*,Club club*/) {
+        this.title = cb.getTitle();
+        this.content = cb.getContent();
+        this.tempFlag = cb.getTempFlag();
+        this.sortScope = cb.getSortScope();
+//        this.club = club;
+    }
 }

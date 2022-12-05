@@ -25,6 +25,7 @@ public class ClubService {
     private final ClubRepository clubRepository;
     private final ClubUserRepository clubUserRepository;
 
+    private final ClubBoardRepository clubBoardRepository;
     private final UserRepository userRepository;
 
     private final ResortRepository resortRepository;
@@ -45,55 +46,63 @@ public class ClubService {
 
     }
 
+    // 유저별 동호회목록
+
+
     // 동호회 생성
     @Transactional
-    public void create(ClubRequestDto dto,User user) {
-        User findUser = userRepository.findById(user.getId()).orElseThrow(()->{
+    public void create(ClubRequestDto dto, User user) {
+
+        User findUser = userRepository.findById(user.getId()).orElseThrow(() -> {
             return new IllegalArgumentException("실패");
         });
-        Resort resort = resortRepository.findById(dto.getResortId()).orElseThrow(()->{
+        Resort resort = resortRepository.findById(dto.getResortId()).orElseThrow(() -> {
             return new IllegalArgumentException("리조트명 찾기 실패");
         });
 
-        Club club = dto.toEntity(user,resort);
+        Club club = dto.toEntity(user, resort);
         clubRepository.save(club);
         ClubUser clubUser = new ClubUser(club, findUser);
         findUser.getClubUsers().add(clubUser);
+
 
     }
 
     // 동호회 삭제
     @Transactional
     public void delete(long clubId) {
-        Club club = clubRepository.findById(clubId).orElseThrow(()->{
-            return new IllegalArgumentException("동호회 삭제 실패");
-        });
+        Club club = clubRepository.findById(clubId).orElseThrow(()-> new IllegalArgumentException("동호회 삭제 실패"));
+        ClubUser clubUser = clubUserRepository.findByClub(club).orElseThrow(()-> new IllegalArgumentException("동호회 유저 삭제 실패"));
+        ClubBoard clubBoard = clubBoardRepository.findByClub(club).orElseThrow(() -> new IllegalArgumentException("동호회 게시판 삭제 실패"));
 
-
+        clubUserRepository.delete(clubUser);
+        clubBoardRepository.delete(clubBoard);
         clubRepository.delete(club);
-
     }
+
 
     // 동호회 수정
     @Transactional
     public void update(long clubId, ClubRequestDto dto) {
-        Club clubs = clubRepository.findById(clubId).orElseThrow(()->{
-            return new IllegalArgumentException("동호회 수정 실패");
-        });
-        clubs.update(dto);
+        Club clubs = clubRepository.findById(clubId).orElseThrow(()-> new IllegalArgumentException("동호회 수정 실패"));
+
+        Resort resort = resortRepository.findById(dto.getResortId()).orElseThrow(() -> new IllegalArgumentException("동호회 리조트 찾기  실패"));
+        clubs.update(dto,resort);
 
     }
 
     // 동호회 탈퇴
     public void deleteMember(long userId, long clubId) {
         ClubUser clubUser = clubUserRepository.findByUserIdAndClubId(userId,clubId).orElseThrow(()->{
-            return new IllegalArgumentException("동호회 탈퇴 실패");
+            return new IllegalArgumentException("동호회 탈퇴 실패" + userId);
         });
 
         clubUserRepository.delete(clubUser);
+
     }
 
     // 동호회 상세페이지
+
 
     @Transactional
     public Optional<ClubResponseDto> clubDetail(Long clubId) {

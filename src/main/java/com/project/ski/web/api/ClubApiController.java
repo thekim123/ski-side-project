@@ -2,6 +2,7 @@ package com.project.ski.web.api;
 
 import com.project.ski.config.auth.PrincipalDetails;
 
+import com.project.ski.domain.resort.Resort;
 import com.project.ski.domain.user.User;
 import com.project.ski.service.ClubService;
 import com.project.ski.web.dto.ClubRequestDto;
@@ -42,8 +43,10 @@ public class ClubApiController {
         User user = principalId.getUser();
 
         Page<ClubUserRespDto> clubPage = clubService.getUserClubList(pageable, clubId);
-        return new CmRespDto<>(1, "유저별 동호회 리스트 조회 완료",clubPage);
+        return new CmRespDto<>(1, "동호회별 유저 리스트 조회 완료",clubPage);
     }
+
+    // 유저별 동호회 목록 조회
 
 
     // 동호회 생성

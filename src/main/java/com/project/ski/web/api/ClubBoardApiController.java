@@ -1,6 +1,7 @@
 package com.project.ski.web.api;
 
 import com.project.ski.config.auth.PrincipalDetails;
+import com.project.ski.domain.club.ClubBoard;
 import com.project.ski.domain.user.User;
 import com.project.ski.service.ClubBoardService;
 import com.project.ski.web.dto.ClubBoardDto;
@@ -31,15 +32,26 @@ public class ClubBoardApiController {
     }
 
     @GetMapping("/detail/{clubBoardId}")
-    public CmRespDto<Page<ClubBoardDto>> getClubBoard(@PageableDefault(sort = "id", direction = DESC) Pageable pageable, @PathVariable long clubBoardId) {
+    public CmRespDto<Page<ClubBoardDto>> getClubBoard(Pageable pageable, @PathVariable long clubBoardId) {
         Page<ClubBoardDto> clubBoard = clubBoardService.getClubBoard(pageable, clubBoardId);
         return new CmRespDto<>(1, "클럽게시판 조회 완료", clubBoard);
     }
 
     @GetMapping("/{clubId}")
-    public CmRespDto<Page<ClubBoardDto>> getAllClubBoard(@PageableDefault(sort = "id", direction = DESC) Pageable pageable, @PathVariable long clubId) {
+    public CmRespDto<Page<ClubBoardDto>> getAllClubBoard(Pageable pageable, @PathVariable long clubId) {
         Page<ClubBoardDto> clubBoardDtos = clubBoardService.getAllClubBoard(pageable, clubId);
-        System.out.println("clubBoardDtos = " + clubBoardDtos);
         return new CmRespDto<>(1, "클럽게시판 전체조회 완료", clubBoardDtos);
+    }
+
+    @PutMapping("/update/{clubBoardId}")
+    public CmRespDto<ClubBoardDto> updateClubBoard(@PathVariable long clubBoardId, @RequestBody ClubBoardDto dto) {
+        clubBoardService.update(clubBoardId, dto);
+        return new CmRespDto<>(1, "클럽게시판 수정완료", null);
+    }
+
+    @DeleteMapping("/delete/{clubBoardId}")
+    public CmRespDto<ClubBoardDto> deleteClubBoard(@PathVariable long clubBoardId) {
+        clubBoardService.delete(clubBoardId);
+        return new CmRespDto<>(1, "클럽게시판 삭제완료", null);
     }
 }

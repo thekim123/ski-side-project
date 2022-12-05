@@ -3,11 +3,12 @@ package com.project.ski.web.dto;
 import com.project.ski.domain.club.AgeGrp;
 import com.project.ski.domain.club.Club;
 import com.project.ski.domain.club.Gender;
-import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Data
+@NoArgsConstructor
 public class ClubResponseDto {
 
 
@@ -37,6 +38,8 @@ public class ClubResponseDto {
     // 임시저장 여부
     private String tempFlag;
 
+    private String url;
+
     public ClubResponseDto(long clubId, int memberCnt, String clubNm, long resortName, String openYn) {
         this.id = clubId;
         this.memberCnt = memberCnt;
@@ -53,5 +56,17 @@ public class ClubResponseDto {
         this.ageGrp = club.getAgeGrp();
         this.openYn = club.getOpenYn();
         this.memo = club.getMemo();
+    }
+
+    public ClubResponseDto(long clubId,Club dto) {
+        this.id     = dto.getId();
+        this.clubNm = dto.getClubNm();
+        this.memberCnt =dto.getMemberCnt();
+        this.resortId = dto.getResort().getId();
+        this.gender = dto.getGender();
+        this.ageGrp = dto.getAgeGrp();
+        this.openYn = dto.getOpenYn();
+        this.memo = dto.getMemo();
+        this.url = dto.getUrl();
     }
 }

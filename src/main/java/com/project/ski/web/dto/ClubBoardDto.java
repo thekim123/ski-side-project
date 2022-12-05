@@ -9,12 +9,16 @@ import com.project.ski.domain.user.User;
 import lombok.*;
 
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 
 
-@Data
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ClubBoardDto {
 
     // 동호회 게시판 식별값
@@ -25,7 +29,7 @@ public class ClubBoardDto {
     private Long clubId;
 
     // 댓글
-    private List<Reply> replies = new ArrayList<>();
+    private List<Reply> replies;
 
     // 제목
     private String title;
@@ -48,29 +52,11 @@ public class ClubBoardDto {
 
     private String sortScope;
 
-    /**
-     * 방장만이 권할을 부여 할 수 있음
-     *
-     * 권한
-     * 관리자
-     *
-     */
-    private String role;
 
 
-    public ClubBoardDto(Long id, Long clubId, String title, String content, String tempFlag, String sortScope, String role) {
-        this.id = id;
-        this.clubId = clubId;
-        this.title = title;
-        this.content = content;
-        this.tempFlag = tempFlag;
-        this.sortScope = sortScope;
-        this.role = role;
-    }
+    private LocalDateTime createDt;
 
-    public ClubBoardDto(Long id) {
-        this.id = id;
-    }
+    private LocalDateTime updateDt;
 
     public ClubBoardDto(ClubBoard clubBoard) {
         this.id = clubBoard.getId();
@@ -80,7 +66,7 @@ public class ClubBoardDto {
         this.content =clubBoard.getContent();
         this.tempFlag =clubBoard.getTempFlag();
         this.sortScope =clubBoard.getSortScope();
-        this.role =clubBoard.getRole();
+        this.createDt = clubBoard.getCreatedDate();
     }
 
 
@@ -91,7 +77,8 @@ public class ClubBoardDto {
                 .content(content)
                 .tempFlag(tempFlag)
                 .sortScope(sortScope)
-                .role(role)
                 .build();
     }
+
+
 }
