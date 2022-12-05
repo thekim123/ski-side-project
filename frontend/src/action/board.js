@@ -122,3 +122,17 @@ export const addComment = (id, content) => {
         .catch(error => console.log(error));
     }
 }
+
+export const deleteComment = (commentId, boardId) => {
+    return function (dispatch) {
+        Send({
+            url: `/board/comment/delete/${commentId}`,
+            method: 'delete',
+        }).then((resp) => {
+            console.log("resp", resp);
+            dispatch(boardActions.deleteComment());
+            dispatch(getSinglePost(boardId));
+        })
+        .catch(error => console.log(error));
+    }
+}

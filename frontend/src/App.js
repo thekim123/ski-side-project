@@ -28,6 +28,7 @@ import { ClubBoardWrite } from './components/Club/ClubBoardWrite';
 import { EditClub } from './components/Club/EditClub';
 import ClubBoardList from './components/Club/ClubBoardList';
 import styled from 'styled-components'
+import ClubBoardDetail from './components/Club/ClubBoardDetail';
 
 function App() {
   const dispatch = useDispatch();
@@ -58,6 +59,7 @@ function App() {
             <Route path="club/edit/:id" element={<EditClub />} />
             <Route path="club/board/write/:isNotice" element={<ClubBoardWrite />} />
             <Route path="club/board/list/:id" element={<ClubBoardList />} />
+            <Route path="club/board/detail/:id" element={<ClubBoardDetail />} />
             <Route path="tayo" element={<Tayo />} />
             <Route path="tayo/write" element={<TayoWrite />} />
             <Route path="tayo/detail/:id" element={<TayoDetail />} />

@@ -23,6 +23,7 @@ export function ClubSecret() {
     const gotoDetail = e => {
         //navigate(`/club/detail/${club.id}`, { state: club });
         //동호회 인원 추가
+        navigate(`/club/detail/${id}`);
     }
 
     useEffect(() => {
