@@ -23,9 +23,8 @@ public class CarpoolApiController {
 
     @PostMapping
     public CmRespDto<?> insert(@RequestBody CarpoolRequestDto dto, Authentication authentication) {
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        User user = principalDetails.getUser();
-        carpoolService.write(dto, user);
+        System.out.println(dto.getNegotiate());
+        carpoolService.write(dto, authentication);
         return new CmRespDto<>(1, "카풀 게시글 등록 성공", null);
     }
 
@@ -45,5 +44,11 @@ public class CarpoolApiController {
     public CmRespDto<?> getAll(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<Carpool> pages =  carpoolService.getAll(pageable);
         return new CmRespDto<>(1, "카풀 게시글 모두 불러오기 성공", pages);
+    }
+
+    @GetMapping("/{carpoolId}")
+    public CmRespDto<?> getAll(@PathVariable long carpoolId) {
+        Carpool carpool =  carpoolService.detail(carpoolId);
+        return new CmRespDto<>(1, "카풀 게시글 불러오기 성공", carpool);
     }
 }
