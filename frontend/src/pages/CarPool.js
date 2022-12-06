@@ -13,15 +13,19 @@ import shortid from 'shortid'
 import { CarPoolListItem } from '../components/CarPool/CarPoolListItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadCarpools } from '../action/carpool';
+import { CgDanger } from 'react-icons/cg';
 
 export function CarPool() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const carpools = useSelector(state => state.carpool.carpools);
+    const [filteredCarpools, setFilteredCarpools] = useState([]);
     const [routeType, setRouteType] = useState("house");
     const [selectedResort, setSelectedResort] = useState("--");
     const [showSelectBox, setShowSelectBox] = useState(false);
     const resortsData = resorts.filter(resort => resort.id !== null);
+    const [isClicked, setIsClicked] = useState(false);
+    const [canShow, setCanShow] = useState(false);
 
     const clickPlus = e => {
         navigate('/carpool/write');
@@ -36,9 +40,26 @@ export function CarPool() {
     const handleItemClick = (e) => {
         setSelectedResort(e.target.id);
         setShowSelectBox(false);
+        setIsClicked(true);
+    }
+
+    const showCarpool = () => {
+        if (selectedResort !== '--') {
+            setCanShow(true);
+            if (routeType === 'house') {
+                setFilteredCarpools(carpools.filter(carpool => carpool.destination === selectedResort))
+            } else {
+                setFilteredCarpools(carpools.filter(carpool => carpool.departure === selectedResort))
+            }
+        }
+    }
+
+    const showDetail = (id) => {
+        navigate(`/carpool/detail/${id}`)
     }
 
     useEffect(() => {
+        //앞 창이 카풀 디테일 페이지라면 그 아이디에 맞게 1, 2번 세팅하고 showCarpool함수 실행.
         dispatch(loadCarpools());
     }, [dispatch]);
     return (
@@ -101,24 +122,44 @@ export function CarPool() {
                     </SelectWrapper>
                     </SearchContent>
                 </SearchBoxInner>
-                <Button>조회하기</Button>
+                <Button onClick={showCarpool} className={isClicked ? "clicked" : ""}>조회하기</Button>
             </SearchBox>
             </SearchHeader>
         </SearchWrapper>
 
+        {/* {canShow &&  */}
+        {filteredCarpools.length > 0 && 
         <Posts>
             <TagBox>
                 <SBsFillCheckCircleFill />
                 <div>협의 가능</div>
             </TagBox>
-            {carpools.length > 0 && carpools.map(carpool => (
-                <CarPoolListItem  key={carpool.id}{...carpool} />
+            {filteredCarpools.map(carpool => (
+                <CarPoolListItem  key={carpool.id}{...carpool} func={showDetail}/>
             ))}
-        </Posts>
+        </Posts>}
+        {selectedResort === '--' ? <div></div> : canShow && filteredCarpools.length <= 0 &&
+        <NoPost>
+            <div><CgDanger className='noPost-icon'/></div>
+            <div>조건에 맞는 게시글이 없습니다.</div>
+        </NoPost>}
     </Wrapper>
     )
 }
-
+const NoPost = styled.div`
+margin-top: 250px;
+display:grid;
+justify-items: center;
+//align-items: center;
+.noPost-icon {
+    width: 40px;
+    height: 40px;
+    padding-bottom: 15px;
+}
+div{
+    color: var(--button-sub-color);
+}
+`
 const SearchWhat = styled.div`
 font-size: 14px;
 font-weight: bold;
@@ -126,6 +167,7 @@ padding: 8px;
 `
 const Wrapper = styled.div`
 margin-top: 20px;
+margin-bottom: 50px;
 `
 const Top = styled.div`
 padding: 0 35px;
@@ -190,6 +232,9 @@ box-shadow: 3px 3px 10px 6px rgba(0, 0, 0, 0.06);
 //margin: 30px;
 //margin-top: 20px;
 width: 90%;
+.clicked{
+    background-color: var(--button-color);
+}
 `
 const SearchBoxInner = styled.div`
 margin: 15px;
@@ -278,7 +323,8 @@ grid-template-columns: 110px 1fr;
 const Button = styled.div`
 //background-color: #6B89A5;
 //background-color: rgb(59, 59, 59);
-background-color: #002060;
+//background-color: #002060;
+background-color: gray;
 color: #FAFAFA;
 font-size: 14px;
 margin: 15px;

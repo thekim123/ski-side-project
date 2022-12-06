@@ -16,6 +16,9 @@ const carpoolSlice = createSlice({
         },
         editCarpool(state) {
             
+        },
+        getCarpool(state, action) {
+            state.carpool = action.payload;
         }
     }
 })

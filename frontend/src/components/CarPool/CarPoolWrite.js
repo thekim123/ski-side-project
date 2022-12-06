@@ -10,6 +10,7 @@ import setMinutes from "date-fns/setMinutes";
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { addCarpool } from '../../action/carpool';
+import { BsFillCheckCircleFill } from 'react-icons/bs'
 
 export function CarPoolWrite() {
     const dispatch = useDispatch();
@@ -45,6 +46,12 @@ export function CarPoolWrite() {
         time: false,
         smoking: false,
         cnt: false,
+    })
+    const [negotiate, setNegotiate] = useState({
+        departure: false,
+        destination: false,
+        departTime: false,
+        boardingPlace: false,
     })
 
     const toggleDate = e => {
@@ -182,25 +189,27 @@ export function CarPoolWrite() {
 
         const departure = selectedRoute === '도착지가 스키장' ? enteredStartEnd : selectedResort;
         const destination = selectedRoute === '도착지가 스키장' ? selectedResort : enteredStartEnd;
+        const isSmoker = selectedSmoking === '흡연 차량' ? "true" : "false";
 
+        const realTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), startTime.getHours(), startTime.getMinutes());
+        const krTime = new Date(realTime.getTime() + 9*60*60*1000);
         const carpool = {
             departure: departure,
             destination: destination,
-            departTime: startTime,
+            departTime: krTime,
             boarding: enteredPlace,
-            //space: "임시",
-            smoke: selectedSmoking,
-            //phoneNumber: "임시",
-            //cost: "100", 
+            isSmoker: isSmoker,
             passenger: enteredCnt,
-            memo: enteredContent
+            memo: enteredContent,
+            negotiate,
         }
-        console.log(carpool);
+        console.log(carpool)
         dispatch(addCarpool(carpool));
         navigate('/carpool');
     }
 
     const startPlace = selectedRoute === route[0] ?
+        <Row>
         <Input>
             <label>출발지</label>
             <input
@@ -210,11 +219,27 @@ export function CarPoolWrite() {
                 onChange={startEndDone}
                 placeholder="입력 예시) 서울"
                 />
-        </Input> :
+        </Input>
+        <SBsFillCheckCircleFill 
+            value={"departure"}
+            className={negotiate.departure ? "negotiate-true" : ""}
+            onClick={() => setNegotiate({...negotiate, departure: !negotiate.departure })}/>
+        </Row> :
+        <Row>
         <SelectBox list={resortName} label="출발지" func={reflectResort} state={selectedResort} />
+        <SBsFillCheckCircleFill 
+            className={negotiate.departure ? "negotiate-true" : ""}
+            onClick={() => setNegotiate({...negotiate, departure: !negotiate.departure })}/>
+        </Row>
 
     const endPlace = selectedRoute === route[0] ?
-        <SelectBox list={resortName} label="도착지" func={reflectResort} state={selectedResort} /> :
+        <Row>
+        <SelectBox list={resortName} label="도착지" func={reflectResort} state={selectedResort} />
+        <SBsFillCheckCircleFill 
+            className={negotiate.destination ? "negotiate-true" : ""}
+            onClick={() => setNegotiate({...negotiate, destination: !negotiate.destination })}/>
+        </Row> :
+        <Row>
         <Input>
             <label>도착지</label>
             <input
@@ -225,11 +250,16 @@ export function CarPoolWrite() {
                 placeholder="입력 예시) 서울"
                 />
         </Input>
+        <SBsFillCheckCircleFill 
+            className={negotiate.destination ? "negotiate-true" : ""}
+            onClick={() => setNegotiate({...negotiate, destination: !negotiate.destination })}/>        
+        </Row>
 
     return (
     <Wrapper> 
         <Title><div className="clubReg-top">카풀 등록</div></Title>
         <form onSubmit={handleSubmit}>
+            <Row>
             <DatePick>
                 <label>날짜</label>
                 <span onClick={toggleDate}><SDatePicker 
@@ -242,17 +272,27 @@ export function CarPoolWrite() {
                     
                     /></span>
             </DatePick>
+            <div></div>
+            </Row>
             <Error><Dummy></Dummy><div>{error.date ? error.date : null}</div></Error>
 
+            <Row>
             <SelectBox list={route} label="경로" func={reflectRoute} state={selectedRoute} />
+            <div></div>
+            </Row>
             <Error><Dummy></Dummy><div>{error.route ? error.route : null}</div></Error>
 
+            {selectedRoute !== '--' && <TopRow>
+            <div></div>
+            <Explain>협의 가능</Explain>
+            </TopRow>}
             {selectedRoute !== '--' && startPlace}
             <Error><Dummy></Dummy><div>{error.departure ? error.departure : null}</div></Error>
             {selectedRoute !== '--' && endPlace}
             <Error><Dummy></Dummy><div>{error.destination ? error.destination : null}</div></Error>
             
             {isDone.startEnd && 
+            <Row>
             <DatePick>
                 <label>출발 시간</label>
                 <SDatePicker
@@ -270,9 +310,14 @@ export function CarPoolWrite() {
                     className='tayoWrite-startT'
                 />
             </DatePick>
+            <SBsFillCheckCircleFill 
+                className={negotiate.departTime ? "negotiate-true" : ""}
+                onClick={() => setNegotiate({...negotiate, departTime: !negotiate.departTime })}/>         
+            </Row>
             }<Error><Dummy></Dummy><div>{error.time ? error.time : null}</div></Error>
 
             {isDone.time &&
+            <Row>
             <Input>
             <label>탑승 장소</label>
             <input
@@ -283,13 +328,21 @@ export function CarPoolWrite() {
                 placeholder="입력 예시) 서울역 1번 출구"
                 />
             </Input>
+            <SBsFillCheckCircleFill 
+                className={negotiate.boardingPlace ? "negotiate-true" : ""}
+                onClick={() => setNegotiate({...negotiate, boardingPlace: !negotiate.boardingPlace })}/>   
+            </Row>
             }<Error><Dummy></Dummy><div>{error.place ? error.place : null}</div></Error>
 
             {isDone.place &&
-            <SelectBox list={smoking} label="흡연 / 금연" func={reflectSmoke} state={selectedSmoking} />}
+            <Row>
+            <SelectBox list={smoking} label="흡연 / 금연" func={reflectSmoke} state={selectedSmoking} />
+            <div></div>
+            </Row>}
             <Error><Dummy></Dummy><div>{error.smoking ? error.smoking : null}</div></Error>
 
             {isDone.smoking &&
+            <Row>
             <Input>
             <label>탑승 가능 인원</label>
             <input
@@ -300,10 +353,15 @@ export function CarPoolWrite() {
                 placeholder="입력 예시) 4"
                 />
             </Input>
+            <div></div>
+            </Row>
             }<Error><Dummy></Dummy><div>{error.cnt ? error.cnt : null}</div></Error>
 
             {isDone.cnt &&
-            <Input><label>추가 사항</label><textarea type="text" ref={contentInput} onClick={resetContentError} /></Input>}
+            <Row>
+            <Input><label>추가 사항</label><textarea type="text" ref={contentInput} onClick={resetContentError} /></Input>
+            <div></div>
+            </Row>}
             <Error><Dummy></Dummy><div>{error.content ? error.content : null}</div></Error>
 
             {isDone.cnt &&
@@ -314,6 +372,28 @@ export function CarPoolWrite() {
     )
 }
 
+const TopRow = styled.div`
+display: grid;
+grid-template-columns: 1fr 50px;
+padding-top: 14px;
+`
+const Explain = styled.div`
+font-size: 12px;
+justify-self: end;
+`
+const SBsFillCheckCircleFill = styled(BsFillCheckCircleFill)`
+width: 20px;
+height: 20px;
+color: #CCCCCC;
+align-self: center;
+`
+const Row = styled.div`
+display: grid;
+grid-template-columns: 1fr 30px;
+.negotiate-true{
+    color: #005C00
+}
+`
 const Wrapper = styled.div`
     padding: 20px;
     form {
@@ -344,10 +424,9 @@ const DatePick = styled.div`
 display: grid;
 align-items: center;
 grid-template-columns: 110px 1fr;
-margin: 10px;
 label {
     text-align: center;
-    padding-right: 10px;
+    //padding-right: 10px;
 }
 .tayoWrite-date:focus, .tayoWrite-startT:focus, .tayoWrite-endT:focus{
     outline: none;
@@ -362,6 +441,7 @@ label {
     border: none;
     box-shadow: 3px 3px 10px 6px rgba(0, 0, 0, 0.06);
     border-radius: 18px;
+    
 }
 .react-datepicker__month-container {
     border: none;
@@ -370,6 +450,7 @@ label {
     background-color: #FAFAFA;
     border: none;
     border-radius: 18px;
+    
 }
 .react-datepicker__current-month{
     padding: 8px 0;
@@ -394,15 +475,7 @@ const SDatePicker = styled(DatePicker)`
 border: none;
 border-radius: 8px;
 box-shadow: 3px 3px 10px 6px rgba(0, 0, 0, 0.06);
-padding: 10px 13px;
-font-size: 14px;
-color: gray;
-height: 18.7px;
-`
-const SDatePicker_T = styled(DatePicker)`
-border: none;
-border-radius: 8px;
-box-shadow: 3px 3px 10px 6px rgba(0, 0, 0, 0.06);
+margin: 10px;
 padding: 10px 13px;
 font-size: 14px;
 color: gray;
@@ -413,20 +486,21 @@ const Input = styled.div`
     display: grid;
     align-items: center;
     grid-template-columns: 110px 1fr;
-    margin: 10px;
+    //margin: 10px;
     margin-top: 10px;
     label {
         text-align: center;
-        padding-right: 10px;
+        //padding-right: 10px;
     }
     input, textarea {
         padding: 12px;
-        margin-top: 5px;
-        margin-left: 0;
+        margin: 10px;
+        //margin-top: 5px;
+        //margin-left: 0;
         background: #fff;
         box-shadow: 3px 3px 10px 6px rgba(0, 0, 0, 0.06);
         border-radius: 8px;
-        width: 90%;
+        //width: 110px;
         border: none;
     }
     textarea{
