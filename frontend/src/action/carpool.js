@@ -32,7 +32,11 @@ export const addCarpool = (carpool) => {
 export const getCarpool = (id) => {
     return function (dispatch) {
         Send({
-            url: '/carpool'
+            url: `/carpool/${id}`,
+            method: 'get',
+        }).then(resp => {
+            console.log("resp", resp);
+            dispatch(carpoolActions.getCarpool(resp.data.data));
         })
     }
 }

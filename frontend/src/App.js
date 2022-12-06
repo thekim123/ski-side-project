@@ -65,7 +65,7 @@ function App() {
             <Route path="tayo/detail/:id" element={<TayoDetail />} />
             <Route path="carpool" element={<CarPool />} />
             <Route path="carpool/write" element={<CarPoolWrite />} />
-            <Route path="carpool/detail" element={<CarPoolDetail />} />
+            <Route path="carpool/detail/:id" element={<CarPoolDetail />} />
             <Route path="carpool/edit/:id" element={<EditCarPool />} />
           </Route>
         </Route>

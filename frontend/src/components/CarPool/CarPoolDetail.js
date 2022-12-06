@@ -1,30 +1,58 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { CarPoolListItem } from './CarPoolListItem'
 import { HiPencil } from 'react-icons/hi'
 import { BsTrashFill, BsFilePost, BsArrowRight } from 'react-icons/bs'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { getCarpool } from '../../action/carpool'
 
 export function CarPoolDetail() {
     const navigate = useNavigate();
-    const [isMine, setIsMine] = useState(true);
-    const carpool = useLocation().state;
-    //const id = useParams();
+    const dispatch = useDispatch();
+    const [isMine, setIsMine] = useState(false);
+    //const carpool = useLocation().state;
+    const carpool = useSelector(state => state.carpool.carpool);
+    const user = useSelector(state => state.auth.user);
+    const [date, setDate] = useState(null);
+    const {id} = useParams();
 
     const handlePencil = e => {
         //navigate(`/carpool/edit/${id}`)
         navigate('/carpool/edit/1')
     }
     const handleTrash = e => {
-        console.log(carpool);
+        //console.log(carpool);
     }
 
+    const dummyFunc = (id) => {
+
+    }
+
+    useEffect(() => {
+        dispatch(getCarpool(id));
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (carpool) {
+            //setDate(new Date(carpool.createDate));
+            const t = new Date(carpool.createDate)
+            const month = t.getMonth() + 1
+            setDate(t.getFullYear() + "."+month + "." + t.getDate()+". "+carpool.createDate.slice(11,16));
+
+            if (user === carpool.user.username) {
+                setIsMine(true);
+            }
+        }
+    }, [carpool])
+
     return (
-    <Wrapper>
+        <>
+    {carpool && <Wrapper>
         <Top>
             <div>
-                <User>스키짱</User>
-                <Time>2022-11-22 12:07</Time>
+                <User>{carpool.user.nickname}</User>
+                <Time>{date}</Time>
             </div>
             <Icons>
                 {isMine && <HiPencil className="boardPost-icon" onClick={handlePencil}/>}
@@ -32,48 +60,36 @@ export function CarPoolDetail() {
             </Icons>
         </Top>
 
-        {/* <CarPoolListItem /> */}
-        <Item>
-            <ItemTop>
-                <TakeCnt>인원 0/4</TakeCnt>
-                <CarCnt>운행건수 (2회)</CarCnt>
-            </ItemTop>
-
-            <ItemMiddle>
-                <Place>
-                    <Start>서울역</Start>
-                    <SBsArrowRight />
-                    <End>엘리시안</End>
-                </Place>
-                <TimeWrap>
-                    <ItemTime>12/1 07:00 <TimeText>출발</TimeText></ItemTime>
-                </TimeWrap>
-            </ItemMiddle>
-        </Item>
+        <CarPoolListItem {...carpool} func={dummyFunc}/>
 
         {/* Content */}
         <Middle>
             <Tags>
                 <div>
-                <TalkTag>출발지 협의 가능</TalkTag>
-                <TalkTag>출발 시간 협의 가능</TalkTag>
+                {carpool.negotiate.departure && <TalkTag>출발지 협의 가능</TalkTag>}
+                {carpool.negotiate.destination && <TalkTag>도착지 협의 가능</TalkTag>}
                 </div>
+                <div>
+                {carpool.negotiate.departure && <TalkTag>출발 시간 협의 가능</TalkTag>}
+                {carpool.negotiate.boardingPlace && <TalkTag>탑승 장소 협의 가능</TalkTag>}
+                </div>
+                {/*
                 <TagBox>
                 <Tag>흡연 차량</Tag>
                 <Tag>여유공간 많아요</Tag>
-                </TagBox>
+    </TagBox>*/}
             </Tags>
             <Content>
-                휴게소 한번 들러서 10분정도 쉬었다가 갈게요~ <br /> 
-                새차 안한지 오래되어서 차가 좀 지저분 할 수 있어요 ㅜㅜ
+                <ContentTitle>추가 사항</ContentTitle>
+                {carpool.memo}
             </Content>
             <ButtonBox>
-            <Button>문의하기</Button>
+            <SButton>문의하기</SButton>
             <Button>신청하기</Button>
             </ButtonBox>
 
         </Middle>
-    </Wrapper>
+    </Wrapper>}</>
     )
 }
 
@@ -104,70 +120,6 @@ color: var(--button-color);
     height: 1.2rem;
 }
 `
-// // Item // //
-const Item = styled.div`
-background-color: #FAFAFA;
-border-radius: 10px;
-margin-bottom: 10px;
-padding: 10px;
-padding-bottom: 6px;
-box-shadow: 5px 2px 7px -2px rgba(17, 20, 24, 0.15);
-color: gray;
-`
-// Top (인원, 운행 건수)
-const ItemTop = styled.div`
-display:flex;
-justify-content: space-between;
-font-size: 12px;
-`
-const TakeCnt = styled.div`
-
-`
-const CarCnt = styled.div`
-
-`
-
-// Middle (출발지, 도착지)
-const ItemMiddle = styled.div`
-
-`
-const Place = styled.div`
-display:grid;
-grid-template-columns: 1fr 50px 1fr;
-//justify-items: center;
-color: black;
-font-weight: 900;
-font-size: 18px;
-padding: 7px 0 5px 0;
-`
-const Start = styled.div`
-justify-self: end;
-`
-const SBsArrowRight = styled(BsArrowRight)`
-justify-self: center;
-padding-top: 3px;
-`
-const End = styled.div`
-justify-self: start;
-`
-// 출발 시간
-const TimeWrap = styled.div`
-display:grid;
-justify-content: center;
-color: black;
-//padding-top: 4px;
-padding-bottom: 6px;
-`
-const ItemTime = styled.div`
-//background-color: #C0C0C0;
-padding: 5px 8px;
-border-radius: 8px;
-font-weight: bold;
-`
-const TimeText = styled.span`
-font-size: 13px;
-font-weight: 200;
-`
 
 // Middle - content
 const Middle = styled.div`
@@ -180,16 +132,20 @@ padding: 20px 10px;
 const Tags = styled.div`
 display: inline-block;
 padding-bottom: 10px;
+div {
+    margin-bottom: 13px;
+}
 `
 const TalkTag = styled.span`
 background-color: #005C00;
 font-size: 12px;
-padding: 4px 6px;
+padding: 6px 8px;
 margin-right: 5px;
 border-radius: 3px;
 margin-bottom: 5px;
 color: #FAFAFA;
 text-align: center;
+//width: 104px;
 `
 const TagBox = styled.div`
 padding-top: 10px;
@@ -204,13 +160,21 @@ margin-top: 5px;
 color: #FAFAFA;
 text-align: center;
 `
+
 const Content = styled.div`
 font-size: 15px;
 font-weight: 300;
-padding: 30px 0;
+padding: 20px 0;
 //border: 1px solid #CCCCCC;
 //border-radius: 10px;
 margin: 10px 0;
+color: #646464;
+line-height: 20px;
+`
+const ContentTitle = styled.div`
+font-family: nanum-square-bold;
+padding-bottom: 10px;
+color: black;
 `
 const ButtonBox = styled.div`
 display: grid;
@@ -227,6 +191,17 @@ padding: 12px;
 margin: 7px;
 margin-top: 20px;
 color: #FAFAFA;
+border-radius: 10px;
+font-size: 14px;
+text-align: center;
+`
+const SButton = styled.div`
+background-color: #FAFAFA;
+border: 1px solid var(--button-color);
+padding: 12px;
+margin: 7px;
+margin-top: 20px;
+color: var(--button-color);
 border-radius: 10px;
 font-size: 14px;
 text-align: center;
