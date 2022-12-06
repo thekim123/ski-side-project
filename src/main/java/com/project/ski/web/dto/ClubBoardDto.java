@@ -19,6 +19,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class ClubBoardDto {
 
     // 동호회 게시판 식별값
@@ -52,7 +53,7 @@ public class ClubBoardDto {
 
     private String sortScope;
 
-
+    private String nickName;
 
     private LocalDateTime createDt;
 
@@ -66,6 +67,17 @@ public class ClubBoardDto {
         this.content =clubBoard.getContent();
         this.tempFlag =clubBoard.getTempFlag();
         this.sortScope =clubBoard.getSortScope();
+        this.createDt = clubBoard.getCreatedDate();
+    }
+    public ClubBoardDto(ClubBoard clubBoard ,User user) {
+        this.id = clubBoard.getId();
+        this.clubId =clubBoard.getClub().getId();
+        this.replies =clubBoard.getReplies();
+        this.title =clubBoard.getTitle();
+        this.content =clubBoard.getContent();
+        this.tempFlag =clubBoard.getTempFlag();
+        this.sortScope =clubBoard.getSortScope();
+        this.nickName = user.getNickname();
         this.createDt = clubBoard.getCreatedDate();
     }
 

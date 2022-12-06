@@ -1,5 +1,6 @@
 package com.project.ski.domain.club;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.ski.domain.BaseTimeEntity;
 import com.project.ski.web.dto.ClubBoardDto;
 import lombok.AllArgsConstructor;
@@ -33,6 +34,7 @@ public class ClubBoard extends BaseTimeEntity {
     private Club club;
 
     // 댓글
+    @JsonIgnore
     @OneToMany(mappedBy = "clubBoard")
     private List<Reply> replies = new ArrayList<>();
 

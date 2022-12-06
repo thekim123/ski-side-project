@@ -1,14 +1,14 @@
 package com.project.ski.domain.club;
 
+import com.project.ski.domain.BaseTimeEntity;
 import com.project.ski.domain.user.User;
+import com.project.ski.web.dto.ReplyDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -18,7 +18,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class Reply {
+public class Reply extends BaseTimeEntity {
 
     // 댓글 식별값
     @Id
@@ -32,23 +32,15 @@ public class Reply {
 
     // 사용자
     @JoinColumn(name = "user_Id")
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     private User user;
 
     // 댓글
     private String reply;
 
-    // 작성시간
-    @CreationTimestamp
-    private LocalDateTime createDt;
-
-    // 수정시간
-    @CreationTimestamp
-    private LocalDateTime updateDt;
-
-    public void save(ClubBoard clubBoard, User user) {
-        this.clubBoard = clubBoard;
-        this.user = user;
+    public ReplyDto update(ReplyDto dto) {
+        this.reply = dto.getReply();
+        return dto;
     }
 
 }

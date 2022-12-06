@@ -38,8 +38,10 @@ public class ClubBoardApiController {
     }
 
     @GetMapping("/{clubId}")
-    public CmRespDto<Page<ClubBoardDto>> getAllClubBoard(Pageable pageable, @PathVariable long clubId) {
-        Page<ClubBoardDto> clubBoardDtos = clubBoardService.getAllClubBoard(pageable, clubId);
+    public CmRespDto<Page<ClubBoardDto>> getAllClubBoard(Pageable pageable, @PathVariable long clubId,Authentication auth) {
+        PrincipalDetails principalDetails = (PrincipalDetails) auth.getPrincipal();
+        User user = principalDetails.getUser();
+        Page<ClubBoardDto> clubBoardDtos = clubBoardService.getAllClubBoard(pageable, clubId,user);
         return new CmRespDto<>(1, "클럽게시판 전체조회 완료", clubBoardDtos);
     }
 

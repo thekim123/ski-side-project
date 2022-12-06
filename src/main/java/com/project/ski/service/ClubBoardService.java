@@ -40,9 +40,9 @@ public class ClubBoardService {
      * 동호회 게시판 전체 조회
      */
     @Transactional
-    public Page<ClubBoardDto> getAllClubBoard(Pageable pageable, long clubId) {
-        Page<ClubBoard> id = clubBoardRepository.findByClubId(pageable, clubId);
-        return id.map(ClubBoardDto::new);
+    public Page<ClubBoardDto> getAllClubBoard(Pageable pageable, long clubId,User user) {
+        Page<ClubBoard> clubBoard = clubBoardRepository.findByClubId(pageable, clubId);
+        return clubBoard.map(clubBoard1 -> new ClubBoardDto(clubBoard1,user));
     }
 
 
