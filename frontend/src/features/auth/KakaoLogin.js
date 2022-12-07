@@ -7,11 +7,15 @@ export default function KakaoLogin() {
     const ERROR = PARAMS.get('error');
     const navigate = useNavigate();
 
+    const REDIRECT_URI='http://localhost:3000/kakaoLogin'
+    const REST_API_KEY='30d8d88d8914487594ffefdce38681cc'
+
     const getKakaoToken = () => {
         fetch(`https://kauth.kakao.com/oauth/token`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `grant_type=authorization_code&client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&code=${KAKAO_CODE}`,
+            //body: `grant_type=authorization_code&client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&code=${KAKAO_CODE}`,
+            body: `grant_type=authorization_code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&code=${KAKAO_CODE}`,
 
         }).then(res => res.json())
         .then(data => {
