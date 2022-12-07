@@ -33,7 +33,7 @@ export default function KakaoLogin() {
 
     useEffect(() => {
         if (ERROR === null) {
-        console.log(KAKAO_CODE)
+        console.log("인가코드 ", KAKAO_CODE)
         getKakaoToken();
         } else if (ERROR === 'consent_required') {
             console.log("회원가입 필요")
