@@ -10,21 +10,23 @@ export function TopBar() {
     const goback = () => {
         navigate(-1);
     }
-    const test = e => {
-        console.log(t);
+    const gotoMyPage = e => {
+        navigate('/my');
     }
     return(
-        <Container>
+        <>
+        {t !== 'login' && <Container>
             <LeftSide>
                 {t !== '' && t !== 'board' && t !== 'carpool' && t !== 'tayo' && t !== 'club' && 
                     <BiArrowBack className="backBtn" onClick={goback} />}
                 <PageName></PageName>
             </LeftSide>
             <RightSide>
-                <BiBell className="bellBtn" onClick={test}/>
-                <BiUser className="myBtn"/>
+                <BiBell className="bellBtn"/>
+                <BiUser className="myBtn" onClick={gotoMyPage}/>
             </RightSide>
-        </Container>
+        </Container>}
+        </>
     )
 }
 

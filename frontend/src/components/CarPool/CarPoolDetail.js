@@ -5,7 +5,7 @@ import { HiPencil } from 'react-icons/hi'
 import { BsTrashFill, BsFilePost, BsArrowRight } from 'react-icons/bs'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { getCarpool } from '../../action/carpool'
+import { getCarpool, submitCarpool } from '../../action/carpool'
 
 export function CarPoolDetail() {
     const navigate = useNavigate();
@@ -27,6 +27,11 @@ export function CarPoolDetail() {
 
     const dummyFunc = (id) => {
 
+    }
+
+    const handleSubmit = e => {
+        dispatch(submitCarpool(id));
+        //navigate to chat
     }
 
     useEffect(() => {
@@ -70,7 +75,7 @@ export function CarPoolDetail() {
                 {carpool.negotiate.destination && <TalkTag>도착지 협의 가능</TalkTag>}
                 </div>
                 <div>
-                {carpool.negotiate.departure && <TalkTag>출발 시간 협의 가능</TalkTag>}
+                {carpool.negotiate.departTime && <TalkTag>출발 시간 협의 가능</TalkTag>}
                 {carpool.negotiate.boardingPlace && <TalkTag>탑승 장소 협의 가능</TalkTag>}
                 </div>
                 {/*
@@ -85,7 +90,7 @@ export function CarPoolDetail() {
             </Content>
             <ButtonBox>
             <SButton>문의하기</SButton>
-            <Button>신청하기</Button>
+            <Button onClick={handleSubmit}>신청하기</Button>
             </ButtonBox>
 
         </Middle>

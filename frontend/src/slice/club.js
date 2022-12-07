@@ -22,7 +22,10 @@ const clubSlice = createSlice({
         deleteClub(state) {},
         getUsers(state, action) {
             state.users = action.payload;
-        }
+        },
+        enrollClub(state) {
+
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(asyncGetClub.pending, (state, action) => {

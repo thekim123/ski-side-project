@@ -1,29 +1,42 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components'
-import { getPost } from '../../action/clubBoard';
+import { addComment, editPost, getPost } from '../../action/clubBoard';
 import { HiPencil } from 'react-icons/hi'
 import { BsTrashFill } from 'react-icons/bs'
 import OkButtonModal from '../common/OkButtonModal';
 import { FiSend } from 'react-icons/fi'
+import { BsFillPersonFill } from 'react-icons/bs'
 
 export default function ClubBoardDetail() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const post = useSelector(state => state.clubBoard.clubBoard);
+    const user = useSelector(state => state.auth.user);
     const [delOpen, setDelOpen] = useState(false);
     const [commentInput, setCommentInput] = useState("");
+    const [commentDelOpen, setCommentDelOpen] = useState(false);
     const clubNm = useLocation().state;
     const {id} = useParams();
 
     const handlePencil = () => {
-
+        navigate(`/club/board/edit/${id}`, {state: clubNm});
     }
     const handleTrash = () => {
-
+        console.log(post);
+        setDelOpen(true);
     }
+    const handleCommentTrash = (commentId) => {
+        //dispatch(deleteComment(commentId, id));
+        setCommentDelOpen(true);
+    }
+
     const closeDel = () => {
         setDelOpen(false);
+    }
+    const closeCommentDel = () => {
+        setCommentDelOpen(false);
     }
 
     const handleInputChange = e => {
@@ -33,10 +46,10 @@ export default function ClubBoardDetail() {
     const handleSubmit = e => {
         e.preventDefault();
         const sendComment = {
-            boardId: id,
-            content: commentInput
+            clubBoardId: id,
+            reply: commentInput
         }
-        //dispatch() clubBoard 댓글 작성
+        dispatch(addComment(sendComment))
         setCommentInput("");
     }
 
@@ -71,7 +84,8 @@ export default function ClubBoardDetail() {
                         message={"게시글을 삭제하시겠습니까?"}
                         ok={"삭제"}
                         usage={"clubBoardDel"}
-                        targetId={id}/>
+                        targetId={id}
+                        targetId2={post.clubId}/>
                 </Icon>  
             </InfoIcon>
         </MostTop>
@@ -81,7 +95,35 @@ export default function ClubBoardDetail() {
         </Content>
 
         <CommentList>
-
+        {post &&
+                    post.replies.map(c => (
+                        <Comment key={c.id}>
+                            <ComNameIcon>
+                                <ComNameBox>
+                                <SBsFillPersonFill />
+                                <ComName>{c.user.nickname}</ComName>
+                                </ComNameBox>
+                                <NotiBox>
+                                    {/* 다른 사람의 댓글일 때 신고 버튼 */}
+                                {c.user.username !== user ? <ComNoti>신고</ComNoti> : null}
+                                {/* 내 댓글일 때 삭제 버튼 */}
+                                {c.user.username === user ? <SBsTrashFill onClick={() => handleCommentTrash(c.id)}/> : null}
+                                </NotiBox>
+                            </ComNameIcon>
+                            <ComContent>{c.content}</ComContent>
+                            <ComDate>{new Date(c.createDate).getMonth()+1}/{new Date(c.createDate).getDate()} {c.createDate.slice(11, 16)}</ComDate>
+                            <OkButtonModal 
+                            open={commentDelOpen}
+                            close={closeCommentDel}
+                            message={"댓글을 삭제하시겠습니까?"}
+                            ok={"삭제"}
+                            usage={"commentDel"}
+                            targetId={c.id}
+                            targetId2={id}
+                            />
+                        </Comment>
+                    ))
+                }
         </CommentList>
 
         <Form onSubmit={handleSubmit}>
@@ -165,7 +207,7 @@ align-self: end;
 `
 
 const CommentList = styled.div`
-
+margin: 15px 20px 10px 20px;
 `
 
 const Form = styled.form`
@@ -205,4 +247,64 @@ const Form = styled.form`
         width: 1.1rem;
         height: 1.1rem;
     }
+`
+
+const Comment = styled.div`
+display:grid;
+//grid-template-columns: 70px 6fr 1fr;
+align-items: center;
+//border-bottom: 1px solid #CCCCCC;
+padding: 12px 10px 12px 10px;
+background-color: #FAFAFA;
+border-radius: 10px;
+margin-bottom: 10px;
+box-shadow: 5px 2px 7px -2px rgba(17, 20, 24, 0.15);
+.boardDetail-combox {
+    color: gray;
+    padding-right:15px;
+}
+`
+const ComNameIcon = styled.div`
+display: flex;
+justify-content: space-between;
+`
+const ComNameBox = styled.div`
+display:flex;
+align-items: center;
+padding-bottom: 2px;
+`
+const ComName = styled.div`
+font-size:12px;
+text-align:center;
+padding-top: 2px;
+color: gray;
+`
+const SBsFillPersonFill = styled(BsFillPersonFill)`
+color: #FAFAFA;
+margin-right: 3px;
+padding: 1px;
+background-color: var(--button-sub-color);
+border-radius: 4px;
+width: 13px;
+height: 13px;
+`
+const NotiBox = styled.div`
+display: flex;
+`
+const SBsTrashFill = styled(BsTrashFill)`
+margin-left: 6px;
+color: var(--button-sub-color);
+`
+const ComDate = styled.div`
+font-size:8px;
+//text-align:center;
+color: var(--button-sub-color);
+`
+const ComContent = styled.div`
+padding: 6px 0;
+font-size: 15px;
+`
+const ComNoti = styled.div`
+font-size:13px;
+color: var(--button-sub-color);
 `

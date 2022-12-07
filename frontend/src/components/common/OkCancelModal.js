@@ -31,8 +31,8 @@ export default function OkCancelModal(props) {
             setError("입력과 동호회 명이 일치하지 않습니다.")
             return;
         } else {
-            //dispatch(deleteClub(props.clubId));
-            //navigate('/club');
+            dispatch(deleteClub(props.clubId));
+            navigate('/club');
         }
     }
     return (

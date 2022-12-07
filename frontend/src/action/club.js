@@ -121,3 +121,17 @@ export const deleteClub = (clubId) => {
         .catch(error => console.log(error));
     }
 }
+
+export const enrollClub = (clubId) => {
+    return function (dispatch) {
+        Send({
+            url:`/enroll/${clubId}`,
+            method: 'post',
+        }).then((resp) => {
+            console.log("resp", resp);
+            //dispatch(clubActions.enrollClub());
+            //dispatch(getClubUser(clubId));
+        })
+        .catch(error => console.log(error));
+    }    
+}
