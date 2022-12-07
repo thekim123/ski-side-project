@@ -57,10 +57,4 @@ public class UserApiController {
         authService.delete(authentication);
         return new CmRespDto<>(1, "회원탈퇴 완료", null);
     }
-
-    @PostMapping("update/profile/")
-    public CmRespDto<?> profileImageUrlUpdate(Authentication authentication, MultipartFile profileImageFile) {
-        userService.updateProfileImage(authentication, profileImageFile);
-        return new CmRespDto<>(1, "프로필 사진 업데이트 완료", null);
-    }
 }

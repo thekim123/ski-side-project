@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
+import Send from "../../components/common/Send";
 
 export default function KakaoLogin() {
     const PARAMS = new URL(document.location).searchParams;
@@ -27,7 +28,13 @@ export default function KakaoLogin() {
                         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
                     }
                 }).then(res => res.json())
-                .then(data => console.log(data));
+                .then(// 이부분 제가 임시로 수정했습니다
+                    data => Send({
+                    url: 'http://localhost:8080/oauth/jwt/kakao',
+                    method: 'POST',
+                    data: data,
+                })
+                );
             } else {
                 console.log("fail");
                 navigate('/login')

@@ -30,6 +30,3 @@ spring:
   h2:
     console:
       enabled: true
-
-file:
-  path: C:/workspace/image/

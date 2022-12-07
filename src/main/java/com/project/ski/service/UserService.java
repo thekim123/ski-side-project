@@ -26,10 +26,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Value("${file.path}")
-    private String uploadFolder;
-
     @Transactional
     public void update(UserUpdateDto dto, Authentication authentication) {
         User userEntity = getUserFromPrincipal(authentication);
@@ -56,26 +52,6 @@ public class UserService {
         User user = getUserFromPrincipal(authentication);
         return user.getUsername();
 
-    }
-
-    @Transactional
-    public void updateProfileImage(Authentication authentication, MultipartFile profileImageFile) {
-        User principal = getUserFromPrincipal(authentication);
-        long principalId = principal.getId();
-
-        UUID uuid = UUID.randomUUID();
-        String imageFileName = uuid + "_" + profileImageFile.getOriginalFilename();
-        Path imageFilePath = Paths.get(uploadFolder + imageFileName);
-        try {
-            Files.write(imageFilePath, profileImageFile.getBytes());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        User userEntity = userRepository.findById(principalId).orElseThrow(() -> {
-            return new IllegalArgumentException("사용자를 찾을 수 없습니다.");
-        });
-        userEntity.setProfileImageUrl(imageFileName);
     }
 
     public User getUserFromPrincipal(Authentication authentication) {
