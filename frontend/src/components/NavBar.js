@@ -25,7 +25,8 @@ export function NavBar() {
     }, [])
 
     return (
-    <Container>
+        <>
+    {url !== 'login' && <Container>
         <UL>
                 <NavBox onClick={e => {navigate('/board'); setBtnActive("board")}}>
                 <FaRegClipboard className={"nav-icons" + (btnActive === 'board' ? " active" : "")}/>
@@ -52,7 +53,8 @@ export function NavBar() {
                 <NavList className={btnActive === 'club' ? 'active' : ''}>동호회</NavList>
                 </NavBox>
         </UL>
-    </Container>
+    </Container>}
+    </>
     )
 }
 const NavBox = styled.div`

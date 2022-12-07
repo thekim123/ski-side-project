@@ -1,20 +1,28 @@
-import React, { useRef, useState } from 'react'
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { addPost } from '../../action/clubBoard';
+import { addPost, editPost, getPost } from '../../action/clubBoard';
 
-export function ClubBoardWrite() {
+export function ClubBoardEdit() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const club = useLocation().state;
+    const clubNm = useLocation().state;
     const titleInput = useRef();
     const contentInput = useRef();
+    const originalPost = useSelector(state => state.clubBoard.clubBoard);
     const [error, setError] = useState({
         title: "",
         content: "",
     });
-    const {isNotice} = useParams();
+    const [state, setState] = useState({
+        clubId: null,
+        title: "",
+        content: "",
+        sortScope: "",
+        createDt: "",
+    })    
+    const {id} = useParams();
 
     const resetTitleError = () => {
         setError({...error, title: ""})
@@ -47,6 +55,12 @@ export function ClubBoardWrite() {
         }
     }
 
+    const handleInputChange = (e) => {
+        let {name, value} = e.target;
+        setState({...state, [name]: value});
+
+    }
+
     const handleSubmit = e => {
         e.preventDefault();
         const enteredTitle = titleInput.current.value;
@@ -55,25 +69,34 @@ export function ClubBoardWrite() {
             return;
         } else {
             const post = {
-                clubId: club.id,
+                clubId: state.clubId,
                 title: enteredTitle,
                 content: enteredContent,
-                sortScope: isNotice === "true" ? "notice" : "general",
+                sortScope: state.sortScope,
                 tempFlag: "N",
             }
-            dispatch(addPost(post));
-            navigate(`/club/detail/${club.id}`, { state: club });
+            console.log(post);
+            dispatch(editPost(id, post));
+            navigate(`/club/detail/${state.clubId}`);
         }
     }
-    const test = e => {
-        console.log(typeof(isNotice));
-    }
+    
+    useEffect(() => {
+        dispatch(getPost(id))
+    }, [dispatch])
+
+    useEffect(() => {
+        if (originalPost) {
+            console.log(originalPost);
+            setState({...originalPost})
+        }
+    }, [originalPost])
     return (
     <Wrapper onSubmit={handleSubmit}>
         <Top>
             <Text>
-                <TopText>{club.clubNm}</TopText>
-                <Exp onClick={test}>{isNotice === "true" ? "공지" : "글"} 작성</Exp>
+                <TopText>{clubNm}</TopText>
+                <Exp>{state.sortScope === "notice" ? "공지" : "글"} 수정</Exp>
             </Text>
             <Button>완료</Button>
         </Top>
@@ -84,6 +107,9 @@ export function ClubBoardWrite() {
                     type="text"
                     placeholder="제목"
                     ref={titleInput}
+                    name="title"
+                    value={state.title || ""}
+                    onChange={handleInputChange}                    
                     onClick={resetTitleError} />
                 <Error className="boardWrite-error">{error.title ? error.title : null}</Error>
             </Title>
@@ -91,6 +117,9 @@ export function ClubBoardWrite() {
             <textarea 
                 placeholder="내용을 입력하세요" 
                 ref={contentInput} 
+                name="content"
+                value={state.content}
+                onChange={handleInputChange}                
                 onClick={resetContentError}>
             </textarea>
             <Error className="boardWrite-error">{error.content ? error.content : null}</Error>

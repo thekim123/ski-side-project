@@ -54,3 +54,17 @@ export const editCarpool = (id, carpool) => {
         .catch(error => console.log(error));
     }
 } 
+
+export const submitCarpool = (id) => {
+    return function (dispatch) {
+        Send({
+            url: `/submit/${id}`,
+            method: 'post',
+        }).then((resp) => {
+            console.log("resp", resp);
+            //dispatch(carpoolActions.get());
+            //dispatch(loadCarpools());
+        })
+        .catch((error) => console.log(error));
+    }    
+}

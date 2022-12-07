@@ -7,7 +7,7 @@ import resorts from '../../data/resort.json';
 import { BsPeopleFill } from 'react-icons/bs';
 import { MdEmojiPeople } from 'react-icons/md'
 import { TbGenderBigender } from 'react-icons/tb'
-import { getSingleClub } from '../../action/club';
+import { enrollClub, getSingleClub } from '../../action/club';
 
 export function ClubSecret() {
     const dispatch = useDispatch();
@@ -23,7 +23,10 @@ export function ClubSecret() {
     const gotoDetail = e => {
         //navigate(`/club/detail/${club.id}`, { state: club });
         //동호회 인원 추가
-        navigate(`/club/detail/${id}`);
+        if (club.openYn === "Y") {
+            dispatch(enrollClub(id));
+        }
+        //navigate(`/club/detail/${id}`);
     }
 
     useEffect(() => {
