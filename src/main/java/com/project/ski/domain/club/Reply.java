@@ -1,5 +1,7 @@
 package com.project.ski.domain.club;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.ski.domain.BaseTimeEntity;
 import com.project.ski.domain.user.User;
 import com.project.ski.web.dto.ReplyDto;
@@ -26,13 +28,15 @@ public class Reply extends BaseTimeEntity {
     private Long id;
 
     // 동호회 게시판
+    @JsonIgnore
     @JoinColumn(name = "clubBoard_Id")
     @ManyToOne(fetch = LAZY)
     private ClubBoard clubBoard;
 
     // 사용자
+    @JsonIgnoreProperties({"boards","clubUsers", "carpools", "tayos", "password"})
     @JoinColumn(name = "user_Id")
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne
     private User user;
 
     // 댓글

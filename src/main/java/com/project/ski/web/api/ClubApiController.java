@@ -46,8 +46,6 @@ public class ClubApiController {
         return new CmRespDto<>(1, "동호회별 유저 리스트 조회 완료",clubPage);
     }
 
-    // 유저별 동호회 목록 조회
-
 
     // 동호회 생성
     @PostMapping

@@ -26,12 +26,12 @@ public class ReplyApiController {
         PrincipalDetails principalDetails = (PrincipalDetails) auth.getPrincipal();
         User user = principalDetails.getUser();
         ReplyDto replyDto = replyService.saveReply(dto, user);
-        return new CmRespDto<ReplyDto>(1, "동호회 댓글 작성 완료", replyDto);
+        return new CmRespDto<>(1, "동호회 댓글 작성 완료", replyDto);
     }
 
     //
     @DeleteMapping("/deleteReply/{replyId}")
-    public CmRespDto<ClubBoardDto> deleteReply(@PathVariable long replyId) {
+    public CmRespDto<ReplyDto> deleteReply(@PathVariable long replyId) {
         replyService.deleteReply(replyId);
         return new CmRespDto<>(1, "동호회 댓글 삭제 완료", null);
     }

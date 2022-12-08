@@ -24,8 +24,8 @@ public class ClubBoardService {
     private final ClubBoardRepository clubBoardRepository;
     private final UserRepository userRepository;
     private final ClubRepository clubRepository;
-
     private final ClubUserRepository clubUserRepository;
+
     /**
      * 동호회 게시판
      * 상세 조회 -{boardId}
@@ -66,14 +66,13 @@ public class ClubBoardService {
         clubBoardRepository.save(cb);
         ClubUser clubBoardUser = new ClubUser(cb, findUser);
         findUser.getClubUsers().add(clubBoardUser);
+        clubBoardUser.setRole("관리자");
         return dto;
     }
 
     @Transactional
     public void update(long clubBoardId, ClubBoardDto dto) {
         ClubBoard boards = clubBoardRepository.findById(clubBoardId).orElseThrow(() -> new IllegalArgumentException("동호회 게시판 수정 실패"));
-
-//        boards.update(dto,boards.getClub());
         boards.update(dto);
     }
 

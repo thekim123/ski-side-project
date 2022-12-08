@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .apply(new MyCustomDsl())
                 .and()
                 .authorizeRequests(authorize -> authorize
-                        .antMatchers("/api/home", "/api/club/**")
+                        .antMatchers("/api/home"/*, "/api/club/**"*/)
                         .access("hasRole('USER')")
                         .anyRequest().permitAll())
                 .build();

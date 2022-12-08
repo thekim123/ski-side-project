@@ -15,10 +15,12 @@ public class ClubUserRespDto {
 
     private String nickname;
 
+    private String role;
 
     public ClubUserRespDto(ClubUser clubUser) {
         this.id = clubUser.getUser().getId();
         this.username = clubUser.getUser().getUsername();
         this.nickname = clubUser.getUser().getNickname();
+        this.role = clubUser.getRole();
     }
 }
