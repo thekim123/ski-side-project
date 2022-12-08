@@ -26,25 +26,13 @@ export function Login() {
 
     //const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`
     const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`
-    const dispatch = useDispatch();
 
     const handleLogin = () => {
         window.location.href=KAKAO_AUTH_URL;
     }
 
+    /*
     useEffect(() => {
-        /*
-        if (!isLoading) {
-            if (error) {
-                setErrMsg(error);
-            }
-            //원래 가려던 페이지가 있다면 그곳으로, 없다면 홈으로.
-            else if (state) {
-                navigate(state);
-            } else {
-                navigate('/');
-            }
-        }*/
         if (isAuth) {
             if (state) {
                 navigate(state);
@@ -66,44 +54,9 @@ export function Login() {
         dispatch(login(userData));
         setUser('');
         setPw('');
-    }
+    }*/
 
-    const handleUserInput = (e) => setUser(e.target.value);
-
-    const handlePwInput = (e) => setPw(e.target.value);
-
-    //const content = //isLoading ? <h1>Loading...</h1> : (
-        /*
-        <Wrapper className="login">
-            <p ref={errRef} className={errMsg ? "reemsg": "offscreen"} aria-live="assertive">{errMsg}</p>
-        
-            <h1>Login</h1>
-
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="username">Username:</label>
-                <input 
-                    type="text"
-                    id="username"
-                    ref={userRef}
-                    value={user}
-                    onChange={handleUserInput}
-                    autoComplete="off"
-                    required/>
-                <br />
-                <label htmlFor="password">Password:</label>
-                <input
-                    type="password"
-                    id="password"
-                    onChange={handlePwInput}
-                    value={pw}
-                    required
-                />
-                <br/>
-                <button>Sign In</button>
-            </form>
-        </Wrapper>*/
-    //)
-
+    
     return (
         <Wrapper>
             <MySki>

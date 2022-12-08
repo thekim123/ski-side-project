@@ -22,6 +22,20 @@ export const loadPosts = () => {
     }
 }
 
+export const getByResort = (resortName) => {
+    return function (dispatch) {
+        Send({
+            url: `/board/resort/${resortName}`,
+            method: 'get',
+        }).then((resp) => {
+            console.log("resp", resp);
+            dispatch(boardActions.getBoards(resp.data.data.content));
+        })
+        .catch(error => console.log(error));
+        
+    }    
+}
+
 export const addPost = (post) => {
     return function (dispatch) {
         Send({

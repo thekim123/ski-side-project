@@ -5,10 +5,20 @@ import { SkiButton } from '../SkiButton'
 import img from '../../assets/imgs/한반도.png'
 import styled from 'styled-components'
 import shortid from 'shortid';
+import { useDispatch } from 'react-redux';
+import { getByResort } from '../../action/board';
+import { getTayoByResort } from '../../action/tayo';
 
-export function ResortMap() {
+export function ResortMap(props) {
+    const dispatch = useDispatch();
     const selectResort = e => {
-        console.log(e.target);
+        if (props.page === 'board') {
+            dispatch(getByResort(e.target.innerText));
+        } else if (props.page === 'tayo') {
+            console.log(e.target.innerText)
+            dispatch(getTayoByResort(e.target.innerText));
+        }
+        props.close();
     }
     return (
         <Map>

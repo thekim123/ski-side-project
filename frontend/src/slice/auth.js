@@ -7,12 +7,13 @@ const initialState = {
     error: "",
 }
 
-const authSlice = createSlice({
+const authSlice = createSlice({ 
     name: 'auth',
     initialState,
     reducers: {
         setCredentials: (state, action) => {
             state.token = action.payload;
+            state.isAuth = true;
         },
         logOut: (state) => {
             state.token = null;
@@ -21,7 +22,7 @@ const authSlice = createSlice({
         },
         setUser: (state, action) => {
             state.user = action.payload;
-            state.isAuth = true;
+            //state.isAuth = true;
             state.error = "";
         },
         fail: (state) => {
