@@ -4,9 +4,6 @@ import styled from 'styled-components'
 import { FiFilter } from 'react-icons/fi';
 
 export function MapModal(props) {
-    const test = e => {
-        console.log(e.target.className);
-    }
     const clickOutside = (e) => {
         if (e.target.className === "openModal mapModal") {
             props.close();
@@ -24,7 +21,7 @@ export function MapModal(props) {
                     </IconTitle>
                     <Button onClick={props.close}>&times;</Button>
                 </Top>
-                <ResortMap />
+                <ResortMap close={props.close} page={props.page}/>
             </Section>
         : null
         }

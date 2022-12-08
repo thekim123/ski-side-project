@@ -59,7 +59,7 @@ export function Tayo() {
                     <HiPlus className="tayo-plus" onClick={clickPlus}/>
                 </Icons>
                 </Top>
-                <MapModal open={modalOpen} close={closeModal} />
+                <MapModal open={modalOpen} close={closeModal} page="tayo"/>
             </TopWrapper>
 
             <POSTS>

@@ -12,30 +12,20 @@ function BoardListForm(props) {
     const navigate = useNavigate();
     //const resorts = useSelector(state => state.resort.resorts);
     const resort_kor = ["[하이원]", "[대명]", "[곤지암]", "[베어스]", "[지산]", "[덕유산]", "[에덴벨리]", "[비발디]", "[휘닉스]", "[웰리힐리]", "[용평]", "[엘리시안]"];
-    const [input, setInput] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
-
-    const changeParent = e => {
-        props.change(e.target.innerText);
-    }
 
     const clickPlus = e => {
         navigate('/board/write');
     }
 
     const handleChange = e => {
-        setInput(e.target.value);
+        //setInput(e.target.value);
+        //console.log(input)
+        props.func(e.target.value);
     }
 
     const handleSubmit = e => {
-        e.prefentDefault();
-
-        {/*}
-        props.onSubmit({
-            //id: 어떻게..? auto-increment 이런거 있으면 좋을텐데
-            text: input
-        })*/}
-        setInput('');
+        e.preventDefault();
 
     }
 
@@ -48,12 +38,6 @@ function BoardListForm(props) {
     }
     return (
         <Wrapper>
-            {/* <ResortBtn>
-                <div></div><Resort onClick={changeParent}>[전체]</Resort><Link to="/board/write"><Button>글쓰기</Button></Link>
-                {resort_kor.map(resort => (
-                    <Resort key={shortid.generate()} onClick={changeParent}>{resort}</Resort>
-                ))}
-            </ResortBtn> */}
             <Top>
                 <Title>자유게시판</Title>
                 <Icons>
@@ -61,12 +45,12 @@ function BoardListForm(props) {
                     <HiPlus className="tayo-plus" onClick={clickPlus}/>
                 </Icons>
             </Top>
-            <MapModal open={modalOpen} close={closeModal} />
+            <MapModal open={modalOpen} close={closeModal} page="board"/>
             <Form onSubmit={handleSubmit}>
                 <input
                     type='text'
                     placeholder='스키장 이름, 글 제목, 단어 검색'
-                    value={input}
+                    value={props.input}
                     name='text'
                     className='boardForm-input'
                     onChange={handleChange}

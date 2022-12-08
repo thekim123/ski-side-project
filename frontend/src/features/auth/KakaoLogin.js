@@ -1,12 +1,16 @@
 import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { getUser, kakaoLogin } from '../../action/auth';
 import Send from "../../components/common/Send";
 
 export default function KakaoLogin() {
     const PARAMS = new URL(document.location).searchParams;
     const KAKAO_CODE = PARAMS.get('code');
     const ERROR = PARAMS.get('error');
+    const isAuth = useSelector(state => state.auth.isAuth);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const REDIRECT_URI='http://localhost:3000/kakaoLogin'
     const REST_API_KEY='30d8d88d8914487594ffefdce38681cc'
@@ -28,13 +32,16 @@ export default function KakaoLogin() {
                         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
                     }
                 }).then(res => res.json())
-                .then(// 이부분 제가 임시로 수정했습니다
+                .then(
                     data => Send({
                     url: 'http://localhost:8080/oauth/jwt/kakao',
                     method: 'POST',
                     data: data,
                 })
-                );
+                ).then(resp => {
+                    dispatch(kakaoLogin(resp));
+                    navigate('/')
+                }).catch(error => console.log(error));
             } else {
                 console.log("fail");
                 navigate('/login')
@@ -51,7 +58,9 @@ export default function KakaoLogin() {
         } else {
             navigate('/login');
         }
-    })
+    }, [])
+
+    
     return (
     <div>
         {/* loading page? */}

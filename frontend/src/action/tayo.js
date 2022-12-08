@@ -22,6 +22,21 @@ export const loadTayos = () => {
     }
 }
 
+export const getTayoByResort = (resortName) => {
+    return function (dispatch) {
+        Send({
+            url: `/tayo/${resortName}`,
+            method: 'get',
+        }).then((resp) => {
+            console.log(resortName)
+            console.log("resp", resp);
+            dispatch(tayoActions.getTayos(resp.data.data));
+        })
+        .catch(error => console.log(error));
+        
+    }    
+}
+
 export const addTayo = (post) => {
     return function (dispatch) {
         Send({

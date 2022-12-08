@@ -8,37 +8,24 @@ import BoardListItem from '../components/Board/BoardListItem';
 export function Board() {
     const dispatch = useDispatch();
     const posts = useSelector(state => state.board.posts);
-    const [selectedResort, setSelectedResort] = useState("[전체]"); 
-    const [filteredResorts, setFilteredResorts] = useState(posts); 
-
-    const changeSelection = (resort) => {
-        setSelectedResort(resort);
-    }
-
+    const [input, setInput] = useState("");
     
     useEffect(() => {
         dispatch(loadPosts());
     }, [dispatch]);
 
-    
-    useEffect(() => {
-        console.log("t")
-        if (selectedResort === "[전체]") {setFilteredResorts(posts);}
-        else {
-            let filteredResort = posts.filter(post => post.resortName === selectedResort);
-            setFilteredResorts(filteredResort);
-        }
-
-    }, [selectedResort, posts])
-
     return(
         <BoardContainer>
-            <BoardListForm change={changeSelection} />
+            <BoardListForm func={setInput} input={input} />
             <POSTS>
-            {filteredResorts.length > 0 && filteredResorts.map((post) => (
-                <BoardListItem key={post.id} {...post} />
-            ))
-            }
+                {posts.length > 0 && posts.filter(post => {
+                    if (input === "") return post;
+                    else if (post.title.toLowerCase().includes(input.toLowerCase())) return post;
+                    else if (post.content.toLowerCase().includes(input.toLowerCase())) return post;
+                    else if (post.resort.resortName.includes(input)) return post;
+                }).map(post => 
+                    <BoardListItem key={post.id} {...post} />
+                )}
             </POSTS>
         </BoardContainer>
     )

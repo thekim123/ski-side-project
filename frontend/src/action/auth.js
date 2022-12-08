@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { authActions } from '../slice/auth';
 import Send from '../components/common/Send';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const login = (user) => {
     return function (dispatch) {
@@ -25,6 +26,18 @@ export const login = (user) => {
             }
         })
         .catch(error => console.log(error));
+    }
+}
+
+export const kakaoLogin = (backData) => {
+    return function (dispatch) {
+        try {
+            dispatch(authActions.setCredentials(backData.data));
+            Send.defaults.headers.common['Authorization'] = 'Bearer '+backData.data;
+            dispatch(getUser());            
+        } catch (e) {
+            console.log(e);
+        }
     }
 }
 
