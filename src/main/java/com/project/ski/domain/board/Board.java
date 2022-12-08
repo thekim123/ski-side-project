@@ -38,7 +38,6 @@ public class Board {
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
-    @OrderBy("id desc")
     @JsonIgnoreProperties("board")
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comment;
