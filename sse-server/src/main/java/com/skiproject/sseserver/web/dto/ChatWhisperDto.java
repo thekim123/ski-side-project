@@ -1,10 +1,9 @@
 package com.skiproject.sseserver.web.dto;
 
-import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class ChatRoomRequestDto {
-    private String roomName;
+public class ChatWhisperDto {
+    private String receiver;
     private String sender;
 }
