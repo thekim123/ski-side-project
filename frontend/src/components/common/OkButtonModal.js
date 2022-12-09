@@ -3,7 +3,8 @@ import styled from 'styled-components'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import { deleteComment, deletePost } from '../../action/board';
-import { deleteCbPost } from '../../action/clubBoard';
+import { deleteCbPost, deleteClubComment } from '../../action/clubBoard';
+import { deleteTayo } from '../../action/tayo';
 
 export default function OkButtonModal(props) {
     const dispatch = useDispatch();
@@ -29,6 +30,15 @@ export default function OkButtonModal(props) {
             dispatch(deleteCbPost(props.targetId, props.targetId2));
             props.close();
             navigate(`/club/detail/${props.targetId2}`);
+        }
+        else if (props.usage === "clubCommentDel") {
+            dispatch(deleteClubComment(props.targetId, props.targetId2));
+            props.close();
+        }
+        else if (props.usage === "tayoDel") {
+            dispatch(deleteTayo(props.targetId));
+            props.close();
+            navigate('/tayo')
         }
     }
 
