@@ -30,7 +30,8 @@ export function SkiButton(props) {
         icon: "",
     })
     const [isLoading, setIsLoading] = useState(false);
-    const API_KEY = process.env.REACT_APP_WEATHER_KEY;
+    //const API_KEY = process.env.REACT_APP_WEATHER_KEY;
+    const API_KEY = '465b890d740de2877b1582f311306e35'
 
     const openResort = () => {
         setResortOpen(true);
