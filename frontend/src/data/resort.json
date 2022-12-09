@@ -12,7 +12,7 @@
         "time": "매일 09:00 ~ 17:00\n야간 19:00 ~ 22:00",
         "duration": "연중무휴",
         "url": "https://www.elysian.co.kr/gangchon/ski/ski_cost.asp",
-        "color": "#94ABBA"
+        "color": "#ABBCC9"
     },
     {
         "id": null
@@ -26,7 +26,7 @@
         "time": "매일 08:30 ~ 16:30\n(정설시간: 16:30 ~ 18:30)",
         "duration": "연중무휴",
         "url": "https://www.sonohotelsresorts.com/daemyung.vp.skiworld.04_04_01.ds/dmparse.dm",
-        "color": "#94ABBA"
+        "color": "#ABBCC9"
     },
         {
             "id": 6,
@@ -37,7 +37,7 @@
             "time": "매일 09:00 ~ 17:00\n야간 19:00 ~ 22:00",
             "duration": "연중무휴",
             "url": "https://www.yongpyong.co.kr/kor/skiNboard/introduce.do",
-            "color": null
+            "color": "#FFF2CC"
         },
         {
             "id": 4,
@@ -48,7 +48,7 @@
             "time": "매일 09:00 ~ 17:00 야간 19:00 ~ 22:00",
             "term": "연중무휴",
             "url": "https://www.yongpyong.co.kr/kor/skiNboard/utilizationFee/rentCharge.do",
-            "color": "#94ABBA"
+            "color": "#ABBCC9"
         },
         {
             "id": 7,
@@ -59,7 +59,7 @@
             "time": "",
             "duration": "연중무휴",
             "url": "https://m.konjiamresort.co.kr/ski/skiInfo.dev",
-            "color": null
+            "color": "#FFF2CC"
         },
         {
             "id": 2,
@@ -70,7 +70,7 @@
             "time": "9시 ~ 22시\n(정설시간: 16시 30분 ~ 18시)",
             "duration": "연중무휴",
             "url": "https://phoenixhnr.co.kr/static/pyeongchang/guide/price/snowpark",
-            "color": "#94ABBA"
+            "color": "#ABBCC9"
         },
         {
             "id": 8,
@@ -82,7 +82,7 @@
             "duration": "연중무휴",
             "planUrl": "https://www.jisanresort.co.kr/w/ski/slopes/schedule.asp?WeekMon=20221219#cal",
             "url": "https://www.jisanresort.co.kr/w/ski/use/rental.asp",
-            "color": null
+            "color": "#FFF2CC"
         },
         {
             "id": 5,
@@ -94,7 +94,7 @@
             "duration": "",
             "planUrl": "",
             "url": "http://www.hi-one.kr/sub/sub04_04.php",
-            "color": "#94ABBA"
+            "color": "#ABBCC9"
         },
         {
             "id": null
@@ -109,7 +109,7 @@
             "duration": "",
             "planUrl": "",
             "url": "https://www.wellihillipark.com/home/guide/pay/snowpark",
-            "color": "#94ABBA"
+            "color": "#ABBCC9"
         },
         {
             "id": 11,
@@ -121,7 +121,7 @@
             "duration": "",
             "planUrl": "https://www.mdysresort.com/ski/schedule.asp?dSYear=2022&dSMonth=12",
             "url": "https://www.mdysresort.com/ski/charge_bk20211006.asp",
-            "color": null
+            "color": "#FFDDDD"
         },
         {
             "id": 10,
@@ -133,7 +133,7 @@
             "duration": "",
             "planUrl": "",
             "url": "https://oakvalley.co.kr/ski/ski_charge_info",
-            "color": "#94ABBA"
+            "color": "#ABBCC9"
         },
         {
             "id": null
@@ -148,6 +148,6 @@
             "duration": "",
             "planUrl": "",
             "url": "http://www.hi-one.kr/sub/sub04_04.php",
-            "color": null
+            "color": "#E2F0D9"
         }
     ]

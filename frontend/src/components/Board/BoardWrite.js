@@ -17,6 +17,8 @@ export function BoardWrite() {
     const contentInput = useRef();
     const imgRef = useRef();
     const [img, setImg] = useState('');
+    const resortData = resorts.filter(resort => resort.id !== null);
+    const resortsData = resortData.splice(0, 0, {id: 100, name: "전체"});
     const [error, setError] = useState({
         title: "",
         content: ""
@@ -77,7 +79,7 @@ export function BoardWrite() {
         if (!validateInput(enteredTitle, enteredContent)){
             return;
         } else {
-            let postedResort = selectedResort !== "스키장 선택" ? selectedResort : null;
+            let postedResort = selectedResort === ("스키장 선택" || "전체") ? null : selectedResort;
             //console.log(postedResort)
             //let sendImg = img !== '' ? img : null;
             //const formData = new FormData()
@@ -93,7 +95,7 @@ export function BoardWrite() {
                 //like: 0,
                 //comments: [],
             }
-            //console.log(post);
+            console.log(post);
             dispatch(addPost(post));
             navigate("/board");
         }
@@ -114,7 +116,7 @@ export function BoardWrite() {
                     <div className="dropdown-btn" onClick={toggleSelectBox}>{selectedResort}<IoMdArrowDropdown className="boardWrite-icon"/></div>
                     {showSelectBox && <div className="dropdown-content">
                         {
-                            resorts.map(resort => (
+                            resortData.map(resort => (
                                 resort.id ?
                                 <div key={resort.id} id={resort.name} className="dropdown-item" onClick={handleResortClick}>{resort.name}</div>
                                 : null

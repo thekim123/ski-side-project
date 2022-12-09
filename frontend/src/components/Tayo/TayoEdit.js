@@ -1,17 +1,17 @@
-import React, { useState, useRef } from 'react'
-import { SelectBox } from '../common/SelectBox';
+import React, { useState, useRef, useEffect } from 'react'
 import styled from 'styled-components'
+import { SelectBox } from '../common/SelectBox';
 import resorts from '../../data/resort.json'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { ko } from 'date-fns/esm/locale'
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { addTayo } from '../../action/tayo';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { addTayo, getSinglePost } from '../../action/tayo';
 
-export function TayoWrite() {
+export default function TayoEdit() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const type = ["스키", "보드"];
@@ -29,6 +29,8 @@ export function TayoWrite() {
     const [selectedAge, setSelectedAge] = useState("--");
     const titleInput = useRef();
     const contentInput = useRef();
+    const {id} = useParams();
+    const originalPost = useSelector(state => state.tayo.post);
     const [error, setError] = useState({
         type: "",
         resort: "",
@@ -48,6 +50,16 @@ export function TayoWrite() {
         age: false,
         title: false,
         content: false
+    })
+    const [state, setState] = useState({
+        rideDevice: "",
+        //resort
+        age: "",
+        comment: "",
+        tayoDt: "",
+        tayoStrTime: "",
+        tayoEndTime: "",
+        
     })
     const toggleDate = e => {
         setError({...error, date: ""})
@@ -157,7 +169,6 @@ export function TayoWrite() {
             title: enteredTitle,
             comment: enteredContent
         }
-        console.log(tayo);
         dispatch(addTayo(tayo));
         navigate("/tayo");
     }
@@ -195,9 +206,23 @@ export function TayoWrite() {
         } else setIsDone({...isDone, cnt: false})
     }
 
+    useEffect(() => {
+        if (id) {
+            dispatch(getSinglePost(id));
+        }
+    }, [dispatch, id]);
+
+    useEffect(() => {
+        if(originalPost) {
+            console.log(originalPost);
+            setState({...originalPost});
+            setSelectedResort(originalPost.resort.resortName);
+        }
+    }, [originalPost]);
+
     return (
-    <Wrapper>
-        <Title><div className="clubReg-top">같이타요 등록</div></Title>
+        <Wrapper>
+        <Title><div className="clubReg-top">같이타요 수정</div></Title>
         <form onSubmit={handleSubmit}>
             <SelectBox list={type} label="스키/보드" func={reflectType} state={selectedType} />
             <Error><Dummy></Dummy><div>{error.type ? error.type : null}</div></Error>

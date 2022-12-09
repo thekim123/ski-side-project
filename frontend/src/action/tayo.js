@@ -89,10 +89,10 @@ export const updatePost = (post, id) => {
     }
 }
 
-export const deletePost = (id) => {
+export const deleteTayo = (id) => {
     return function (dispatch) {
         Send({
-            url: `/tayo/${id}`,
+            url: `/tayo/delete/${id}`,
             method: 'delete',
         }).then((resp) => {
             console.log("resp", resp);
