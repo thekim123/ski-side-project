@@ -135,7 +135,7 @@ const Wrapper = styled.div`
 margin-bottom: 20px;
 `
 const Index = styled.div`
-    font-weight: bolder;
+    font-family: nanum-square-bold;
     margin-top: 15px;
 `
 const BoardBox = styled.div`

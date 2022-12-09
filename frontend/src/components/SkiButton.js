@@ -30,7 +30,8 @@ export function SkiButton(props) {
         icon: "",
     })
     const [isLoading, setIsLoading] = useState(false);
-    const API_KEY = process.env.REACT_APP_WEATHER_KEY;
+    //const API_KEY = process.env.REACT_APP_WEATHER_KEY;
+    const API_KEY = '465b890d740de2877b1582f311306e35'
 
     const openResort = () => {
         setResortOpen(true);
@@ -141,7 +142,7 @@ export function SkiButton(props) {
     };
 
     const MapButton = <Button>
-                            <Region className={props.color ? "kang" : "else"}>{props.region}</Region>
+                            <Region style={{backgroundColor: props.color}}>{props.region}</Region>
                             <ResortName onClick={openResort}>{props.name}</ResortName>
                         </Button>
 
@@ -187,7 +188,7 @@ margin-left: 20px;
     //color: #FAFAFA;
 }
 .else{
-    background-color: #C2CFD8;
+    background-color: #FFF2CC;
 }
 `
 

@@ -157,6 +157,7 @@ export function TayoWrite() {
             title: enteredTitle,
             comment: enteredContent
         }
+        console.log(tayo);
         dispatch(addTayo(tayo));
         navigate("/tayo");
     }
@@ -311,7 +312,7 @@ const Title = styled.div`
     display: flex;
     justify-content: center;
     margin-top: 20px;
-    font-weight: bold;
+    font-family: nanum-square-bold;
 `
 const Error = styled.div`
 font-size: 12px;

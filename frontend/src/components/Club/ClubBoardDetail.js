@@ -110,14 +110,14 @@ export default function ClubBoardDetail() {
                                 {c.user.username === user ? <SBsTrashFill onClick={() => handleCommentTrash(c.id)}/> : null}
                                 </NotiBox>
                             </ComNameIcon>
-                            <ComContent>{c.content}</ComContent>
-                            <ComDate>{new Date(c.createDate).getMonth()+1}/{new Date(c.createDate).getDate()} {c.createDate.slice(11, 16)}</ComDate>
+                            <ComContent>{c.reply}</ComContent>
+                            <ComDate>{new Date(c.createdDate).getMonth()+1}/{new Date(c.createdDate).getDate()} {c.createdDate.slice(11, 16)}</ComDate>
                             <OkButtonModal 
                             open={commentDelOpen}
                             close={closeCommentDel}
                             message={"댓글을 삭제하시겠습니까?"}
                             ok={"삭제"}
-                            usage={"commentDel"}
+                            usage={"clubCommentDel"}
                             targetId={c.id}
                             targetId2={id}
                             />
@@ -145,6 +145,7 @@ export default function ClubBoardDetail() {
 const Content = styled.div`
 padding: 10px;
 margin-top: 30px;
+margin-bottom: 200px;
 `
 const Wrapper = styled.div`
 margin: 10px;
@@ -207,7 +208,8 @@ align-self: end;
 `
 
 const CommentList = styled.div`
-margin: 15px 20px 10px 20px;
+//margin: 15px 20px 10px 20px;
+margin: 10px
 `
 
 const Form = styled.form`

@@ -22,6 +22,21 @@ export const loadPosts = () => {
     }
 }
 
+export const loadPostsByPage = (currentPage) => {
+    return function (dispatch) {
+        Send({
+            url:`/board/`,
+            header: {
+                Pageable: 1,
+            },
+            method: 'get',
+        }).then(resp => {
+            console.log("resp", resp);
+            //dispatch(boardActions.getBoards(resp.data.data.content));
+        })
+    }
+}
+
 export const getByResort = (resortName) => {
     return function (dispatch) {
         Send({

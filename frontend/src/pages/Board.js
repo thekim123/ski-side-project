@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadPosts } from '../action/board';
+import { loadPosts, loadPostsByPage } from '../action/board';
 import styled from 'styled-components';
 import BoardListForm from '../components/Board/BoardListForm';
 import BoardListItem from '../components/Board/BoardListItem';
@@ -12,6 +12,7 @@ export function Board() {
     
     useEffect(() => {
         dispatch(loadPosts());
+        //dispatch(loadPostsByPage(1));
     }, [dispatch]);
 
     return(
