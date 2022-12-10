@@ -22,6 +22,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Transactional
     public void update(UserUpdateDto dto, Authentication authentication) {
         User userEntity = getUserFromPrincipal(authentication);
@@ -39,16 +40,17 @@ public class UserService {
         userEntity.setAgeGrp(AgeGrp.valueOf(dto.getAgeGrp()));
         userEntity.setNickname(dto.getNickname());
         userEntity.setEmail(dto.getEmail());
-        if(dto.getRoles()!=null){
+        if (dto.getRoles() != null) {
             userEntity.setRoles(Role.valueOf(dto.getRoles()));
         }
 
     }
 
     @Transactional(readOnly = true)
-    public User get(Authentication authentication) {
+    public UserRespDto get(Authentication authentication) {
         User user = getUserFromPrincipal(authentication);
-        return user;
+        UserRespDto dto = new UserRespDto().toDto(user);
+        return dto;
 
     }
 

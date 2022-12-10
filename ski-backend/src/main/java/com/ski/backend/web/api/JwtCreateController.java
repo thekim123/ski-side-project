@@ -8,6 +8,7 @@ import com.ski.backend.config.oauth.KakaoUser;
 import com.ski.backend.config.oauth.OAuthUserInfo;
 import com.ski.backend.domain.club.AgeGrp;
 import com.ski.backend.domain.club.Gender;
+import com.ski.backend.domain.user.Role;
 import com.ski.backend.domain.user.User;
 import com.ski.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +43,7 @@ public class JwtCreateController {
             userRequest = User.builder()
                     .username(kakaoUser.getProvider() + "_" + kakaoUser.getProviderId())
                     .password(bCryptPasswordEncoder.encode("skiproject"))
-                    .roles(userRequest.getRoles())
+                    .roles(Role.ROLE_USER)
                     .email(kakaoUser.getEmail())
                     .nickname(kakaoUser.getUsername() + "_" + UUID.randomUUID().toString())
                     .gender(gender)

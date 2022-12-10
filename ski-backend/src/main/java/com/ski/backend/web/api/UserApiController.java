@@ -36,8 +36,8 @@ public class UserApiController {
 
     @GetMapping("get")
     public CmRespDto<?> get(Authentication authentication) {
-        User user = userService.get(authentication);
-        return new CmRespDto<>(1, "회원정보 조회 완료", user);
+        UserRespDto dto = userService.get(authentication);
+        return new CmRespDto<>(1, "회원정보 조회 완료", dto);
     }
 
     @GetMapping("username")
