@@ -1,6 +1,9 @@
 package com.ski.backend.service;
 
 import com.ski.backend.config.auth.PrincipalDetails;
+import com.ski.backend.domain.club.AgeGrp;
+import com.ski.backend.domain.club.Gender;
+import com.ski.backend.domain.user.Role;
 import com.ski.backend.domain.user.User;
 import com.ski.backend.repository.UserRepository;
 import com.ski.backend.web.dto.UserRespDto;
@@ -25,12 +28,21 @@ public class UserService {
         userEntity = userRepository.findById(userEntity.getId()).orElseThrow(() -> {
             return new IllegalArgumentException("존재하지 않는 회원번호입니다.");
         });
+
+
         if (!dto.getUsername().equals(userEntity.getUsername())) {
             throw new IllegalArgumentException("타인의 정보를 수정하지 마세요");
         }
 
         userEntity.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
-        userEntity.setRoles(dto.getRoles());
+        userEntity.setGender(Gender.valueOf(dto.getGender()));
+        userEntity.setAgeGrp(AgeGrp.valueOf(dto.getAgeGrp()));
+        userEntity.setNickname(dto.getNickname());
+        userEntity.setEmail(dto.getEmail());
+        if(dto.getRoles()!=null){
+            userEntity.setRoles(Role.valueOf(dto.getRoles()));
+        }
+
     }
 
     @Transactional(readOnly = true)

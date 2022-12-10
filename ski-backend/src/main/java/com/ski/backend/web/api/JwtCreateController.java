@@ -30,7 +30,6 @@ public class JwtCreateController {
 
     @PostMapping("/oauth/jwt/kakao")
     public String jwtCreate(@RequestBody Map<String, Object> data) {
-        System.out.println(data);
         OAuthUserInfo kakaoUser = new KakaoUser(data);
 
         String rawGender = getRawGender(data);
@@ -59,14 +58,12 @@ public class JwtCreateController {
                 .withClaim("username", userEntity.getUsername())
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
 
-        System.out.println(jwtToken);
         return jwtToken;
     }
 
     public String getRawGender(Map<String, Object> data) {
         Map<String, Object> accountInfo = (Map<String, Object>) data.get("kakao_account");
         String result = (String) accountInfo.get("gender");
-        System.out.println(result.toUpperCase());
         return result.toUpperCase();
     }
 

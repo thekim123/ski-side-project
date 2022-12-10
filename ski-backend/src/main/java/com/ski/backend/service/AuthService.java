@@ -35,7 +35,7 @@ public class AuthService {
     @Transactional
     public void delete(Authentication authentication) {
         User user = getUserFromPrincipal(authentication);
-        User userEntity = userRepository.findById(user.getId()).orElseThrow(()->{
+        User userEntity = userRepository.findById(user.getId()).orElseThrow(() -> {
             return new IllegalArgumentException("존재하지 않는 회원번호입니다.");
         });
         userRepository.delete(userEntity);
@@ -44,6 +44,11 @@ public class AuthService {
     public User getUserFromPrincipal(Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         return principalDetails.getUser();
+    }
+
+    @Transactional(readOnly = true)
+    public boolean isNicknameDuplicate(String nickname) {
+        return userRepository.existsByNickname(nickname);
     }
 
 }

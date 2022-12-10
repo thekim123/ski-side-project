@@ -3,6 +3,8 @@ package com.ski.backend;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.ski.backend.config.jwt.JwtProperties;
+import com.ski.backend.domain.club.AgeGrp;
+import com.ski.backend.domain.club.Gender;
 import com.ski.backend.domain.user.Role;
 import com.ski.backend.domain.user.User;
 import com.ski.backend.repository.UserRepository;
@@ -31,6 +33,8 @@ public class CreateUser {
                 .nickname("test")
                 .username("test")
                 .password(password)
+                .gender(Gender.MEN)
+                .ageGrp(AgeGrp.SEVENTY)
                 .build();
         if (userRepository.findByUsername(user.getUsername())==null) {
             userRepository.save(user);

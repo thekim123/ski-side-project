@@ -66,8 +66,6 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Tayo> tayos = new ArrayList<>();
 
-    private String profileImageUrl;
-
     private LocalDateTime createDate;
 
     private LocalDateTime updateDate;

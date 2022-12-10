@@ -1,5 +1,7 @@
 package com.ski.backend.web.dto;
 
+import com.ski.backend.domain.club.AgeGrp;
+import com.ski.backend.domain.club.Gender;
 import com.ski.backend.domain.user.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +12,10 @@ public class UserUpdateDto {
 
     private String username;
     private String password;
-    private Role roles;
+    private String roles;
+    private String nickname;
+    private String email;
+    private String gender;
+    private String ageGrp;
 
 }

@@ -57,4 +57,10 @@ public class UserApiController {
         authService.delete(authentication);
         return new CmRespDto<>(1, "회원탈퇴 완료", null);
     }
+
+    @GetMapping("nickname/{nickname}")
+    public CmRespDto<?> isNicknameDuplicate(@PathVariable String nickname){
+        boolean isDuplicate = authService.isNicknameDuplicate(nickname);
+        return new CmRespDto<>(1, "닉네임 중복체크 완료", isDuplicate);
+    }
 }
