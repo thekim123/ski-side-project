@@ -6,6 +6,8 @@ import com.ski.backend.config.jwt.JwtProperties;
 //import com.project.ski.config.oauth.GoogleUser;
 import com.ski.backend.config.oauth.KakaoUser;
 import com.ski.backend.config.oauth.OAuthUserInfo;
+import com.ski.backend.domain.club.AgeGrp;
+import com.ski.backend.domain.club.Gender;
 import com.ski.backend.domain.user.User;
 import com.ski.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.UUID;
 
 @RestController
@@ -27,11 +30,12 @@ public class JwtCreateController {
 
     @PostMapping("/oauth/jwt/kakao")
     public String jwtCreate(@RequestBody Map<String, Object> data) {
-        System.out.println("jwtCreate method is running");
         System.out.println(data);
-
         OAuthUserInfo kakaoUser = new KakaoUser(data);
-        System.out.println(kakaoUser);
+
+        String rawGender = getRawGender(data);
+        Gender gender = getGender(rawGender);
+        AgeGrp ageGrp = getAgeGrp(data);
 
         User userEntity = userRepository.findByUsername(kakaoUser.getProvider() + "_" + kakaoUser.getProviderId());
         User userRequest = new User();
@@ -41,7 +45,9 @@ public class JwtCreateController {
                     .password(bCryptPasswordEncoder.encode("skiproject"))
                     .roles(userRequest.getRoles())
                     .email(kakaoUser.getEmail())
-                    .nickname(kakaoUser.getUsername()+"_"+UUID.randomUUID().toString())
+                    .nickname(kakaoUser.getUsername() + "_" + UUID.randomUUID().toString())
+                    .gender(gender)
+                    .ageGrp(ageGrp)
                     .build();
             userEntity = userRepository.save(userRequest);
         }
@@ -56,4 +62,55 @@ public class JwtCreateController {
         System.out.println(jwtToken);
         return jwtToken;
     }
+
+    public String getRawGender(Map<String, Object> data) {
+        Map<String, Object> accountInfo = (Map<String, Object>) data.get("kakao_account");
+        String result = (String) accountInfo.get("gender");
+        System.out.println(result.toUpperCase());
+        return result.toUpperCase();
+    }
+
+    public Gender getGender(String rawGender) {
+        Gender result = Gender.NO;
+        if ("MALE".equals(rawGender) || "MEN".equals(rawGender)) {
+            result = Gender.MEN;
+        }
+        if ("FEMALE".equals(rawGender) || "WOMEN".equals(rawGender)) {
+            result = Gender.WOMEN;
+        }
+
+        return result;
+    }
+
+    public AgeGrp getAgeGrp(Map<String, Object> data) {
+        Map<String, Object> accountInfo = (Map<String, Object>) data.get("kakao_account");
+
+        String rawAgeGrp = (String) accountInfo.get("age_range");
+
+        StringTokenizer st = new StringTokenizer(rawAgeGrp, "~");
+        int startAge = Integer.parseInt(st.nextToken());
+        AgeGrp result = AgeGrp.ANY;
+
+        if (startAge == 10) {
+            result = AgeGrp.TEN;
+        } else if (startAge == 20) {
+            result = AgeGrp.TWENTY;
+        } else if (startAge == 30) {
+            result = AgeGrp.THIRTY;
+        } else if (startAge == 40) {
+            result = AgeGrp.FORTY;
+        } else if (startAge == 50) {
+            result = AgeGrp.FIFTY;
+        } else if (startAge == 60) {
+            result = AgeGrp.SIXTY;
+        } else if (startAge == 70) {
+            result = AgeGrp.SEVENTY;
+        } else if (startAge == 80) {
+            result = AgeGrp.EIGHTY;
+        }
+
+        return result;
+    }
+
+
 }

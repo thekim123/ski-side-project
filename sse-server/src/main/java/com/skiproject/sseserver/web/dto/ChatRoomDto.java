@@ -5,5 +5,4 @@ import lombok.Data;
 @Data
 public class ChatRoomDto {
     private String roomName;
-    private String sender;
 }
