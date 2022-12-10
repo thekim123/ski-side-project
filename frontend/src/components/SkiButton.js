@@ -141,7 +141,7 @@ export function SkiButton(props) {
     };
 
     const MapButton = <Button>
-                            <Region className={props.color ? "kang" : "else"}>{props.region}</Region>
+                            <Region style={{backgroundColor: props.color}}>{props.region}</Region>
                             <ResortName onClick={openResort}>{props.name}</ResortName>
                         </Button>
 
@@ -187,7 +187,7 @@ margin-left: 20px;
     //color: #FAFAFA;
 }
 .else{
-    background-color: #C2CFD8;
+    background-color: #FFF2CC;
 }
 `
 

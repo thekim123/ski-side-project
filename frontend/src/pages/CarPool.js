@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
 import { GoSearch } from 'react-icons/go'
 import { FiFilter } from 'react-icons/fi';
@@ -26,6 +26,7 @@ export function CarPool() {
     const resortsData = resorts.filter(resort => resort.id !== null);
     const [isClicked, setIsClicked] = useState(false);
     const [canShow, setCanShow] = useState(false);
+    const prevPageId = useLocation();
 
     const clickPlus = e => {
         navigate('/carpool/write');
@@ -60,6 +61,7 @@ export function CarPool() {
 
     useEffect(() => {
         //앞 창이 카풀 디테일 페이지라면 그 아이디에 맞게 1, 2번 세팅하고 showCarpool함수 실행.
+        console.log(prevPageId);
         dispatch(loadCarpools());
     }, [dispatch]);
     return (

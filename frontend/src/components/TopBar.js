@@ -1,6 +1,8 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { BiArrowBack, BiUser, BiBell } from "react-icons/bi"
+import { BsChatDots } from 'react-icons/bs'
+import { HiOutlineChat } from 'react-icons/hi'
 
 export function TopBar() {
     const navigate = useNavigate();
@@ -8,7 +10,12 @@ export function TopBar() {
 
 
     const goback = () => {
-        navigate(-1);
+        //detail까지 slice
+        if (t === 'carpool/detail') {
+            console.log("t")
+            navigate(-1, {state: "test"});
+        }
+        else navigate(-1);
     }
     const gotoMyPage = e => {
         navigate('/my');
@@ -22,6 +29,7 @@ export function TopBar() {
                 <PageName></PageName>
             </LeftSide>
             <RightSide>
+                <HiOutlineChat className='chatBtn'/>
                 <BiBell className="bellBtn"/>
                 <BiUser className="myBtn" onClick={gotoMyPage}/>
             </RightSide>
@@ -40,15 +48,16 @@ position: fixed;
     background-color: #EEF3F7;
     //border-bottom: 0.01rem solid #CCCCCC;
     height: 48px;
-    margin-top: 0;
+    padding-top: 3px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
     .backBtn {
-        width: 1rem;
-        height: 1rem;
+        width: 1.2rem;
+        height: 1.2rem;
         margin: 7px;
+        margin-left: 10px;
         color: var(--button-color);
     }
 `
@@ -61,12 +70,14 @@ const RightSide = styled.div`
     display: flex;
     margin: 7px;
 
-    .bellBtn, .myBtn{
+    .bellBtn, .myBtn, .chatBtn{
         margin-right: 4px;
-        width: 1.5rem;
-        height: 1.5rem;
+        margin-left: 8px;
+        width: 1.7rem;
+        height: 1.7rem;
         color: var(--button-color);
     }
+    
 `
 
 const PageName = styled.div`

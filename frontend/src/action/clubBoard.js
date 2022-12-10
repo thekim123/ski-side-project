@@ -84,3 +84,16 @@ export const addComment = (comment) => {
         .catch((error) => console.log(error));
     }    
 }
+
+export const deleteClubComment = (commentId, clubId) => {
+    return function (dispatch) {
+        Send({
+            url: `/clubBoard/deleteReply/${commentId}`,
+            method: 'delete',
+        }).then(resp => {
+            console.log("delete comment", resp);
+            dispatch(clubBoardActions.deleteComment());
+            dispatch(getPost(clubId))
+        }).catch(error => console.log(error));
+    }
+}

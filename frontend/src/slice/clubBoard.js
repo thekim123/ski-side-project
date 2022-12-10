@@ -32,7 +32,10 @@ const clubBoardSlice = createSlice({
         },
         addComment(state) {
             
-        }
+        },
+        deleteComment(state){
+
+        },
     }
 });
 

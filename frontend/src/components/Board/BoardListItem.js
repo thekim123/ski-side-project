@@ -70,7 +70,8 @@ function BoardListItem(props) {
     return (
         <PostContainer>
             <Top>
-                <SkiName>[{props.resort.resortName}]</SkiName>
+                {/* <SkiName>[{props.resort.resortName}]</SkiName> */}
+                <SkiName>[{props.resort === null ? "전체" : props.resort.resortName}]</SkiName>
                 <div>
                     {isMine && <HiPencil className="boardPost-icon" onClick={handlePencil}/>}
                     {isMine && <BsTrashFill className="boardPost-icon" onClick={handleTrash}/>}

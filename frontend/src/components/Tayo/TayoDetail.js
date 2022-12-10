@@ -10,20 +10,25 @@ import { BsPeopleFill, BsCalendarCheck } from 'react-icons/bs'
 import { MdEmojiPeople } from 'react-icons/md'
 import { getSinglePost } from '../../action/tayo'
 import { AiOutlineClockCircle } from 'react-icons/ai'
+import OkButtonModal from '../common/OkButtonModal'
 
 export function TayoDetail() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [isMine, setIsMine] = useState(true);
+    const [delOpen, setDelOpen] = useState(false);
     let {id} = useParams();
 
     const handlePencil = e => {
         //navigate(`/tayo/edit/${id}`);
     }
 
+    const closeDel = () => {
+        setDelOpen(false);
+    }
+
     const handleTrash = e => {
-        //navigate("/board")
-        //dispatch(deletePost(id));
+        setDelOpen(true);
     }
 
     useEffect(() => {
@@ -44,6 +49,13 @@ export function TayoDetail() {
                     {isMine && <BsTrashFill className="boardDetail-icon" onClick={handleTrash}/>}
                 </Icon>
             </NameDate>
+            <OkButtonModal 
+                            open={delOpen}
+                            close={closeDel}
+                            message={"게시글을 삭제하시겠습니까?"}
+                            ok={"삭제"}
+                            usage={"tayoDel"}
+                            targetId={id}/>            
         </Top>
 
         <Middle>
