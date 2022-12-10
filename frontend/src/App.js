@@ -33,6 +33,9 @@ import { ClubBoardEdit } from './components/Club/ClubBoardEdit';
 import Mypage from './components/My/Mypage';
 import KakaoLogin from './features/auth/KakaoLogin';
 import MyPageDetail from './components/My/MyPageDetail';
+import Chat from './components/Chat/Chat';
+import ChatList from './pages/ChatList';
+import CarPoolChat from './components/CarPool/CarPoolChat';
 
 function App() {
   const dispatch = useDispatch();
@@ -73,8 +76,11 @@ function App() {
             <Route path="carpool/write" element={<CarPoolWrite />} />
             <Route path="carpool/detail/:id" element={<CarPoolDetail />} />
             <Route path="carpool/edit/:id" element={<EditCarPool />} />
+            <Route path="carpool/chat/:id/:room/:type" element={<CarPoolChat />} />
             <Route path="my" element={<Mypage />} />
             <Route path="my/detail" element={<MyPageDetail />} />
+            <Route path="chat" element={<ChatList />} />
+            <Route path="chat/detail/:room/:type" element={<Chat />} />
           </Route>
         </Route>
       </Routes>

@@ -21,6 +21,10 @@ export function NavBar() {
             else if (sliceUrl === 'carp') setBtnActive("carpool");
             else if (sliceUrl === 'tayo') setBtnActive("tayo");
             else if (sliceUrl === 'club') setBtnActive("club");
+            else if (sliceUrl === 'chat') setBtnActive(null);
+            else {
+                setBtnActive(null)
+            }
         }
     }, [])
 
