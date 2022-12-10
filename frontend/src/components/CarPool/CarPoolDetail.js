@@ -6,6 +6,7 @@ import { BsTrashFill, BsFilePost, BsArrowRight } from 'react-icons/bs'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCarpool, submitCarpool } from '../../action/carpool'
+import OkButtonModal from '../common/OkButtonModal'
 
 export function CarPoolDetail() {
     const navigate = useNavigate();
@@ -15,6 +16,7 @@ export function CarPoolDetail() {
     const carpool = useSelector(state => state.carpool.carpool);
     const user = useSelector(state => state.auth.user);
     const [date, setDate] = useState(null);
+    const [submitOpen, setSubmitOpen] = useState(false);
     const {id} = useParams();
 
     const handlePencil = e => {
@@ -29,9 +31,19 @@ export function CarPoolDetail() {
 
     }
 
+    const closeSubmit = e => {
+        setSubmitOpen(false);
+    }
+
+    const handleQ = e => {
+        navigate(`/carpool/chat/${id}/carpool${id}me3you2/quest`)
+    }
+
     const handleSubmit = e => {
-        dispatch(submitCarpool(id));
+        setSubmitOpen(true);
+        //dispatch(submitCarpool(id));
         //navigate to chat
+        //navigate(`/carpool/chat/${id}/carpool${id}me3you2/submit`)
     }
 
     useEffect(() => {
@@ -89,10 +101,17 @@ export function CarPoolDetail() {
                 {carpool.memo}
             </Content>
             <ButtonBox>
-            <SButton>문의하기</SButton>
+                {/* submit entity에 data가 없을 경우에만 보이도록. */}
+            <SButton onClick={handleQ}>문의하기</SButton>
             <Button onClick={handleSubmit}>신청하기</Button>
             </ButtonBox>
-
+            <OkButtonModal 
+                            open={submitOpen}
+                            close={closeSubmit}
+                            message={"신청하시겠습니까?"}
+                            ok={"신청"}
+                            usage={"carpoolSubmit"}
+                            targetId={id} />
         </Middle>
     </Wrapper>}</>
     )
