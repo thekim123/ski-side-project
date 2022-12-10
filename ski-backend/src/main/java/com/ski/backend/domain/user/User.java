@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ski.backend.domain.Tayo.Tayo;
 import com.ski.backend.domain.board.Board;
 import com.ski.backend.domain.carpool.Carpool;
+import com.ski.backend.domain.club.AgeGrp;
 import com.ski.backend.domain.club.ClubUser;
+import com.ski.backend.domain.club.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,6 +40,12 @@ public class User {
 
     @Column(nullable = false)
     private String email;
+
+    @Column(nullable = false)
+    private Gender gender;
+
+    @Column(nullable = false)
+    private AgeGrp ageGrp;
 
     @Enumerated(EnumType.STRING)
     private Role roles;

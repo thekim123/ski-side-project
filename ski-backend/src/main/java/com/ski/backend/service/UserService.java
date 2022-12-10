@@ -34,9 +34,9 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public UserRespDto get(Authentication authentication) {
+    public User get(Authentication authentication) {
         User user = getUserFromPrincipal(authentication);
-        return new UserRespDto().toDto(user);
+        return user;
 
     }
 
