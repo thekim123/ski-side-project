@@ -45,7 +45,7 @@ function BoardListItem(props) {
     }
 
     const showIcon = () => {
-        if (user === props.user.username) setIsMine(true);
+        if (user.username === props.user.username) setIsMine(true);
     }
 
     const handlePencil = e => {
@@ -94,7 +94,7 @@ function BoardListItem(props) {
                         <Real>
                             <AiOutlineLike className="boardPost-likeIcon"/>
                             <LikeCnt>{props.likeCount}</LikeCnt>
-                            <div className="boardPost-bottomText">{props.user.nickname}</div>
+                            <div className="boardPost-bottomText">{props.user.nickname.split("_")[0]}</div>
                             <div className="boardPost-bottomText">{timePass}</div>
                         </Real>
                     </Bottom>

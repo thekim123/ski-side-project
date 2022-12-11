@@ -70,8 +70,8 @@ export default function ClubBoardDetail() {
                 <div>
                 <Title>{post.title}</Title>
                 <DateWho>
-                    <SDate>2022-12-05</SDate>
-                    <Who>관리자</Who>
+                    <SDate>{post.createDt.slice(0, 10)} {post.createDt.slice(11, 16)}</SDate>
+                    <Who>{post.sortScope === "notice" && "관리자"} {}</Who>
                 </DateWho>
                 </div>
                 {/* 글쓴이에게만 보이게 */}
@@ -101,13 +101,13 @@ export default function ClubBoardDetail() {
                             <ComNameIcon>
                                 <ComNameBox>
                                 <SBsFillPersonFill />
-                                <ComName>{c.user.nickname}</ComName>
+                                <ComName>{} {c.user.nickname.split("_")[0]}</ComName>
                                 </ComNameBox>
                                 <NotiBox>
                                     {/* 다른 사람의 댓글일 때 신고 버튼 */}
-                                {c.user.username !== user ? <ComNoti>신고</ComNoti> : null}
+                                {/* {c.user.username !== user.username ? <ComNoti>신고</ComNoti> : null} */}
                                 {/* 내 댓글일 때 삭제 버튼 */}
-                                {c.user.username === user ? <SBsTrashFill onClick={() => handleCommentTrash(c.id)}/> : null}
+                                {c.user.username === user.username ? <SBsTrashFill onClick={() => handleCommentTrash(c.id)}/> : null}
                                 </NotiBox>
                             </ComNameIcon>
                             <ComContent>{c.reply}</ComContent>

@@ -93,7 +93,7 @@ export function BoardDetail() {
     useEffect(() => {
         if (post) {
             setLike(post.likeState);
-            if (user === post.user.username) setIsMine(true);
+            if (user.username === post.user.username) setIsMine(true);
         }
     }, [post]);
     
@@ -118,7 +118,7 @@ export function BoardDetail() {
                 <Title>{post.title}</Title>
                 <NameDate>
                     <div className="boardDetail-nd">
-                        <Name>{post.user.nickname}</Name>
+                        <Name>{post.user.nickname.split("_")[0]}</Name>
                         <DateForm>{date}</DateForm>
                     </div>
                     <Icon>
@@ -164,13 +164,13 @@ export function BoardDetail() {
                             <ComNameIcon>
                                 <ComNameBox>
                                 <SBsFillPersonFill />
-                                <ComName>{c.user.nickname}</ComName>
+                                <ComName>{c.user.nickname.split("_")[0]}</ComName>
                                 </ComNameBox>
                                 <NotiBox>
                                     {/* 다른 사람의 댓글일 때 신고 버튼 */}
-                                {c.user.username !== user ? <ComNoti>신고</ComNoti> : null}
+                                {/* {c.user.username !== user ? <ComNoti>신고</ComNoti> : null} */}
                                 {/* 내 댓글일 때 삭제 버튼 */}
-                                {c.user.username === user ? <SBsTrashFill onClick={() => handleCommentTrash(c.id)}/> : null}
+                                {c.user.username === user.username ? <SBsTrashFill onClick={() => handleCommentTrash(c.id)}/> : null}
                                 </NotiBox>
                             </ComNameIcon>
                             <ComContent>{c.content}</ComContent>

@@ -5,7 +5,7 @@ import { FiSend } from 'react-icons/fi'
 import { BsFillPersonFill } from 'react-icons/bs'
 import shortid from 'shortid'
 import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { BsChatDots } from 'react-icons/bs'
 
 export default function Chat() {
@@ -16,6 +16,8 @@ export default function Chat() {
     const [meventSource, setmEventSource] = useState(undefined);
     let eventSource = undefined;
     const {room} = useParams();
+    const user = useSelector(state => state.auth.user);
+    const nickname = user.nickname.split("_")[0]
 
     const handleInputChange = e => {
         setCommentInput(e.target.value);
@@ -23,7 +25,7 @@ export default function Chat() {
 
     async function addMessage() {
         let chat = {
-            sender: "2",  //user 고유 id
+            sender: nickname,
             msg: commentInput,
             roomName: room,
         }
@@ -93,7 +95,7 @@ export default function Chat() {
         {prevChat.length > 0 && 
         <ChatWrapper>
             {prevChat.map(chat => (
-                chat.sender === '2' ? 
+                chat.sender === nickname ? 
                 <MeWrapper key={shortid.generate()}>
                     <Dummy></Dummy>
                     <BubbleLine>

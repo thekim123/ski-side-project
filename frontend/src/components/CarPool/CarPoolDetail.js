@@ -5,7 +5,7 @@ import { HiPencil } from 'react-icons/hi'
 import { BsTrashFill, BsFilePost, BsArrowRight } from 'react-icons/bs'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { getCarpool, submitCarpool } from '../../action/carpool'
+import { getCarpool, getSubmits, submitCarpool } from '../../action/carpool'
 import OkButtonModal from '../common/OkButtonModal'
 
 export function CarPoolDetail() {
@@ -15,8 +15,12 @@ export function CarPoolDetail() {
     //const carpool = useLocation().state;
     const carpool = useSelector(state => state.carpool.carpool);
     const user = useSelector(state => state.auth.user);
+    const submits = useSelector(state => state.carpool.submits);
     const [date, setDate] = useState(null);
     const [submitOpen, setSubmitOpen] = useState(false);
+    const [questBtn, setQuestBtn] = useState("문의하기");
+    const [showBtn, setShowBtn] = useState("신청하기");
+    const [submitUser, setSubmitUser] = useState(false);
     const {id} = useParams();
 
     const handlePencil = e => {
@@ -36,19 +40,25 @@ export function CarPoolDetail() {
     }
 
     const handleQ = e => {
-        navigate(`/carpool/chat/${id}/carpool${id}me3you2/quest`)
+        navigate(`/carpool/chat/${id}/carpool${id}submit${user.id}writer${carpool.user.id}/quest`)
+    }
+    const gotoChat = () => {
+        navigate(`/carpool/chat/${id}/carpool${id}submit${user.id}writer${carpool.user.id}/chat`)
     }
 
     const handleSubmit = e => {
         setSubmitOpen(true);
-        //dispatch(submitCarpool(id));
-        //navigate to chat
-        //navigate(`/carpool/chat/${id}/carpool${id}me3you2/submit`)
     }
 
     useEffect(() => {
+        setSubmitUser(false);
         dispatch(getCarpool(id));
+        
     }, [dispatch]);
+
+    useEffect(() => {
+        dispatch(getSubmits(id));
+    }, [])
 
     useEffect(() => {
         if (carpool) {
@@ -57,18 +67,30 @@ export function CarPoolDetail() {
             const month = t.getMonth() + 1
             setDate(t.getFullYear() + "."+month + "." + t.getDate()+". "+carpool.createDate.slice(11,16));
 
-            if (user === carpool.user.username) {
+            if (user.username === carpool.user.username) {
                 setIsMine(true);
             }
         }
     }, [carpool])
+
+    useEffect(() => {
+        if (submits) {
+            const sbm = submits.find(submit => submit.fromUser.id === user.id);
+            if (sbm !== undefined) {
+                setSubmitUser(true); 
+            } else {
+                setSubmitUser(false);
+            }
+        }
+    }, [submits]);
+
 
     return (
         <>
     {carpool && <Wrapper>
         <Top>
             <div>
-                <User>{carpool.user.nickname}</User>
+                <User>{carpool.user.nickname.split("_")[0]}</User>
                 <Time>{date}</Time>
             </div>
             <Icons>
@@ -90,28 +112,34 @@ export function CarPoolDetail() {
                 {carpool.negotiate.departTime && <TalkTag>출발 시간 협의 가능</TalkTag>}
                 {carpool.negotiate.boardingPlace && <TalkTag>탑승 장소 협의 가능</TalkTag>}
                 </div>
-                {/*
-                <TagBox>
-                <Tag>흡연 차량</Tag>
-                <Tag>여유공간 많아요</Tag>
-    </TagBox>*/}
             </Tags>
             <Content>
                 <ContentTitle>추가 사항</ContentTitle>
                 {carpool.memo}
             </Content>
-            <ButtonBox>
-                {/* submit entity에 data가 없을 경우에만 보이도록. */}
+            {isMine &&
+            <div>{!submitUser && <div>
+            <ButtonBox className='nosubmit-btn'>
             <SButton onClick={handleQ}>문의하기</SButton>
             <Button onClick={handleSubmit}>신청하기</Button>
             </ButtonBox>
-            <OkButtonModal 
-                            open={submitOpen}
-                            close={closeSubmit}
-                            message={"신청하시겠습니까?"}
-                            ok={"신청"}
-                            usage={"carpoolSubmit"}
-                            targetId={id} />
+                        <OkButtonModal 
+                        open={submitOpen}
+                        close={closeSubmit}
+                        message={"신청하시겠습니까?"}
+                        ok={"신청"}
+                        usage={"carpoolSubmit"}
+                        submitId={user.id}
+                        writerId={carpool.user.id}
+                        targetId={id} />
+            </div>}
+
+            {submitUser && 
+                <ButtonBox><Button onClick={gotoChat}>채팅하기</Button></ButtonBox>
+            }</div>
+            }
+            {/* 신청을 했는데 state가 아직 0이라면 신청 취소, state가 수락이면 신청 수락됨 거절이라면 신청 거절됨 */}
+
         </Middle>
     </Wrapper>}</>
     )
@@ -152,6 +180,9 @@ const Middle = styled.div`
 //box-shadow: 5px 2px 7px -2px rgba(17, 20, 24, 0.15);
 margin-top: 10px;
 padding: 20px 10px;
+.nosubmit-btn{
+    grid-template-columns: 1fr 1fr;
+}
 `
 const Tags = styled.div`
 display: inline-block;
@@ -202,7 +233,7 @@ color: black;
 `
 const ButtonBox = styled.div`
 display: grid;
-grid-template-columns: 1fr 1fr;
+
 position: fixed;
 bottom: 0;
 left: 0;

@@ -2,7 +2,7 @@ import React, { forwardRef, useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import { asyncGetClub, getSingleClub } from '../../action/club';
+import { asyncGetClub, getClubUser, getSingleClub } from '../../action/club';
 import styled from 'styled-components';
 import { HiPlus } from 'react-icons/hi';
 import { BsCircle } from 'react-icons/bs';
@@ -19,8 +19,11 @@ export function ClubDetail() {
     //const club = useLocation().state;
     const club = useSelector(state => state.club.club);
     const clubBoards = useSelector(state => state.clubBoard.clubBoards);
+    const clubUsers = useSelector(state => state.club.users);
+    const user = useSelector(state => state.auth.user);
     const {id} = useParams();
     const [delOpen, setDelOpen] = useState(false);
+    const [isCap, setIsCap] = useState(false);
 
     const gotoEdit = e => {
         navigate(`/club/edit/${id}`);
@@ -58,7 +61,20 @@ export function ClubDetail() {
     useEffect(() => { //새로 로그인 한 후 라든지.. 그럴때를 대비해 state.club이 null인 경우에만 dispatch 호출.
         dispatch(loadPosts(id));
         dispatch(getSingleClub(id));
+        dispatch(getClubUser(id));
     }, [dispatch, id]);
+
+    useEffect(() => {
+        console.log("clubUsers", clubUsers);
+        if (clubUsers) {
+            let myInfo = clubUsers.find(cuser => cuser.nickname === user.nickname);
+            if (myInfo.role === '관리자') {
+                setIsCap(true);
+            } else {
+                setIsCap(false);
+            }
+        }
+    }, [clubUsers])
 
     return (
     <>
@@ -101,7 +117,7 @@ export function ClubDetail() {
                 <ButtonBox>
                 <Notice>공지</Notice>
                 {/* 공지는 방장이나 부방장만 보이게. */}
-                <SHiPlus className="tayo-plus" onClick={clickNoticePlus}/>
+                {isCap && <SHiPlus className="tayo-plus" onClick={clickNoticePlus}/>}
                 </ButtonBox>
                 <MoreBox>{clubBoards.filter(board => board.sortScope === "notice").length > 2 && <Button onClick={clickNoticeMore}>more...</Button>}</MoreBox>
             </NoticeTop>
@@ -133,7 +149,7 @@ export function ClubDetail() {
                     <NoticeItemWrap className='club-normal' onClick={() => gotoDetail(board.id)}>
                         <TitleWho>
                         <NoticeContent>{cutText(board.title, 23)}</NoticeContent>
-                        <BoardWho>{cutText("스키넘좋아", 4)}</BoardWho>
+                        <BoardWho>{cutText(board.nickName.split("_")[0], 4)}</BoardWho>
                         </TitleWho>
                         <NoticeDate>2022.11.02</NoticeDate>
                     </NoticeItemWrap>

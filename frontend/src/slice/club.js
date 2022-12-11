@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { asyncEditClub, asyncGetClub, asyncGetClubUser } from '../action/club';
+import { asyncDeleteClub, asyncEditClub, asyncEnrollClub, asyncGetClub, asyncGetClubUser } from '../action/club';
 
 const initialState = {
     clubs: [],
@@ -42,6 +42,12 @@ const clubSlice = createSlice({
             state.users = action.payload;
         })
         builder.addCase(asyncEditClub.fulfilled, (state, action) => {
+            
+        })
+        builder.addCase(asyncDeleteClub.fulfilled, (state) => {
+            
+        })
+        builder.addCase(asyncEnrollClub.fulfilled, (state) => {
             
         })
     }

@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
     carpools: [],
     carpool: null,
+    submits: [],
 }
 const carpoolSlice = createSlice({
     name: 'carpool',
@@ -19,6 +20,9 @@ const carpoolSlice = createSlice({
         },
         getCarpool(state, action) {
             state.carpool = action.payload;
+        },
+        getSubmits(state, action) {
+            state.submits = action.payload;
         }
     }
 })
