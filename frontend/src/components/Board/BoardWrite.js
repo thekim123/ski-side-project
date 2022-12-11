@@ -18,7 +18,7 @@ export function BoardWrite() {
     const imgRef = useRef();
     const [img, setImg] = useState('');
     const resortData = resorts.filter(resort => resort.id !== null);
-    const resortsData = resortData.splice(0, 0, {id: 100, name: "전체"});
+    //const resortsData = resortData.splice(0, 0, {id: 100, name: "전체"});
     const [error, setError] = useState({
         title: "",
         content: ""

@@ -93,7 +93,7 @@ export function ClubRegister() {
         }
         let resortId = resortData.filter(resort => resort.name === selectedResort)[0].id;
         let openYn = selectedRoom === "오픈방" ? "Y" : "N";
-        let ageGrp = age.indexOf(selectedAge) + 1;
+        let ageGrp = age.indexOf(selectedAge);
         let genderIdx = gender.indexOf(selectedGender);
         let genderFix = genderBack[genderIdx];
         //스키장 넣기

@@ -39,6 +39,30 @@ export const asyncEditClub = createAsyncThunk(
     }
 )
 
+export const asyncDeleteClub = createAsyncThunk(
+    'clubSlice/asyncDeleteClub',
+    async (clubId) => {
+        const resp = await Send({
+            url: `/club/delete/${clubId}`,
+            method: 'delete',
+        })
+        console.log("resp", resp);
+        return resp.data;
+    }    
+)
+
+export const asyncEnrollClub = createAsyncThunk(
+    'clubSlice/asyncEnrollClub',
+    async (clubId) => {
+        const resp = await Send({
+            url:`/enroll/${clubId}`,
+            method: 'post',
+        })
+        console.log("resp", resp);
+        return resp.data;
+    }
+)
+
 export const loadClubs = () => {
     return function (dispatch) {
         Send({
@@ -115,8 +139,9 @@ export const deleteClub = (clubId) => {
         })
         .then((resp) => {
             console.log("resp", resp);
-            dispatch(clubActions.deleteClub());
+            //dispatch(clubActions.deleteClub());
             loadClubs();
+
         })
         .catch(error => console.log(error));
     }

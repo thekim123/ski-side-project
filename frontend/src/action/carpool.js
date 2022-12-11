@@ -68,3 +68,49 @@ export const submitCarpool = (id) => {
         .catch((error) => console.log(error));
     }    
 }
+
+export const getSubmits = (carpoolId) => {
+    return function (dispatch) {
+        Send({
+            url: `/submit/${carpoolId}`,
+            method: 'get',
+        }).then((resp) => {
+            console.log("resp", resp);
+            dispatch(carpoolActions.getSubmits(resp.data.data));
+            //dispatch(loadCarpools());
+        })
+        .catch((error) => console.log(error));        
+    }
+}
+
+export const admitSubmit = (data) => {
+    return function (dispatch) {
+        Send({
+            url: `/submit/admit`,
+            method: 'put',
+            data: data,
+        }).then((resp) => {
+            console.log("resp", resp);
+            dispatch(getSubmits(data.toCarpoolId))
+            //dispatch(carpoolActions.getSubmits(resp.data.data));
+            //dispatch(loadCarpools());
+        })
+        .catch((error) => console.log(error)); 
+    }
+}
+
+export const refuseSubmit = (data) => {
+    return function (dispatch) {
+        Send({
+            url: `/submit/refuse`,
+            method: 'put',
+            data: data,
+        }).then((resp) => {
+            console.log("resp", resp);
+            dispatch(getSubmits(data.toCarpoolId))
+            //dispatch(carpoolActions.getSubmits(resp.data.data));
+            //dispatch(loadCarpools());
+        })
+        .catch((error) => console.log(error)); 
+    }
+}

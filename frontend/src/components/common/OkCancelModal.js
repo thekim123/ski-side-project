@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
-import { deleteClub } from '../../action/club';
+import { asyncDeleteClub, deleteClub } from '../../action/club';
 
 export default function OkCancelModal(props) {
     const dispatch = useDispatch();
@@ -23,7 +23,9 @@ export default function OkCancelModal(props) {
     const resetError = () => {
         setError(null);
     }
-    const fetchDelClub = e => {
+
+
+    const fetchDelClub = async (e) => {
         e.preventDefault();
         console.log(inputRef.current.value);
         const inp = inputRef.current.value;
@@ -31,8 +33,8 @@ export default function OkCancelModal(props) {
             setError("입력과 동호회 명이 일치하지 않습니다.")
             return;
         } else {
-            dispatch(deleteClub(props.clubId));
-            navigate('/club');
+            const result = await dispatch(asyncDeleteClub(props.clubId)).unwrap();
+            navigate('/club'); 
         }
     }
     return (
