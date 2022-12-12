@@ -21,6 +21,9 @@ export default function Mypage() {
     const gotoMySubmit = () => {
         navigate('/my/submit')
     }
+    const gotoGetSubmit = () => {
+        
+    }
 
     return (
     <Wrapper>
@@ -45,7 +48,7 @@ export default function Mypage() {
         </SubmitWrapper>
 
         <SubmitWrapper>
-            <SubmitTitle>받은 신청</SubmitTitle>
+            <SubmitTitle onClick={gotoGetSubmit}>받은 신청</SubmitTitle>
             <IoIosArrowForward />
         </SubmitWrapper>
     </Wrapper>
