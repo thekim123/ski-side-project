@@ -14,6 +14,10 @@ export const loadTayos = () => {
         Send({
             url: '/tayo',
             method: 'get',
+            params: {
+                page: 0,
+                size: 1000
+            },
         }).then((resp) => {
             console.log(resp);
             dispatch(tayoActions.getTayos(resp.data.data.content));
@@ -27,6 +31,10 @@ export const getTayoByResort = (resortName) => {
         Send({
             url: `/tayo/${resortName}`,
             method: 'get',
+            params: {
+                page: 0,
+                size: 1000
+            },
         }).then((resp) => {
             console.log(resortName)
             console.log("resp", resp);

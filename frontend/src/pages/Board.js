@@ -9,9 +9,13 @@ export function Board() {
     const dispatch = useDispatch();
     const posts = useSelector(state => state.board.posts);
     const [input, setInput] = useState("");
+    const page = {
+        page: 0,
+        size: 5,
+    }
     
     useEffect(() => {
-        dispatch(loadPosts());
+        dispatch(loadPosts(page));
         //dispatch(loadPostsByPage(1));
     }, [dispatch]);
 

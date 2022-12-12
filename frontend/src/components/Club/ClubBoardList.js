@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { getSingleClub } from '../../action/club';
-import { loadPosts } from '../../action/clubBoard';
+import { loadClubPosts } from '../../action/clubBoard';
 
 export default function ClubBoardList() {
     const dispatch = useDispatch();
@@ -35,7 +35,7 @@ export default function ClubBoardList() {
     useEffect(() => {
         console.log("gggggg");
         dispatch(getSingleClub(id));
-        dispatch(loadPosts(id));
+        dispatch(loadClubPosts(id));
     }, [])
 
     useEffect(() => {

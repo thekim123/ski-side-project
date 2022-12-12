@@ -1,14 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
 import { loadPosts } from '../../action/board';
+import { loadCarpools } from '../../action/carpool';
+import { loadClubPosts } from '../../action/clubBoard';
+import { loadTayos } from '../../action/tayo';
 import BoardListItem from '../Board/BoardListItem';
 import { CarPoolListItem } from '../CarPool/CarPoolListItem';
 export default function MyPageDetail() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [myPostPage, setMyPostPage] = useState("자유게시판");
     const [myPosts, setMyPosts] = useState([]);
+    const [myCarpools, setMyCarpools] = useState([]);
+    const [myTayos, setMyTayos] = useState([]);
+    const [myClubs, setMyClubs] = useState([]);
     const boards = useSelector(state => state.board.posts);
+    const carpools = useSelector(state => state.carpool.carpools);
+    const tayos = useSelector(state => state.tayo.posts);
+    const clubBoards = useSelector(state => state.clubBoard.clubBoards);
+    const user = useSelector(state => state.auth.user);
 
     const changeMyPost = e => {
         let page = e.target.innerText;
@@ -16,8 +28,17 @@ export default function MyPageDetail() {
         if (page === '자유게시판') {
             dispatch(loadPosts());
         } else if (page === '카풀') {
-
+            dispatch(loadCarpools());
+        } else if (page === '같이타요') {
+            dispatch(loadTayos());
+        } else if (page === '동호회') {
+            //dispatch(lo)
+            //dispatch(loadClubPosts());
         }
+    }
+
+    const showDetail = (id) => {
+        navigate(`/carpool/detail/${id}`)
     }
 
     useEffect(() => {
@@ -26,9 +47,28 @@ export default function MyPageDetail() {
 
     useEffect(() => {
         if (boards.length > 0) {
-            setMyPosts(boards.filter(board => board.user.id === 2));
+            setMyPosts(boards.filter(board => board.user.id === user.id));
         }
     }, [boards])
+
+    useEffect(() => {
+        if (carpools.length > 0) {
+            setMyCarpools(carpools.filter(carpool => carpool.user.id === user.id));
+        }
+    }, [carpools])
+
+    useEffect(() => {
+        if (tayos.length > 0) {
+            //setMyTayos(tayos.filter(tayo => tayo.))
+        }
+    }, [tayos])
+
+    useEffect(() => {
+        if (clubBoards.length > 0) {
+            console.log(clubBoards)
+            //setMyClubs(clubBoards.)
+        }
+    }, [clubBoards])
 
     return (
         <Wrapper>
@@ -45,7 +85,7 @@ export default function MyPageDetail() {
             {myPosts.length > 0 && <ItemWrapper>
                 
                     {(myPostPage === '자유게시판') && myPosts.map(post => <BoardListItem key={post.id} {...post} />)}
-                    {myPostPage === '카풀' && myPosts.map(post => <CarPoolListItem />)}
+                    <CarWrap>{myPostPage === '카풀' && myCarpools.map(carpool => <CarPoolListItem key={carpool.id} {...carpool} func={showDetail}/>)}</CarWrap>
             </ItemWrapper>}
         </Wrapper>
     )
@@ -83,4 +123,7 @@ padding-right: 16px;
 `
 
 const ItemWrapper = styled.div`
+`
+const CarWrap = styled.div`
+margin: 15px;
 `
