@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom';
-import { getSinglePost, deletePost, addComment, unlikes, likes, deleteComment } from '../../action/board';
+import { getSinglePost, deletePost, addComment, unlikes, likes, deleteComment, unDislikes, dislikes } from '../../action/board';
 import { HiPencil } from 'react-icons/hi'
 import { BsTrashFill } from 'react-icons/bs'
 import { FiSend } from 'react-icons/fi'
@@ -48,22 +48,39 @@ export function BoardDetail() {
             dispatch(unlikes(id));
         }
         else {
+            let dislikeState = false;
             if (dislike) {
                 setDislike(false);
-                // dislike 취소
+                dislikeState = true;
             }
+            let data = {
+                boardId: id,
+                likeState: false,
+                dislikeState
+            }            
             setLike(true);
-            dispatch(likes(id));
+            dispatch(likes(id, data));
         }
     }
 
     const toggleDislike = e => {
         if (dislike) {
             setDislike(false);
+            dispatch(unDislikes(id));
         }
         else {
-            if (like) setLike(false);
+            let likeState = false;
+            if (like) {
+                setLike(false);
+                likeState = true;
+            }
+            let data = {
+                boardId: id,
+                likeState,
+                dislikeState: false,
+            }
             setDislike(true);
+            dispatch(dislikes(id, data))
         }
     }
 
@@ -153,7 +170,7 @@ export function BoardDetail() {
                     <DisLike>
                         <div onClick={toggleDislike}>{dislike ? <AiFillDislike className="boardDetail-likeIcon"/> 
                         : <AiOutlineDislike className="boardDetail-likeIcon"/>}</div>
-                        <DisLikeCnt>0</DisLikeCnt>
+                        <DisLikeCnt>{post.dislikeCount}</DisLikeCnt>
                     </DisLike>
                     
                 </LikeDislike>
