@@ -6,14 +6,13 @@ import com.ski.backend.domain.club.Gender;
 import com.ski.backend.domain.user.Role;
 import com.ski.backend.domain.user.User;
 import com.ski.backend.repository.UserRepository;
-import com.ski.backend.web.dto.UserRespDto;
+import com.ski.backend.web.dto.UserDto;
 import com.ski.backend.web.dto.UserUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @Service
@@ -47,9 +46,9 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public UserRespDto get(Authentication authentication) {
+    public UserDto get(Authentication authentication) {
         User user = getUserFromPrincipal(authentication);
-        UserRespDto dto = new UserRespDto().toDto(user);
+        UserDto dto = new UserDto().toDto(user);
         return dto;
 
     }
@@ -58,7 +57,6 @@ public class UserService {
     public String getUsername(Authentication authentication) {
         User user = getUserFromPrincipal(authentication);
         return user.getUsername();
-
     }
 
     public User getUserFromPrincipal(Authentication authentication) {

@@ -1,10 +1,12 @@
 package com.ski.backend.service;
 
 import com.ski.backend.config.auth.PrincipalDetails;
+import com.ski.backend.domain.club.AgeGrp;
+import com.ski.backend.domain.club.Gender;
 import com.ski.backend.domain.user.Role;
 import com.ski.backend.domain.user.User;
 import com.ski.backend.repository.UserRepository;
-import com.ski.backend.web.dto.UserRespDto;
+import com.ski.backend.web.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,11 +21,17 @@ public class AuthService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional
-    public UserRespDto join(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+    public UserDto join(UserDto dto) {
+        User user = new User();
+        user.setUsername(dto.getUsername());
+        user.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
+        user.setGender(Gender.valueOf(dto.getGender()));
+        user.setAgeGrp(AgeGrp.valueOf(dto.getAgeGrp()));
         user.setRoles(Role.ROLE_USER);
-        User userEntity = userRepository.save(user);
-        return new UserRespDto().toDto(userEntity);
+        user.setEmail(dto.getEmail());
+        user.setNickname(dto.getNickname());
+        userRepository.save(user);
+        return new UserDto().toDto(user);
     }
 
     @Transactional(readOnly = true)

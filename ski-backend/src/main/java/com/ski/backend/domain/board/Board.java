@@ -46,11 +46,25 @@ public class Board {
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Likes> likes;
 
+    @JsonIgnoreProperties({"board"})
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Dislikes> dislikes;
+
+    @Transient
+    private long totalLikeCount;
+
     @Transient
     private long likeCount;
 
     @Transient
     private boolean likeState;
+
+    @Transient
+    private long dislikeCount;
+
+    @Transient
+    private boolean dislikeState;
+
     private LocalDateTime createDate;
 
     private long pageCount;
@@ -61,18 +75,30 @@ public class Board {
     }
 
 
-    public void changeData(BoardDto dto, Resort resort){
+    public void changeData(BoardDto dto, Resort resort) {
         this.setContent(dto.getContent());
         this.setTitle(dto.getTitle());
         this.setResort(resort);
     }
 
-    public void loadLikes(long principalId) {
-        this.setLikeCount(this.getLikes().size());
+    public void loadLikesAndDislikes(long principalId) {
+
+        long likeCount = this.getLikes().size();
+        long dislikeCount = this.getDislikes().size();
+
+        this.setLikeCount(likeCount);
+        this.setDislikeCount(dislikeCount);
+        this.setTotalLikeCount(likeCount - dislikeCount);
 
         this.getLikes().forEach((like) -> {
             if (like.getUser().getId() == principalId) {
                 this.setLikeState(true);
+            }
+        });
+
+        this.getDislikes().forEach(dislikes -> {
+            if (dislikes.getUser().getId() == principalId) {
+                this.setDislikeState(true);
             }
         });
     }

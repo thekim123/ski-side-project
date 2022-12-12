@@ -1,4 +1,4 @@
-package com.ski.backend.domain.carpool;
+package com.ski.backend.domain.board;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ski.backend.domain.user.User;
@@ -10,33 +10,34 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Data
-public class Carpool {
+@Entity
+@Table(
+        name = "dislikes",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "dislikes_uk",
+                        columnNames = {"boardId", "userId"}
+                )
+        }
+)
+public class Dislikes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonIgnoreProperties({"boards", "clubUsers", "carpools", "tayos", "password"})
-    @JoinColumn(name = "userId")
     @ManyToOne
+    @JoinColumn(name = "boardId")
+    private Board board;
+
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    @JsonIgnoreProperties({"boards", "password", "clubUsers", "carpools", "tayos"})
     private User user;
-
-    @OneToOne
-    private Negotiate negotiate;
-
-    private int curPassenger;
-    private String departure;
-    private String destination;
-    private int passenger;
-    private String memo;
-    private LocalDateTime departTime;
-    private boolean isSmoker;
-    private String boarding;
 
     private LocalDateTime createDate;
 

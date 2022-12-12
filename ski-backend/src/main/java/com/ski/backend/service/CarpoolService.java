@@ -32,6 +32,7 @@ public class CarpoolService {
 
         carpoolEntity.setNegotiate(negotiateEntity);
         carpoolEntity.setUser(user);
+        carpoolEntity.setCurPassenger(0);
         carpoolRepository.save(carpoolEntity);
 
         negotiateEntity.setCarpool(carpoolEntity);

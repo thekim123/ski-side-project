@@ -9,23 +9,24 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
-public class UserRespDto {
+public class UserDto {
     private long id;
+    private String password;
     private String username;
     private Role roles;
     private String nickname;
     private String email;
-    private Gender gender;
-    private AgeGrp ageGrp;
+    private String gender;
+    private String ageGrp;
 
 
-    public UserRespDto toDto(User user) {
+    public UserDto toDto(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
         this.roles = user.getRoles();
         this.email = user.getEmail();
-        this.gender = user.getGender();
-        this.ageGrp = user.getAgeGrp();
+        this.gender = user.getGender().toString();
+        this.ageGrp = user.getAgeGrp().toString();
         this.nickname = user.getNickname();
         return this;
     }

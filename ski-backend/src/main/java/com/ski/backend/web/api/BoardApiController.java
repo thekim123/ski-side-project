@@ -9,6 +9,7 @@ import com.ski.backend.service.CommentService;
 import com.ski.backend.service.LikesService;
 import com.ski.backend.web.dto.BoardDto;
 import com.ski.backend.web.dto.CmRespDto;
+import com.ski.backend.web.dto.LikesDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -56,8 +57,10 @@ public class BoardApiController {
     }
 
     @GetMapping("/resort/{resortName}")
-    public CmRespDto<?> getBoardByResort(@PathVariable String resortName, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<Board> pages = boardService.getBoardByResort(resortName.toUpperCase(), pageable);
+    public CmRespDto<?> getBoardByResort(@PathVariable String resortName,
+                                         @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                                         Authentication authentication) {
+        Page<Board> pages = boardService.getBoardByResort(resortName.toUpperCase(), pageable, authentication);
         return new CmRespDto<>(1, "리조트별 게시글 조회 완료", pages);
     }
 
@@ -81,18 +84,24 @@ public class BoardApiController {
         return new CmRespDto<>(HttpStatus.OK.value(), "글 수정 완료", null);
     }
 
-    @PostMapping("{boardId}/likes")
-    public void like(@PathVariable long boardId, Authentication authentication) {
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        long principalId = principalDetails.getUser().getId();
-        likesService.like(boardId, principalId);
+    @PostMapping("/likes")
+    public void like(@RequestBody LikesDto dto, Authentication authentication) {
+        likesService.like(dto, authentication);
     }
 
-    @DeleteMapping("{boardId}/unlikes")
-    public void unlike(@PathVariable long boardId, Authentication authentication) {
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        long principalId = principalDetails.getUser().getId();
-        likesService.unlike(boardId, principalId);
+    @DeleteMapping("/unlikes")
+    public void unlike(@RequestBody LikesDto dto, Authentication authentication) {
+        likesService.unlike(dto, authentication);
+    }
+
+    @PostMapping("/dislikes")
+    public void dislike(@RequestBody LikesDto dto, Authentication authentication) {
+        likesService.dislike(dto, authentication);
+    }
+
+    @DeleteMapping("/unDislikes")
+    public void unDislike(@RequestBody LikesDto dto, Authentication authentication) {
+        likesService.unDislike(dto, authentication);
     }
 
 

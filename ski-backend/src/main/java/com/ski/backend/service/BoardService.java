@@ -30,7 +30,7 @@ public class BoardService {
         Page<Board> boards = boardRepository.homeBoard(principalId, pageable);
 
         boards.forEach((board) -> {
-            board.loadLikes(principalId);
+            board.loadLikesAndDislikes(principalId);
         });
         return boards;
     }
@@ -47,7 +47,7 @@ public class BoardService {
         Board boardEntity = findBoardEntityById(boardId);
         long principalId = getPrincipalId(authentication);
 
-        if (isMyBoard(boardEntity.getId(), principalId)) {
+        if (!isMyBoard(boardEntity.getUser().getId(), principalId)) {
             throw new IllegalArgumentException("선생님의 글이 아니잖아요!!!!");
         }
 
@@ -59,7 +59,7 @@ public class BoardService {
         long principalId = getPrincipalId(authentication);
         Board boardEntity = findBoardEntityById(dto.getId());
 
-        if (isMyBoard(boardEntity.getId(), principalId)) {
+        if (!isMyBoard(boardEntity.getUser().getId(), principalId)) {
             throw new IllegalArgumentException("선생님의 글이 아니잖아요!!!!");
         }
 
@@ -74,19 +74,25 @@ public class BoardService {
         Page<Board> boards = boardRepository.findAll(pageable);
 
         boards.forEach((board) -> {
-            board.loadLikes(principalId);
+            board.loadLikesAndDislikes(principalId);
         });
 
         return boards;
     }
 
     @Transactional(readOnly = true)
-    public Page<Board> getBoardByResort(String resortName, Pageable pageable) {
+    public Page<Board> getBoardByResort(String resortName, Pageable pageable, Authentication authentication) {
+        long principalId = getPrincipalId(authentication);
         ResortName name = ResortName.valueOf(resortName);
         Resort resort = resortRepository.findByResortName(name);
         long resortId = resort.getId();
-        Page<Board> pages = boardRepository.findByResortId(resortId, pageable);
-        return pages;
+        Page<Board> boards = boardRepository.findByResortId(resortId, pageable);
+
+        boards.forEach((board) -> {
+            board.loadLikesAndDislikes(principalId);
+        });
+
+        return boards;
     }
 
     // 인기게시글 보기(좋아요 순)
@@ -99,9 +105,14 @@ public class BoardService {
     public Board getBoardDetail(long boardId, Authentication authentication) {
         long principalId = getPrincipalId(authentication);
         Board boardEntity = findBoardEntityById(boardId);
-        boardEntity.loadLikes(principalId);
+        boardEntity.loadLikesAndDislikes(principalId);
         return boardEntity;
     }
+
+
+    /*
+     *  아래는 트랜잭션 아닌 매소드
+     */
 
     public Board findBoardEntityById(long boardId) {
         return boardRepository.findById(boardId).orElseThrow(() -> {
@@ -115,8 +126,8 @@ public class BoardService {
         return principalId;
     }
 
-    public boolean isMyBoard(long boardId, long principalId) {
-        return boardId == principalId;
+    public boolean isMyBoard(long userId, long principalId) {
+        return userId == principalId;
     }
 
     public Resort findResort(BoardDto dto) {
