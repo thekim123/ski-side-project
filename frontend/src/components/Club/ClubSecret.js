@@ -7,7 +7,7 @@ import resorts from '../../data/resort.json';
 import { BsPeopleFill } from 'react-icons/bs';
 import { MdEmojiPeople } from 'react-icons/md'
 import { TbGenderBigender } from 'react-icons/tb'
-import { enrollClub, getSingleClub } from '../../action/club';
+import { asyncEnrollClub, enrollClub, getClubUser, getSingleClub } from '../../action/club';
 
 export function ClubSecret() {
     const dispatch = useDispatch();
@@ -17,21 +17,41 @@ export function ClubSecret() {
     const gender = ["남", "여", "성별 무관"]
     const dataGender = ["MEN", "WOMEN", "NO"]
     const club = useSelector(state => state.club.club);
+    const clubUser = useSelector(state => state.club.users);
+    const user = useSelector(state => state.auth.user);
     const {id} = useParams();
+    const [btnText, setBtnText] = useState("가입 신청하기");
     //const club = useLocation().state;
 
     const gotoDetail = e => {
         //navigate(`/club/detail/${club.id}`, { state: club });
         //동호회 인원 추가
         if (club.openYn === "Y") {
-            dispatch(enrollClub(id));
+            dispatch(enrollClub(id)); 
+            navigate(`/club/detail/${id}`);
         }
         //navigate(`/club/detail/${id}`);
     }
+    const submitClub = async() => {
+        const result = await dispatch(asyncEnrollClub(id)).unwrap();
+        dispatch(getClubUser(id));
+        //setBtnText("승인 대기");
+    }
 
     useEffect(() => {
+        const loadClubUser = async () => {
+            const result = await dispatch(asyncEnrollClub(id)).unwrap();
+        }
         dispatch(getSingleClub(id));
+        //dispatch(getClubUser(id));
+        loadClubUser();
     }, [id]);
+
+    useEffect(() => {
+        if (clubUser) {
+            console.log(clubUser);
+        }
+    }, [clubUser])
 
     return (
     <>
@@ -61,7 +81,8 @@ export function ClubSecret() {
         <ContentBox>
             <ClubContent>{club.memo}</ClubContent>
         </ContentBox>
-        {club.openYn === "Y" ? <Button onClick={gotoDetail}>가입하기</Button> : <Button>가입 신청하기</Button>}
+        {club.openYn === "Y" && <Button onClick={gotoDetail}>가입하기</Button>}
+        {club.openYn === "N" && <div><Button onClick={submitClub}>가입 신청하기</Button></div>}
     </Container>}
     </>
     )

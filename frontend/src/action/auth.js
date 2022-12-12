@@ -34,7 +34,8 @@ export const kakaoLogin = (backData) => {
         try {
             dispatch(authActions.setCredentials(backData.data));
             Send.defaults.headers.common['Authorization'] = 'Bearer '+backData.data;
-            dispatch(getUser());            
+            dispatch(getUser()); 
+            console.log('Bearer '+backData.data)           
         } catch (e) {
             console.log(e);
         }
@@ -49,7 +50,7 @@ export const getUser = () => {
             //data: user,
         }).then(resp => {
             console.log("resp", resp);
-            dispatch(authActions.setUser(resp.data.data.username));
+            dispatch(authActions.setUser(resp.data.data));
         })
         .catch(error => {
             console.log(error);
