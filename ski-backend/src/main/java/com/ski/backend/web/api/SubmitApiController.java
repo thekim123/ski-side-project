@@ -29,15 +29,13 @@ public class SubmitApiController {
     @DeleteMapping("{toCarpoolId}")
     public CmRespDto<?> unSubmit(Authentication authentication, @PathVariable long toCarpoolId) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        long userId = principalDetails.getUser().getId();
-        submitService.unSubmit(userId, toCarpoolId);
+        long principalId = principalDetails.getUser().getId();
+        submitService.unSubmit(principalId, toCarpoolId);
         return new CmRespDto<>(1, "삭제 성공", null);
     }
 
     @GetMapping("{toCarpoolId}")
     public CmRespDto<?> getSubmit(@PathVariable long toCarpoolId, Authentication authentication) {
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        long userId = principalDetails.getUser().getId();
         List<Submit> submitList = submitService.getSubmit(toCarpoolId);
         return new CmRespDto<>(1, "카풀 제출 리스트 가져오기 성공", submitList);
     }

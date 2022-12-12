@@ -15,7 +15,7 @@ import java.util.Map;
 @Aspect
 public class ValidationAdvice {
 
-    @Around("execution(* com.project.ski.web.api.*Controller.*(..))")
+    @Around("execution(* com.ski.backend.web.api.*Controller.*(..))")
     public Object apiAdvice(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         Object[] args = proceedingJoinPoint.getArgs();
         for (Object arg : args) {

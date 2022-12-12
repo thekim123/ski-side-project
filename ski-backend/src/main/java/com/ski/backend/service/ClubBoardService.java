@@ -1,13 +1,13 @@
-package com.project.ski.service;
+package com.ski.backend.service;
 
 
-import com.project.ski.domain.club.Club;
-import com.project.ski.domain.club.ClubBoard;
-import com.project.ski.domain.club.ClubUser;
-import com.project.ski.domain.club.Reply;
-import com.project.ski.domain.user.User;
-import com.project.ski.repository.*;
-import com.project.ski.web.dto.ClubBoardDto;
+import com.ski.backend.domain.club.Club;
+import com.ski.backend.domain.club.ClubBoard;
+import com.ski.backend.domain.club.ClubUser;
+import com.ski.backend.domain.club.Reply;
+import com.ski.backend.domain.user.User;
+import com.ski.backend.repository.*;
+import com.ski.backend.web.dto.ClubBoardDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +32,7 @@ public class ClubBoardService {
      * 상세 조회 -{boardId}
      */
     @Transactional(readOnly = true)
-    public Page<ClubBoardDto> getClubBoard(Pageable pageable,long clubBoardId) {
+    public Page<ClubBoardDto> getClubBoard(Pageable pageable, long clubBoardId) {
         Page<ClubBoard> byId = clubBoardRepository.findById(pageable,clubBoardId);
         return byId.map(ClubBoardDto::new);
     }
@@ -41,7 +41,7 @@ public class ClubBoardService {
      * 동호회 게시판 전체 조회
      */
     @Transactional
-    public Page<ClubBoardDto> getAllClubBoard(Pageable pageable, long clubId,User user) {
+    public Page<ClubBoardDto> getAllClubBoard(Pageable pageable, long clubId, User user) {
         Page<ClubBoard> clubBoard = clubBoardRepository.findByClubId(pageable, clubId);
         return clubBoard.map(clubBoard1 -> new ClubBoardDto(clubBoard1,user));
     }

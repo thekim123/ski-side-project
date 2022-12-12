@@ -3,6 +3,7 @@ package com.ski.backend.web.api;
 import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.service.EnrollService;
 import com.ski.backend.web.dto.CmRespDto;
+import com.ski.backend.web.dto.EnrollRespDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

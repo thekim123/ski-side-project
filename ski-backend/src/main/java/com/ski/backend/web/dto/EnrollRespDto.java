@@ -1,6 +1,6 @@
 package com.ski.backend.web.dto;
 
-import com.project.ski.domain.club.Enroll;
+import com.ski.backend.domain.club.Enroll;
 import lombok.Data;
 
 @Data

@@ -45,21 +45,19 @@ public class JwtCreateController {
                     .password(bCryptPasswordEncoder.encode("skiproject"))
                     .roles(Role.ROLE_USER)
                     .email(kakaoUser.getEmail())
-                    .nickname(kakaoUser.getUsername() + "_" + UUID.randomUUID().toString())
+                    .nickname(kakaoUser.getUsername() + "_" + UUID.randomUUID())
                     .gender(gender)
                     .ageGrp(ageGrp)
                     .build();
             userEntity = userRepository.save(userRequest);
         }
 
-        String jwtToken = JWT.create()
+        return JWT.create()
                 .withSubject(userEntity.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
                 .withClaim("id", userEntity.getId())
                 .withClaim("username", userEntity.getUsername())
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
-
-        return jwtToken;
     }
 
     public String getRawGender(Map<String, Object> data) {

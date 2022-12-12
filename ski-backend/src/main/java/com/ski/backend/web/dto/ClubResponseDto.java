@@ -1,9 +1,9 @@
 package com.ski.backend.web.dto;
 
-import com.project.ski.domain.club.AgeGrp;
-import com.project.ski.domain.club.Club;
-import com.project.ski.domain.club.Gender;
-import com.project.ski.domain.user.User;
+import com.ski.backend.domain.club.AgeGrp;
+import com.ski.backend.domain.club.Club;
+import com.ski.backend.domain.club.Gender;
+import com.ski.backend.domain.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

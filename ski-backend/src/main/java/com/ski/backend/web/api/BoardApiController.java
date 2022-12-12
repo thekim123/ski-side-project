@@ -5,7 +5,6 @@ import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.domain.board.Board;
 import com.ski.backend.domain.user.User;
 import com.ski.backend.service.BoardService;
-import com.ski.backend.service.CommentService;
 import com.ski.backend.service.LikesService;
 import com.ski.backend.web.dto.BoardDto;
 import com.ski.backend.web.dto.CmRespDto;
@@ -27,7 +26,6 @@ import java.util.List;
 @RequestMapping("/api/board")
 public class BoardApiController {
     private final BoardService boardService;
-    private final CommentService commentService;
     private final LikesService likesService;
 
     @GetMapping("/home")

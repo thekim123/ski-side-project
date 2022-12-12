@@ -1,7 +1,6 @@
 package com.ski.backend.service;
 
 import com.ski.backend.config.auth.PrincipalDetails;
-import com.ski.backend.domain.board.Likes;
 import com.ski.backend.repository.DislikesRepository;
 import com.ski.backend.repository.LikesRepository;
 import com.ski.backend.web.dto.LikesDto;
@@ -23,7 +22,7 @@ public class LikesService {
         long boardId = dto.getBoardId();
         likesRepository.mLike(boardId, principalId);
 
-        if (dto.isDislikeState() == true) {
+        if (dto.isDislikeState()) {
             dislikesRepository.mUnDislike(boardId, principalId);
         }
     }
@@ -43,7 +42,7 @@ public class LikesService {
 
         dislikesRepository.mDislike(boardId, principalId);
 
-        if (dto.isLikeState() == true) {
+        if (dto.isLikeState()) {
             likesRepository.mUnlike(boardId, principalId);
         }
     }
@@ -58,8 +57,7 @@ public class LikesService {
 
     public long getPrincipalId(Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        long principalId = principalDetails.getUser().getId();
-        return principalId;
+        return principalDetails.getUser().getId();
     }
 
 

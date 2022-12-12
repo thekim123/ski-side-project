@@ -5,7 +5,6 @@ import com.ski.backend.service.AuthService;
 import com.ski.backend.service.UserService;
 import com.ski.backend.web.dto.CmRespDto;
 import com.ski.backend.web.dto.UserDto;
-import com.ski.backend.domain.user.User;
 import com.ski.backend.web.dto.UserUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,8 +28,7 @@ public class UserApiController {
 
     @PostMapping("login")
     public PrincipalDetails login(Authentication authentication) {
-        PrincipalDetails principalDetails = authService.userLogin(authentication);
-        return principalDetails;
+        return authService.userLogin(authentication);
     }
 
     @GetMapping("get")

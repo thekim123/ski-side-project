@@ -20,8 +20,7 @@ public class SubmitService {
 
     @Transactional(readOnly = true)
     public List<Submit> getSubmit(long toCarpoolId) {
-        List<Submit> submitEntity = submitRepository.findByToCarpoolId(toCarpoolId);
-        return submitEntity;
+        return submitRepository.findByToCarpoolId(toCarpoolId);
     }
 
     @Transactional
@@ -41,9 +40,7 @@ public class SubmitService {
     @Transactional
     public void admit(AdmitDto dto) {
         long carpoolId = dto.getToCarpoolId();
-        Carpool carpoolEntity = carpoolRepository.findById(carpoolId).orElseThrow(() -> {
-            return new IllegalArgumentException("카풀 게시글을 찾을 수 없습니다.");
-        });
+        Carpool carpoolEntity = carpoolRepository.findById(carpoolId).orElseThrow(() -> new IllegalArgumentException("카풀 게시글을 찾을 수 없습니다."));
         carpoolEntity.setCurPassenger(carpoolEntity.getCurPassenger() + 1);
         Submit submitEntity = submitRepository.findByFromUserIdAndToCarpoolId(dto.getAdmitUserId(), dto.getToCarpoolId());
         submitEntity.setState("승인");

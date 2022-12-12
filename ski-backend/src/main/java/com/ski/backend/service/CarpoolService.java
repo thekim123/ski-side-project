@@ -40,18 +40,14 @@ public class CarpoolService {
 
     @Transactional
     public void delete(long carpoolId) {
-        Carpool carpoolEntity = carpoolRepository.findById(carpoolId).orElseThrow(() -> {
-            return new IllegalArgumentException("카풀 글 삭제 실패 : 게시글의 ID를 찾을 수 없습니다.");
-        });
+        Carpool carpoolEntity = carpoolRepository.findById(carpoolId).orElseThrow(() -> new IllegalArgumentException("카풀 글 삭제 실패 : 게시글의 ID를 찾을 수 없습니다."));
         carpoolRepository.delete(carpoolEntity);
     }
 
     @Transactional
     public void update(CarpoolRequestDto dto, long carpoolId) {
         dto.setId(carpoolId);
-        Carpool carpoolEntity = carpoolRepository.findById(carpoolId).orElseThrow(() -> {
-            return new IllegalArgumentException("카풀 글 수정 실패 : 게시글의 ID를 찾을 수 없습니다.");
-        });
+        Carpool carpoolEntity = carpoolRepository.findById(carpoolId).orElseThrow(() -> new IllegalArgumentException("카풀 글 수정 실패 : 게시글의 ID를 찾을 수 없습니다."));
         carpoolEntity.setMemo(dto.getMemo());
         carpoolEntity.setDepartTime(dto.getDepartTime());
         carpoolEntity.setPassenger(dto.getPassenger());
@@ -66,15 +62,11 @@ public class CarpoolService {
 
     @Transactional(readOnly = true)
     public Carpool detail(long carpoolId) {
-        Carpool carpoolEntity = carpoolRepository.findById(carpoolId).orElseThrow(() -> {
-            return new IllegalArgumentException("해당 카풀 글이 존재하지 않습니다.");
-        });
-        return carpoolEntity;
+        return carpoolRepository.findById(carpoolId).orElseThrow(() -> new IllegalArgumentException("해당 카풀 글이 존재하지 않습니다."));
     }
 
     public User getPrincipal(Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        User user = principalDetails.getUser();
-        return user;
+        return principalDetails.getUser();
     }
 }
