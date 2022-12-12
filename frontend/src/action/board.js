@@ -126,11 +126,12 @@ export const deletePost = (id) => {
     }
 }
 
-export const likes = (id) => {
+export const likes = (id, data) => {
     return function (dispatch) {
         Send({
-            url: `/board/${id}/likes`,
+            url: `/board/likes`,
             method: 'post',
+            data: data,
         }).then((resp) => {
             console.log("resp", resp);
             dispatch(boardActions.likes());
@@ -139,12 +140,29 @@ export const likes = (id) => {
         .catch(error => console.log(error));
     }
 }
+export const dislikes = (id, data) => {
+    return function (dispatch) {
+        Send({
+            url: `/board/dislikes`,
+            method: 'post',
+            data: data,
+        }).then((resp) => {
+            console.log("resp", resp);
+            //dispatch(boardActions.likes());
+            dispatch(getSinglePost(id));
+        })
+        .catch(error => console.log(error));
+    }    
+}
 
 export const unlikes = (id) => {
     return function (dispatch) {
         Send({
-            url: `/board/${id}/unlikes`,
+            url: `/board/unlikes`,
             method: 'delete',
+            data: {
+                boardId: id
+            }
         }).then((resp) => {
             console.log("resp", resp);
             dispatch(boardActions.unlikes());
@@ -152,6 +170,23 @@ export const unlikes = (id) => {
         })
         .catch(error => console.log(error));
     }
+}
+
+export const unDislikes = (id) => {
+    return function (dispatch) {
+        Send({
+            url: `/board/unDislikes`,
+            method: 'delete',
+            data: {
+                boardId: id
+            }
+        }).then((resp) => {
+            console.log("resp", resp);
+            dispatch(boardActions.unlikes());
+            dispatch(getSinglePost(id));
+        })
+        .catch(error => console.log(error));
+    }    
 }
 
 export const addComment = (id, content) => {
