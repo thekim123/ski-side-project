@@ -1,8 +1,9 @@
 package com.ski.backend.web.dto;
 
-import com.ski.backend.domain.club.AgeGrp;
-import com.ski.backend.domain.club.Club;
-import com.ski.backend.domain.club.Gender;
+import com.project.ski.domain.club.AgeGrp;
+import com.project.ski.domain.club.Club;
+import com.project.ski.domain.club.Gender;
+import com.project.ski.domain.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -40,6 +41,8 @@ public class ClubResponseDto {
 
     private String url;
 
+    private String nickName;
+
     public ClubResponseDto(long clubId, int memberCnt, String clubNm, long resortName, String openYn) {
         this.id = clubId;
         this.memberCnt = memberCnt;
@@ -56,8 +59,19 @@ public class ClubResponseDto {
         this.ageGrp = club.getAgeGrp();
         this.openYn = club.getOpenYn();
         this.memo = club.getMemo();
-    }
 
+    }
+    public ClubResponseDto(Club club, User user) {
+        this.id = club.getId();
+        this.memberCnt = club.getMemberCnt();
+        this.clubNm = club.getClubNm();
+        this.resortId = club.getResort().getId();
+        this.gender = club.getGender();
+        this.ageGrp = club.getAgeGrp();
+        this.openYn = club.getOpenYn();
+        this.memo = club.getMemo();
+        this.nickName = user.getNickname();
+    }
     public ClubResponseDto(long clubId,Club dto) {
         this.id     = dto.getId();
         this.clubNm = dto.getClubNm();

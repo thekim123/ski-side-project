@@ -29,7 +29,7 @@ public class ClubApiController {
 
 
     @GetMapping
-    public CmRespDto<Page<ClubResponseDto>> clubList(@PageableDefault(sort = "id", direction = DESC) Pageable pageable) {
+    public CmRespDto<Page<ClubResponseDto>> clubList(Pageable pageable) {
         Page<ClubResponseDto> clubPage = clubService.clubList(pageable);
         return new CmRespDto<>(1, "동호회 리스트 조회 완료", clubPage);
     }
@@ -83,8 +83,10 @@ public class ClubApiController {
 
     // 동호회 글 상세 조회 -- > 해당 동호회 게시판 목록조회
     @GetMapping("/{clubId}")
-    public CmRespDto<Optional<ClubResponseDto>> clubDetail(@PathVariable Long clubId) {
-        Optional<ClubResponseDto> dto = clubService.clubDetail(clubId);
+    public CmRespDto<Optional<ClubResponseDto>> clubDetail(@PathVariable Long clubId,Authentication auth) {
+        PrincipalDetails principalDetails = (PrincipalDetails) auth.getPrincipal();
+        User user = principalDetails.getUser();
+        Optional<ClubResponseDto> dto = clubService.clubDetail(clubId,user);
         return new CmRespDto<>(1, "동호회 상세보기 완료", dto);
     }
 

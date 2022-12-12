@@ -1,20 +1,20 @@
-package com.ski.backend.service;
+package com.project.ski.service;
 
 
-import com.ski.backend.domain.club.Club;
-import com.ski.backend.domain.club.ClubBoard;
-import com.ski.backend.domain.club.ClubUser;
-import com.ski.backend.domain.user.User;
-import com.ski.backend.repository.ClubBoardRepository;
-import com.ski.backend.repository.ClubRepository;
-import com.ski.backend.repository.ClubUserRepository;
-import com.ski.backend.repository.UserRepository;
-import com.ski.backend.web.dto.ClubBoardDto;
+import com.project.ski.domain.club.Club;
+import com.project.ski.domain.club.ClubBoard;
+import com.project.ski.domain.club.ClubUser;
+import com.project.ski.domain.club.Reply;
+import com.project.ski.domain.user.User;
+import com.project.ski.repository.*;
+import com.project.ski.web.dto.ClubBoardDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 
 @Service
@@ -26,6 +26,7 @@ public class ClubBoardService {
     private final ClubRepository clubRepository;
     private final ClubUserRepository clubUserRepository;
 
+    private final ReplyRepository replyRepository;
     /**
      * 동호회 게시판
      * 상세 조회 -{boardId}
@@ -78,8 +79,13 @@ public class ClubBoardService {
 
     public void delete(long clubBoardId) {
         ClubBoard cb = clubBoardRepository.findById(clubBoardId).orElseThrow(() -> new IllegalArgumentException("동호회 게시판 삭제 완료"));
-        ClubUser cu = clubUserRepository.findByClubBoard(cb).orElseThrow(() -> new IllegalArgumentException("동호회 게시판 유저 삭제 완료"));
-        clubUserRepository.delete(cu);
+        List<ClubUser> cu = clubUserRepository.findByClubBoard(cb);
+        if (cu.size() < 0) {
+            throw new IllegalArgumentException("동호회 게시판 유저 삭제 완료");
+        }
+        List<Reply> replyList = replyRepository.findByClubBoard(cb);
+        replyRepository.deleteAll(replyList);
+        clubUserRepository.deleteAll(cu);
         clubBoardRepository.delete(cb);
     }
 }
