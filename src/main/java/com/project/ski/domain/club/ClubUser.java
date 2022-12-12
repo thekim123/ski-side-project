@@ -44,6 +44,7 @@ public class ClubUser {
      */
     private String role;
 
+//    private String status;
     public ClubUser(Club club, User user) {
         this.club = club;
         this.user = user;

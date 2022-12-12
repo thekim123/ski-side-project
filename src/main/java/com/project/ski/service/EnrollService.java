@@ -11,6 +11,8 @@ import com.project.ski.repository.EnrollRepository;
 import com.project.ski.repository.UserRepository;
 import com.project.ski.web.dto.EnrollRespDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,4 +42,9 @@ public class EnrollService {
     }
 
 
+    @Transactional(readOnly = true)
+    public Page<EnrollRespDto> getEnrollList(Pageable pageable,long clubId) {
+        Club club = clubRepository.findById(clubId).orElseThrow(() -> new IllegalArgumentException("해당 동호회가 없습니다."));
+        return  enrollRepository.findBy_ClubId(pageable,clubId).map(EnrollRespDto::new);
+    }
 }

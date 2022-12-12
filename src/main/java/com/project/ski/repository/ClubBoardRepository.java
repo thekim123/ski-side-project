@@ -22,7 +22,7 @@ public interface ClubBoardRepository extends JpaRepository<ClubBoard, Long> {
     Page<ClubBoard> findByClubId(Pageable pageable, @Param("clubId") long clubId);
 
 
-    Optional<ClubBoard> findByClub(Club club);
+    List<ClubBoard> findByClub(Club club);
 
     @Query("select cb from ClubBoard cb join fetch cb.club c where cb.id = :clubBoardId")
     Optional<ClubBoard> findClubBoardById(@Param("clubBoardId") Long clubBoardId);

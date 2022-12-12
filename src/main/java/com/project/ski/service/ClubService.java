@@ -72,21 +72,27 @@ public class ClubService {
             throw new IllegalArgumentException("오류");
         }
 
-        Optional<ClubBoard> byClub = clubBoardRepository.findByClub(club);
-        boolean present = byClub.isPresent();
-        if (present) {
-            List<Reply> replyList = replyRepository.findByClubBoard(byClub.get());
-            Optional<ClubUser> cu = clubUserRepository.findByClubBoard(byClub.get());
-            if(byClub.get().getClub().getId() == club.getId()){
-                clubBoardRepository.delete(byClub.get());
-                replyRepository.deleteAll(replyList);
-                clubUserRepository.delete(cu.get());
+        List<ClubBoard> byClub = clubBoardRepository.findByClub(club);
+        if (byClub.size() > 0) {
+            byClub.forEach(e-> {
+                List<Reply> replyList = replyRepository.findByClubBoard(e);
+                List<ClubUser> cu = clubUserRepository.findByClubBoard(e);
+
+            for (int i = 0; i < byClub.size(); i++) {
+                if(byClub.get(i).getClub().getId() == club.getId()){
+                    clubBoardRepository.delete(byClub.get(i));
+                    replyRepository.delete(replyList.get(i));
+                    clubUserRepository.delete(cu.get(i));
+                }
+
             }
+            });
+
         }
         List<Enroll> enrollList = enrollRepository.findByClub(club);
         if(enrollList.size() != 0){
 
-        enrollRepository.deleteAll(enrollList);
+            enrollRepository.deleteAll(enrollList);
         }
         clubUserRepository.deleteAll(clubUser);
         clubRepository.delete(club);
@@ -115,11 +121,11 @@ public class ClubService {
 
     // 동호회 상세페이지
     @Transactional
-    public Optional<ClubResponseDto> clubDetail(Long clubId) {
+    public Optional<ClubResponseDto> clubDetail(Long clubId,User user) {
         Club dto = clubRepository.findById(clubId).orElseThrow(()->{
             return new IllegalArgumentException("글 상세보기 실패: 해당게시글을 찾을 수 없습니다.");
         });
-        return clubRepository.findById(clubId).map(ClubResponseDto::new);
+        return clubRepository.findById(clubId).map(club -> new ClubResponseDto(club,user));
     }
 
 }
