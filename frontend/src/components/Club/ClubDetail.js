@@ -10,7 +10,7 @@ import { AiFillRightCircle } from 'react-icons/ai';
 import { IoMdAddCircle } from 'react-icons/io';
 import resorts from '../../data/resort.json';
 import { BsPeopleFill } from 'react-icons/bs'
-import { loadPosts } from '../../action/clubBoard';
+import { loadClubPosts } from '../../action/clubBoard';
 import OkCancelModal from '../common/OkCancelModal';
 
 export function ClubDetail() {
@@ -59,7 +59,7 @@ export function ClubDetail() {
     }
 
     useEffect(() => { //새로 로그인 한 후 라든지.. 그럴때를 대비해 state.club이 null인 경우에만 dispatch 호출.
-        dispatch(loadPosts(id));
+        dispatch(loadClubPosts(id));
         dispatch(getSingleClub(id));
         dispatch(getClubUser(id));
     }, [dispatch, id]);

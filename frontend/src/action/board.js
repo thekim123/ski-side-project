@@ -1,7 +1,9 @@
 import Send from '../components/common/Send';
 import { boardActions } from '../slice/board';
 
-export const loadPosts = () => {
+
+
+export const loadPosts = (page) => {
     return function (dispatch) {
         /*
         axios
@@ -14,6 +16,10 @@ export const loadPosts = () => {
         Send({
             url: '/board/',
             method: 'get',
+            params: {
+                page: 0, //몇 번째 페이지인지
+                size: 1000 //한번에 몇 개 보일지
+            },
         }).then((resp) => {
             console.log("resp", resp);
             dispatch(boardActions.getBoards(resp.data.data.content));
@@ -26,10 +32,17 @@ export const loadPostsByPage = (currentPage) => {
     return function (dispatch) {
         Send({
             url:`/board/`,
-            header: {
-                Pageable: 1,
-            },
             method: 'get',
+            params: {
+                page: 2,
+                size: 5
+            },
+            headers: {
+                Pageable: {
+                    page: 1,
+                    size: 5,
+                }
+            }
         }).then(resp => {
             console.log("resp", resp);
             //dispatch(boardActions.getBoards(resp.data.data.content));
@@ -42,6 +55,10 @@ export const getByResort = (resortName) => {
         Send({
             url: `/board/resort/${resortName}`,
             method: 'get',
+            params: {
+                page: 0, //몇 번째 페이지인지
+                size: 1000 //한번에 몇 개 보일지
+            },
         }).then((resp) => {
             console.log("resp", resp);
             dispatch(boardActions.getBoards(resp.data.data.content));

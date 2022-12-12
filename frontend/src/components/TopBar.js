@@ -23,17 +23,20 @@ export function TopBar() {
     const gotoChatPage = () => {
         navigate('/chat');
     }
+    const gotoAlarm = () => {
+        navigate('/alarm');
+    }
     return(
         <>
         {t !== 'login' && <Container>
             <LeftSide>
-                {t !== '' && t !== 'board' && t !== 'carpool' && t !== 'tayo' && t !== 'club' && t !== 'my' && t !== 'chat' &&
+                {t !== '' && t !== 'board' && t !== 'carpool' && t !== 'tayo' && t !== 'club' && t !== 'my' && t !== 'chat' && t !== 'alarm' &&
                     <BiArrowBack className="backBtn" onClick={goback} />}
                 <PageName></PageName>
             </LeftSide>
             <RightSide>
                 <HiOutlineChat className='chatBtn' onClick={gotoChatPage}/>
-                <BiBell className="bellBtn"/>
+                {/* <BiBell className="bellBtn" onClick={gotoAlarm}/> */}
                 <BiUser className="myBtn" onClick={gotoMyPage}/>
             </RightSide>
         </Container>}

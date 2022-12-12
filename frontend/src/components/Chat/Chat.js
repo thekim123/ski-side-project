@@ -117,7 +117,7 @@ export default function Chat() {
         </ChatWrapper>}
 
         <InputWrapper>
-        <textarea
+        <input
                     type='text'
                     placeholder=''
                     value={commentInput}
@@ -237,7 +237,7 @@ const InputWrapper = styled.div`
         border-radius: 5px;
         box-shadow: 5px 2px 7px -2px rgba(17, 20, 24, 0.15);
     }
-    textarea:focus{
+    input:focus{
         outline: none;
     }
 

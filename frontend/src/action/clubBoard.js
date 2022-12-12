@@ -1,11 +1,15 @@
 import Send from '../components/common/Send';
 import { clubBoardActions } from '../slice/clubBoard';
 
-export const loadPosts = (clubId) => {
+export const loadClubPosts = (clubId) => {
     return function (dispatch) {
         Send({
             url: `/clubBoard/${clubId}`,
             method: 'get',
+            params: {
+                page: 0,
+                size: 1000
+            },
         }).then((resp) => {
             console.log("resp", resp);
             dispatch(clubBoardActions.getBoards(resp.data.data.content));
@@ -23,7 +27,7 @@ export const addPost = (post) => {
         }).then((resp) => {
             console.log("resp", resp);
             dispatch(clubBoardActions.addBoard());
-            dispatch(loadPosts(post.clubId));
+            dispatch(loadClubPosts(post.clubId));
         })
         .catch((error) => console.log(error));
     }
@@ -64,7 +68,7 @@ export const deleteCbPost = (id, clubId) => {
         }).then((resp) => {
             console.log("resp", resp);
             dispatch(clubBoardActions.deletePost());
-            dispatch(loadPosts(clubId));
+            dispatch(loadClubPosts(clubId));
         })
         .catch(error => console.log(error));        
     }    

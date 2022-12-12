@@ -6,6 +6,10 @@ export const loadCarpools = () => {
         Send({
             url: '/carpool',
             method: 'get',
+            params: {
+                page: 0,
+                size: 1000
+            },
         }).then((resp) => {
             console.log("resp", resp);
             dispatch(carpoolActions.getCarpools(resp.data.data.content));

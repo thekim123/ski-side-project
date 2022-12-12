@@ -26,7 +26,7 @@ export function NavBar() {
                 setBtnActive(null)
             }
         }
-    }, [])
+    }, [url])
 
     return (
         <>

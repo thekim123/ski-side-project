@@ -58,7 +58,9 @@ export function BoardDetail() {
     }
 
     const toggleDislike = e => {
-        if (dislike) setDislike(false);
+        if (dislike) {
+            setDislike(false);
+        }
         else {
             if (like) setLike(false);
             setDislike(true);

@@ -21,6 +21,10 @@ export const asyncGetClubUser = createAsyncThunk(
         const resp = await Send({
             url: `/club/${clubId}/user`,
             method: 'get',
+            params: {
+                page: 0,
+                size: 1000
+            },
         })
         console.log("resp", resp);
         return resp.data.data.content;
@@ -68,6 +72,10 @@ export const loadClubs = () => {
         Send({
             url: '/club',
             method: 'get',
+            params: {
+                page: 0,
+                size: 1000
+            },
         }).then((resp) => {
             console.log(resp);
             dispatch(clubActions.getClubs(resp.data.data.content));
@@ -123,6 +131,10 @@ export const getClubUser = (clubId) => {
         Send({
             url: `/club/${clubId}/user`,
             method: 'get',
+            params: {
+                page: 0,
+                size: 1000
+            },
         }).then((resp) => {
             console.log("resp", resp);
             dispatch(clubActions.getUsers(resp.data.data.content))
