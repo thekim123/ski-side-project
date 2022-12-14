@@ -42,11 +42,11 @@ public class User {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Gender gender;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private AgeGrp ageGrp;
 
     @Enumerated(EnumType.STRING)

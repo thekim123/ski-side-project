@@ -1,5 +1,6 @@
 package com.ski.backend.service;
 
+import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.domain.carpool.Carpool;
 import com.ski.backend.domain.carpool.Submit;
 import com.ski.backend.handler.ex.CustomApiException;
@@ -7,6 +8,7 @@ import com.ski.backend.repository.CarpoolRepository;
 import com.ski.backend.repository.SubmitRepository;
 import com.ski.backend.web.dto.AdmitDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +26,9 @@ public class SubmitService {
     }
 
     @Transactional
-    public void submit(long fromUserId, long toCarpoolId) {
+    public void submit(Authentication authentication, long toCarpoolId) {
+        Long fromUserId = getPrincipalId(authentication);
+
         try {
             submitRepository.mSubmit(fromUserId, toCarpoolId);
         } catch (Exception e) {
@@ -33,7 +37,8 @@ public class SubmitService {
     }
 
     @Transactional
-    public void unSubmit(long fromUserId, long toCarpoolId) {
+    public void unSubmit(Authentication authentication, long toCarpoolId) {
+        Long fromUserId = getPrincipalId(authentication);
         submitRepository.mUnSubmit(fromUserId, toCarpoolId);
     }
 
@@ -52,4 +57,14 @@ public class SubmitService {
         submitEntity.setState("거절");
     }
 
+    @Transactional(readOnly = true)
+    public List<Submit> getMySubmit(Authentication authentication) {
+        System.out.println(getPrincipalId(authentication));
+        return submitRepository.findByFromUserId(getPrincipalId(authentication));
+    }
+
+    public Long getPrincipalId(Authentication authentication) {
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        return principalDetails.getUser().getId();
+    }
 }
