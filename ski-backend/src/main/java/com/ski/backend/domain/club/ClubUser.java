@@ -19,11 +19,12 @@ public class ClubUser {
     private Long id;
 
 
+    @JsonIgnoreProperties({"boards","clubBoard", "user"})
     @ManyToOne(fetch = LAZY)  // 개인이 여러개의 클럽에 속할 수 있으니까
     @JoinColumn(name = "club_id")
     private Club club;
 
-    @JsonIgnoreProperties({"board","clubBoard"})
+    @JsonIgnoreProperties({"boards","clubBoard", "clubUsers"})
     @ManyToOne(fetch = LAZY)// 여러 사용자가 한 클럽에 속할 수 있으니까
     @JoinColumn(name = "user_id")
     private User user;

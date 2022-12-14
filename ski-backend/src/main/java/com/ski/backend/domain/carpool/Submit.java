@@ -29,7 +29,7 @@ public class Submit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @JsonIgnoreProperties({"user", "boards"})
+    @JsonIgnoreProperties({"user", "boards", "clubUsers"})
     @JoinColumn(name = "fromUserId")
     @ManyToOne
     private User fromUser;
