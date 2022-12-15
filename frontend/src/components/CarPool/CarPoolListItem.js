@@ -13,7 +13,7 @@ export function CarPoolListItem(props) {
     return (
     <Wrapper>
         <Top>
-            <div><TakeCnt>인원 0/{props.passenger}</TakeCnt><Tag>{props.smoker ? "흡연" : "금연"} 차량</Tag></div>
+            <div><TakeCnt>인원 0/{props.passenger}</TakeCnt><Tag>{props.isSmoker ? "흡연" : "금연"} 차량</Tag></div>
             {/* <CarCnt>운행건수 (2회)</CarCnt> */}
         </Top>
 

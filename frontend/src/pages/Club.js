@@ -31,13 +31,13 @@ export function Club() {
         //유저 목록을 불러올 때까지 기다렸다가, 불러온 이후 유저가 동호회 멤버인지 체크 후 다른 페이지 랜더링.
         try {
             const users = await dispatch(asyncGetClubUser(club.id)).unwrap();
-            const isMember = users.find(u => u.username === user.username);
-            //const isMember = undefined;
+            //const isMember = users.find(u => u.username === user.username);
+            const isMember = undefined;
             if (isMember !== undefined) {
                 navigate(`/club/detail/${club.id}`)
             } else {
                 console.log(users);
-                //navigate(`/club/secret/${club.id}`);
+                navigate(`/club/secret/${club.id}`);
             }
         } catch (e) {
             console.log(e);

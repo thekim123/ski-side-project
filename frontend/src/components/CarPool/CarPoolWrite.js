@@ -189,7 +189,7 @@ export function CarPoolWrite() {
 
         const departure = selectedRoute === '도착지가 스키장' ? enteredStartEnd : selectedResort;
         const destination = selectedRoute === '도착지가 스키장' ? selectedResort : enteredStartEnd;
-        const isSmoker = selectedSmoking === '흡연 차량' ? "true" : "false";
+        const isSmoker = selectedSmoking === '흡연 차량' ? true : false;
 
         const realTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), startTime.getHours(), startTime.getMinutes());
         const krTime = new Date(realTime.getTime() + 9*60*60*1000);
