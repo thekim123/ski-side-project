@@ -80,7 +80,7 @@ export default function CarPoolChat() {
             {state !== '0' ? <Text>신청 {state}한 상대입니다.</Text> 
             :
             <MineRow>
-                <Text>{} 님이 카풀 신청을 했습니다.</Text>
+                <Text>{}테스트 님이 카풀 신청을 했습니다.</Text>
                 <Button className='mine-ok' onClick={admitUser}>수락</Button><Button className='mine-c' onClick={denyUser}>거절</Button>
             </MineRow>}
         </What>}
