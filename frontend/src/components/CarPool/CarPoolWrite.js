@@ -198,7 +198,7 @@ export function CarPoolWrite() {
             destination: destination,
             departTime: krTime,
             boarding: enteredPlace,
-            isSmoker: isSmoker,
+            smoker: isSmoker,
             passenger: enteredCnt,
             memo: enteredContent,
             negotiate,

@@ -1,3 +1,4 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import Send from '../components/common/Send';
 import { carpoolActions } from '../slice/carpool';
 
@@ -87,6 +88,18 @@ export const getSubmits = (carpoolId) => {
     }
 }
 
+export const asyncGetSubmits = createAsyncThunk(
+    'carpoolSlice/asyncGetSubmits', 
+    async (carpoolId) => {
+        const resp = await Send({
+            url: `/submit/${carpoolId}`,
+            method: 'get',
+        })
+        console.log("resp", resp);
+        return resp.data.data;
+    }
+)
+
 export const admitSubmit = (data) => {
     return function (dispatch) {
         Send({
@@ -117,4 +130,18 @@ export const refuseSubmit = (data) => {
         })
         .catch((error) => console.log(error)); 
     }
+}
+
+export const getMyCarSubmit = () => {
+    return function (dispatch) {
+        Send({
+            url: `/submit/getMySubmit`,
+            method: 'get',
+        }).then((resp) => {
+            console.log("resp", resp);
+            dispatch(carpoolActions.getMySubmit(resp.data.data));
+            //dispatch(loadCarpools());
+        })
+        .catch((error) => console.log(error)); 
+    }    
 }

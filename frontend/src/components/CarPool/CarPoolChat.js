@@ -84,8 +84,7 @@ export default function CarPoolChat() {
                 <Button className='mine-ok' onClick={admitUser}>수락</Button><Button className='mine-c' onClick={denyUser}>거절</Button>
             </MineRow>}
         </What>}
-        {/* 나중에 !isMine으로 바꾸기 */}
-        {isMine && 
+        {!isMine && 
         <What>
             {type === 'quest' && <Button onClick={handleSubmit}>카풀 신청하기</Button>}
             {type !== 'quest' && <div>{state === '0' ? <div>승인 대기</div> : <div>신청이 {state}되었습니다.</div>}</div>}

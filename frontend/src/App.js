@@ -38,6 +38,7 @@ import ChatList from './pages/ChatList';
 import CarPoolChat from './components/CarPool/CarPoolChat';
 import Alarm from './components/Alarm/Alarm';
 import MySubmit from './components/My/MySubmit';
+import MyReceived from './components/My/MyReceived';
 
 function App() {
   const dispatch = useDispatch();
@@ -82,6 +83,7 @@ function App() {
             <Route path="my" element={<Mypage />} />
             <Route path="my/detail" element={<MyPageDetail />} />
             <Route path="my/submit" element={<MySubmit />} />
+            <Route path="my/received" element={<MyReceived />} />
             <Route path="chat" element={<ChatList />} />
             <Route path="chat/detail/:room/:type" element={<Chat />} />
             <Route path="alarm" element={<Alarm />} />

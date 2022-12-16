@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { asyncGetSubmits } from '../action/carpool';
 
 const initialState = {
     carpools: [],
     carpool: null,
     submits: [],
+    my: [],
 }
 const carpoolSlice = createSlice({
     name: 'carpool',
@@ -23,7 +25,15 @@ const carpoolSlice = createSlice({
         },
         getSubmits(state, action) {
             state.submits = action.payload;
+        },
+        getMySubmit(state, action) {
+            state.my = action.payload;
         }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(asyncGetSubmits.fulfilled, (state, action) => {
+            state.submits = action.payload;
+        })
     }
 })
 
