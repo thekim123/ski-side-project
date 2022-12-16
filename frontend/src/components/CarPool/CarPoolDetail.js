@@ -117,7 +117,7 @@ export function CarPoolDetail() {
                 <ContentTitle>추가 사항</ContentTitle>
                 {carpool.memo}
             </Content>
-            {isMine &&
+            {!isMine &&
             <div>{!submitUser && <div>
             <ButtonBox className='nosubmit-btn'>
             <SButton onClick={handleQ}>문의하기</SButton>

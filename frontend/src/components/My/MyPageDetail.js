@@ -55,6 +55,7 @@ export default function MyPageDetail() {
         if (carpools.length > 0) {
             setMyCarpools(carpools.filter(carpool => carpool.user.id === user.id));
         }
+        console.log("test", myCarpools)
     }, [carpools])
 
     useEffect(() => {
@@ -82,11 +83,11 @@ export default function MyPageDetail() {
             </ButtonWrap>
             </MyWrapper>
 
-            {myPosts.length > 0 && <ItemWrapper>
+            <ItemWrapper>
                 
-                    {(myPostPage === '자유게시판') && myPosts.map(post => <BoardListItem key={post.id} {...post} />)}
-                    <CarWrap>{myPostPage === '카풀' && myCarpools.map(carpool => <CarPoolListItem key={carpool.id} {...carpool} func={showDetail}/>)}</CarWrap>
-            </ItemWrapper>}
+                    {(myPostPage === '자유게시판') && myPosts.length > 0 && myPosts.map(post => <BoardListItem key={post.id} {...post} />)}
+                    <CarWrap>{myPostPage === '카풀' && myCarpools.length > 0 && myCarpools.map(carpool => <CarPoolListItem key={carpool.id} {...carpool} func={showDetail}/>)}</CarWrap>
+            </ItemWrapper>
         </Wrapper>
     )
 }

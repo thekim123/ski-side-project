@@ -2,15 +2,17 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
-import { getSubmits, loadCarpools } from '../../action/carpool';
+import { getMyCarSubmit, getSubmits, loadCarpools } from '../../action/carpool';
+import { CarPoolListItem } from '../CarPool/CarPoolListItem';
 import MyCarSubmit from './MyCarSubmit';
 
 export default function MySubmit() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [myPostPage, setMyPostPage] = useState("카풀");
-    const [myCarpoolId, setMyCarpoolId] = useState([]);
-    const carpools = useSelector(state => state.carpool.carpools);
+    const [myCarpool, setMyCarpool] = useState([]);
+    //const carpools = useSelector(state => state.carpool.carpools);
+    const myCar = useSelector(state => state.carpool.my);
     const user = useSelector(state => state.auth.user);
 
     const changeMyPost = e => {
@@ -27,22 +29,21 @@ export default function MySubmit() {
         }
     }
 
+    const showDetail = (id) => {
+        navigate(`/carpool/detail/${id}`)
+    }
+
     useEffect(() => {
-        dispatch(loadCarpools());
+        //dispatch(loadCarpools());
+        dispatch(getMyCarSubmit());
     }, []);
 
     useEffect(() => {
-        //기간이 지나지 않은 것만 필터링하기.
-        const myCarpool = carpools.filter(carpool => carpool.user.id === user.id);
-        if (myCarpool.length > 0) {
-            const myCarId = myCarpool.map(my => my.id);
-            setMyCarpoolId(myCarId);
-            console.log(myCarpoolId);
-            //myCarId.map(carId => dispatch(getSubmits(carId)))
-            //id별로 submit(id)해서 find user 일치하는거 -> state 반환.
+        if (myCar.length > 0) {
+            setMyCarpool(myCar);
+            console.log(myCarpool);
         }
-        
-    }, [carpools])
+    }, [myCar]);
 
     return (
         <Wrapper>
@@ -55,13 +56,9 @@ export default function MySubmit() {
             </ButtonWrap>
             </MyWrapper>
 
-            {myCarpoolId.length > 0 && myCarpoolId.map(id => <MyCarSubmit id={id}/>)}
-
-            {/* {myPosts.length > 0 && <ItemWrapper>
-                
-                    {(myPostPage === '자유게시판') && myPosts.map(post => <BoardListItem key={post.id} {...post} />)}
-                    <CarWrap>{myPostPage === '카풀' && myCarpools.map(carpool => <CarPoolListItem key={carpool.id} {...carpool} func={showDetail}/>)}</CarWrap>
-            </ItemWrapper>} */}
+            <CarWrap>{myPostPage === '카풀' && myCarpool.length > 0 && 
+                myCarpool.map(carpool => <CarPoolListItem key={carpool.toCarpool.id} {...carpool.toCarpool} func={showDetail}/>)}
+            </CarWrap>
         </Wrapper>
     )
 }
@@ -100,4 +97,5 @@ const ItemWrapper = styled.div`
 `
 const CarWrap = styled.div`
 margin: 15px;
+margin-top: 3px;
 `
