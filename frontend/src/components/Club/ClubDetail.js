@@ -68,7 +68,10 @@ export function ClubDetail() {
         console.log("clubUsers", clubUsers);
         if (clubUsers) {
             let myInfo = clubUsers.find(cuser => cuser.nickname === user.nickname);
-            if (myInfo.role === '관리자') {
+            if (myInfo === undefined) {
+                setIsCap(false);
+            }
+            else if (myInfo.role === '관리자') {
                 setIsCap(true);
             } else {
                 setIsCap(false);
@@ -82,8 +85,8 @@ export function ClubDetail() {
     <EditDelBtn>
     <div></div>
             <BtnWrap>
-            <EditBtn onClick={gotoEdit} className='club-detail-topBtn'>수정</EditBtn>
-            <DelBtn onClick={delClub} className='club-detail-topBtn'>삭제</DelBtn>
+            {isCap && <EditBtn onClick={gotoEdit} className='club-detail-topBtn'>수정</EditBtn>}
+            {isCap && <DelBtn onClick={delClub} className='club-detail-topBtn'>삭제</DelBtn>}
             {/* 모달창 */}
             {club && <OkCancelModal 
                 open={delOpen}
@@ -105,8 +108,8 @@ export function ClubDetail() {
         </ClubResort>
         <InfoBox>
             <CntBox>
-                <SBsPeopleFill />
-                <Cnt>{club && club.memberCnt}명</Cnt>
+                {/* <SBsPeopleFill /> */}
+                {/* <Cnt>{club && club.memberCnt}명</Cnt> */}
             </CntBox>
 
         </InfoBox>

@@ -79,7 +79,9 @@ function TayoListItem(props) {
                     {isMine && <BsTrashFill className="boardPost-icon" onClick={handleTrash}/>}
     </div>*/}
             </Top>
-            <Content onClick={showDetail}>
+            <Content 
+            // onClick={showDetail}
+            >
                 <Count>
                     <BsPeopleFill className="tayo-count"/>
                     {!props.tayoMemCnt ? "인원 무제한" :  <div>0 / {props.tayoMemCnt}</div>}
