@@ -27,7 +27,7 @@ export function ClubSecret() {
         //navigate(`/club/detail/${club.id}`, { state: club });
         //동호회 인원 추가
         if (club.openYn === "Y") {
-            dispatch(enrollClub(id)); 
+            //dispatch(enrollClub(id)); 
             navigate(`/club/detail/${id}`);
         }
         //navigate(`/club/detail/${id}`);
@@ -38,6 +38,7 @@ export function ClubSecret() {
         //setBtnText("승인 대기");
     }
 
+    /*
     useEffect(() => {
         const loadClubUser = async () => {
             const result = await dispatch(asyncEnrollClub(id)).unwrap();
@@ -51,7 +52,12 @@ export function ClubSecret() {
         if (clubUser) {
             console.log(clubUser);
         }
-    }, [clubUser])
+    }, [clubUser])*/
+
+    // 나중에 삭제
+    useEffect(() => {
+        dispatch(getSingleClub(id));
+    }, []);
 
     return (
     <>
@@ -64,8 +70,8 @@ export function ClubSecret() {
         <ClubResort>{resorts.find(resort => resort.id === club.resortId).name}</ClubResort>
         <InfoBox>
             <CntBox>
-                <SBsPeopleFill />
-                <Cnt>{club.memberCnt}명</Cnt>
+                {/* <SBsPeopleFill /> */}
+                {/* <Cnt>{club.memberCnt}명</Cnt> */}
             </CntBox>
             {/* 연령대 */}
             <CntBox>
@@ -81,7 +87,7 @@ export function ClubSecret() {
         <ContentBox>
             <ClubContent>{club.memo}</ClubContent>
         </ContentBox>
-        {club.openYn === "Y" && <Button onClick={gotoDetail}>가입하기</Button>}
+        {club.openYn === "Y" && <Button onClick={gotoDetail}>둘러보기</Button>}
         {club.openYn === "N" && <div><Button onClick={submitClub}>가입 신청하기</Button></div>}
     </Container>}
     </>

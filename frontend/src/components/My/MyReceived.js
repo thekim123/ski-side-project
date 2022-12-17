@@ -15,6 +15,9 @@ export default function MyReceived() {
     const [submitContent, setSubmitContent] = useState(null);
     const carpools = useSelector(state => state.carpool.carpools);
     const user = useSelector(state => state.auth.user);
+    const korAge = [null, "TEN", "TEWNTY", "THIRTY", "FORTY", "FIFTY", "SIXTY", "SEVENTY", "EIGHTY"]
+    const korGen = [" ", "남", "여"];
+    const genderData = ["NO", "MEN", "WOMEN"]
 
     const changeMyPost = e => {
         let page = e.target.innerText;
@@ -48,16 +51,16 @@ export default function MyReceived() {
         setSubmitShow(newArr);
     }
 
-    const admitUser = (submitId, id, idx) => {
+    const admitUser = (submitId, id, idx, index) => {
         const data = {
             admitUserId: submitId,
             toCarpoolId: id
         }
+        console.log(data);
         dispatch(admitSubmit(data));
-        //setSubmitContent([...submitContent, submitContent[idx].state = "테스트"]);
         const newArr = [...submitShow];
         newArr[idx] = false;
-        setSubmitShow(newArr);
+        setSubmitContent(newArr);
     }
     const denyUser = (submitId, id, idx) => {
         const data = {
@@ -68,6 +71,10 @@ export default function MyReceived() {
         const newArr = [...submitShow];
         newArr[idx] = false;
         setSubmitShow(newArr);
+    }
+
+    const gotoChat = (id, submitId) => {
+        navigate(`/carpool/chat/${id}/carpool${id}submit${submitId}writer${user.id}/chat`)
     }
 
     useEffect(() => {
@@ -103,17 +110,18 @@ export default function MyReceived() {
                     {submitShow[idx] && 
                         <>
                             {submitContent[idx] === "신청자가 없습니다." ? <UserWrapper>{submitContent[idx]}</UserWrapper>
-                                : <UserWrapper>{submitContent[idx].map(submit => 
+                                : <UserWrapper>{submitContent[idx].map((submit, index) => 
                                 <UserRow>
                                     <Name>{submit.fromUser.nickname.split("_")[0]}</Name>
-                                    <Info>{submit.fromUser.ageGrp}</Info>
-                                    <Info>{submit.fromUser.gender}</Info>
+                                    <Info>{korAge.indexOf(submit.fromUser.ageGrp)}0대</Info>
+                                    <Info>{korGen[genderData.indexOf(submit.fromUser.gender)]}</Info>
                                     {submit.state === "0" ? 
                                     <ButtonWrapper>
-                                        <Button className='mine-ok' onClick={() => admitUser(submit.id, submit.toCarpool.id, idx)}>수락</Button>
-                                        <Button className='mine-c' onClick={() => denyUser(submit.id, submit.toCarpool.id, idx)}>거절</Button>
+                                        <Button className='mine-ok' onClick={() => admitUser(submit.fromUser.id, submit.toCarpool.id, idx, index)}>수락</Button>
+                                        <Button className='mine-c' onClick={() => denyUser(submit.fromUser.id, submit.toCarpool.id, idx)}>거절</Button>
                                     </ButtonWrapper> 
-                                    : <InfoText>신청 {submit.state}한 상대</InfoText>}
+                                    : <InfoText>신청 {submit.state}</InfoText>}
+                                    <Button className='mine-ok' onClick={() => gotoChat(submit.toCarpool.id, submit.fromUser.id)}>채팅</Button>
                                 </UserRow>)}</UserWrapper>}
                         </>}
                 </SubmitWrapper>
@@ -190,13 +198,18 @@ background-color: #FAFAFA;
 border-radius: 10px;
 box-shadow: 5px 2px 7px -2px rgba(17, 20, 24, 0.15);
 margin-bottom: 13px;
-width: 80%;
+width: 90%;
 `
 const UserRow = styled.div`
 display: grid;
-grid-template-columns: 80px 40px 40px 1fr;
+grid-template-columns: 80px 40px 20px 1fr 60px;
 margin-bottom: 11px;
 align-items: center;
+.mine-ok {
+    background-color: var(--button-color);
+    color: #FAFAFA;
+    padding: 10px 12px;
+}
 `
 const Name = styled.div`
 font-family: nanum-square-bold;
@@ -214,11 +227,7 @@ margin-left: 5px;
 const ButtonWrapper = styled.div`
 display: flex;
 justify-self: end;
-.mine-ok {
-    background-color: var(--button-color);
-    color: #FAFAFA;
-    padding: 10px 12px;
-}
+
 .mine-c{
     background-color: #FAFAFA;
     color: var(--button-color);

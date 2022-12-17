@@ -55,7 +55,7 @@ export function Tayo() {
                 <Top>
                 <Title>같이 타요!</Title> 
                 <Icons>
-                    <FiFilter className="tayo-filter" onClick={openModal}/>
+                    <FiFilter className="tayo-filter"/>
                     <HiPlus className="tayo-plus" onClick={clickPlus}/>
                 </Icons>
                 </Top>
