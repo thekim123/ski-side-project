@@ -13,7 +13,8 @@ public interface ChatRepository extends ReactiveMongoRepository<Chat, String> {
     Flux<Chat> mFindByRoomName(String roomName);
 
     @Tailable
-    @Query("{ sender : ?0, receiver : ?1}")
+    @Query(value = "{ $or:[{sender : ?0, receiver : ?1}, {sender : ?1, receiver: ?0}]}")
     Flux<Chat> mFindBySender(String sender, String receiver);
+
 
 }

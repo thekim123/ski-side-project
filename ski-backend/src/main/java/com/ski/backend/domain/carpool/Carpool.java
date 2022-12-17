@@ -26,7 +26,7 @@ public class Carpool {
     @ManyToOne
     private User user;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Negotiate negotiate;
 
     private int curPassenger;

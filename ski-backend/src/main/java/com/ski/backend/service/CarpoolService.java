@@ -47,13 +47,23 @@ public class CarpoolService {
 
     @Transactional
     public void update(CarpoolRequestDto dto, long carpoolId) {
-        dto.setId(carpoolId);
         Carpool carpoolEntity = carpoolRepository.findById(carpoolId).orElseThrow(() -> new IllegalArgumentException("카풀 글 수정 실패 : 게시글의 ID를 찾을 수 없습니다."));
+        Long negotiateId = carpoolEntity.getNegotiate().getId();
+        Negotiate negotiate = negotiateRepository.findById(negotiateId).orElseThrow(()-> new IllegalArgumentException("협상 아이디를 찾을 수 없습니다."));
+
+        negotiate.setDestination(dto.getNegotiate().isDestination());
+        negotiate.setDeparture(dto.getNegotiate().isDeparture());
+        negotiate.setDepartTime(dto.getNegotiate().isDepartTime());
+        negotiate.setBoardingPlace(dto.getNegotiate().isBoardingPlace());
+        carpoolEntity.setNegotiate(negotiate);
+
         carpoolEntity.setMemo(dto.getMemo());
         carpoolEntity.setDepartTime(dto.getDepartTime());
         carpoolEntity.setPassenger(dto.getPassenger());
         carpoolEntity.setDestination(dto.getDestination());
         carpoolEntity.setDeparture(dto.getDeparture());
+        carpoolEntity.setSmoker(dto.isSmoker());
+        carpoolEntity.setBoarding(dto.getBoarding());
     }
 
     @Transactional(readOnly = true)

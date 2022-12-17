@@ -43,8 +43,8 @@ public class SubmitApiController {
     }
 
     @PutMapping("admit")
-    public CmRespDto<?> admit(@RequestBody AdmitDto dto) {
-        submitService.admit(dto);
+    public CmRespDto<?> admit(@RequestBody AdmitDto dto, Authentication authentication) {
+        submitService.admit(dto, authentication);
         return new CmRespDto<>(1, "승인 성공", null);
     }
 
