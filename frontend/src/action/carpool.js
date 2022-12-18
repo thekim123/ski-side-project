@@ -60,6 +60,33 @@ export const editCarpool = (id, carpool) => {
     }
 } 
 
+export const asyncEditCarpool = createAsyncThunk(
+    'carpoolSlice/asyncEditCarpool',
+    async (carpool) => {
+        const resp = await Send({
+            url: `/carpool/update/${carpool.id}`,
+            method: 'put',
+            data: carpool,
+        })
+        console.log("resp", resp);
+        return resp.data;
+    }    
+)
+
+export const deleteCarpool = (id) => {
+    return function (dispatch) {
+        Send({
+            url: `/carpool/delete/${id}`,
+            method: 'delete',
+        }).then((resp) => {
+            console.log("resp", resp);
+            //dispatch(carpoolActions.get());
+            //dispatch(loadCarpools());
+        })
+        .catch((error) => console.log(error));        
+    }
+}
+
 export const submitCarpool = (id) => {
     return function (dispatch) {
         Send({

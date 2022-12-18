@@ -10,6 +10,8 @@ import styled from 'styled-components'
 import {FaSkiing} from 'react-icons/fa'
 import { BsFillChatFill } from 'react-icons/bs'
 
+const { Kakao } = window;
+
 export function Login() {
     const userRef = useRef();
     const errRef = useRef();

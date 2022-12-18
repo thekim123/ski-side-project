@@ -39,11 +39,27 @@ import CarPoolChat from './components/CarPool/CarPoolChat';
 import Alarm from './components/Alarm/Alarm';
 import MySubmit from './components/My/MySubmit';
 import MyReceived from './components/My/MyReceived';
+import { asyncGetUser } from './action/auth';
+import Send from './components/common/Send'
 
 function App() {
-  const dispatch = useDispatch();
   //const cors = require('cors');
   //App.use(cors())
+  const dispatch = useDispatch();
+  /*
+  useEffect(() => {
+    const getUserInfo = async () => {
+      const result = await dispatch(asyncGetUser()).unwrap();
+      console.log("middle")
+    }
+    let token = localStorage.getItem('access_token');
+        if (token) {
+          console.log(token)
+            Send.defaults.headers.common['Authorization'] = token;
+            getUserInfo();
+            console.log("end")
+        }
+  }, [])*/
 
   return (
     <Wrapper>

@@ -7,6 +7,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCarpool, getSubmits, submitCarpool } from '../../action/carpool'
 import OkButtonModal from '../common/OkButtonModal'
+import { getUser } from '../../action/auth'
 
 export function CarPoolDetail() {
     const navigate = useNavigate();
@@ -21,14 +22,17 @@ export function CarPoolDetail() {
     const [questBtn, setQuestBtn] = useState("문의하기");
     const [showBtn, setShowBtn] = useState("신청하기");
     const [submitUser, setSubmitUser] = useState(false);
+    const [delOpen, setDelOpen] = useState(false);
     const {id} = useParams();
 
     const handlePencil = e => {
-        //navigate(`/carpool/edit/${id}`)
-        navigate('/carpool/edit/1')
+        navigate(`/carpool/edit/${id}`)
     }
     const handleTrash = e => {
-        //console.log(carpool);
+        setDelOpen(true);
+    }
+    const closeDel = e => {
+        setDelOpen(false);
     }
 
     const dummyFunc = (id) => {
@@ -53,7 +57,6 @@ export function CarPoolDetail() {
     useEffect(() => {
         setSubmitUser(false);
         dispatch(getCarpool(id));
-        
     }, [dispatch]);
 
     useEffect(() => {
@@ -61,7 +64,7 @@ export function CarPoolDetail() {
     }, [])
 
     useEffect(() => {
-        if (carpool) {
+        if (carpool && user) {
             //setDate(new Date(carpool.createDate));
             const t = new Date(carpool.createDate)
             const month = t.getMonth() + 1
@@ -71,7 +74,7 @@ export function CarPoolDetail() {
                 setIsMine(true);
             }
         }
-    }, [carpool])
+    }, [carpool, user])
 
     useEffect(() => {
         if (submits) {
@@ -87,7 +90,7 @@ export function CarPoolDetail() {
 
     return (
         <>
-    {carpool && <Wrapper>
+    {carpool && user && <Wrapper>
         <Top>
             <div>
                 <User>{carpool.user.nickname.split("_")[0]}</User>
@@ -96,8 +99,15 @@ export function CarPoolDetail() {
             <Icons>
                 {isMine && <HiPencil className="boardPost-icon" onClick={handlePencil}/>}
                 {isMine && <BsTrashFill className="boardPost-icon" onClick={handleTrash}/>}
-            </Icons>
+            </Icons>          
         </Top>
+        <OkButtonModal
+                            open={delOpen}
+                            close={closeDel}
+                            message={"게시글을 삭제하시겠습니까?"}
+                            ok={"삭제"}
+                            usage={"carpoolDel"}
+                            targetId={id}/>  
 
         <CarPoolListItem {...carpool} func={dummyFunc}/>
 

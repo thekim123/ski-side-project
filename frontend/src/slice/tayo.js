@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { asyncAddTayo, asyncLoadTayos } from '../action/tayo';
 
 const initialState = {
     posts: [],
@@ -23,6 +24,14 @@ const tayoSlice = createSlice({
         deletePost(state) {
             
         }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(asyncAddTayo.fulfilled, (state) => {
+            
+        })
+        builder.addCase(asyncLoadTayos.fulfilled, (state, action) => {
+            state.posts = action.payload;
+        })
     }
 });
 
