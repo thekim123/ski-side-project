@@ -8,6 +8,9 @@ import { AiOutlineLike } from 'react-icons/ai'
 import { BsPeopleFill } from 'react-icons/bs'
 import { MdEmojiPeople } from 'react-icons/md'
 import { deletePost } from '../../action/board'
+import { BsBoxArrowUpRight } from 'react-icons/bs';
+import { MdSnowboarding } from 'react-icons/md'
+import { FaSkiing } from 'react-icons/fa'
 
 function TayoListItem(props) { 
     const user = useSelector(state => state.auth.user);
@@ -39,12 +42,11 @@ function TayoListItem(props) {
 
     const showIcon = () => {
         //if (user === props.user.username) setIsMine(true);
-        console.log(props);
     }
 
     const setScreenTitle = () => {
         if (props.title.length > 18) {
-        setTitle(props.title.slice(0, 18)+"...")
+        setTitle(props.title.slice(0, 9)+"...")
         } else {
             setTitle(props.title)
         }
@@ -71,7 +73,8 @@ function TayoListItem(props) {
     return (
         <PostContainer>
             <Top>
-                <SkiName>{props.resortName}[엘리시안]</SkiName>
+                {/* <SkiName>{props.resortName}</SkiName> */}
+                <TempTitle>{props.title}</TempTitle>
                 <Time>{timePass}</Time>
                 {/*
                 <div>
@@ -79,30 +82,62 @@ function TayoListItem(props) {
                     {isMine && <BsTrashFill className="boardPost-icon" onClick={handleTrash}/>}
     </div>*/}
             </Top>
+            
+            <Bottom>
+                {props.tayoDt.slice(5, 7)}/{props.tayoDt.slice(8, 10)} {props.tayoStrTime.slice(11, 16)} ~ {props.tayoEndTime.slice(11, 16)}
+            </Bottom>
             <Content 
             // onClick={showDetail}
             >
+                <BtnElse>
+                <Count>
+                    {props.rideDevice === '스키' ? <FaSkiing className='tayo-ski'/> : <MdSnowboarding className='tayo-ski'/>}
+                    {props.rideDevice}
+                </Count>
                 <Count>
                     <BsPeopleFill className="tayo-count"/>
-                    {!props.tayoMemCnt ? "인원 무제한" :  <div>0 / {props.tayoMemCnt}</div>}
+                    {!props.tayoMemCnt ? "인원 무제한" :  <div>{props.tayoMemCnt}명 모집</div>}
                 </Count>
                 <Age>
                     <MdEmojiPeople className="tayo-age" />
                     {age_kor[ageData.indexOf(props.age)]}
                 </Age>
                 <TitleTime>
-                    <Title>{title}</Title>
+                    {/* <Title>{title}</Title> */}
                 </TitleTime>
+                </BtnElse>
+                <KakaoUrl>
+                    <Button onClick={() => window.open("https"+props.comment.split("https")[1], '_blank')}>
+                        오픈 채팅
+                        <SBsBoxArrowUpRight />
+                    </Button>
+                </KakaoUrl>
             </Content>
+
         </PostContainer>
     )
 }
 
+const KakaoUrl = styled.div`
+
+`
+const Button = styled.button`
+border: none;
+padding: 10px 7px;
+border-radius: 6px;
+font-family: nanum-square-bold;
+background-color: #FEE500;
+`
+const SBsBoxArrowUpRight = styled(BsBoxArrowUpRight)`
+width: 11px;
+height: 11px;
+padding-left: 4px;
+`
 const PostContainer = styled.div`
     background-color: #FAFAFA;
     //border: 0.1rem solid #CCCCCC;
     border-radius: 10px;
-    margin: 10px 20px;
+    margin: 16px 20px;
     padding: 3px;
     padding-bottom: 10px;
     color: gray;
@@ -120,38 +155,64 @@ const Top = styled.div`
         color: var(--button-color);
         padding-right: 3px;
     }
+    padding-bottom: 5px;
 `
-
+const TempTitle = styled.div`
+font-family: nanum-square-bold;
+font-size: 14px;
+color: black;
+`
 const SkiName = styled.div`
     font-size: 0.8rem;
 `
 
 const Content = styled.div`
 display: flex;
+justify-content: space-between;
 align-items: center;
 padding: 0 10px;
+`
+const BtnElse = styled.div`
+display: grid;
+grid-template-columns: 48px 63px 38px;
+align-items: center;
 `
 const Count = styled.div`
 display: grid;
 font-size:12px;
 text-align: center;
+padding-right: 8px;
+justify-items: center;
 .tayo-count{
-    width: 2rem;
-    height: 2rem;
+    //width: 2rem;
+    //height: 2rem;
+    width: 1.3rem;
+    height: 1.3rem;
     color: var(--button-color);
     padding-left: 10px;
     padding-right: 10px;
+    padding-bottom: 3px;
 }
-
+.tayo-ski{
+    width: 1.2rem;
+    height: 1.3rem;
+    color: var(--button-color);
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 3px;
+}
 `
 const Age = styled.div`
 display: grid;
 font-size:12px;
 text-align: center;
 padding-left: 5px;
+justify-items: center;
 .tayo-age{
-    width: 3rem;
-    height: 1.9rem;
+    //width: 3rem;
+    //height: 1.9rem;
+    width: 2rem;
+    height: 1.3rem;
     color: var(--button-color);
     padding-top: 3px;
 }
@@ -168,6 +229,14 @@ color: black;
 const Time = styled.div`
 text-align: right;
 font-size: 12px;
+`
+const Bottom = styled.div`
+font-size: 12px;
+color: var(--button-sub-color);
+//color: gray;
+font-family: nanum-square-bold;
+padding: 0 7px;
+padding-bottom: 12px;
 `
 
 export default TayoListItem

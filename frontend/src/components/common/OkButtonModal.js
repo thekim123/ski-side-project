@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { deleteComment, deletePost } from '../../action/board';
 import { deleteCbPost, deleteClubComment } from '../../action/clubBoard';
 import { deleteTayo } from '../../action/tayo';
-import { submitCarpool } from '../../action/carpool';
+import { deleteCarpool, submitCarpool } from '../../action/carpool';
 
 export default function OkButtonModal(props) {
     const dispatch = useDispatch();
@@ -46,6 +46,10 @@ export default function OkButtonModal(props) {
             props.close();
             //navigate to chat
             navigate(`/carpool/chat/${id}/carpool${id}submit${props.submitId}writer${props.writerId}/submit`)            
+        } else if (props.usage === "carpoolDel") {
+            dispatch(deleteCarpool(props.targetId));
+            props.close();
+            navigate('/carpool');
         }
     }
 

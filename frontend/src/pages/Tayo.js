@@ -13,6 +13,7 @@ export function Tayo() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const posts = useSelector(state => state.tayo.posts);
+    const [tayos, setTayos] = useState([]); 
     const [selectedResort, setSelectedResort] = useState("[전체]"); 
     const [filteredResorts, setFilteredResorts] = useState(posts); 
     const [modalOpen, setModalOpen] = useState(false);
@@ -35,9 +36,14 @@ export function Tayo() {
 
     
     useEffect(() => {
-        console.log("t");
         dispatch(loadTayos());
     }, [dispatch]);
+
+    useEffect(() => {
+        if (posts) {
+            setTayos([...posts]);
+        }
+    }, [posts])
 
     /*
     useEffect(() => {
@@ -63,7 +69,7 @@ export function Tayo() {
             </TopWrapper>
 
             <POSTS>
-            {posts.length > 0 && posts.map((post) => (
+            {tayos.length > 0 && posts.map((post) => (
                 <TayoListItem key={post.tayo_id} {...post} />
             ))
             }
@@ -76,6 +82,7 @@ const Container = styled.div`
 //background-color: white;
     color: black;
     padding-top: 20px;
+    margin-bottom: 50px;
 `
 
 const TopWrapper = styled.div`

@@ -1,3 +1,4 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import Send from '../components/common/Send';
 import { tayoActions } from '../slice/tayo';
 
@@ -59,6 +60,35 @@ export const addTayo = (post) => {
         .catch((error) => console.log(error));
     }
 }
+
+export const asyncAddTayo = createAsyncThunk(
+    'tayoSlice/asyncAddTayo',
+    async (post) => {
+        const resp = await Send({
+            url: '/tayo',
+            method: 'post',
+            data: post,
+        })
+        console.log("asyncAddTayo", resp);
+        return resp.data.data;
+    }
+)
+
+export const asyncLoadTayos = createAsyncThunk(
+    'tayoSlice/asyncLoadTayos',
+    async () => {
+        const resp = await Send({
+            url: '/tayo',
+            method: 'get',
+            params: {
+                page: 0,
+                size: 1000
+            },
+        })
+        console.log("asyncLoadTayos", resp);
+        return resp.data.data.content;
+    }
+)
 
 export const getSinglePost = (id) => {
     return function (dispatch) {

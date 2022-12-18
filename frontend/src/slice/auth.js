@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { asyncGetUser } from '../action/auth';
 
 const initialState = {
     token: null,
@@ -28,6 +29,11 @@ const authSlice = createSlice({
         fail: (state) => {
             state.error = "아이디 또는 비밀번호가 존재하지 않습니다.";
         }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(asyncGetUser.fulfilled, (state, action) => {
+            state.user = action.payload;
+        })
     }
 })
 

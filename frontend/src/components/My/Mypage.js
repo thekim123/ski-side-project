@@ -24,6 +24,10 @@ export default function Mypage() {
     const gotoGetSubmit = () => {
         navigate('/my/received');
     }
+    const logout = () => {
+        window.localStorage.removeItem('access_token');
+        navigate('/');
+    }
 
     return (
     <Wrapper>
@@ -50,6 +54,10 @@ export default function Mypage() {
         <SubmitWrapper onClick={gotoGetSubmit}>
             <SubmitTitle>받은 신청</SubmitTitle>
             <IoIosArrowForward />
+        </SubmitWrapper>
+
+        <SubmitWrapper onClick={logout}>
+            <SubmitTitle>로그아웃</SubmitTitle>
         </SubmitWrapper>
     </Wrapper>
     )

@@ -53,6 +53,7 @@ export default function MyPageDetail() {
 
     useEffect(() => {
         if (carpools.length > 0) {
+            console.log(user);
             setMyCarpools(carpools.filter(carpool => carpool.user.id === user.id));
         }
         console.log("test", myCarpools)
