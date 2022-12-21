@@ -1,22 +1,22 @@
 package com.ski.backend.domain.club;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ski.backend.domain.BaseTimeEntity;
+import com.ski.backend.domain.common.AgeGrp;
 import com.ski.backend.domain.resort.Resort;
-import com.ski.backend.domain.user.User;
 import com.ski.backend.web.dto.ClubRequestDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.EnumType.*;
 import static javax.persistence.FetchType.*;
 
 @Getter
+@Setter
 @Entity
 @Builder
 @NoArgsConstructor
@@ -34,15 +34,13 @@ public class Club extends BaseTimeEntity {
     @Column(name = "club_id")
     private long id;
 
-    @JsonIgnoreProperties({"club", "board"})
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name="user_id")
-    private User user;
-
-
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "resort_id")
     private Resort resort;
+
+    @OneToMany(mappedBy = "club", fetch = EAGER, orphanRemoval = true)
+    private List<ClubUser> clubUsers = new ArrayList<>();
+
 
     /**
      *  동호회명
@@ -98,5 +96,9 @@ public class Club extends BaseTimeEntity {
         this.memo = dto.getMemo();
         this.url = dto.getUrl();
         this.resort = resort;
+    }
+
+    public void addMember() {
+        this.memberCnt++;
     }
 }

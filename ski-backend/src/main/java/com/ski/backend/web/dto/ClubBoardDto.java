@@ -3,6 +3,7 @@ package com.ski.backend.web.dto;
 import com.ski.backend.domain.club.Club;
 
 import com.ski.backend.domain.club.ClubBoard;
+import com.ski.backend.domain.club.ClubUser;
 import com.ski.backend.domain.club.Reply;
 
 import com.ski.backend.domain.user.User;
@@ -25,8 +26,10 @@ public class ClubBoardDto {
     private Long id;
 
     // 동호회
-
     private Long clubId;
+
+    // 유저
+    private Long userId;
 
     // 댓글
     private List<Reply> replies;
@@ -58,32 +61,22 @@ public class ClubBoardDto {
 
     private LocalDateTime updateDt;
 
-    public ClubBoardDto(ClubBoard clubBoard) {
-        this.id = clubBoard.getId();
-        this.clubId =clubBoard.getClub().getId();
-        this.replies =clubBoard.getReplies();
-        this.title =clubBoard.getTitle();
-        this.content =clubBoard.getContent();
-        this.tempFlag =clubBoard.getTempFlag();
-        this.sortScope =clubBoard.getSortScope();
-        this.createDt = clubBoard.getCreatedDate();
-    }
-    public ClubBoardDto(ClubBoard clubBoard , User user) {
-        this.id = clubBoard.getId();
-        this.clubId =clubBoard.getClub().getId();
-        this.replies =clubBoard.getReplies();
-        this.title =clubBoard.getTitle();
-        this.content =clubBoard.getContent();
-        this.tempFlag =clubBoard.getTempFlag();
-        this.sortScope =clubBoard.getSortScope();
-        this.nickName = user.getNickname();
-        this.createDt = clubBoard.getCreatedDate();
+
+    public ClubBoardDto(ClubBoard cb) {
+        this.id = cb.getId();
+        this.replies =cb.getReplies();
+        this.title =cb.getTitle();
+        this.content =cb.getContent();
+        this.tempFlag =cb.getTempFlag();
+        this.sortScope =cb.getSortScope();
+        this.nickName = cb.getClubUser().getUser().getNickname();
+        this.createDt = cb.getCreatedDate();
     }
 
 
-    public ClubBoard toEntity(User user, Club club) {
+    public ClubBoard toEntity(ClubUser clubUser) {
         return ClubBoard.builder()
-                .club(club)
+                .clubUser(clubUser)
                 .title(title)
                 .content(content)
                 .tempFlag(tempFlag)

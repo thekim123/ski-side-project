@@ -2,6 +2,7 @@ package com.ski.backend.domain.club;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ski.backend.domain.BaseTimeEntity;
+import com.ski.backend.domain.user.User;
 import com.ski.backend.web.dto.ClubBoardDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +14,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.CascadeType.REMOVE;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -28,14 +30,13 @@ public class ClubBoard extends BaseTimeEntity {
     @Column(name = "clubBoard_id")
     private Long id;
 
-    // 동호회
+    @JoinColumn(name="clubUser_id")
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "club_id")
-    private Club club;
+    private ClubUser clubUser;
 
     // 댓글
     @JsonIgnore
-    @OneToMany(mappedBy = "clubBoard")
+    @OneToMany(mappedBy = "clubBoard",orphanRemoval = true)
     private List<Reply> replies = new ArrayList<>();
 
     // 제목

@@ -1,16 +1,19 @@
 package com.ski.backend.service;
 
 
+import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.domain.club.Club;
 import com.ski.backend.domain.club.ClubBoard;
 import com.ski.backend.domain.club.ClubUser;
 import com.ski.backend.domain.club.Reply;
 import com.ski.backend.domain.user.User;
+import com.ski.backend.handler.ex.CustomApiException;
 import com.ski.backend.repository.*;
 import com.ski.backend.web.dto.ClubBoardDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +29,7 @@ public class ClubBoardService {
     private final ClubRepository clubRepository;
     private final ClubUserRepository clubUserRepository;
 
-    private final ReplyRepository replyRepository;
+
     /**
      * 동호회 게시판
      * 상세 조회 -{boardId}
@@ -41,9 +44,9 @@ public class ClubBoardService {
      * 동호회 게시판 전체 조회
      */
     @Transactional
-    public Page<ClubBoardDto> getAllClubBoard(Pageable pageable, long clubId, User user) {
+    public Page<ClubBoardDto> getAllClubBoard(Pageable pageable, long clubId) {
         Page<ClubBoard> clubBoard = clubBoardRepository.findByClubId(pageable, clubId);
-        return clubBoard.map(clubBoard1 -> new ClubBoardDto(clubBoard1,user));
+        return clubBoard.map(ClubBoardDto::new);
     }
 
 
@@ -63,29 +66,40 @@ public class ClubBoardService {
             return new IllegalArgumentException("동호회 찾기 실패");
         });
 
-        ClubBoard cb = dto.toEntity(user, club);
+        ClubUser clubUser = clubUserRepository.findByClubId(club.getId(), findUser.getId(), "관리자").orElseThrow(() -> {
+            return new CustomApiException("관리자만 게시판을 생성할 수 있습니다.");
+        });
+
+        ClubBoard cb = dto.toEntity(clubUser);
         clubBoardRepository.save(cb);
-        ClubUser clubBoardUser = new ClubUser(cb, findUser);
-        findUser.getClubUsers().add(clubBoardUser);
-        clubBoardUser.setRole("관리자");
+
         return dto;
     }
 
+    // 게시판 수정
     @Transactional
-    public void update(long clubBoardId, ClubBoardDto dto) {
+    public void update(long clubBoardId, ClubBoardDto dto, Authentication auth) {
         ClubBoard boards = clubBoardRepository.findById(clubBoardId).orElseThrow(() -> new IllegalArgumentException("동호회 게시판 수정 실패"));
+        validateClubBoard(clubBoardId,auth);
         boards.update(dto);
     }
 
-    public void delete(long clubBoardId) {
+    // 게시판 삭제
+    public void delete(long clubBoardId,Authentication auth) {
         ClubBoard cb = clubBoardRepository.findById(clubBoardId).orElseThrow(() -> new IllegalArgumentException("동호회 게시판 삭제 완료"));
-        List<ClubUser> cu = clubUserRepository.findByClubBoard(cb);
-        if (cu.size() < 0) {
-            throw new IllegalArgumentException("동호회 게시판 유저 삭제 완료");
-        }
-        List<Reply> replyList = replyRepository.findByClubBoard(cb);
-        replyRepository.deleteAll(replyList);
-        clubUserRepository.deleteAll(cu);
+        validateClubBoard(clubBoardId,auth);
         clubBoardRepository.delete(cb);
     }
+
+    // 동호회 게시판 만든사람이 관리자인지 확인 해야댐
+    public void validateClubBoard(long clubBoardId, Authentication auth){
+        PrincipalDetails pd = (PrincipalDetails) auth.getPrincipal();
+        String role = "관리자";
+        ClubBoard cb = clubBoardRepository.findByClubBoardId(clubBoardId, pd.getUser().getId(), role).orElseThrow(() -> new CustomApiException("관리자만 동호회 게시판을 수정 / 삭제할 수 있습니다."));
+
+        if(cb.getId() != clubBoardId){
+            throw new CustomApiException("관리자만 동호회 게시판을 수정 / 삭제할 수 있습니다.");
+        }
+    }
+
 }
