@@ -1,12 +1,17 @@
 package com.ski.backend.service;
 
+import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.domain.carpool.Carpool;
 import com.ski.backend.domain.carpool.Submit;
+import com.ski.backend.domain.user.ChatRoom;
+import com.ski.backend.domain.user.User;
 import com.ski.backend.handler.ex.CustomApiException;
 import com.ski.backend.repository.CarpoolRepository;
+import com.ski.backend.repository.ChatRoomRepository;
 import com.ski.backend.repository.SubmitRepository;
 import com.ski.backend.web.dto.AdmitDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +22,7 @@ import java.util.List;
 public class SubmitService {
     private final SubmitRepository submitRepository;
     private final CarpoolRepository carpoolRepository;
+    private final ChatRoomRepository chatRoomRepository;
 
     @Transactional(readOnly = true)
     public List<Submit> getSubmit(long toCarpoolId) {
@@ -24,7 +30,9 @@ public class SubmitService {
     }
 
     @Transactional
-    public void submit(long fromUserId, long toCarpoolId) {
+    public void submit(Authentication authentication, long toCarpoolId) {
+        Long fromUserId = getPrincipalId(authentication);
+
         try {
             submitRepository.mSubmit(fromUserId, toCarpoolId);
         } catch (Exception e) {
@@ -33,16 +41,26 @@ public class SubmitService {
     }
 
     @Transactional
-    public void unSubmit(long fromUserId, long toCarpoolId) {
+    public void unSubmit(Authentication authentication, long toCarpoolId) {
+        Long fromUserId = getPrincipalId(authentication);
         submitRepository.mUnSubmit(fromUserId, toCarpoolId);
     }
 
     @Transactional
-    public void admit(AdmitDto dto) {
+    public void admit(AdmitDto dto, Authentication authentication) {
+
         long carpoolId = dto.getToCarpoolId();
         Carpool carpoolEntity = carpoolRepository.findById(carpoolId).orElseThrow(() -> new IllegalArgumentException("카풀 게시글을 찾을 수 없습니다."));
         carpoolEntity.setCurPassenger(carpoolEntity.getCurPassenger() + 1);
         Submit submitEntity = submitRepository.findByFromUserIdAndToCarpoolId(dto.getAdmitUserId(), dto.getToCarpoolId());
+
+//        String chatRoomName = "carpool" + carpoolId + "submit" + submitEntity.getId() + "writer" + getPrincipalId(authentication);
+//        ChatRoom chatRoomEntity = new ChatRoom();
+//        chatRoomEntity.setRoomName(chatRoomName);
+//        chatRoomEntity.setUser(getPrincipal(authentication));
+//
+//        chatRoomRepository.save(chatRoomEntity);
+
         submitEntity.setState("승인");
     }
 
@@ -52,4 +70,18 @@ public class SubmitService {
         submitEntity.setState("거절");
     }
 
+    @Transactional(readOnly = true)
+    public List<Submit> getMySubmit(Authentication authentication) {
+        System.out.println(getPrincipalId(authentication));
+        return submitRepository.findByFromUserId(getPrincipalId(authentication));
+    }
+
+    public User getPrincipal(Authentication authentication) {
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        return principalDetails.getUser();
+    }
+
+    public Long getPrincipalId(Authentication authentication) {
+        return getPrincipal(authentication).getId();
+    }
 }

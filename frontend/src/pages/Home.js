@@ -18,6 +18,7 @@ export function Home() {
     const navigate = useNavigate();
     const posts = useSelector(state => state.board.posts);
     const isAuth = useSelector(state => state.auth.isAuth);
+    const user = useSelector(state => state.auth.user);
     const bookmarks = useSelector(state => state.bookmarks.bookmarks);
     const [top3, setTop3] = useState([]);
     const MyResort = ["엘리시안", "스키장2", "스키장3"];
@@ -38,37 +39,37 @@ export function Home() {
         navigate('/login');
     }
 
+    /*
     useEffect(() => {
         if (isAuth) {
             dispatch(loadPosts());
             if (posts) setTop3(posts.slice(-3).reverse());
         }
-    }, [isAuth]);
+    }, [isAuth]);*/
 
+    /*
     useEffect(() => {
         dispatch(loadBookmarks());
-    }, [dispatch]);
+    }, [dispatch]);*/
 
-    useEffect(() => {
-    }, [bookmarks])
     return(
         <Container>
             <Wrapper>
-                <Index>게시판</Index>
-                <BoardBox>
+                {/* <Index>게시판</Index> */}
+                {/* <BoardBox> */}
                     {/* loadPost(id)로 최근 3개 불러와서, 배열에 저장? */}
                     {/* 배열로 map */}
                     {/*top3 && top3.map(post => (
                         <Row><div>{post.title}</div></Row>
                     ))*/}
-                </BoardBox>
+                {/* </BoardBox> */}
             </Wrapper>
 
             <Wrapper>
                 <Index>내 스키장</Index>
                 <Box>
                     {
-                        isAuth ? 
+                        user ? 
                         bookmarks.length > 0 ? 
                             bookmarks.map((resort) => (
                                 <SkiButton 
@@ -132,11 +133,12 @@ const Container = styled.div`
 `
 
 const Wrapper = styled.div`
-margin-bottom: 20px;
+margin-bottom: 50px;
 `
 const Index = styled.div`
     font-family: nanum-square-bold;
     margin-top: 15px;
+    margin-left: 10px;
 `
 const BoardBox = styled.div`
 //background-color: #EFEADD;

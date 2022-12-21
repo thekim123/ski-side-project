@@ -1,6 +1,7 @@
 package com.ski.backend.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.domain.Tayo.Tayo;
 import com.ski.backend.domain.Tayo.TayoUser;
 import com.ski.backend.domain.board.Board;
@@ -12,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.Authentication;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -41,11 +43,11 @@ public class User {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Gender gender;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private AgeGrp ageGrp;
 
     @Enumerated(EnumType.STRING)
@@ -55,12 +57,15 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Board> boards;
 
+    @JsonIgnoreProperties({"user"})
+    @OneToMany
+    private List<ChatRoom> chatRooms;
 
     @JsonIgnoreProperties({"user"})
     @OneToMany(mappedBy = "user")
     private List<ClubUser> clubUsers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user" )
+    @OneToMany(mappedBy = "user", fetch = LAZY)
     private List<Carpool> carpools;
 
     @JsonIgnoreProperties({"user"})
@@ -76,4 +81,7 @@ public class User {
         this.createDate = LocalDateTime.now();
     }
 
+//    public void removeClub(ClubUser clubUser) {
+//        clubUsers.remove(clubUser);
+//    }
 }

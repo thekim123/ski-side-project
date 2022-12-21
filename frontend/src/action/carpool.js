@@ -1,3 +1,4 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import Send from '../components/common/Send';
 import { carpoolActions } from '../slice/carpool';
 
@@ -59,6 +60,33 @@ export const editCarpool = (id, carpool) => {
     }
 } 
 
+export const asyncEditCarpool = createAsyncThunk(
+    'carpoolSlice/asyncEditCarpool',
+    async (carpool) => {
+        const resp = await Send({
+            url: `/carpool/update/${carpool.id}`,
+            method: 'put',
+            data: carpool,
+        })
+        console.log("resp", resp);
+        return resp.data;
+    }    
+)
+
+export const deleteCarpool = (id) => {
+    return function (dispatch) {
+        Send({
+            url: `/carpool/delete/${id}`,
+            method: 'delete',
+        }).then((resp) => {
+            console.log("resp", resp);
+            //dispatch(carpoolActions.get());
+            //dispatch(loadCarpools());
+        })
+        .catch((error) => console.log(error));        
+    }
+}
+
 export const submitCarpool = (id) => {
     return function (dispatch) {
         Send({
@@ -86,6 +114,18 @@ export const getSubmits = (carpoolId) => {
         .catch((error) => console.log(error));        
     }
 }
+
+export const asyncGetSubmits = createAsyncThunk(
+    'carpoolSlice/asyncGetSubmits', 
+    async (carpoolId) => {
+        const resp = await Send({
+            url: `/submit/${carpoolId}`,
+            method: 'get',
+        })
+        console.log("resp", resp);
+        return resp.data.data;
+    }
+)
 
 export const admitSubmit = (data) => {
     return function (dispatch) {
@@ -117,4 +157,18 @@ export const refuseSubmit = (data) => {
         })
         .catch((error) => console.log(error)); 
     }
+}
+
+export const getMyCarSubmit = () => {
+    return function (dispatch) {
+        Send({
+            url: `/submit/getMySubmit`,
+            method: 'get',
+        }).then((resp) => {
+            console.log("resp", resp);
+            dispatch(carpoolActions.getMySubmit(resp.data.data));
+            //dispatch(loadCarpools());
+        })
+        .catch((error) => console.log(error)); 
+    }    
 }

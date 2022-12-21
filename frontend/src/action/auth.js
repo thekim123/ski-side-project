@@ -34,8 +34,8 @@ export const kakaoLogin = (backData) => {
         try {
             dispatch(authActions.setCredentials(backData.data));
             Send.defaults.headers.common['Authorization'] = 'Bearer '+backData.data;
-            dispatch(getUser()); 
-            console.log('Bearer '+backData.data)           
+            localStorage.setItem('access_token', 'Bearer '+backData.data);
+            dispatch(getUser());        
         } catch (e) {
             console.log(e);
         }
@@ -58,3 +58,15 @@ export const getUser = () => {
         });
     }
 }
+
+export const asyncGetUser = createAsyncThunk(
+    'authSlice/asyncGetUser',
+    async () => {
+        const resp = await Send({
+            url: `/user/get`,
+            method: 'get',
+        })
+        console.log("resp", resp);
+        return resp.data.data;
+    }
+)

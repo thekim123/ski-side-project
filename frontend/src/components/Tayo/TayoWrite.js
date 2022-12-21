@@ -9,7 +9,7 @@ import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { addTayo } from '../../action/tayo';
+import { addTayo, asyncAddTayo, asyncLoadTayos } from '../../action/tayo';
 
 export function TayoWrite() {
     const dispatch = useDispatch();
@@ -134,7 +134,7 @@ export function TayoWrite() {
     }
 
     // 제출 시
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault();
 
         const enteredTitle = titleInput.current.value;
@@ -146,19 +146,26 @@ export function TayoWrite() {
         let resortId = resortData.find(resort => resort.name === selectedResort).id;
         let cnt = cntBtn ? 0 : enteredCnt;
         let ageNum = age.indexOf(selectedAge);
+        let tempTitle = "["+selectedResort+"] "+enteredTitle;
+        let korStartTime = new Date(startTime.getTime() + 9*60*60*1000);
+        let korEndTime = new Date(endTime.getTime() + 9*60*60*1000);
+        let korDate = new Date(startDate.getTime() + 9*60*60*1000);
         const tayo = {
             rideDevice: selectedType,
             resortId: resortId,
-            tayoDt: startDate,
-            tayoStrTime: startTime,
-            tayoEndTime: endTime,
+            tayoDt: korDate,
+            tayoStrTime: korStartTime,
+            tayoEndTime: korEndTime,
             tayoMemCnt: cnt,
             age: ageNum,
-            title: enteredTitle,
+            //title: enteredTitle,
+            title: tempTitle,
             comment: enteredContent
         }
         console.log(tayo);
-        dispatch(addTayo(tayo));
+        //dispatch(addTayo(tayo));
+        await dispatch(asyncAddTayo(tayo)).unwrap();
+        await dispatch(asyncLoadTayos()).unwrap();
         navigate("/tayo");
     }
 
@@ -292,7 +299,12 @@ export function TayoWrite() {
             <Error><Dummy></Dummy><div>{error.title ? error.title : null}</div></Error>
 
             {isDone.age &&
-            <Input><label>홍보 문구</label><textarea type="text" ref={contentInput} onClick={resetContentError} /></Input>}
+            <Input><label>오픈 채팅방</label>
+            <textarea 
+                type="text" 
+                ref={contentInput} 
+                placeholder="오픈 채팅방 링크를 첨부해주세요 :D"
+                onClick={resetContentError} /></Input>}
             <Error><Dummy></Dummy><div>{error.content ? error.content : null}</div></Error>
 
             {isDone.age &&

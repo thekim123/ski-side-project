@@ -35,7 +35,7 @@ export function TopBar() {
                 <PageName></PageName>
             </LeftSide>
             <RightSide>
-                <HiOutlineChat className='chatBtn' onClick={gotoChatPage}/>
+                {/* <HiOutlineChat className='chatBtn' onClick={gotoChatPage}/> */}
                 {/* <BiBell className="bellBtn" onClick={gotoAlarm}/> */}
                 <BiUser className="myBtn" onClick={gotoMyPage}/>
             </RightSide>

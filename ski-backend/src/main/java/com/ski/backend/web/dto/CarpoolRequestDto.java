@@ -16,7 +16,7 @@ public class CarpoolRequestDto {
     private String destination;
     private String boarding;
     private String space;
-    private boolean isSmoker;
+    private boolean smoker;
     private String phoneNumber;
     private int cost;
     private Negotiate negotiate;
@@ -33,7 +33,7 @@ public class CarpoolRequestDto {
                 .passenger(passenger)
                 .memo(memo)
                 .boarding(boarding)
-                .isSmoker(isSmoker)
+                .isSmoker(smoker)
                 .negotiate(negotiate)
                 .build();
     }

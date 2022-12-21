@@ -21,7 +21,6 @@ public class CarpoolApiController {
 
     @PostMapping
     public CmRespDto<?> insert(@RequestBody CarpoolRequestDto dto, Authentication authentication) {
-        System.out.println(dto.getNegotiate());
         carpoolService.write(dto, authentication);
         return new CmRespDto<>(1, "카풀 게시글 등록 성공", null);
     }

@@ -18,31 +18,33 @@ public class SubmitApiController {
 
     private final SubmitService submitService;
 
+    @GetMapping("/getMySubmit")
+    public CmRespDto<?> getMySubmit(Authentication authentication) {
+        List<Submit> submitList = submitService.getMySubmit(authentication);
+        return new CmRespDto<>(1, "내가 신청한 카풀 조회 성공", submitList);
+    }
+
     @PostMapping("{toCarpoolId}")
     public CmRespDto<?> submit(Authentication authentication, @PathVariable long toCarpoolId) {
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        long userId = principalDetails.getUser().getId();
-        submitService.submit(userId, toCarpoolId);
+        submitService.submit(authentication, toCarpoolId);
         return new CmRespDto<>(1, "제출 성공", null);
     }
 
     @DeleteMapping("{toCarpoolId}")
     public CmRespDto<?> unSubmit(Authentication authentication, @PathVariable long toCarpoolId) {
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        long principalId = principalDetails.getUser().getId();
-        submitService.unSubmit(principalId, toCarpoolId);
+        submitService.unSubmit(authentication, toCarpoolId);
         return new CmRespDto<>(1, "삭제 성공", null);
     }
 
     @GetMapping("{toCarpoolId}")
-    public CmRespDto<?> getSubmit(@PathVariable long toCarpoolId, Authentication authentication) {
+    public CmRespDto<?> getSubmit(@PathVariable long toCarpoolId) {
         List<Submit> submitList = submitService.getSubmit(toCarpoolId);
         return new CmRespDto<>(1, "카풀 제출 리스트 가져오기 성공", submitList);
     }
 
     @PutMapping("admit")
-    public CmRespDto<?> admit(@RequestBody AdmitDto dto) {
-        submitService.admit(dto);
+    public CmRespDto<?> admit(@RequestBody AdmitDto dto, Authentication authentication) {
+        submitService.admit(dto, authentication);
         return new CmRespDto<>(1, "승인 성공", null);
     }
 

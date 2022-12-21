@@ -16,6 +16,7 @@ export default function CarPoolChat() {
     const [isMine, setIsMine] = useState(false);
     const [state, setState] = useState("0");
     const [submitOpen, setSubmitOpen] = useState(false);
+    const [submitNickname, setSubmitNickname] = useState("");
     const {id} = useParams();
     const {type} = useParams();
     const {room} = useParams();
@@ -63,9 +64,9 @@ export default function CarPoolChat() {
     useEffect(() => {
         
         if (submits) {
-            const sbm = submits.find(submit => submit.fromUser.id === user.id);
+            const sbm = submits.find(submit => submit.fromUser.id == submitId);
             if (sbm !== undefined) {
-                //수락 만들고 만약 state가 수락이면 다르게 보이도록.
+                setSubmitNickname(sbm.fromUser.nickname.split("_")[0])
                 setState(sbm.state);
                 console.log(sbm);
             }
@@ -80,12 +81,11 @@ export default function CarPoolChat() {
             {state !== '0' ? <Text>신청 {state}한 상대입니다.</Text> 
             :
             <MineRow>
-                <Text>{} 님이 카풀 신청을 했습니다.</Text>
+                <Text>{submitNickname} 님이 카풀 신청을 했습니다.</Text>
                 <Button className='mine-ok' onClick={admitUser}>수락</Button><Button className='mine-c' onClick={denyUser}>거절</Button>
             </MineRow>}
         </What>}
-        {/* 나중에 !isMine으로 바꾸기 */}
-        {isMine && 
+        {!isMine && 
         <What>
             {type === 'quest' && <Button onClick={handleSubmit}>카풀 신청하기</Button>}
             {type !== 'quest' && <div>{state === '0' ? <div>승인 대기</div> : <div>신청이 {state}되었습니다.</div>}</div>}

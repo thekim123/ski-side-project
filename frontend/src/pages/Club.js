@@ -30,14 +30,13 @@ export function Club() {
     const showDetail = async (e, club) => {
         //유저 목록을 불러올 때까지 기다렸다가, 불러온 이후 유저가 동호회 멤버인지 체크 후 다른 페이지 랜더링.
         try {
-            const users = await dispatch(asyncGetClubUser(club.id)).unwrap();
-            const isMember = users.find(u => u.username === user.username);
-            //const isMember = undefined;
+            //const users = await dispatch(asyncGetClubUser(club.id)).unwrap();
+            //const isMember = users.find(u => u.username === user.username);
+            const isMember = undefined;
             if (isMember !== undefined) {
                 navigate(`/club/detail/${club.id}`)
             } else {
-                console.log(users);
-                //navigate(`/club/secret/${club.id}`);
+                navigate(`/club/secret/${club.id}`);
             }
         } catch (e) {
             console.log(e);
@@ -69,7 +68,7 @@ export function Club() {
                         <Wrap>
                         <RankCnt>
                         <Rank id={sortedClubs[0].id}>1</Rank>
-                        <TopCnt id={sortedClubs[0].id}>{sortedClubs[0].memberCnt}명</TopCnt>
+                        {/* <TopCnt id={sortedClubs[0].id}>{sortedClubs[0].memberCnt}명</TopCnt> */}
                         </RankCnt>
                         <TopName id={sortedClubs[0].id}>{sortedClubs[0].clubNm}</TopName>
                         <TopResort id={sortedClubs[0].id}>{resortData.find(resort => resort.id === sortedClubs[0].resortId).name}</TopResort>
@@ -81,7 +80,7 @@ export function Club() {
                         <Wrap>
                         <RankCnt>
                         <Rank id={sortedClubs[1].id}>2</Rank>
-                        <TopCnt id={sortedClubs[1].id}>{sortedClubs[1].memberCnt}명</TopCnt>
+                        {/* <TopCnt id={sortedClubs[1].id}>{sortedClubs[1].memberCnt}명</TopCnt> */}
                         </RankCnt>
                         <TopName id={sortedClubs[1].id}>{sortedClubs[1].clubNm}</TopName>
                         <TopResort id={sortedClubs[1].id}>{resortData.find(resort => resort.id === sortedClubs[1].resortId).name}</TopResort>
@@ -94,7 +93,7 @@ export function Club() {
                         <Wrap>
                         <RankCnt>
                         <Rank id={sortedClubs[2].id}>3</Rank>
-                        <TopCnt id={sortedClubs[2].id}>{sortedClubs[2].memberCnt}명</TopCnt>
+                        {/* <TopCnt id={sortedClubs[2].id}>{sortedClubs[2].memberCnt}명</TopCnt> */}
                         </RankCnt>
                         <TopName id={sortedClubs[2].id}>{sortedClubs[2].clubNm}</TopName>
                         <TopResort id={sortedClubs[2].id}>{resortData.find(resort => resort.id === sortedClubs[2].resortId).name}</TopResort>
@@ -113,7 +112,7 @@ export function Club() {
                     <Wrap>
                         <RankCnt>
                         <Order id={club.id}>{i + 4}</Order>
-                        <MemCnt id={club.id}>{club.memberCnt}명</MemCnt>
+                        {/* <MemCnt id={club.id}>{club.memberCnt}명</MemCnt> */}
                         </RankCnt>
                         <ClubName id={club.id}>{club.clubNm}</ClubName>
                         <ClubResort id={club.id}>{resortData.find(resort => resort.id === club.resortId).name}</ClubResort>

@@ -20,4 +20,5 @@ public interface SubmitRepository extends JpaRepository<Submit, Long> {
 
     List<Submit> findByToCarpoolId(long carpoolId);
     Submit findByFromUserIdAndToCarpoolId(long fromUserId, long toCarpoolId);
+    List<Submit> findByFromUserId(long fromUserId);
 }
