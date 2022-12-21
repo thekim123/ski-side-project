@@ -1,8 +1,8 @@
 package com.ski.backend.repository;
 
 import com.ski.backend.domain.Tayo.Tayo;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.ski.backend.domain.Tayo.TayoUser;
+import com.ski.backend.domain.resort.Resort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,11 +12,13 @@ import java.util.List;
 public interface TayoRepository extends JpaRepository<Tayo, Long> {
 
 
-    // 스키장별 목록 조회
-    Page<Tayo> findByResortId(long resortId, Pageable pageable);
+//    // 스키장별 목록 조회
+//    Page<Tayo> findByResortId(long resortId, Pageable pageable);
+//
+    @Query(value = "select t from Tayo t join fetch Resort r on r.id = t.resort.id where r.id = :resortId")
+    List<Tayo> findByResortId(@Param("resortId") long resortId);
 
-    @Query(value = "select * from Tayo t join resort r where r.resortName = :resortName",
-            nativeQuery = true)
-    List<Tayo> findByResortName(@Param("resortName") String resortName);
+    @Query(value = "select t, tu.user.id from Tayo t join TayoUser tu on t.id = tu.tayo.id  where tu.tayo.id = :tayoId ")
+    Tayo findByTayoIds(@Param("tayoId") long tayoId);
 }
 

@@ -21,7 +21,7 @@ public class ClubBoardApiController {
 
     private final ClubBoardService clubBoardService;
 
-
+    // 게시판 생성
     @PostMapping
     public CmRespDto<ClubBoardDto> create(@RequestBody ClubBoardDto dto, Authentication auth) {
         PrincipalDetails principalDetails = (PrincipalDetails) auth.getPrincipal();
@@ -37,22 +37,21 @@ public class ClubBoardApiController {
     }
 
     @GetMapping("/{clubId}")
-    public CmRespDto<Page<ClubBoardDto>> getAllClubBoard(@PageableDefault(sort = "id", direction = DESC) Pageable pageable, @PathVariable long clubId,Authentication auth) {
-        PrincipalDetails principalDetails = (PrincipalDetails) auth.getPrincipal();
-        User user = principalDetails.getUser();
-        Page<ClubBoardDto> clubBoardDtos = clubBoardService.getAllClubBoard(pageable, clubId,user);
+    public CmRespDto<Page<ClubBoardDto>> getAllClubBoard(@PageableDefault(sort = "id", direction = DESC) Pageable pageable, @PathVariable long clubId) {
+
+        Page<ClubBoardDto> clubBoardDtos = clubBoardService.getAllClubBoard(pageable, clubId);
         return new CmRespDto<>(1, "클럽게시판 전체조회 완료", clubBoardDtos);
     }
 
     @PutMapping("/update/{clubBoardId}")
-    public CmRespDto<ClubBoardDto> updateClubBoard(@PathVariable long clubBoardId, @RequestBody ClubBoardDto dto) {
-        clubBoardService.update(clubBoardId, dto);
+    public CmRespDto<ClubBoardDto> updateClubBoard(@PathVariable long clubBoardId, @RequestBody ClubBoardDto dto, Authentication auth) {
+        clubBoardService.update(clubBoardId, dto,auth);
         return new CmRespDto<>(1, "클럽게시판 수정완료", null);
     }
 
     @DeleteMapping("/delete/{clubBoardId}")
-    public CmRespDto<ClubBoardDto> deleteClubBoard(@PathVariable long clubBoardId) {
-        clubBoardService.delete(clubBoardId);
+    public CmRespDto<ClubBoardDto> deleteClubBoard(@PathVariable long clubBoardId, Authentication auth) {
+        clubBoardService.delete(clubBoardId,auth);
         return new CmRespDto<>(1, "클럽게시판 삭제완료", null);
     }
 }

@@ -3,9 +3,10 @@ package com.ski.backend.domain.user;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.domain.Tayo.Tayo;
+import com.ski.backend.domain.Tayo.TayoUser;
 import com.ski.backend.domain.board.Board;
 import com.ski.backend.domain.carpool.Carpool;
-import com.ski.backend.domain.club.AgeGrp;
+import com.ski.backend.domain.common.AgeGrp;
 import com.ski.backend.domain.club.ClubUser;
 import com.ski.backend.domain.club.Gender;
 import lombok.AllArgsConstructor;
@@ -55,7 +56,7 @@ public class User {
     private Role roles;
 
     @JsonIgnoreProperties({"user"})
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user")
     private List<Board> boards;
 
     @JsonIgnoreProperties({"user"})
@@ -63,15 +64,15 @@ public class User {
     private List<ChatRoom> chatRooms;
 
     @JsonIgnoreProperties({"user"})
-    @OneToMany(mappedBy = "user", fetch = LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     private List<ClubUser> clubUsers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = LAZY)
+    @OneToMany(mappedBy = "user")
     private List<Carpool> carpools;
 
     @JsonIgnoreProperties({"user"})
     @OneToMany(mappedBy = "user")
-    private List<Tayo> tayos = new ArrayList<>();
+    private List<TayoUser> tayoUsers = new ArrayList<>();
 
     private LocalDateTime createDate;
 
@@ -82,8 +83,7 @@ public class User {
         this.createDate = LocalDateTime.now();
     }
 
-    public void removeClub(ClubUser clubUser) {
-        clubUsers.remove(clubUser);
-    }
-
+//    public void removeClub(ClubUser clubUser) {
+//        clubUsers.remove(clubUser);
+//    }
 }

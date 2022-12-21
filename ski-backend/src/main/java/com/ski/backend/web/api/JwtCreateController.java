@@ -6,7 +6,7 @@ import com.ski.backend.config.jwt.JwtProperties;
 //import com.project.ski.config.oauth.GoogleUser;
 import com.ski.backend.config.oauth.KakaoUser;
 import com.ski.backend.config.oauth.OAuthUserInfo;
-import com.ski.backend.domain.club.AgeGrp;
+import com.ski.backend.domain.common.AgeGrp;
 import com.ski.backend.domain.club.Gender;
 import com.ski.backend.domain.user.Role;
 import com.ski.backend.domain.user.User;

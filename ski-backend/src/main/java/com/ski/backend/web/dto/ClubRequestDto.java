@@ -1,11 +1,14 @@
 package com.ski.backend.web.dto;
 
-import com.ski.backend.domain.club.AgeGrp;
+import com.ski.backend.domain.common.AgeGrp;
 import com.ski.backend.domain.club.Club;
+import com.ski.backend.domain.club.ClubUser;
 import com.ski.backend.domain.club.Gender;
 import com.ski.backend.domain.resort.Resort;
 import com.ski.backend.domain.user.User;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Builder
@@ -40,33 +43,16 @@ public class ClubRequestDto {
     // 오픈카톡 URL
     private String url;
 
+    private List<ClubUser> user;
 
 
-    public ClubRequestDto getDto(Club club) {
-        this.memberCnt = club.getMemberCnt();
-        this.clubNm = club.getClubNm();
-        this.resortId = club.getResort().getId();
-        return this;
-    }
 
 
-    public ClubRequestDto clubDto(Club club) {
-        this.id = club.getId();
-        this.memberCnt = club.getMemberCnt();
-        this.clubNm = club.getClubNm();
-        this.resortId = club.getResort().getId();
-        this.gender = club.getGender();
-        this.ageGrp = club.getAgeGrp();
-        this.openYn = club.getOpenYn();
-        this.memo = club.getMemo();
-        return this;
-    }
 
     public Club toEntity(User user, Resort resort) {
         return Club.builder()
                 .clubNm(clubNm)
-                .user(user)
-                .memberCnt(memberCnt)
+                .memberCnt(+1)
                 .resort(resort)
                 .gender(gender)
                 .ageGrp(ageGrp)

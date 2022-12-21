@@ -1,11 +1,13 @@
 package com.ski.backend.web.dto;
 
-import com.ski.backend.domain.club.AgeGrp;
+import com.ski.backend.domain.common.AgeGrp;
 import com.ski.backend.domain.club.Club;
+import com.ski.backend.domain.club.ClubUser;
 import com.ski.backend.domain.club.Gender;
-import com.ski.backend.domain.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 
 @Data
@@ -20,6 +22,9 @@ public class ClubResponseDto {
 
     // 동호회명
     private String clubNm;
+
+    // 사용자
+    private String userId;
 
     // 스키장
     private Long resortId;
@@ -43,12 +48,22 @@ public class ClubResponseDto {
 
     private String nickName;
 
+    private List<ClubUser> clubUsers;
+
     public ClubResponseDto(long clubId, int memberCnt, String clubNm, long resortName, String openYn) {
         this.id = clubId;
         this.memberCnt = memberCnt;
         this.clubNm = clubNm;
         this.resortId = resortName;
         this.openYn = openYn;
+    }
+
+    public ClubResponseDto(long clubId, String clubNm, String memo, String openYn, int memberCnt) {
+        this.id = clubId;
+        this.clubNm = clubNm;
+        this.memo = memo;
+        this.openYn = openYn;
+        this.memberCnt = memberCnt;
     }
     public ClubResponseDto(Club club) {
         this.id = club.getId();
@@ -61,26 +76,5 @@ public class ClubResponseDto {
         this.memo = club.getMemo();
 
     }
-    public ClubResponseDto(Club club, User user) {
-        this.id = club.getId();
-        this.memberCnt = club.getMemberCnt();
-        this.clubNm = club.getClubNm();
-        this.resortId = club.getResort().getId();
-        this.gender = club.getGender();
-        this.ageGrp = club.getAgeGrp();
-        this.openYn = club.getOpenYn();
-        this.memo = club.getMemo();
-        this.nickName = user.getNickname();
-    }
-    public ClubResponseDto(long clubId,Club dto) {
-        this.id     = dto.getId();
-        this.clubNm = dto.getClubNm();
-        this.memberCnt =dto.getMemberCnt();
-        this.resortId = dto.getResort().getId();
-        this.gender = dto.getGender();
-        this.ageGrp = dto.getAgeGrp();
-        this.openYn = dto.getOpenYn();
-        this.memo = dto.getMemo();
-        this.url = dto.getUrl();
-    }
+
 }
