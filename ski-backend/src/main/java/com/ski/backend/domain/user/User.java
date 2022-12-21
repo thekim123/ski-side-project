@@ -20,6 +20,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Data
 @Entity
 @Builder
@@ -65,7 +67,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<ClubUser> clubUsers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = LAZY)
+    @OneToMany(mappedBy = "user")
     private List<Carpool> carpools;
 
     @JsonIgnoreProperties({"user"})
