@@ -12,6 +12,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.EnumType.*;
 import static javax.persistence.FetchType.*;
 
@@ -38,7 +39,7 @@ public class Club extends BaseTimeEntity {
     @JoinColumn(name = "resort_id")
     private Resort resort;
 
-    @OneToMany(mappedBy = "club", fetch = EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "club", cascade = ALL,orphanRemoval = true)
     private List<ClubUser> clubUsers = new ArrayList<>();
 
 

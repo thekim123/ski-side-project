@@ -8,6 +8,10 @@ import lombok.*;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -33,6 +37,8 @@ public class ClubUser {
     private User user;
 
 
+    @OneToMany( mappedBy = "clubUser",cascade = ALL, orphanRemoval = true)
+    private List<ClubBoard> clubBoards = new ArrayList<>();
     // 승인여부 확인용
 
     @Enumerated(EnumType.STRING)

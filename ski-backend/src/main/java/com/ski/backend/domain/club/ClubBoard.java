@@ -14,6 +14,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.CascadeType.REMOVE;
 import static javax.persistence.FetchType.LAZY;
 
@@ -31,7 +32,7 @@ public class ClubBoard extends BaseTimeEntity {
     private Long id;
 
     @JoinColumn(name="clubUser_id")
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY,cascade = REMOVE)
     private ClubUser clubUser;
 
     // 댓글
