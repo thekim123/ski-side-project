@@ -21,7 +21,9 @@ jobs:
           ls -al
         shell: bash
       - name: Build with Gradle
-        run: ./gradlew clean build
+        run: |
+          ls -al
+          ./gradlew clean build
         shell: bash
 
       - name: Get current time
