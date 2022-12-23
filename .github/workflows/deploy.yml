@@ -15,12 +15,10 @@ jobs:
         with:
           java-version: 11
       - name: Grant execute permission for gradlew
-        run: |
-          cd /home/webapp/ski-backend
-          chmod +x ./gradlew
+        run: chmod +x ./gradlew
         shell: bash
       - name: Build with Gradle
-        run: ./gradlew clean build
+        run: ./gradlew clean :tiltil-api:buildNeeded --stacktrace --info -x test
         shell: bash
 
       - name: Get current time
