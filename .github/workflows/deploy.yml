@@ -20,7 +20,7 @@ jobs:
           chmod +x ./gradlew
         shell: bash
       - name: Build with Gradle
-        run: ./gradlew clean :tiltil-api:buildNeeded --stacktrace --info -x test
+        run: ./gradlew clean :tiltil-api:build Needed --stacktrace --info -x test
         shell: bash
 
       - name: Get current time
