@@ -22,7 +22,7 @@ jobs:
         shell: bash
       - name: Build with Gradle
         run: |
-          ls -al
+          cd ski-backend
           ./gradlew clean build
         shell: bash
 
