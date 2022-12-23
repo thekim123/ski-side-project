@@ -8,6 +8,7 @@ class SkiBackendApplicationTests {
 
     @Test
     void contextLoads() {
+        System.out.println("hello world");
     }
 
 }
