@@ -1,34 +1,4 @@
-server:
-  port: 8080
-  servlet:
-    context-path: /
-    encoding:
-      charset: UTF-8
-      enabled: true
-      force: true
-
 spring:
-  devtools:
-    remote:
-      restart:
-        enabled: true
-
-  datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/ski?serverTimezone=Asia/Seoul
-    username: ski
-    password: skip1234
-
-  jpa:
-    open-in-view: true
-    hibernate:
-      ddl-auto: create
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    show-sql: true
-
-  h2:
-    console:
-      enabled: true
-
-spring.devtools.livereload.enabled: false
+  profiles:
+    active:
+      - prod
