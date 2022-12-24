@@ -18,7 +18,6 @@ jobs:
         run: |
           cd ski-backend
           chmod +x ./gradlew
-          ls -al
         shell: bash
       - name: Build with Gradle
         run: |
