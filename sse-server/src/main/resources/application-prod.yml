@@ -1,0 +1,9 @@
+server:
+  port: 8081
+
+spring:
+  data:
+    mongodb:
+      host: http://15.165.81.194
+      port: 27017
+      database: chatdb
