@@ -81,4 +81,12 @@ public class ClubUser {
     public void decline() {
         this.status = Status.DENIED;
     }
+
+    public void updateRole(){
+        this.role = "매니저";
+    }
+
+    public void declineRole() {
+        this.role = "회원";
+    }
 }

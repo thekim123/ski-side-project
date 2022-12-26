@@ -6,10 +6,12 @@ import com.ski.backend.domain.club.Club;
 import com.ski.backend.domain.club.ClubBoard;
 import com.ski.backend.domain.club.ClubUser;
 import com.ski.backend.domain.club.Reply;
+import com.ski.backend.domain.common.Status;
 import com.ski.backend.domain.user.User;
 import com.ski.backend.handler.ex.CustomApiException;
 import com.ski.backend.repository.*;
 import com.ski.backend.web.dto.ClubBoardDto;
+import com.ski.backend.web.dto.CmRespDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -90,6 +92,38 @@ public class ClubBoardService {
         validateClubBoard(clubBoardId,auth);
         clubBoardRepository.delete(cb);
     }
+
+    // 관리자가 - 회원->매니저 권한 주기
+    @Transactional
+    public CmRespDto updateRole(long clubBoardId, long userId, Authentication auth, boolean roleYn) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new CustomApiException("사용자를 찾을 수 없습니다"));
+        ClubBoard clubBoard = clubBoardRepository.findById(clubBoardId).orElseThrow(() -> new CustomApiException("해당 게시판이 없습니다."));
+
+        long clubId = clubBoard.getClubUser().getClub().getId();
+
+        List<ClubUser> clubUsers = clubUserRepository.findByClubId(clubId);
+        validateClubBoard(clubBoardId, auth);
+
+        if (clubUsers.size() == 0) {
+            throw new CustomApiException("사용자가 없습니다.");
+        }
+        for (ClubUser cu : clubUsers) {
+            if (cu.getUser().getId() == userId) {
+                if (cu.getRole().equals("회원") && roleYn) {
+
+                    cu.updateRole();
+                    return new CmRespDto<>(1, "매니저 권한 주기 완료", null);
+                }else{
+                    cu.declineRole();
+                    return new CmRespDto<>(1, "매니저 권한 취소 완료.", null);
+                }
+            }
+        }
+        throw new IllegalArgumentException();
+
+    }
+
+
 
     // 동호회 게시판 만든사람이 관리자인지 확인 해야댐
     public void validateClubBoard(long clubBoardId, Authentication auth){

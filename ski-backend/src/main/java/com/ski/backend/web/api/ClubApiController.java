@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
@@ -88,7 +89,7 @@ public class ClubApiController {
     }
 
     // 동호회 대기자리스트 조회
-   @GetMapping("/{clubId}/waiting")
+    @GetMapping("/{clubId}/waiting")
     public CmRespDto<List<ClubUserRespDto>> getWaitingList(@PathVariable long clubId) {
         List<ClubUserRespDto> clubWaitingList = clubService.getClubWaitingList(clubId);
         return new CmRespDto<>(1, "대기자명단 조회", clubWaitingList);
@@ -109,6 +110,10 @@ public class ClubApiController {
     }
 
 
-
-
+    // 동호회 상세페이지 조회
+    @GetMapping("/detail/{clubId}")
+    public CmRespDto getClubDetail(@PathVariable long clubId) {
+        Optional<ClubResponseDto> clubDetail = clubService.clubDetail(clubId);
+        return new CmRespDto<>(1, "동호회 상세페이지 조회", clubDetail);
+    }
 }

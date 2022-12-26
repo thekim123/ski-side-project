@@ -45,13 +45,20 @@ public class ClubBoardApiController {
 
     @PutMapping("/update/{clubBoardId}")
     public CmRespDto<ClubBoardDto> updateClubBoard(@PathVariable long clubBoardId, @RequestBody ClubBoardDto dto, Authentication auth) {
-        clubBoardService.update(clubBoardId, dto,auth);
+        clubBoardService.update(clubBoardId, dto, auth);
         return new CmRespDto<>(1, "클럽게시판 수정완료", null);
     }
 
     @DeleteMapping("/delete/{clubBoardId}")
     public CmRespDto<ClubBoardDto> deleteClubBoard(@PathVariable long clubBoardId, Authentication auth) {
-        clubBoardService.delete(clubBoardId,auth);
+        clubBoardService.delete(clubBoardId, auth);
         return new CmRespDto<>(1, "클럽게시판 삭제완료", null);
+    }
+
+    // 관리자가 - 회원->매니저 권한 주기
+    @PutMapping("/updateRole/{clubBoardId}/{userId}/{roleYn}")
+    public CmRespDto updateRole(@PathVariable long clubBoardId, @PathVariable long userId, Authentication auth,@PathVariable boolean roleYn){
+        return clubBoardService.updateRole(clubBoardId,userId, auth,roleYn);
+
     }
 }
