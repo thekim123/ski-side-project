@@ -21,6 +21,11 @@ public class ChatController {
 
     private final ChatRepository chatRepository;
 
+    @GetMapping("/")
+    public String home(){
+        return "sse-server";
+    }
+
     @CrossOrigin
     @PostMapping("/save")
     public Mono<Chat> setMsg(@RequestBody Chat chat) {

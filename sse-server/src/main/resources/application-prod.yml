@@ -7,3 +7,5 @@ spring:
       host: 15.165.81.194
       port: 27017
       database: chatdb
+      username: ${mongo.username}
+      password: ${mongo.password}
