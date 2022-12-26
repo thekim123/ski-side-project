@@ -9,3 +9,4 @@ spring:
       database: chatdb
       username: ${mongo.username}
       password: ${mongo.password}
+      authentication-database: admin
