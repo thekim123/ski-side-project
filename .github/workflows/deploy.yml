@@ -77,6 +77,7 @@ jobs:
           cp sse-server/build/libs/*.jar deploy/sse-server.jar
           cp Procfile deploy/Procfile
           cp -r .ebextensions deploy/.ebextensions
+          cp -r frontend/build
           cd deploy && zip -r deploy.zip .
           ls -al
       - name: Deploy to EB
