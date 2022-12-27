@@ -23,10 +23,10 @@ jobs:
       - name: Cache node modules      # node modules 캐싱
         uses: actions/cache@v1
         with:
-        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-        key:  ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-yarn-
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key:  ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
 
       - name: Install Dependencies   # 의존 파일 설치
         run: |
