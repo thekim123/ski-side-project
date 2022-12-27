@@ -74,6 +74,7 @@ jobs:
           mkdir -p deploy
           cp ski-backend/build/libs/*.jar deploy/ski-backend.jar
           cp sse-server/build/libs/*.jar deploy/sse-server.jar
+          cp setupnode.sh deploy/setupnode.sh
           cp Procfile deploy/Procfile
           cp -r frontend/build deploy/frontend
           cp -r .ebextensions deploy/.ebextensions
