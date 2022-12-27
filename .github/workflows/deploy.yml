@@ -31,8 +31,8 @@ jobs:
       - name: Build                   # React Build
         run: |
           cd frontend
-          ls -al
           yarn run build
+          ls -al
         env:
           CI: false
 
