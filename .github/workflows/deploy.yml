@@ -15,11 +15,6 @@ jobs:
         with:
           java-version: 11
 
-      - name: yarn build
-        run: yarn build
-        env:
-          CI: ""
-
       - name: Cache node modules      # node modules 캐싱
         uses: actions/cache@v1
         with:
@@ -37,7 +32,7 @@ jobs:
       - name: Build                   # React Build
         run: |
           cd frontend
-          yarn run build
+          yarn build
         
 
       - name: Grant execute permission for gradlew - backend
