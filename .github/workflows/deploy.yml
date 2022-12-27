@@ -26,6 +26,7 @@ jobs:
       - name: Install Dependencies   # 의존 파일 설치
         run: |
           cd frontend
+          ls -al
           npm install
 
       - name: Build                   # React Build
