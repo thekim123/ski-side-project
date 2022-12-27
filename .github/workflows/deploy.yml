@@ -31,7 +31,7 @@ jobs:
       - name: Build                   # React Build
         run: |
           cd frontend
-          npm build
+          npm run build
           ls -al
         
 
