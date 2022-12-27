@@ -25,10 +25,9 @@ jobs:
       - name: Install Dependencies   # 의존 파일 설치
         run: |
           cd frontend
-          ls -al
           yarn install --force
 
-      - name: Build                   # React Build
+      - name: Build with yarn   # React Build
         run: |
           cd frontend
           yarn run build
@@ -77,7 +76,7 @@ jobs:
           cp sse-server/build/libs/*.jar deploy/sse-server.jar
           cp Procfile deploy/Procfile
           cp -r .ebextensions deploy/.ebextensions
-          cp -r frontend/build
+          cp -r frontend/build deploy/frontend
           cd deploy && zip -r deploy.zip .
           ls -al
       - name: Deploy to EB
