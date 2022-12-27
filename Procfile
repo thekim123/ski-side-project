@@ -1,4 +1,3 @@
 ski-backend: java -jar ski-backend.jar
 sse-server: java -jar sse-server.jar
-frontend1: cd frontend
-frontend2: yarn start
+frontend: cd frontend;yarn start
