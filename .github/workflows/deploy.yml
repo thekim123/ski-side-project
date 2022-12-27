@@ -33,6 +33,8 @@ jobs:
           cd frontend
           yarn run build
           ls -al
+          cd build
+          ls -al
         env:
           CI: false
 
