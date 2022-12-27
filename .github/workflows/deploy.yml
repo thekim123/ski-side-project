@@ -75,8 +75,9 @@ jobs:
           cp ski-backend/build/libs/*.jar deploy/ski-backend.jar
           cp sse-server/build/libs/*.jar deploy/sse-server.jar
           cp Procfile deploy/Procfile
-          cp -r .ebextensions deploy/.ebextensions
           cp -r frontend/build deploy/frontend
+          cp -r .ebextensions deploy/.ebextensions
+          ls -al
           cd deploy && zip -r deploy.zip .
           ls -al
       - name: Deploy to EB
