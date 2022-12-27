@@ -16,23 +16,23 @@ jobs:
           java-version: 11
 
       - name: Cache node modules      # node modules 캐싱
-        uses: actions/cache@v1
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key:  ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+        run: |
+          curl -sL https://deb.nodesource.com/setup_14.x | sudo bash -
+          sudo apt install nodejs
+          sudo apt-get update
+          sudo apt-get install nodejs
 
       - name: Install Dependencies   # 의존 파일 설치
         run: |
           cd frontend
           ls -al
-          yarn install
+          npm install
 
       - name: Build                   # React Build
         run: |
           cd frontend
-          yarn build
+          npm build
+          ls -al
         
 
       - name: Grant execute permission for gradlew - backend
