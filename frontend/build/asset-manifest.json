@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/static/css/main.b09062f4.css",
+    "main.js": "/static/js/main.439e6c0e.js",
+    "static/js/787.f96e7009.chunk.js": "/static/js/787.f96e7009.chunk.js",
+    "static/media/NanumGothicEco.otf": "/static/media/NanumGothicEco.9289fccd7e3387aeae05.otf",
+    "static/media/NanumSquare_acB.ttf": "/static/media/NanumSquare_acB.ac4e2f27234150ae0de3.ttf",
+    "static/media/NanumSquare_acEB.ttf": "/static/media/NanumSquare_acEB.0367d0c13d221c0ba33f.ttf",
+    "static/media/한반도.png": "/static/media/한반도.e5b72f273d6a5eab78b9.png",
+    "static/media/slick.svg": "/static/media/slick.2630a3e3eab21c607e21.svg",
+    "static/media/slick.eot": "/static/media/slick.a4e97f5a2a64f0ab1323.eot",
+    "static/media/slick.ttf": "/static/media/slick.c94f7671dcc99dce43e2.ttf",
+    "static/media/slick.woff": "/static/media/slick.295183786cd8a1389865.woff",
+    "index.html": "/index.html",
+    "main.b09062f4.css.map": "/static/css/main.b09062f4.css.map",
+    "main.439e6c0e.js.map": "/static/js/main.439e6c0e.js.map",
+    "787.f96e7009.chunk.js.map": "/static/js/787.f96e7009.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b09062f4.css",
+    "static/js/main.439e6c0e.js"
+  ]
+}
