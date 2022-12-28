@@ -12,7 +12,7 @@ export default function KakaoLogin() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const REDIRECT_URI='http://localhost:3000/kakaoLogin'
+    const REDIRECT_URI='http://15.165.81.194:3000/kakaoLogin'
     const REST_API_KEY='30d8d88d8914487594ffefdce38681cc'
 
     const getKakaoToken = () => {

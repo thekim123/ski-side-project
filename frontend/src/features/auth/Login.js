@@ -23,7 +23,7 @@ export function Login() {
     const isAuth = useSelector(state => state.auth.isAuth);
     const error = useSelector(state => state.auth.error);
 
-    const REDIRECT_URI = 'http://localhost:3000/kakaoLogin';
+    const REDIRECT_URI = 'http://15.165.81.194:3000/kakaoLogin';
     const REST_API_KEY = '30d8d88d8914487594ffefdce38681cc'
 
     //const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`
