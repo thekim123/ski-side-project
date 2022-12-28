@@ -4,7 +4,7 @@ server:
 spring:
   data:
     mongodb:
-      host: 15.165.81.194
+      host: 3.34.66.99
       port: 27017
       database: chatdb
       username: ski
