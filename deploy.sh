@@ -15,6 +15,10 @@ npm install -g npm@latest
 npm install -g yarn
 npm install -g serve
 
+# 4. git clone
+rm -rf ski-side-project
+git clone https://github.com/thekim123/ski-side-project.git
+
 # 4. run web-module
 cd ~/ski_project/ski-backend
 sudo chmod u+x gradlew
