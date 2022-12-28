@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8040
 
 spring:
   data:
@@ -7,6 +7,6 @@ spring:
       host: 15.165.81.194
       port: 27017
       database: chatdb
-      username: ${mongo.username}
-      password: ${mongo.password}
+      username: ski
+      password: skip1234
       authentication-database: admin
