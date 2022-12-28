@@ -1,0 +1,12 @@
+server:
+  port: 8040
+
+spring:
+  data:
+    mongodb:
+      host: 3.34.66.99
+      port: 27017
+      database: chatdb
+      username: ski
+      password: skip1234
+      authentication-database: admin
