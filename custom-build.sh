@@ -19,4 +19,4 @@ cd ../../../frontend/
 yarn build run
 cd build
 zip build.zip ./*
-cp build.zip ../custom-build/
+cp build.zip ../../custom-build/
