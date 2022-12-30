@@ -10,7 +10,7 @@ export const login = (user) => {
             {
                 url:'/login',
                 method: 'post',
-                baseURL: 'http://localhost:8080',
+                baseURL: 'http://15.165.81.194:8080',
                 withCredentials: true,
                 data: user,
             }

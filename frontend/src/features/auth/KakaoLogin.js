@@ -34,7 +34,7 @@ export default function KakaoLogin() {
                 }).then(res => res.json())
                 .then(
                     data => Send({
-                    url: 'http://localhost:8080/oauth/jwt/kakao',
+                    url: 'http://15.165.81.194:8080/oauth/jwt/kakao',
                     method: 'POST',
                     data: data,
                 })

@@ -14,5 +14,5 @@ echo "3. run front-module"
 nvm use 16.13.0
 chmod u+x build.zip
 mkdir build
-unzip build.zip -d build -o
+unzip build.zip -d build
 nohup npx serve -l 3000 -s build &

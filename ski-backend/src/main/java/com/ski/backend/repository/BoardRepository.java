@@ -13,9 +13,9 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     Page<Board> findByResortId(long resortId, Pageable pageable);
 
-    @Query(value = "SELECT b.* FROM board b INNER JOIN (SELECT boardId, COUNT(boardId) likeCount FROM likes GROUP BY boardId) c ON b.id = c.boardId ORDER BY likeCount DESC", nativeQuery = true)
+    @Query(value = "SELECT b.* FROM Board b INNER JOIN (SELECT boardId, COUNT(boardId) likeCount FROM likes GROUP BY boardId) c ON b.id = c.boardId ORDER BY likeCount DESC", nativeQuery = true)
     List<Board> getPopular();
 
-    @Query(value = "select * from board where resortId in (select toResortId from bookmark where fromUserId = :principalId) ORDER BY id DESC ", nativeQuery = true)
+    @Query(value = "select * from Board where resortId in (select toResortId from Bookmark where fromUserId = :principalId) ORDER BY id DESC ", nativeQuery = true)
     Page<Board> homeBoard(@Param("principalId") long principalId, Pageable pageable);
 }

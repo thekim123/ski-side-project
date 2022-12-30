@@ -1,4 +1,5 @@
 # 1. make directory
+rm -rf custom-build
 mkdir custom-build
 
 # 2. ski-backend
@@ -14,7 +15,8 @@ cd build/libs
 cp *.jar ../../../custom-build/
 
 # 4. frontend
-cd ../../../frontend
+cd ../../../frontend/
 yarn build run
-zip build.zip ./build/*
+cd build
+zip build.zip ./*
 cp build.zip ../custom-build/

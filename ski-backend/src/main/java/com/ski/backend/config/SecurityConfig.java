@@ -7,6 +7,7 @@ import com.ski.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -36,6 +37,7 @@ public class SecurityConfig {
                 .apply(new MyCustomDsl())
                 .and()
                 .authorizeRequests(authorize -> authorize
+                        .antMatchers(HttpMethod.OPTIONS, "/**/*").permitAll()
                         .antMatchers("/api/home"/*, "/api/club/**"*/)
                         .access("hasRole('USER')")
                         .anyRequest().permitAll())
