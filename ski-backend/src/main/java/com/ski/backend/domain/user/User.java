@@ -41,18 +41,19 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column
     private String email;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = true)
+    @Column
     private Gender gender;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = true)
+    @Column
     private AgeGrp ageGrp;
 
     @Enumerated(EnumType.STRING)
+    @Column
     private Role roles;
 
     @JsonIgnoreProperties({"user"})

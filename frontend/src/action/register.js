@@ -6,7 +6,7 @@ export const register = () => {
             {
                 url: '/api/user/join',
                 method: 'post',
-                baseURL: 'http://localhost:8080',
+                baseURL: 'http://15.165.81.194:8080',
                 withCredentials: true,
                 data: {
                     username: "syj0395",

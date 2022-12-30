@@ -14,10 +14,12 @@ spring:
         enabled: true
     livereload:
       enabled: false
+  mvc:
+    dispatch-options-request: true
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://ski-project-mariadb.cmyc6d542qdt.ap-northeast-2.rds.amazonaws.com:3306/ski
+    url: jdbc:mariadb://ski-project-mariadb.cmyc6d542qdt.ap-northeast-2.rds.amazonaws.com:3306/ski?serverTimezone=Asia/Seoul
     username: ski
     password: skip1234
 
@@ -28,6 +30,7 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
+    generate-ddl: true
 
   h2:
     console:

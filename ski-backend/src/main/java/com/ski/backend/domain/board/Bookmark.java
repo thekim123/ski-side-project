@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(uniqueConstraints = { @UniqueConstraint(name = "subscribe", columnNames = { "fromUserId", "toResortId" }) })
+@Table(name = "Bookmark", uniqueConstraints = { @UniqueConstraint(name = "subscribe", columnNames = { "fromUserId", "toResortId" }) })
 public class Bookmark {
 
 	@Id
