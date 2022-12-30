@@ -63,6 +63,9 @@ public class JwtCreateController {
     public String getRawGender(Map<String, Object> data) {
         Map<String, Object> accountInfo = (Map<String, Object>) data.get("kakao_account");
         String result = (String) accountInfo.get("gender");
+        if (result == null) {
+            return "NO";
+        }
         return result.toUpperCase();
     }
 
@@ -103,6 +106,8 @@ public class JwtCreateController {
             result = AgeGrp.SEVENTY;
         } else if (startAge == 80) {
             result = AgeGrp.EIGHTY;
+        } else {
+            result = AgeGrp.ANY;
         }
 
         return result;
