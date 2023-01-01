@@ -85,6 +85,9 @@ public class JwtCreateController {
         Map<String, Object> accountInfo = (Map<String, Object>) data.get("kakao_account");
 
         String rawAgeGrp = (String) accountInfo.get("age_range");
+        if(rawAgeGrp == null){
+            return AgeGrp.ANY;
+        }
 
         StringTokenizer st = new StringTokenizer(rawAgeGrp, "~");
         int startAge = Integer.parseInt(st.nextToken());
@@ -106,8 +109,6 @@ public class JwtCreateController {
             result = AgeGrp.SEVENTY;
         } else if (startAge == 80) {
             result = AgeGrp.EIGHTY;
-        } else {
-            result = AgeGrp.ANY;
         }
 
         return result;

@@ -23,7 +23,11 @@ public class KakaoUser implements OAuthUserInfo {
     @Override
     public String getEmail() {
         Map<String, Object> accountInfo = (Map<String, Object>) attribute.get("kakao_account");
-        return (String) accountInfo.get("email");
+        String result = (String) accountInfo.get("email");
+        if(result==null){
+            result = "no email";
+        }
+        return result;
     }
 
     @Override

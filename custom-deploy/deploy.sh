@@ -15,3 +15,6 @@ nvm use 16.13.0
 npm install -g npm@latest
 npm install -g yarn
 npm install -g serve@11.3.2
+
+# 4. set timezone
+timedatectl set-timezone Asia/Seoul
