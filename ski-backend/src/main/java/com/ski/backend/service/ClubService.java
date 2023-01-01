@@ -4,6 +4,7 @@ import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.domain.club.*;
 import com.ski.backend.domain.common.Status;
 import com.ski.backend.domain.resort.Resort;
+import com.ski.backend.domain.user.ChatRoom;
 import com.ski.backend.domain.user.User;
 import com.ski.backend.handler.ex.CustomApiException;
 import com.ski.backend.web.dto.ClubRequestDto;
@@ -32,6 +33,8 @@ public class ClubService {
 
     private final UserRepository userRepository;
     private final ResortRepository resortRepository;
+
+    private final ChatRoomRepository chatRoomRepository;
 
 
     // 동호회 첫 화면 목록조회
@@ -70,6 +73,13 @@ public class ClubService {
         clubRepository.save(club);
         ClubUser clubUser = new ClubUser(club, user, Status.ADMIT, "관리자");
         clubUserRepository.save(clubUser);
+
+        // 관리자 채팅방 추가
+        ChatRoom adminChatRoom = ChatRoom.builder()
+                .user(findUser)
+                .roomName(club.getClubNm() + "ADMIN")
+                .build();
+        chatRoomRepository.save(adminChatRoom);
     }
 
     // 동호회 삭제
@@ -94,7 +104,7 @@ public class ClubService {
 
     // 동호회 탈퇴
     public void deleteMember(long userId, long clubId) {
-        ClubUser clubUser = clubUserRepository.findByUserIdAndClubId(userId, clubId,Status.ADMIT).orElseThrow(() -> new CustomApiException("동호회 탈퇴 실패했습니다."));
+        ClubUser clubUser = clubUserRepository.findByUserIdAndClubId(userId, clubId, Status.ADMIT).orElseThrow(() -> new CustomApiException("동호회 탈퇴 실패했습니다."));
         if (!clubUser.getRole().equals("관리자")) {
             clubUserRepository.delete(clubUser);
             clubUser.getClub().setMemberCnt(-1);
@@ -124,13 +134,11 @@ public class ClubService {
     @Transactional(readOnly = true)
     public List<ClubUserRespDto> getClubWaitingList(long clubId) {
 
-        List<ClubUser> result = clubUserRepository.findByClubIdAndStatus(clubId, Status.WAITING);
+        List<ClubUser> result = clubUserRepository.findByClubIdAAndStatus(clubId, Status.WAITING);
         if (result.size() < 0) {
             throw new CustomApiException("대기자가 없습니다.");
         }
-        List<ClubUserRespDto> waitingList = result.stream()
-                .map(e -> new ClubUserRespDto(e.getUser().getUsername(), e.getStatus(),e.getRole()))
-                .collect(Collectors.toList());
+        List<ClubUserRespDto> waitingList = result.stream().map(e -> new ClubUserRespDto(e.getUser().getUsername(), e.getStatus(), e.getRole())).collect(Collectors.toList());
         return waitingList;
     }
 
@@ -141,7 +149,7 @@ public class ClubService {
         Club club = clubRepository.findById(clubId).orElseThrow(() -> new CustomApiException("동호회를 찾지 못했습니다."));
         User user = userRepository.findById(userId).orElseThrow(() -> new CustomApiException("사용자를 찾을 수 없습니다"));
 
-        List<ClubUser> cu = clubUserRepository.findByClubIdAndStatus(clubId, Status.WAITING);
+        List<ClubUser> cu = clubUserRepository.findByClubIdAAndStatus(clubId, Status.WAITING);
         if (cu.size() == 0) {
             throw new CustomApiException("대기자가 없습니다");
         }
@@ -151,6 +159,10 @@ public class ClubService {
                 if (admitYn) {
                     clubUser.update();
                     club.addMember();
+
+                    insertChatrooms(club, cu, clubUser);
+
+
                     return new CmRespDto<>(1, "가입 승인 완료", null);
                 } else {
                     clubUser.decline();
@@ -162,6 +174,7 @@ public class ClubService {
     }
 
     // 나의 신청 내역
+
     public List<ClubUserRespDto> requestList(Authentication auth) {
         PrincipalDetails pd = (PrincipalDetails) auth.getPrincipal();
 
@@ -169,9 +182,7 @@ public class ClubService {
         if (result.size() == 0) {
             throw new CustomApiException("신청 내역이 없습니다.");
         }
-        List<ClubUserRespDto> requestLists = result.stream()
-                .map(e -> new ClubUserRespDto(e.getUser().getUsername(), e.getStatus(),e.getRole()))
-                .collect(Collectors.toList());
+        List<ClubUserRespDto> requestLists = result.stream().map(e -> new ClubUserRespDto(e.getUser().getUsername(), e.getStatus(), e.getRole())).collect(Collectors.toList());
 
         return requestLists;
     }
@@ -183,11 +194,31 @@ public class ClubService {
 
         ClubUser cu = clubUserRepository.findByClubId(clubId, pd.getUser().getId(), role).orElseThrow(() -> new CustomApiException("관리자만 동호회를 수정 / 삭제할 수 있습니다."));
 
-        if(cu.getClub().getId() != clubId)
-            throw new CustomApiException("관리자만 동호회를 수정 / 삭제할 수 있습니다");
+        if (cu.getClub().getId() != clubId) throw new CustomApiException("관리자만 동호회를 수정 / 삭제할 수 있습니다");
 
     }
 
+    private void insertChatrooms(Club club, List<ClubUser> cu, ClubUser clubUser) {
+        String roomName = club.getClubNm() + clubUser.getId();
+
+        ChatRoom chatRoom = ChatRoom.builder()
+                .roomName(roomName)
+                .user(clubUser.getUser())
+                .build();
+        chatRoomRepository.save(chatRoom);
+
+
+        cu.forEach(c -> {
+            if ("관리자".equals(c.getRole())) {
+                ChatRoom chatRoomOfAdmin = ChatRoom.builder()
+                        .user(c.getUser())
+                        .roomName(roomName)
+                        .build();
+                chatRoomRepository.save(chatRoomOfAdmin);
+
+            }
+        });
+    }
     // 동호회 상세페이지
     public Optional<ClubResponseDto> clubDetail(long clubId) {
         Club club = clubRepository.findById(clubId).orElseThrow(() -> new CustomApiException("글 상세보기 실패: 해당 게시글을 찾을수 없습니다."));
