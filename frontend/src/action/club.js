@@ -24,7 +24,7 @@ export const asyncGetClubUser = createAsyncThunk(
             params: {
                 page: 0,
                 size: 1000
-            },
+            }, 
         })
         console.log("resp", resp);
         return resp.data.data.content;
@@ -57,9 +57,9 @@ export const asyncDeleteClub = createAsyncThunk(
 
 export const asyncEnrollClub = createAsyncThunk(
     'clubSlice/asyncEnrollClub',
-    async (clubId) => {
+    async (id) => {
         const resp = await Send({
-            url:`/enroll/${clubId}`,
+            url:`/club/${id.userId}/enroll/${id.clubId}`,
             method: 'post',
         })
         console.log("resp", resp);
@@ -102,7 +102,7 @@ export const regClub = (post) => {
 export const getSingleClub = (id) => {
     return function (dispatch) {
         Send({
-            url:`/club/${id}`,
+            url:`/club/detail/${id}`,
             method: 'get',
         }).then((resp) => {
             console.log("resp", resp);
@@ -159,10 +159,10 @@ export const deleteClub = (clubId) => {
     }
 }
 
-export const enrollClub = (clubId) => {
+export const enrollClub = (userId, clubId) => {
     return function (dispatch) {
         Send({
-            url:`/enroll/${clubId}`,
+            url:`/${userId}/enroll/${clubId}`,
             method: 'post',
         }).then((resp) => {
             console.log("resp", resp);

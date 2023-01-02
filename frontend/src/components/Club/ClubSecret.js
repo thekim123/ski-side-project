@@ -23,12 +23,17 @@ export function ClubSecret() {
     const [btnText, setBtnText] = useState("가입 신청하기");
     //const club = useLocation().state;
 
-    const gotoDetail = e => {
+    const gotoDetail = async e => {
         //navigate(`/club/detail/${club.id}`, { state: club });
         //동호회 인원 추가
         if (club.openYn === "Y") {
             //dispatch(enrollClub(id)); 
-            navigate(`/club/detail/${id}`);
+            let data = {
+                userId: user.id,
+                clubId: id,
+            }
+            await dispatch(asyncEnrollClub(data)).unwrap();
+            //navigate(`/club/detail/${id}`);
         }
         //navigate(`/club/detail/${id}`);
     }
@@ -70,8 +75,8 @@ export function ClubSecret() {
         <ClubResort>{resorts.find(resort => resort.id === club.resortId).name}</ClubResort>
         <InfoBox>
             <CntBox>
-                {/* <SBsPeopleFill /> */}
-                {/* <Cnt>{club.memberCnt}명</Cnt> */}
+                <SBsPeopleFill />
+                <Cnt>{club.memberCnt}명</Cnt>
             </CntBox>
             {/* 연령대 */}
             <CntBox>
@@ -87,7 +92,7 @@ export function ClubSecret() {
         <ContentBox>
             <ClubContent>{club.memo}</ClubContent>
         </ContentBox>
-        {club.openYn === "Y" && <Button onClick={gotoDetail}>둘러보기</Button>}
+        {club.openYn === "Y" && <Button onClick={gotoDetail}>가입하기</Button>}
         {club.openYn === "N" && <div><Button onClick={submitClub}>가입 신청하기</Button></div>}
     </Container>}
     </>

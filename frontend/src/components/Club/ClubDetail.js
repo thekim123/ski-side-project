@@ -82,22 +82,7 @@ export function ClubDetail() {
     return (
     <>
     {/* 방장한테만 보이게. */}
-    <EditDelBtn>
-    <div></div>
-            <BtnWrap>
-            {isCap && <EditBtn onClick={gotoEdit} className='club-detail-topBtn'>수정</EditBtn>}
-            {isCap && <DelBtn onClick={delClub} className='club-detail-topBtn'>삭제</DelBtn>}
-            {/* 모달창 */}
-            {club && <OkCancelModal 
-                open={delOpen}
-                close={closeDel}
-                message={`'${club.clubNm}' 동호회를 삭제하시겠습니까?`}
-                sub={'삭제하려면 동호회 명을 입력하세요.'}
-                name={club.clubNm} 
-                ok={"삭제"}
-                clubId={id}/>}
-            </BtnWrap>
-    </EditDelBtn>
+
     <Container>
             
         <ClubName onClick={cutText}>
@@ -108,8 +93,8 @@ export function ClubDetail() {
         </ClubResort>
         <InfoBox>
             <CntBox>
-                {/* <SBsPeopleFill /> */}
-                {/* <Cnt>{club && club.memberCnt}명</Cnt> */}
+                <SBsPeopleFill />
+                <Cnt>{club && club.memberCnt}명</Cnt>
             </CntBox>
 
         </InfoBox>
@@ -160,6 +145,23 @@ export function ClubDetail() {
                 ))
             }
         </NoticeBox>
+
+        <EditDelBtn>
+        <div></div>
+                <BtnWrap>
+                {isCap && <EditBtn onClick={gotoEdit} className='club-detail-topBtn'>수정</EditBtn>}
+                {isCap && <DelBtn onClick={delClub} className='club-detail-topBtn'>삭제</DelBtn>}
+                {/* 모달창 */}
+                {club && <OkCancelModal 
+                    open={delOpen}
+                    close={closeDel}
+                    message={`'${club.clubNm}' 동호회를 삭제하시겠습니까?`}
+                    sub={'삭제하려면 동호회 명을 입력하세요.'}
+                    name={club.clubNm} 
+                    ok={"삭제"}
+                    clubId={id}/>}
+                </BtnWrap>
+        </EditDelBtn>
     </Container>
     {/* } */}
     </>
@@ -176,6 +178,7 @@ display: flex;
 flex-direction: column;
 justify-content: center;
 align-items: center;
+margin-bottom: 50px;
 `
 const EditDelBtn = styled.div`
 display: flex;
@@ -192,7 +195,7 @@ display: flex;
     //border: 1px solid var(--button-color);
     border: none;
     border-radius: 3px;
-    padding: 4px 6px;
+    padding: 8px 11px;
     background-color: #FAFAFA;
 }
 `
