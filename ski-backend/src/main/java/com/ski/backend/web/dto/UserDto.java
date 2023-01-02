@@ -1,12 +1,18 @@
 package com.ski.backend.web.dto;
 
+import com.ski.backend.domain.user.ChatRoom;
 import com.ski.backend.domain.user.Role;
 import com.ski.backend.domain.user.User;
+import com.ski.backend.domain.user.Whisper;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
+@Setter
 public class UserDto {
     private long id;
     private String password;
@@ -16,6 +22,9 @@ public class UserDto {
     private String email;
     private String gender;
     private String ageGrp;
+
+    private List<Whisper> whispers;
+    private List<ChatRoom> chatRooms;
 
 
     public UserDto toDto(User user) {

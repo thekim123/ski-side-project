@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 
 @Data
@@ -62,12 +63,17 @@ public class User {
 
     @JsonIgnoreProperties({"user"})
     @OneToMany
+    private List<Whisper> whispers;
+
+    @JsonIgnoreProperties({"user"})
+    @OneToMany
     private List<ChatRoom> chatRooms;
 
     @JsonIgnoreProperties({"user"})
     @OneToMany(mappedBy = "user")
     private List<ClubUser> clubUsers = new ArrayList<>();
 
+    @JsonIgnoreProperties({"user"})
     @OneToMany(mappedBy = "user")
     private List<Carpool> carpools;
 

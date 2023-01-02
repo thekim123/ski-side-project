@@ -3,6 +3,7 @@ package com.ski.backend.service;
 import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.domain.common.AgeGrp;
 import com.ski.backend.domain.club.Gender;
+import com.ski.backend.domain.user.ChatRoom;
 import com.ski.backend.domain.user.Role;
 import com.ski.backend.domain.user.User;
 import com.ski.backend.repository.UserRepository;
@@ -13,6 +14,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 
 @Service
@@ -50,13 +53,19 @@ public class UserService {
         User user = getUserFromPrincipal(authentication);
         UserDto dto = new UserDto().toDto(user);
         return dto;
-
     }
 
     @Transactional(readOnly = true)
     public String getUsername(Authentication authentication) {
         User user = getUserFromPrincipal(authentication);
         return user.getUsername();
+    }
+
+    @Transactional(readOnly = true)
+    public List<?> getChatlist(Authentication authentication){
+        User principal = getUserFromPrincipal(authentication);
+
+        return null;
     }
 
     public User getUserFromPrincipal(Authentication authentication) {
