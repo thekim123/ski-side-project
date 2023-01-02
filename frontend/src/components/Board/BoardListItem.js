@@ -63,7 +63,7 @@ function BoardListItem(props) {
     }
 
     useEffect(() => {
-        let originDate = props.createDate;
+        let originDate = [...props.createDate];
         if (originDate) {
             originDate[1] = originDate[1] - 1;
             let date = new Date(...originDate);
