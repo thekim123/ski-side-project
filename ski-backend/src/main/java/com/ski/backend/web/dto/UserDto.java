@@ -23,9 +23,6 @@ public class UserDto {
     private String gender;
     private String ageGrp;
 
-    private List<Whisper> whispers;
-    private List<ChatRoom> chatRooms;
-
 
     public UserDto toDto(User user) {
         this.id = user.getId();

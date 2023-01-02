@@ -2,10 +2,10 @@
 echo "1. Stop all module"
 BACKEND_PID=${pgrep -f ski-0.0.1-SNAPSHOT.jar}
 SSE_PID=${pgrep -f sse-server-0.0.1-SNAPSHOT.jar}
-FRONT-PID=${pgrep -f /home/ubuntu/.nvm/versions/node/v16.13.0/bin/serve}
+FRONT_PID=${pgrep -f /home/ubuntu/.nvm/versions/node/v16.13.0/bin/serve}
 kill -9 $BACKEND_PID
 kill -9 $SSE_PID
-kill -9 $FRONT-PID
+kill -9 $FRONT_PID
 
 # 2. run web-module
 echo "2. Run web-module"

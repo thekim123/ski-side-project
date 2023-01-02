@@ -18,5 +18,5 @@ cp *.jar ../../../custom-build/
 cd ../../../frontend/
 yarn build run
 cd build
-zip build.zip ./*
+zip -r build.zip ./*
 cp build.zip ../../custom-build/
