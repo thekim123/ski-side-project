@@ -1,7 +1,7 @@
 # 1. Stop front-module
 echo "1. Stop front-module"
-FRONT-PID=${pgrep -f /home/ubuntu/.nvm/versions/node/v16.13.0/bin/serve}
-kill -9 $FRONT-PID
+FRONT_PID=${pgrep -f /home/ubuntu/.nvm/versions/node/v16.13.0/bin/serve}
+kill -9 $FRONT_PID
 
 # 2. Run front-module
 echo "2. Run front-module"
