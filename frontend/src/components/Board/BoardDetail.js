@@ -118,9 +118,11 @@ export function BoardDetail() {
     
     useEffect(() => {
         if (post) {
-            const dt = post.createDate.slice(0, 10);
-            const t = new Date(post.createDate).toString().slice(16, 21);
-            setDate(dt + " " + t);
+            //const dt = post.createDate.slice(0, 10);
+            //const t = new Date(post.createDate).toString().slice(16, 21);
+            //setDate(dt + " " + t);
+            let dateArray = post.createDate;
+            setDate(`${dateArray[0]}.${dateArray[1]}.${dateArray[2]} ${dateArray[3] < 10 ? "0"+dateArray[3] : dateArray[3]}:${dateArray[4] < 10 ? "0"+dateArray[4] : dateArray[4]}`)            
             
             if (post.username === user) { //나중엔 post.nickname으로 바꾸고 authSlice에서도 setUser에 nickname으로 넣기
                 setIsMine(true);
@@ -193,7 +195,8 @@ export function BoardDetail() {
                                 </NotiBox>
                             </ComNameIcon>
                             <ComContent>{c.content}</ComContent>
-                            <ComDate>{new Date(c.createDate).getMonth()+1}/{new Date(c.createDate).getDate()} {c.createDate.slice(11, 16)}</ComDate>
+                            {/* <ComDate>{new Date(c.createDate).getMonth()+1}/{new Date(c.createDate).getDate()} {c.createDate.slice(11, 16)}</ComDate> */}
+                            <ComDate>{c.createDate[1]}/{c.createDate[2]} {c.createDate[3] < 10 ? "0"+c.createDate[3] : c.createDate[3]}:{c.createDate[4] < 10 ? "0"+c.createDate[4] : c.createDate[4]}</ComDate>
                             <OkButtonModal 
                             open={commentDelOpen}
                             close={closeCommentDel}
