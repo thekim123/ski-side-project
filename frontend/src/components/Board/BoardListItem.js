@@ -63,7 +63,13 @@ function BoardListItem(props) {
     }
 
     useEffect(() => {
-        setTimePass(detailDate(props.createDate));
+        let originDate = props.createDate;
+        if (originDate) {
+            originDate[1] = originDate[1] - 1;
+            let date = new Date(...originDate);
+            setTimePass(detailDate(date));
+        }        
+        //setTimePass(detailDate(props.createDate));
         showIcon();
     }, []);
 
