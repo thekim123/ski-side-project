@@ -17,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -68,7 +69,11 @@ public class SubmitService {
                 .principal(carpoolEntity.getUser())
                 .toUsername(principal.getUsername())
                 .build();
-        whisperRepository.save(writerWhisperEntity);
+
+        List<Whisper> whispers = new ArrayList<>();
+        whispers.add(whisperEntity);
+        whispers.add(writerWhisperEntity);
+        whisperRepository.saveAll(whispers);
 
         submitEntity.setState("승인");
     }
