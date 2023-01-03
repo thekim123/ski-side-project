@@ -66,9 +66,14 @@ export function CarPoolDetail() {
     useEffect(() => {
         if (carpool && user) {
             //setDate(new Date(carpool.createDate));
-            const t = new Date(carpool.createDate)
-            const month = t.getMonth() + 1
-            setDate(t.getFullYear() + "."+month + "." + t.getDate()+". "+carpool.createDate.slice(11,16));
+            //const t = new Date(carpool.createDate)
+            //const month = t.getMonth() + 1
+            //setDate(t.getFullYear() + "."+month + "." + t.getDate()+". "+carpool.createDate.slice(11,16));
+            setDate(`${carpool.createDate[0]}.
+            ${carpool.createDate[1] < 10 ? "0"+carpool.createDate[1] : carpool.createDate[1]}.
+            ${carpool.createDate[2] < 10 ? "0"+carpool.createDate[2] : carpool.createDate[2]} 
+            ${carpool.createDate[3] < 10 ? "0"+carpool.createDate[3] : carpool.createDate[3]}:
+            ${carpool.createDate[4] < 10 ? "0"+carpool.createDate[4] : carpool.createDate[4]}`)
 
             if (user.username === carpool.user.username) {
                 setIsMine(true);

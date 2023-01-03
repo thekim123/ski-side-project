@@ -8,7 +8,7 @@ import { BsFillCheckCircleFill } from 'react-icons/bs'
 export function CarPoolListItem(props) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const date = new Date(props.departTime);
+    //const date = new Date(props.departTime);
 
     return (
     <Wrapper>
@@ -33,7 +33,10 @@ export function CarPoolListItem(props) {
             <TimeWrap>
                 <TimeBox>
                     {props.negotiate.departTime && <SBsFillCheckCircleFill />}
-                    <Time>{date.getMonth()+1}.{date.getDate()} {date.getHours()}:{date.getMinutes() < 10 ? "0"+date.getMinutes() : date.getMinutes()} <TimeText>출발</TimeText></Time>
+                    <Time>
+                        {/* {date.getMonth()+1}.{date.getDate()} {date.getHours()}:{date.getMinutes() < 10 ? "0"+date.getMinutes() : date.getMinutes()}  */}
+                        {props.departTime[1]}.{props.departTime[2]} {props.departTime[3]}:{props.departTime[4]} <TimeText>출발</TimeText>
+                    </Time>
                 </TimeBox>
             </TimeWrap>
         </Middle>

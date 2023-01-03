@@ -112,6 +112,7 @@ export function BoardDetail() {
     useEffect(() => {
         if (post) {
             setLike(post.likeState);
+            setDislike(post.dislikeState);
             if (user.username === post.user.username) setIsMine(true);
         }
     }, [post]);
