@@ -66,6 +66,7 @@ function BoardListItem(props) {
         let originDate = [...props.createDate];
         if (originDate) {
             originDate[1] = originDate[1] - 1;
+            originDate.pop();
             let date = new Date(...originDate);
             setTimePass(detailDate(date));
         }        

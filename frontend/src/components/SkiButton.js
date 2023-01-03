@@ -34,8 +34,10 @@ export function SkiButton(props) {
     const API_KEY = '465b890d740de2877b1582f311306e35'
 
     const openResort = () => {
-        setResortOpen(true);
-        getWeather(props.lat, props.lon);
+        if (props.name !== '베어스타운') {
+            setResortOpen(true);
+            getWeather(props.lat, props.lon);
+        }
     }
 
     const closeResort = () => {

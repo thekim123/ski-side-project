@@ -85,8 +85,15 @@ export function ResortModal(props) {
 
                 <ResortInfo>
                 
-                        <Row><Label className='label-time'>운영 시간</Label><Box>{resortInfo.time.split('\n').map(s => <div className='box-inside'>{s}</div>)}</Box></Row>
-                        <Row><Label>운영 기간</Label><>연중무휴</></Row>
+                        <Row><Label className='label-time'>운영 시간</Label>
+                        <OutButton
+                            onClick={() => window.open(resortInfo.time, '_blank')}>
+                            보러가기
+                            <SBsBoxArrowUpRight />
+                        </OutButton>
+                        </Row>
+                        {/* <Box>{resortInfo.time.split('\n').map(s => <div className='box-inside'>{s}</div>)}</Box></Row> */}
+                        {/* <Row><Label>운영 기간</Label><>연중무휴</></Row> */}
                         <Row><Label>이용 요금</Label>
                             <OutButton 
                                 onClick={() => window.open(resortInfo.url, '_blank')}>
@@ -268,7 +275,7 @@ const ResortInfo = styled.div`
 const Row = styled.div`
     display: flex;
     font-size: 12px;
-    padding-bottom: 4px;
+    padding-bottom: 8px;
     align-items: center;
     .label-time{
         align-self: start;
