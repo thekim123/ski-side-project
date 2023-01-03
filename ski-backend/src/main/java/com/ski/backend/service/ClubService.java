@@ -134,7 +134,7 @@ public class ClubService {
     @Transactional(readOnly = true)
     public List<ClubUserRespDto> getClubWaitingList(long clubId) {
 
-        List<ClubUser> result = clubUserRepository.findByClubIdAAndStatus(clubId, Status.WAITING);
+        List<ClubUser> result = clubUserRepository.findByClubIdAndStatus(clubId, Status.WAITING);
         if (result.size() < 0) {
             throw new CustomApiException("대기자가 없습니다.");
         }
@@ -149,7 +149,7 @@ public class ClubService {
         Club club = clubRepository.findById(clubId).orElseThrow(() -> new CustomApiException("동호회를 찾지 못했습니다."));
         User user = userRepository.findById(userId).orElseThrow(() -> new CustomApiException("사용자를 찾을 수 없습니다"));
 
-        List<ClubUser> cu = clubUserRepository.findByClubIdAAndStatus(clubId, Status.WAITING);
+        List<ClubUser> cu = clubUserRepository.findByClubIdAndStatus(clubId, Status.WAITING);
         if (cu.size() == 0) {
             throw new CustomApiException("대기자가 없습니다");
         }
@@ -198,28 +198,6 @@ public class ClubService {
 
     }
 
-    private void insertChatrooms(Club club, List<ClubUser> cu, ClubUser clubUser) {
-        String roomName = club.getClubNm() + clubUser.getId();
-
-        ChatRoom chatRoom = ChatRoom.builder()
-                .roomName(roomName)
-                .user(clubUser.getUser())
-                .build();
-        chatRoomRepository.save(chatRoom);
-
-
-        cu.forEach(c -> {
-            if ("관리자".equals(c.getRole())) {
-                ChatRoom chatRoomOfAdmin = ChatRoom.builder()
-                        .user(c.getUser())
-                        .roomName(roomName)
-                        .build();
-                chatRoomRepository.save(chatRoomOfAdmin);
-        if (cu.getClub().getId() != clubId) throw new CustomApiException("관리자만 동호회를 수정 / 삭제할 수 있습니다");
-
-            }
-        });
-    }
     // 동호회 상세페이지
     public Optional<ClubResponseDto> clubDetail(long clubId) {
         Club club = clubRepository.findById(clubId).orElseThrow(() -> new CustomApiException("글 상세보기 실패: 해당 게시글을 찾을수 없습니다."));
