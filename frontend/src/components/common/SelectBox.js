@@ -12,8 +12,10 @@ export function SelectBox(props) {
     };
     const handleItemClick = (e) => {
         //setSelectedItem(e.target.id);
+        //if (e.target.id.name !== '베어스타운') {
         setShowSelectBox(false);
         props.func(e.target.id);
+        //}
     }
     return (
     <Wrapper>
