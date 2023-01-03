@@ -99,7 +99,7 @@ export const regClub = (post) => {
     }
 }
 
-export const getSingleClub = (id) => {
+export const getSingleClub = (id) => { 
     return function (dispatch) {
         Send({
             url:`/club/detail/${id}`,
