@@ -215,6 +215,7 @@ public class ClubService {
                         .roomName(roomName)
                         .build();
                 chatRoomRepository.save(chatRoomOfAdmin);
+        if (cu.getClub().getId() != clubId) throw new CustomApiException("관리자만 동호회를 수정 / 삭제할 수 있습니다");
 
             }
         });
@@ -225,6 +226,35 @@ public class ClubService {
         return clubRepository.findById(clubId).map(e -> new ClubResponseDto(club));
     }
 
+    private void insertChatrooms(Club club, List<ClubUser> cu, ClubUser clubUser) {
+        String roomName = club.getClubNm() + clubUser.getId();
 
+        ChatRoom chatRoom = ChatRoom.builder()
+                .roomName(roomName)
+                .user(clubUser.getUser())
+                .build();
+        chatRoomRepository.save(chatRoom);
+
+
+        cu.forEach(c -> {
+            if ("관리자".equals(c.getRole())) {
+                ChatRoom chatRoomOfAdmin = ChatRoom.builder()
+                        .user(c.getUser())
+                        .roomName(roomName)
+                        .build();
+                chatRoomRepository.save(chatRoomOfAdmin);
+
+            }
+        });
+    }
+
+//    // 동호회 상세페이지
+//    @Transactional
+//    public Optional<ClubResponseDto> clubDetail(Long clubId,User user) {
+//        Club dto = clubRepository.findById(clubId).orElseThrow(()->{
+//            return new IllegalArgumentException("글 상세보기 실패: 해당게시글을 찾을 수 없습니다.");
+//        });
+//        return clubRepository.findById(clubId).map(club -> new ClubResponseDto(club,user));
+//    }
 
 }
