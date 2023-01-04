@@ -165,7 +165,9 @@ export function TayoWrite() {
         console.log(tayo);
         //dispatch(addTayo(tayo));
         await dispatch(asyncAddTayo(tayo)).unwrap();
+        console.log("add");
         await dispatch(asyncLoadTayos()).unwrap();
+        console.log("load");
         navigate("/tayo");
     }
 
