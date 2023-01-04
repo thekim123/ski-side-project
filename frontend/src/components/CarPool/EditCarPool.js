@@ -201,6 +201,8 @@ export function EditCarPool() {
     }, [])
 
     useEffect(() => {
+        console.log(carpool);
+        if (carpool) {
         const t = resortName.find(resort => resort === carpool.departure);
         setState({...carpool});
         console.log(state);
@@ -212,8 +214,15 @@ export function EditCarPool() {
             setSelectedResort(carpool.departure);
         }
         setSelectedSmoking(carpool.smoker ? "흡연 차량" : "금연 차량");
-        setDate(new Date(carpool.departTime.slice(0, 10)));
-        setStartTime(new Date(carpool.departTime));
+        //setDate(new Date(carpool.departTime.slice(0, 10)));
+        //setStartTime(new Date(carpool.departTime));
+        let originDate = [...carpool.departTime];
+        if (originDate) {
+            originDate[1] = originDate[1] - 1;
+            originDate.pop();
+            setDate(new Date(...originDate));
+            setStartTime(new Date(...originDate));
+        }     
         let negotiate = {
             boardingPlace: carpool.negotiate.boardingPlace,
             departTime: carpool.negotiate.departTime,
@@ -221,6 +230,7 @@ export function EditCarPool() {
             destination: carpool.negotiate.destination,
         }
         setNegotiate({...negotiate})
+    }
     }, [carpool])
 
     const startPlace = selectedRoute === route[0] ?
