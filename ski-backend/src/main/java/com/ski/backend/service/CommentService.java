@@ -59,15 +59,15 @@ public class CommentService {
             throw new CustomApiException("존재하지 않는 댓글입니다.");
         });
 
-        if (isMyComment(commentId, principalId)) {
+        if (isMyComment(commentEntity.getUser().getId(), principalId)) {
             throw new CustomApiException("선생님 댓글이 아닙니다!!");
         }
 
         commentEntity.setContent(dto.getContent());
     }
 
-    public boolean isMyComment(long principalId, long commentId) {
-        return principalId == commentId;
+    public boolean isMyComment(long commentUserId,long principalId) {
+        return principalId == commentUserId;
     }
 
     public long getPrincipalId(Authentication authentication) {
