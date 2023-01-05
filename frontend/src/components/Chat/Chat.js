@@ -199,7 +199,7 @@ justify-self: end;
 const Time = styled.div`
 align-self: end;
 color:#AFABAB;
-font-size 11px;
+font-size: 11px;
 padding: 5px;
 `
 const You = styled.div`

@@ -34,7 +34,7 @@ public class Reply extends BaseTimeEntity {
     private ClubBoard clubBoard;
 
     // 사용자
-    @JsonIgnoreProperties({"boards","clubUsers", "carpools", "tayos", "password"})
+    @JsonIgnoreProperties({"boards","clubUsers", "carpools", "tayoUsers", "password"})
     @JoinColumn(name = "user_Id")
     @ManyToOne
     private User user;
