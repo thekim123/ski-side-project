@@ -48,13 +48,14 @@ export const getTayoByResort = (resortName) => {
 
 export const addTayo = (post) => {
     return function (dispatch) {
+        console.log("z");
         Send({
             url: '/tayo',
             method: 'post',
             data: post,
         }).then((resp) => { 
             console.log("resp", resp);
-            dispatch(tayoActions.addTayo());
+            //dispatch(tayoActions.addTayo());
             dispatch(loadTayos());
         })
         .catch((error) => console.log(error));

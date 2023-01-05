@@ -64,7 +64,7 @@ export function Login() {
             <MySki>
                 <FaSkiing className="home-ski-icon" />
             </MySki>
-            <AppName>SKI APP</AppName>
+            <AppName>같이 타요!</AppName>
             <Button onClick={handleLogin}><BsFillChatFill className='login-icon'/><span>카카오로 시작하기</span></Button>
         </Wrapper>
     )

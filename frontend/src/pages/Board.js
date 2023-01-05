@@ -16,7 +16,6 @@ export function Board() {
     
     useEffect(() => {
         dispatch(loadPosts(page));
-        //dispatch(loadPostsByPage(1));
     }, [dispatch]);
 
     return(

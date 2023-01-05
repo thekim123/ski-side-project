@@ -49,7 +49,7 @@ export function NavBar() {
 
                 <NavBox onClick={e => {navigate('/tayo'); setBtnActive("tayo")}}>
                 <FaSkiing id='tayo' className={"nav-icons-big" + (btnActive === 'tayo' ? " active" : "")}/>
-                <NavList id='tayo' className={btnActive === 'tayo' ? 'active' : ''}>같이 타요!</NavList>
+                <NavList id='tayo' className={btnActive === 'tayo' ? 'active' : ''}>벙개</NavList>
                 </NavBox>
 
                 <NavBox onClick={e => {navigate('/club'); setBtnActive("club")}}>

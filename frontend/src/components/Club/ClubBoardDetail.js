@@ -24,6 +24,7 @@ export default function ClubBoardDetail() {
         navigate(`/club/board/edit/${id}`, {state: clubNm});
     }
     const handleTrash = () => {
+        console.log("clubBoard date ", post.createDt);
         console.log(post);
         setDelOpen(true);
     }
@@ -54,6 +55,7 @@ export default function ClubBoardDetail() {
     }
 
     useEffect(() => {
+        
         dispatch(getPost(id));
     }, [dispatch])
 
@@ -70,7 +72,7 @@ export default function ClubBoardDetail() {
                 <div>
                 <Title>{post.title}</Title>
                 <DateWho>
-                    <SDate>{post.createDt.slice(0, 10)} {post.createDt.slice(11, 16)}</SDate>
+                    <SDate>{post.createDt[0]}.{post.createDt[1]}.{post.createDt[2]} {post.createDt[3]}:{post.createDt[4]}</SDate>
                     <Who>{post.sortScope === "notice" && "관리자"} {}</Who>
                 </DateWho>
                 </div>

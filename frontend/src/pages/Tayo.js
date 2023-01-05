@@ -39,11 +39,12 @@ export function Tayo() {
         dispatch(loadTayos());
     }, [dispatch]);
 
+    /*
     useEffect(() => {
         if (posts) {
             setTayos([...posts]);
         }
-    }, [posts])
+    }, [posts])*/
 
     /*
     useEffect(() => {
@@ -59,7 +60,7 @@ export function Tayo() {
         <Container>
             <TopWrapper>
                 <Top>
-                <Title>같이 타요!</Title> 
+                <Title>벙개</Title> 
                 <Icons>
                     <FiFilter className="tayo-filter"/>
                     <HiPlus className="tayo-plus" onClick={clickPlus}/>
@@ -69,7 +70,7 @@ export function Tayo() {
             </TopWrapper>
 
             <POSTS>
-            {tayos.length > 0 && posts.map((post) => (
+            {posts.length > 0 && posts.map((post) => (
                 <TayoListItem key={post.tayo_id} {...post} />
             ))
             }

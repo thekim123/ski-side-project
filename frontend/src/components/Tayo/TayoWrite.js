@@ -164,11 +164,9 @@ export function TayoWrite() {
         }
         console.log(tayo);
         //dispatch(addTayo(tayo));
-        await dispatch(asyncAddTayo(tayo)).unwrap();
-        console.log("add");
+        await dispatch(asyncAddTayo(tayo)).unwrap(); 
         await dispatch(asyncLoadTayos()).unwrap();
-        console.log("load");
-        navigate("/tayo");
+        //navigate("/tayo");
     }
 
     //선택된 날짜가 오늘인지 확인
