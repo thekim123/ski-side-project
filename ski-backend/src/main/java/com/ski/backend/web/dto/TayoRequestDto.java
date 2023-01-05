@@ -36,9 +36,9 @@ public class TayoRequestDto {
     private LocalDate tayoDt;
 
     // 시간
-    private LocalTime tayoStrTime;
+    private LocalDateTime tayoStrTime;
 
-    private LocalTime tayoEndTime;
+    private LocalDateTime tayoEndTime;
 
 
     public TayoRequestDto tayoDto(Tayo tayo) {

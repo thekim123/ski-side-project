@@ -84,7 +84,7 @@ function TayoListItem(props) {
             </Top>
             
             <Bottom>
-                {props.tayoDt.slice(5, 7)}/{props.tayoDt.slice(8, 10)} {props.tayoStrTime.slice(11, 16)} ~ {props.tayoEndTime.slice(11, 16)}
+                {/* {props.tayoDt.slice(5, 7)}/{props.tayoDt.slice(8, 10)} {props.tayoStrTime.slice(11, 16)} ~ {props.tayoEndTime.slice(11, 16)} */}
             </Bottom>
             <Content 
             // onClick={showDetail}

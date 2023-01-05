@@ -9,6 +9,7 @@ import lombok.Data;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Data
@@ -37,9 +38,9 @@ public class TayoRespDto {
     private LocalDate tayoDt;
 
     // 시간
-    private LocalTime tayoStrTime;
+    private LocalDateTime tayoStrTime;
 
-    private LocalTime tayoEndTime;
+    private LocalDateTime tayoEndTime;
 
 
     public TayoRespDto(Long id,Long resortId, RideDevice rideDevice, String title, int tayoMemCnt, int curTayoMemCnt, AgeGrp age) {

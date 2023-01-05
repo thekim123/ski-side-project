@@ -95,8 +95,8 @@ export default function MyReceived() {
             <SubmitTitle>받은 신청</SubmitTitle>
             <ButtonWrap>
                 <Btn onClick={changeMyPost} className={myPostPage === '카풀' ? 'selected' : ''}>카풀</Btn>
-                <Btn onClick={changeMyPost} className={myPostPage === '같이타요' ? 'selected' : ''}>같이타요</Btn>
-                <Btn onClick={changeMyPost} className={myPostPage === '동호회' ? 'selected' : ''}>동호회</Btn>
+                {/* <Btn onClick={changeMyPost} className={myPostPage === '같이타요' ? 'selected' : ''}>같이타요</Btn> */}
+                {/* <Btn onClick={changeMyPost} className={myPostPage === '동호회' ? 'selected' : ''}>동호회</Btn> */}
             </ButtonWrap>
             </MyWrapper>
 

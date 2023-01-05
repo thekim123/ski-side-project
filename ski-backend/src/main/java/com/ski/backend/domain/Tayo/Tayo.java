@@ -71,9 +71,9 @@ public class Tayo extends BaseTimeEntity {
 
     // 시간
 
-    private LocalTime tayoStrTime;
+    private LocalDateTime tayoStrTime;
 
-    private LocalTime tayoEndTime;
+    private LocalDateTime tayoEndTime;
 
 
     public void update(TayoRequestDto dto) {

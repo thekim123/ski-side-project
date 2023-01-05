@@ -9,6 +9,7 @@ import com.ski.backend.domain.user.User;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Data
@@ -38,9 +39,9 @@ public class TayoUserRespDto {
 
     // 시간
 
-    private LocalTime tayoStrTime;
+    private LocalDateTime tayoStrTime;
 
-    private LocalTime tayoEndTime;
+    private LocalDateTime tayoEndTime;
 
     private String userName;
 
@@ -55,6 +56,9 @@ public class TayoUserRespDto {
         this.curTayoMemCnt = tayo.getCurTayoMemCnt();
         this.comment = tayo.getComment();
         this.userId = userId;
+        this.tayoDt = tayo.getTayoDt();
+        this.tayoStrTime = tayo.getTayoStrTime();
+        this.tayoEndTime = tayo.getTayoEndTime();
     }
 
     public TayoUserRespDto(Tayo tayo, Status status,String userName) {
