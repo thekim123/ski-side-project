@@ -247,7 +247,7 @@ padding: 5px;
 `
 const SearchContent = styled.div`
 display:flex;
-justify-content: center;
+justify-content: space-between;
 padding: 5px;
 `
 const RouteWrapper = styled.div`

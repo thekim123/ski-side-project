@@ -110,17 +110,18 @@ export default function ClubBoardDetail() {
                             <ComNameIcon>
                                 <ComNameBox>
                                 <SBsFillPersonFill />
-                                {/* <ComName>{} {c.user.nickname.split("_")[0]}</ComName> */}
+                                <ComName>{c.nickname.split("_")[0]}</ComName>
                                 </ComNameBox>
                                 <NotiBox>
                                     {/* 다른 사람의 댓글일 때 신고 버튼 */}
                                 {/* {c.user.username !== user.username ? <ComNoti>신고</ComNoti> : null} */}
                                 {/* 내 댓글일 때 삭제 버튼 */}
-                                {/* {c.user.username === user.username ? <SBsTrashFill onClick={() => handleCommentTrash(c.id)}/> : null} */}
+                                {c.nickname === user.nickname ? <SBsTrashFill onClick={() => handleCommentTrash(c.id)}/> : null}
                                 </NotiBox>
                             </ComNameIcon>
                             <ComContent>{c.reply}</ComContent>
                             {/* <ComDate>{new Date(c.createdDate).getMonth()+1}/{new Date(c.createdDate).getDate()} {c.createdDate.slice(11, 16)}</ComDate> */}
+                            <ComDate>{c.createDt[1]}/{c.createDt[2]} {c.createDt[3] >= 10 ? c.createDt[3] : "0"+c.createDt[3]}:{c.createDt[4] >= 10 ? c.createDt[4] : "0"+c.createDt[4]}</ComDate>
                             <OkButtonModal 
                             open={commentDelOpen}
                             close={closeCommentDel}
@@ -159,6 +160,7 @@ margin-bottom: 200px;
 const Wrapper = styled.div`
 margin: 10px;
 margin-top: 20px;
+margin-bottom: 110px;
 `
 const MostTop = styled.div`
 padding: 10px;
