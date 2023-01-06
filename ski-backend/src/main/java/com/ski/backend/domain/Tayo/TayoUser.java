@@ -23,7 +23,7 @@ public class TayoUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @JsonIgnoreProperties({"board","tayoUsers"})
+    @JsonIgnoreProperties({"boards", "clubUsers", "carpools", "tayoUsers"})
     @ManyToOne(fetch = LAZY)// 여러 사용자가 한 클럽에 속할 수 있으니까
     @JoinColumn(name = "user_id")
     private User user;
