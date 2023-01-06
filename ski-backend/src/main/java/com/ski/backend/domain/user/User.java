@@ -6,6 +6,7 @@ import com.ski.backend.domain.Tayo.Tayo;
 import com.ski.backend.domain.Tayo.TayoUser;
 import com.ski.backend.domain.board.Board;
 import com.ski.backend.domain.carpool.Carpool;
+import com.ski.backend.domain.club.Reply;
 import com.ski.backend.domain.common.AgeGrp;
 import com.ski.backend.domain.club.ClubUser;
 import com.ski.backend.domain.club.Gender;
@@ -76,6 +77,10 @@ public class User {
     @JsonIgnoreProperties({"user"})
     @OneToMany(mappedBy = "user")
     private List<Carpool> carpools;
+
+    @JsonIgnoreProperties({"user"})
+    @OneToMany(mappedBy = "user")
+    private List<Reply> replies = new ArrayList<>();
 
     @JsonIgnoreProperties({"user"})
     @OneToMany(mappedBy = "user")

@@ -37,7 +37,7 @@ public class ClubBoard extends BaseTimeEntity {
 
     // 댓글
     @JsonIgnore
-    @OneToMany(mappedBy = "clubBoard",orphanRemoval = true)
+    @OneToMany(mappedBy = "clubBoard", cascade = ALL, orphanRemoval = true)
     private List<Reply> replies = new ArrayList<>();
 
     // 제목

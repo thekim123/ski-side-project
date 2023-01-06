@@ -33,7 +33,6 @@ public class ReplyDto {
                 .user(user)
                 .clubBoard(clubBoard)
                 .reply(reply)
-
                 .build();
     }
 
