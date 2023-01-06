@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 
 @Data
+@NoArgsConstructor
 public class ReplyDto {
 
     // 댓글 식별값
