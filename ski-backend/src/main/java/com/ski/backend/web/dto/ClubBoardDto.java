@@ -64,7 +64,8 @@ public class ClubBoardDto {
 
     public ClubBoardDto(ClubBoard cb) {
         this.id = cb.getId();
-        this.replies =cb.getReplies().stream().map(ReplyDto::new).collect(Collectors.toList());
+        //this.replies =cb.getReplies().stream().map(ReplyDto::new).collect(Collectors.toList());
+        this.replies = cb.getReplies().stream().map(r -> new ReplyDto(r, r.getUser().getNickname())).collect(Collectors.toList());
         this.title =cb.getTitle();
         this.content =cb.getContent();
         this.tempFlag =cb.getTempFlag();

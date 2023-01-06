@@ -13,11 +13,11 @@ import { MdSnowboarding } from 'react-icons/md'
 import { FaSkiing } from 'react-icons/fa'
 import OkButtonModal from '../common/OkButtonModal'
 
-function TayoListItem(props) { 
+export function TayoListItem(props) {  
     const user = useSelector(state => state.auth.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [isMine, setIsMine] = useState(true);
+    const [isMine, setIsMine] = useState(false);
     const [title, setTitle] = useState("");
     const [timePass, setTimePass] = useState("");
     const [delOpen, setDelOpen] = useState(false);
@@ -45,6 +45,7 @@ function TayoListItem(props) {
     const showIcon = () => {
         console.log(user);
         if (user.nickname === props.userName) setIsMine(true);
+        else setIsMine(false);
     }
     const closeDel = () => {
         setDelOpen(false);

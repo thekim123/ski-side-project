@@ -8,6 +8,7 @@ import { loadClubPosts } from '../../action/clubBoard';
 import { loadTayos } from '../../action/tayo';
 import BoardListItem from '../Board/BoardListItem';
 import { CarPoolListItem } from '../CarPool/CarPoolListItem';
+import { TayoListItem } from '../Tayo/TayoListItem';
 export default function MyPageDetail() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -29,7 +30,7 @@ export default function MyPageDetail() {
             dispatch(loadPosts());
         } else if (page === '카풀') {
             dispatch(loadCarpools());
-        } else if (page === '같이타요') {
+        } else if (page === '벙개') {
             dispatch(loadTayos());
         } else if (page === '동호회') {
             //dispatch(lo)
@@ -61,7 +62,8 @@ export default function MyPageDetail() {
 
     useEffect(() => {
         if (tayos.length > 0) {
-            //setMyTayos(tayos.filter(tayo => tayo.))
+            console.log(tayos);
+            setMyTayos(tayos.filter(tayo => tayo.userId === user.id));
         }
     }, [tayos])
 
@@ -79,8 +81,8 @@ export default function MyPageDetail() {
             <ButtonWrap>
                 <Btn onClick={changeMyPost} className={myPostPage === '자유게시판' ? 'selected' : ''}>자유게시판</Btn>
                 <Btn onClick={changeMyPost} className={myPostPage === '카풀' ? 'selected' : ''}>카풀</Btn>
-                <Btn onClick={changeMyPost} className={myPostPage === '같이타요' ? 'selected' : ''}>같이타요</Btn>
-                <Btn onClick={changeMyPost} className={myPostPage === '동호회' ? 'selected' : ''}>동호회</Btn>
+                <Btn onClick={changeMyPost} className={myPostPage === '벙개' ? 'selected' : ''}>벙개</Btn>
+                {/* <Btn onClick={changeMyPost} className={myPostPage === '동호회' ? 'selected' : ''}>동호회</Btn> */}
             </ButtonWrap>
             </MyWrapper>
 
@@ -88,6 +90,7 @@ export default function MyPageDetail() {
                 
                     {(myPostPage === '자유게시판') && myPosts.length > 0 && myPosts.map(post => <BoardListItem key={post.id} {...post} />)}
                     <CarWrap>{myPostPage === '카풀' && myCarpools.length > 0 && myCarpools.map(carpool => <CarPoolListItem key={carpool.id} {...carpool} func={showDetail}/>)}</CarWrap>
+                    {(myPostPage === '벙개') && myTayos.length > 0 && myTayos.map(tayo => <TayoListItem key={tayo.id} {...tayo} />)}
             </ItemWrapper>
         </Wrapper>
     )

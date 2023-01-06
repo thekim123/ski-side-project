@@ -90,7 +90,7 @@ export default function CarPoolChat() {
             {type === 'quest' && <Button onClick={handleSubmit}>카풀 신청하기</Button>}
             {type !== 'quest' && <div>{state === '0' ? <div>승인 대기</div> : <div>신청이 {state}되었습니다.</div>}</div>}
         </What>}
-        <OkButtonModal 
+        {post && <OkButtonModal 
                         open={submitOpen}
                         close={closeSubmit}
                         message={"신청하시겠습니까?"}
@@ -98,7 +98,7 @@ export default function CarPoolChat() {
                         usage={"carpoolSubmit"}
                         submitId={user.id}
                         writerId={post.user.id}
-                        targetId={id} />
+                        targetId={id} />}
         </Top>
         <Bottom>
         <Chat />

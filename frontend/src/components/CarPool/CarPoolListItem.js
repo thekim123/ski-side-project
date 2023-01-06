@@ -35,7 +35,7 @@ export function CarPoolListItem(props) {
                     {props.negotiate.departTime && <SBsFillCheckCircleFill />}
                     <Time>
                         {/* {date.getMonth()+1}.{date.getDate()} {date.getHours()}:{date.getMinutes() < 10 ? "0"+date.getMinutes() : date.getMinutes()}  */}
-                        {props.departTime[1]}.{props.departTime[2]} {props.departTime[3]}:{props.departTime[4]} <TimeText>출발</TimeText>
+                        <span>{props.departTime[1]}월 {props.departTime[2]}일</span> <span>{props.departTime[3]}시 {props.departTime[4] !== 0 && props.departTime[4]+'분'}</span> <TimeText>출발</TimeText>
                     </Time>
                 </TimeBox>
             </TimeWrap>
@@ -164,6 +164,11 @@ border-radius: 8px;
 font-weight: bold;
 color: var(--button-color);
 text-align: center;
+span {
+    //padding-right: 3px;
+    font-size: 13px;
+    font-family: nanum-square-bold;
+}
 `
 const TimeText = styled.span`
 font-size: 13px;
