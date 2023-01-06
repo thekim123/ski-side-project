@@ -62,7 +62,7 @@ export function Tayo() {
                 <Top>
                 <Title>벙개</Title> 
                 <Icons>
-                    <FiFilter className="tayo-filter"/>
+                    {/* <FiFilter className="tayo-filter"/> */}
                     <HiPlus className="tayo-plus" onClick={clickPlus}/>
                 </Icons>
                 </Top>

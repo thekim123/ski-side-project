@@ -232,6 +232,7 @@ export function BoardDetail() {
 const Container = styled.div`
     margin-top: 30px;
     //padding: 20px;
+    margin-bottom: 60px;
 `
 const Top = styled.div`
 padding-bottom: 4px;

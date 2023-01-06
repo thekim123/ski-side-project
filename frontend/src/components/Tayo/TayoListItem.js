@@ -11,6 +11,7 @@ import { deletePost } from '../../action/board'
 import { BsBoxArrowUpRight } from 'react-icons/bs';
 import { MdSnowboarding } from 'react-icons/md'
 import { FaSkiing } from 'react-icons/fa'
+import OkButtonModal from '../common/OkButtonModal'
 
 function TayoListItem(props) { 
     const user = useSelector(state => state.auth.user);
@@ -19,6 +20,7 @@ function TayoListItem(props) {
     const [isMine, setIsMine] = useState(true);
     const [title, setTitle] = useState("");
     const [timePass, setTimePass] = useState("");
+    const [delOpen, setDelOpen] = useState(false);
     const ageData = ["ANY", "TEN", "TWENTY", "THIRTY", "FORTY", "FIFTY", "SIXTY", "SEVENTY", "EIGHTY"]
     const age_kor = ["연령 무관", "10대", "20대", "30대", "40대", "50대", "60대", "70대", "80대"]
 
@@ -41,7 +43,11 @@ function TayoListItem(props) {
     }
 
     const showIcon = () => {
-        //if (user === props.user.username) setIsMine(true);
+        console.log(user);
+        if (user.nickname === props.userName) setIsMine(true);
+    }
+    const closeDel = () => {
+        setDelOpen(false);
     }
 
     const setScreenTitle = () => {
@@ -57,7 +63,8 @@ function TayoListItem(props) {
     }
 
     const handleTrash = e => {
-        dispatch(deletePost(props.id));
+        //dispatch(deletePost(props.id));
+        setDelOpen(true);
     }
 
     const showDetail = e => {
@@ -65,6 +72,7 @@ function TayoListItem(props) {
     }
 
     useEffect(() => {
+        console.log(props);
         setTimePass(detailDate(props.createdDate));
         showIcon();
         setScreenTitle();
@@ -75,16 +83,23 @@ function TayoListItem(props) {
             <Top>
                 {/* <SkiName>{props.resortName}</SkiName> */}
                 <TempTitle>{props.title}</TempTitle>
-                <Time>{timePass}</Time>
-                {/*
+                {/* <Time>{timePass}</Time> */}
+                
                 <div>
-                    {isMine && <HiPencil className="boardPost-icon" onClick={handlePencil}/>}
+                    {/* {isMine && <HiPencil className="boardPost-icon" onClick={handlePencil}/>} */}
                     {isMine && <BsTrashFill className="boardPost-icon" onClick={handleTrash}/>}
-    </div>*/}
+                </div>
             </Top>
+            <OkButtonModal 
+                    open={delOpen}
+                    close={closeDel}
+                    message={"게시글을 삭제하시겠습니까?"}
+                    ok={"삭제"}
+                    usage={"tayoDel"}
+                    targetId={props.id}/>
             
             <Bottom>
-                {/* {props.tayoDt.slice(5, 7)}/{props.tayoDt.slice(8, 10)} {props.tayoStrTime.slice(11, 16)} ~ {props.tayoEndTime.slice(11, 16)} */}
+                {props.tayoDt[1]}월 {props.tayoDt[2]}일 {props.tayoStrTime[3]}시 {props.tayoStrTime[4] !== 0 && props.tayoStrTime[4]+"분"} ~ {props.tayoEndTime[3]}시 {props.tayoEndTime[4] !== 0 && props.tayoEndTime[4]+"분"}
             </Bottom>
             <Content 
             // onClick={showDetail}
@@ -100,11 +115,11 @@ function TayoListItem(props) {
                 </Count>
                 <Age>
                     <MdEmojiPeople className="tayo-age" />
-                    {age_kor[ageData.indexOf(props.age)]}
+                    <div>{age_kor[ageData.indexOf(props.age)]}</div>
                 </Age>
-                <TitleTime>
+                {/* <TitleTime> */}
                     {/* <Title>{title}</Title> */}
-                </TitleTime>
+                {/* </TitleTime> */}
                 </BtnElse>
                 <KakaoUrl>
                     <Button onClick={() => window.open("https"+props.comment.split("https")[1], '_blank')}>
@@ -174,7 +189,7 @@ padding: 0 10px;
 `
 const BtnElse = styled.div`
 display: grid;
-grid-template-columns: 48px 63px 38px;
+grid-template-columns: 48px 63px 53px;
 align-items: center;
 `
 const Count = styled.div`
@@ -207,6 +222,7 @@ display: grid;
 font-size:12px;
 text-align: center;
 padding-left: 5px;
+width: 100%;
 justify-items: center;
 .tayo-age{
     //width: 3rem;
@@ -215,6 +231,9 @@ justify-items: center;
     height: 1.3rem;
     color: var(--button-color);
     padding-top: 3px;
+}
+div {
+    width: 100%;
 }
 `
 const TitleTime = styled.div`

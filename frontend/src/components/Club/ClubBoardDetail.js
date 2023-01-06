@@ -59,6 +59,13 @@ export default function ClubBoardDetail() {
         dispatch(getPost(id));
     }, [dispatch])
 
+    //임시
+    useEffect(() => {
+        if (post) {
+            console.log(post.replies);
+        }
+    })
+
     return (
     <>
     {post && <Wrapper>
@@ -103,17 +110,17 @@ export default function ClubBoardDetail() {
                             <ComNameIcon>
                                 <ComNameBox>
                                 <SBsFillPersonFill />
-                                <ComName>{} {c.user.nickname.split("_")[0]}</ComName>
+                                {/* <ComName>{} {c.user.nickname.split("_")[0]}</ComName> */}
                                 </ComNameBox>
                                 <NotiBox>
                                     {/* 다른 사람의 댓글일 때 신고 버튼 */}
                                 {/* {c.user.username !== user.username ? <ComNoti>신고</ComNoti> : null} */}
                                 {/* 내 댓글일 때 삭제 버튼 */}
-                                {c.user.username === user.username ? <SBsTrashFill onClick={() => handleCommentTrash(c.id)}/> : null}
+                                {/* {c.user.username === user.username ? <SBsTrashFill onClick={() => handleCommentTrash(c.id)}/> : null} */}
                                 </NotiBox>
                             </ComNameIcon>
                             <ComContent>{c.reply}</ComContent>
-                            <ComDate>{new Date(c.createdDate).getMonth()+1}/{new Date(c.createdDate).getDate()} {c.createdDate.slice(11, 16)}</ComDate>
+                            {/* <ComDate>{new Date(c.createdDate).getMonth()+1}/{new Date(c.createdDate).getDate()} {c.createdDate.slice(11, 16)}</ComDate> */}
                             <OkButtonModal 
                             open={commentDelOpen}
                             close={closeCommentDel}

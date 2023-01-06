@@ -15,7 +15,7 @@ import java.time.LocalTime;
 @Data
 public class TayoUserRespDto {
 
-
+    private Long id;
     private Long resortId;
 
     private RideDevice rideDevice;
@@ -47,7 +47,8 @@ public class TayoUserRespDto {
 
 
 
-    public TayoUserRespDto(Tayo tayo, long userId) {
+    public TayoUserRespDto(Tayo tayo, long userId, String userName) {
+        this.id = tayo.getId();
         this.resortId = tayo.getResort().getId();
         this.rideDevice = tayo.getRideDevice();
         this.title = tayo.getTitle();
@@ -56,6 +57,7 @@ public class TayoUserRespDto {
         this.curTayoMemCnt = tayo.getCurTayoMemCnt();
         this.comment = tayo.getComment();
         this.userId = userId;
+        this.userName = userName;
         this.tayoDt = tayo.getTayoDt();
         this.tayoStrTime = tayo.getTayoStrTime();
         this.tayoEndTime = tayo.getTayoEndTime();

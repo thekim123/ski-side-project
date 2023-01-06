@@ -30,7 +30,7 @@ export default function Chat() {
             roomName: room,
         }
 
-        fetch("http://localhost:8040/chat/save", {
+        fetch("http://15.165.81.194:8040/chat/save", { 
             method: "post",
             body: JSON.stringify(chat),
             headers: {
@@ -48,7 +48,7 @@ export default function Chat() {
         let eventSource;
         if (!listening) {
             //eventSource = new EventSource(`http://localhost:8040/chat/room/yejinsh`)
-            eventSource = new EventSource(`http://localhost:8040/chat/room/${room}`)
+            eventSource = new EventSource(`http://15.165.81.194:8040/chat/room/${room}`)
             setmEventSource(eventSource)
 
             eventSource.onopen = event => {
