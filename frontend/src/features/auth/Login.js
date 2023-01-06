@@ -74,7 +74,7 @@ const Wrapper = styled.div`
 display: grid;
 align-items: center;
 justify-items: center;
-margin-top: 200px;
+margin-top: 170px;
 `
 const MySki = styled.button`
 background-color: var(--button-color);

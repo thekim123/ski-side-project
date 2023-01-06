@@ -12,7 +12,7 @@ export default function Mypage() {
     const [myPostPage, setMyPostPage] = useState("자유게시판");
     const age = [" ", "10대", "20대", "30대", "40대", "50대", "60대", "70대", "80대"]
     const dataAge = ["ANY", "TEN", "TWENTY", "THIRTY", "FORTY", "FIFTY", "SIXTY", "SEVENTY", "EIGHTY"]
-    const gender = ["남자", "여자", "성별 무관"]
+    const gender = ["남자", "여자", ""]
     const dataGender = ["MEN", "WOMEN", "NO"]
 
     const gotoMyDetail = () => {
@@ -56,9 +56,9 @@ export default function Mypage() {
             <IoIosArrowForward />
         </SubmitWrapper>
 
-        <SubmitWrapper onClick={logout}>
-            <SubmitTitle>로그아웃</SubmitTitle>
-        </SubmitWrapper>
+        {/* <SubmitWrapper onClick={logout}> */}
+            {/* <SubmitTitle>로그아웃</SubmitTitle> */}
+        {/* </SubmitWrapper> */}
     </Wrapper>
     )
 }

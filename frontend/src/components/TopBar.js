@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { BiArrowBack, BiUser, BiBell } from "react-icons/bi"
 import { BsChatDots } from 'react-icons/bs'
 import { HiOutlineChat } from 'react-icons/hi'
+import {FaSkiing} from 'react-icons/fa'
 
 export function TopBar() {
     const navigate = useNavigate();
@@ -32,7 +33,7 @@ export function TopBar() {
             <LeftSide>
                 {t !== '' && t !== 'board' && t !== 'carpool' && t !== 'tayo' && t !== 'club' && t !== 'my' && t !== 'chat' && t !== 'alarm' &&
                     <BiArrowBack className="backBtn" onClick={goback} />}
-                <PageName></PageName>
+                {t === '' && <PageName>같이 타요!</PageName>}
             </LeftSide>
             <RightSide>
                 {/* <HiOutlineChat className='chatBtn' onClick={gotoChatPage}/> */}
@@ -89,4 +90,8 @@ const RightSide = styled.div`
 const PageName = styled.div`
     margin: 0;
     padding-top: 4px;
+    padding-left: 13px;
+    font-family: nanum-square-bold;
+    font-size: 18px;
+    color: var(--button-color);
 `
