@@ -27,6 +27,13 @@ public class ReplyDto {
     // 수정시간
     private LocalDateTime updateDt;
 
+    public ReplyDto(Reply reply) {
+        this.id = reply.getId();
+        this.clubBoardId = reply.getClubBoard().getId();
+        this.reply = reply.getReply();
+        this.createDt = reply.getCreatedDate();
+        this.updateDt = reply.getLastModifiedDate();
+    }
 
     public Reply toEntity(User user, ClubBoard clubBoard) {
         return Reply.builder()

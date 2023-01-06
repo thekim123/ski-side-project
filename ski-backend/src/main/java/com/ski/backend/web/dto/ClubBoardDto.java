@@ -12,7 +12,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 
 @Getter
@@ -32,7 +32,7 @@ public class ClubBoardDto {
     private Long userId;
 
     // 댓글
-    private List<Reply> replies;
+    private List<ReplyDto> replies;
 
     // 제목
     private String title;
@@ -64,7 +64,7 @@ public class ClubBoardDto {
 
     public ClubBoardDto(ClubBoard cb) {
         this.id = cb.getId();
-        this.replies =cb.getReplies();
+        this.replies =cb.getReplies().stream().map(ReplyDto::new).collect(Collectors.toList());
         this.title =cb.getTitle();
         this.content =cb.getContent();
         this.tempFlag =cb.getTempFlag();
