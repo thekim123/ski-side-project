@@ -2,6 +2,7 @@ package com.ski.backend.domain.Tayo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ski.backend.domain.BaseTimeEntity;
 import com.ski.backend.domain.common.AgeGrp;
 import com.ski.backend.domain.resort.Resort;
@@ -41,7 +42,8 @@ public class Tayo extends BaseTimeEntity {
     @JoinColumn(name = "resort_id")
     private Resort resort;
 
-    @OneToMany(mappedBy = "tayo", fetch = EAGER,orphanRemoval = true)
+    @JsonIgnoreProperties({"tayo"})
+    @OneToMany(mappedBy = "tayo", fetch = EAGER, orphanRemoval = true)
     private List<TayoUser> tayoUsers = new ArrayList<>();
 
     // 보드 / 스키
@@ -86,7 +88,7 @@ public class Tayo extends BaseTimeEntity {
     }
 
     public void addMember() {
-        this.curTayoMemCnt ++;
+        this.curTayoMemCnt++;
     }
 
 
