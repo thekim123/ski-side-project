@@ -34,7 +34,6 @@ export const kakaoLogin = (backData) => {
         try {
             dispatch(authActions.setCredentials(backData.data));
             Send.defaults.headers.common['Authorization'] = 'Bearer '+backData.data;
-            console.log(Send.defaults.headers.common['Authorization'])
             //localStorage.setItem('access_token', 'Bearer '+backData.data);
             dispatch(getUser());        
         } catch (e) {

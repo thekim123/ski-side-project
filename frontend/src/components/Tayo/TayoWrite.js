@@ -102,7 +102,7 @@ export function TayoWrite() {
             local_error.title = "제목은 50자 이하여야 합니다."
         } 
         if (content.trim() === '') {
-            local_error.content = "홍보 문구를 입력하세요."
+            local_error.content = "오픈 채팅방 링크를 첨부하세요."
         } else if (content.length > 1000) {
             local_error.content = "홍보 문구는 1000자 이하여야 합니다."
         }
@@ -166,7 +166,7 @@ export function TayoWrite() {
         //dispatch(addTayo(tayo));
         await dispatch(asyncAddTayo(tayo)).unwrap(); 
         await dispatch(asyncLoadTayos()).unwrap();
-        //navigate("/tayo");
+        navigate("/tayo");
     }
 
     //선택된 날짜가 오늘인지 확인

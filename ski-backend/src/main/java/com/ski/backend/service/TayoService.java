@@ -46,7 +46,7 @@ public class TayoService {
     public Page<TayoUserRespDto> tayoList(Pageable pageable, long id) {
         User findUser = userRepository.findById(id).orElseThrow(() -> new CustomApiException("사용자를 찾지 못했습니다."));
         Page<TayoUser> tayoUsers = tayoUserRepository.findAll(pageable);
-        Page<TayoUserRespDto> tayoUserList = tayoUsers.map(e -> new TayoUserRespDto(e.getTayo(), e.getUser().getId()));
+        Page<TayoUserRespDto> tayoUserList = tayoUsers.map(e -> new TayoUserRespDto(e.getTayo(), e.getUser().getId(), e.getUser().getNickname()));
         return tayoUserList;
     }
 
