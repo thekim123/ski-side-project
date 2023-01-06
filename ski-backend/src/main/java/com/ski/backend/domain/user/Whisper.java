@@ -1,6 +1,5 @@
 package com.ski.backend.domain.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +21,7 @@ public class Whisper {
     @JsonIncludeProperties({"username", "id","carpools"})
     @ManyToOne
     private User principal;
+
 
     private String toUsername;
 }

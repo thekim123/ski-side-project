@@ -82,7 +82,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Reply> replies = new ArrayList<>();
 
-    @JsonIgnoreProperties({"user"})
+    @JsonIgnoreProperties({"user", "tayo"})
     @OneToMany(mappedBy = "user")
     private List<TayoUser> tayoUsers = new ArrayList<>();
 

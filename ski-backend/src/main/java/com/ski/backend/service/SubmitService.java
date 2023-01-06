@@ -61,13 +61,13 @@ public class SubmitService {
 
         Whisper whisperEntity = Whisper.builder()
                 .principal(principal)
-                .toUsername(carpoolEntity.getUser().getUsername())
+                .toUsername(carpoolEntity.getUser().getNickname())
                 .build();
         whisperRepository.save(whisperEntity);
 
         Whisper writerWhisperEntity = Whisper.builder()
                 .principal(carpoolEntity.getUser())
-                .toUsername(principal.getUsername())
+                .toUsername(principal.getNickname())
                 .build();
 
         List<Whisper> whispers = new ArrayList<>();

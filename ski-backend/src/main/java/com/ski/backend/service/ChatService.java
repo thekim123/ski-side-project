@@ -6,26 +6,18 @@ import com.ski.backend.domain.user.User;
 import com.ski.backend.domain.user.Whisper;
 import com.ski.backend.handler.ex.CustomApiException;
 import com.ski.backend.repository.ChatRoomRepository;
+import com.ski.backend.repository.UserRepository;
 import com.ski.backend.repository.WhisperRepository;
-import com.ski.backend.web.dto.ChatDto;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -33,19 +25,18 @@ public class ChatService {
 
     private final ChatRoomRepository chatRoomRepository;
     private final WhisperRepository whisperRepository;
+    private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
     public List<Whisper> getWhispers(Authentication authentication) {
         User user = getPrincipal(authentication);
-        List<Whisper> whispers = whisperRepository.findByPrincipal(user);
-        return whispers;
+        return whisperRepository.findByPrincipal(user);
     }
 
     @Transactional(readOnly = true)
     public List<ChatRoom> getChatRoom(Authentication authentication) {
         User user = getPrincipal(authentication);
-        List<ChatRoom> chatRooms = chatRoomRepository.findByUser(user);
-        return chatRooms;
+        return chatRoomRepository.findByUser(user);
     }
 
     @Transactional
@@ -56,10 +47,16 @@ public class ChatService {
             throw new CustomApiException("해당 카풀 채팅 링크를 찾을 수 없습니다.");
         });
 
-        String username = user.getUsername();
-        String msg = username + "님이 퇴장하셨습니다.";
         String toUsername = whisper.getToUsername();
-        sendSystemMessage(username, toUsername, msg);
+        User toUser = userRepository.findByUsername(toUsername);
+
+        String toUserNickname = toUser.getNickname();
+        toUserNickname = toUserNickname.split("_")[0];
+
+        System.out.println(toUserNickname);
+
+        String msg = toUserNickname + "님이 퇴장하셨습니다.";
+        sendSystemMessage(user.getUsername(), toUsername, msg);
         whisperRepository.deleteById(whisperId);
     }
 
@@ -74,33 +71,28 @@ public class ChatService {
     }
 
     // 채팅방 퇴장 알림 메세지를 채팅방에 전송합니다.
-    public void sendSystemMessage(String username, String receiver, String msg) {
-        try {
-            RestTemplate rt = new RestTemplate();
-            String sseServerAddr = "http://15.165.81.194:8040/chat/save";
-            URL url = new URL(sseServerAddr);
+    public void sendSystemMessage(String userNickname, String receiver, String msg) {
+        RestTemplate rt = new RestTemplate();
+        String sseServerAddr = "http://15.165.81.194:8040/chat/save";
 
-            ChatDto dto = ChatDto.builder()
-                    .sender(username)
-                    .receiver(receiver)
-                    .msg(msg)
-                    .createdAt(LocalDateTime.now())
-                    .build();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
-            HttpEntity<String> httpEntity = new HttpEntity<>(dto.toString());
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("sender", userNickname);
+        jsonObject.put("receiver", receiver);
+        jsonObject.put("msg", msg);
 
-            ResponseEntity<String> response = rt.exchange(
-                    sseServerAddr,
-                    HttpMethod.POST,
-                    httpEntity,
-                    String.class
-            );
+        System.out.println(jsonObject);
 
-            System.out.println("실행완료");
-        } catch (IOException io) {
-            System.out.println(io.getMessage());
-            System.out.println(io.getStackTrace());
-        }
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(jsonObject, headers);
 
+        String response = rt.postForObject(
+                sseServerAddr,
+                entity,
+                String.class
+        );
+
+        System.out.println(response);
     }
 }
