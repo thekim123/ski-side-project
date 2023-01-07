@@ -113,7 +113,7 @@ export default function MyReceived() {
                                 : <UserWrapper>{submitContent[idx].map((submit, index) => 
                                 <UserRow>
                                     <Name>{submit.fromUser.nickname.split("_")[0]}</Name>
-                                    {korAge.indexOf(submit.fromUser.ageGrp) !== -1 && <Info>{korAge.indexOf(submit.fromUser.ageGrp)}0대</Info>}
+                                    {korAge.indexOf(submit.fromUser.ageGrp) !== -1 ? <Info>{korAge.indexOf(submit.fromUser.ageGrp)}0대</Info> : <div></div>}
                                     <Info>{korGen[genderData.indexOf(submit.fromUser.gender)]}</Info>
                                     {submit.state === "0" ? 
                                     <ButtonWrapper>

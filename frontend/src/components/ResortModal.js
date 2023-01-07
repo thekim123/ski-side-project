@@ -60,6 +60,7 @@ export function ResortModal(props) {
                     <div className="modal-resortName">{props.header}</div>
                     <Button onClick={props.close}>&times;</Button>
                 </Header>
+                {emptyStar && <StarText>즐겨찾기</StarText>}
 
                     <TempWeather>
                         <TempImg src={props.dayState.icon} />
@@ -178,8 +179,9 @@ const Header = styled.div`
     align-items: center;
     padding-top: 5px;
     .modal-star {
-        width: 1.8rem;
-        height: 1.8rem;
+        width: 2.0rem;
+        height: 2.0rem;
+        padding-top: 4px;
         padding-left: 9px;
         color: var(--button-color);
     }
@@ -188,13 +190,25 @@ const Header = styled.div`
         font-size: 15px;
     }
 `
+const StarBox = styled.div`
+display: flex;
+align-items: center;
 
-const Button = styled.button`
+`
+const StarText = styled.div`
+font-size: 12px;
+color: var(--button-sub-color);
+padding-left: 7px;
+`
+
+const Button = styled.div`
     outline: none;
     cursor: pointer;
     border: 0;
     background-color: transparent;
     font-size: 30px;
+    text-align: right;
+    padding-right: 10px;
 `
 
 const TempWeather = styled.div`
@@ -278,7 +292,7 @@ const Row = styled.div`
     padding-bottom: 8px;
     align-items: center;
     .label-time{
-        align-self: start;
+        //align-self: start;
     }
 `
 const Label = styled.div`
