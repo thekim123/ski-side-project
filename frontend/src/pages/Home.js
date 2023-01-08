@@ -12,6 +12,7 @@ import shortid from 'shortid';
 import { loadBookmarks } from '../action/bookmark';
 import { ResortModal } from '../components/ResortModal';
 import Slider from 'react-slick'
+import Send from '../components/common/Send';
 
 export function Home() {
     const dispatch = useDispatch();
@@ -49,7 +50,8 @@ export function Home() {
 
     /*
     useEffect(() => {
-        dispatch(loadBookmarks());
+        //dispatch(loadBookmarks());
+        Send.defaults.headers.common['Authorization'] = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwcm9qZWN0cyIsImlkIjo4LCJleHAiOjE2NzQwMzA2NDQsInVzZXJuYW1lIjoicHJvamVjdHMifQ.8IAUHdpYgPUZ8LKWyBoQQD0IUXIr7EhN50M1-VlWFixHhAt5hDzmyfRbE0Se-yllcVmHwwTD0uJEjxQ9fK_7SQ';
     }, [dispatch]);*/
 
     return(

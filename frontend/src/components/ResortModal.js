@@ -56,11 +56,11 @@ export function ResortModal(props) {
                 {!props.dayState.icon ? <Loading /> :
                 <>
                 <Header>
-                    <div onClick={toggleStar}>{emptyStar ? <AiOutlineStar className="modal-star"/> : <AiFillStar className="modal-star"/>}</div>
+                    <div onClick={toggleStar}>{emptyStar ? <AiOutlineStar className="modal-star"/> : <SAiFillStar className="modal-star"/>}</div>
                     <div className="modal-resortName">{props.header}</div>
                     <Button onClick={props.close}>&times;</Button>
                 </Header>
-                {emptyStar && <StarText>즐겨찾기</StarText>}
+                {/* {emptyStar && <StarText>즐겨찾기</StarText>} */}
 
                     <TempWeather>
                         <TempImg src={props.dayState.icon} />
@@ -178,17 +178,23 @@ const Header = styled.div`
     justify-content: space-between;
     align-items: center;
     padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: var(--button-color);
+    color: #FAFAFA;
     .modal-star {
         width: 2.0rem;
         height: 2.0rem;
         padding-top: 4px;
         padding-left: 9px;
-        color: var(--button-color);
+        color: #FEE500;
     }
     .modal-resortName {
         font-family: nanum-square-bold;
         font-size: 15px;
     }
+`
+const SAiFillStar = styled(AiFillStar)`
+color: #FEE500;
 `
 const StarBox = styled.div`
 display: flex;

@@ -4,6 +4,7 @@ import { asyncGetUser } from '../action/auth';
 const initialState = {
     token: null,
     isAuth: false,
+    //isAuth: true,
     user: null,
     error: "",
 }
