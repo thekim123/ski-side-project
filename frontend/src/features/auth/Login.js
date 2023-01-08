@@ -97,7 +97,7 @@ font-family: nanum-square-bold;
 font-size: 20px;
 margin-bottom: 60px;
 `
-const Button = styled.button`
+const Button = styled.div`
 display: flex;
 padding: 15px 60px;
 border-radius: 10px;

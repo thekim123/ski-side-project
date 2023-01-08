@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { asyncEditPost } from '../action/clubBoard';
 
 const initialState = {
     clubBoards: [],
@@ -35,7 +36,12 @@ const clubBoardSlice = createSlice({
         },
         deleteComment(state){
 
-        },
+        }, 
+    },
+    extraReducers: (builder) => {
+        builder.addCase(asyncEditPost.fulfilled, (state, action) => {
+            
+        })
     }
 });
 

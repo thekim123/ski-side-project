@@ -1,3 +1,4 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import Send from '../components/common/Send';
 import { clubBoardActions } from '../slice/clubBoard';
 
@@ -59,6 +60,19 @@ export const editPost = (id, post) => {
         .catch(error => console.log(error));        
     }
 }
+
+export const asyncEditPost = createAsyncThunk(
+    'clubBoardSlice/asyncEditPost',
+    async (post) => {
+        const resp = await Send({
+            url:`/clubBoard/update/${post.id}`,
+            method: 'put',
+            data: post
+        })
+        console.log("resp", resp);
+        return resp.data;
+    }
+)
 
 export const deleteCbPost = (id, clubId) => {
     return function (dispatch) {

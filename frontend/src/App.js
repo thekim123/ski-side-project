@@ -86,8 +86,8 @@ function App() {
             <Route path="club/edit/:id" element={<EditClub />} />
             <Route path="club/board/write/:isNotice" element={<ClubBoardWrite />} />
             <Route path="club/board/list/:id" element={<ClubBoardList />} />
-            <Route path="club/board/detail/:id" element={<ClubBoardDetail />} />
-            <Route path="club/board/edit/:id" element={<ClubBoardEdit />} />
+            <Route path="club/board/detail/:id/:clubId" element={<ClubBoardDetail />} />
+            <Route path="club/board/edit/:id/:clubId" element={<ClubBoardEdit />} />
             <Route path="tayo" element={<Tayo />} />
             <Route path="tayo/write" element={<TayoWrite />} />
             <Route path="tayo/detail/:id" element={<TayoDetail />} />

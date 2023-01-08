@@ -55,7 +55,7 @@ export function ClubDetail() {
     }
 
     const gotoDetail = (boardId) => {
-        navigate(`/club/board/detail/${boardId}`, {state: club.clubNm})
+        navigate(`/club/board/detail/${boardId}/${id}`, {state: club.clubNm})
     }
 
     useEffect(() => { //새로 로그인 한 후 라든지.. 그럴때를 대비해 state.club이 null인 경우에만 dispatch 호출.

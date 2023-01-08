@@ -90,7 +90,7 @@ public class Club extends BaseTimeEntity {
 
     public void update(ClubRequestDto dto, Resort resort) {
         this.clubNm = dto.getClubNm();
-        this.memberCnt =dto.getMemberCnt();
+        //this.memberCnt =dto.getMemberCnt(); 동호회 수정과 회원수는 관련 없으므로
         this.gender = dto.getGender();
         this.ageGrp = dto.getAgeGrp();
         this.openYn = dto.getOpenYn();

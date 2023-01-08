@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { addPost, editPost, getPost } from '../../action/clubBoard';
+import { addPost, asyncEditPost, editPost, getPost } from '../../action/clubBoard';
 
 export function ClubBoardEdit() {
     const dispatch = useDispatch();
@@ -23,6 +23,7 @@ export function ClubBoardEdit() {
         createDt: "",
     })    
     const {id} = useParams();
+    const {clubId} = useParams();
 
     const resetTitleError = () => {
         setError({...error, title: ""})
@@ -61,7 +62,7 @@ export function ClubBoardEdit() {
 
     }
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault();
         const enteredTitle = titleInput.current.value;
         const enteredContent = contentInput.current.value;
@@ -69,15 +70,19 @@ export function ClubBoardEdit() {
             return;
         } else {
             const post = {
-                clubId: state.clubId,
+                id: id,
+                clubId: clubId,
                 title: enteredTitle,
                 content: enteredContent,
                 sortScope: state.sortScope,
                 tempFlag: "N",
             }
             console.log(post);
-            dispatch(editPost(id, post));
-            navigate(`/club/detail/${state.clubId}`);
+            //dispatch(editPost(id, post));
+            await dispatch(asyncEditPost(post)).unwrap();
+            //navigate(`/club/detail/${state.clubId}`);
+            navigate(`/club/board/detail/${id}/${clubId}`)
+            
         }
     }
     
@@ -87,8 +92,10 @@ export function ClubBoardEdit() {
 
     useEffect(() => {
         if (originalPost) {
-            console.log(originalPost);
-            setState({...originalPost})
+            let tempPost = {...originalPost};
+            tempPost.clubId = clubId;
+            console.log(tempPost);
+            setState({...tempPost})
         }
     }, [originalPost])
     return (

@@ -19,9 +19,11 @@ export default function ClubBoardDetail() {
     const [commentDelOpen, setCommentDelOpen] = useState(false);
     const clubNm = useLocation().state;
     const {id} = useParams();
+    const {clubId} = useParams();
 
     const handlePencil = () => {
-        navigate(`/club/board/edit/${id}`, {state: clubNm});
+        console.log(clubId);
+        navigate(`/club/board/edit/${id}/${clubId}`);
     }
     const handleTrash = () => {
         console.log("clubBoard date ", post.createDt);
@@ -59,13 +61,6 @@ export default function ClubBoardDetail() {
         dispatch(getPost(id));
     }, [dispatch])
 
-    //임시
-    useEffect(() => {
-        if (post) {
-            console.log(post.replies);
-        }
-    })
-
     return (
     <>
     {post && <Wrapper>
@@ -94,7 +89,7 @@ export default function ClubBoardDetail() {
                         ok={"삭제"}
                         usage={"clubBoardDel"}
                         targetId={id}
-                        targetId2={post.clubId}/>
+                        targetId2={clubId}/>
                 </Icon>  
             </InfoIcon>
         </MostTop>

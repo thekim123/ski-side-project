@@ -6,12 +6,7 @@ import Send from '../../components/common/Send'
 
 export function RequireAuth () { 
     const dispatch = useDispatch();
-    //const token = useSelector(state => state.auth.token);
-    //const user = useSelector(state => state.auth.user);
     const isAuth = useSelector(state => state.auth.isAuth);
-    //const [isAut, setIsAut] = useState(null);
-    //const isAut = localStorage.getItem('access_token');
-    //const isAut = null;
     const { pathname } = useLocation();
 
     /*

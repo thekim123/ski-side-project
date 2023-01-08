@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { BsChatDots } from 'react-icons/bs'
 
-export default function Chat() {
+export default function ChatWhisper() {
     const dispatch = useDispatch();
     const [prevChat, setPrevChat] = useState([])
     const [commentInput, setCommentInput] = useState("");
@@ -47,8 +47,8 @@ export default function Chat() {
     useEffect(() => {
         let eventSource;
         if (!listening) {
-            //eventSource = new EventSource(`http://localhost:8040/chat/room/yejinsh`)
-            eventSource = new EventSource(`http://15.165.81.194:8040/chat/room/${room}`)
+            //eventSource = new EventSource(`http://15.165.81.194:8040/chat/room/${room}`)
+            //eventSource = new EventSource(`http://15.165.81.194:8040/chat/sender/${}/receiver/${}`);
             setmEventSource(eventSource) 
 
             eventSource.onopen = event => {
