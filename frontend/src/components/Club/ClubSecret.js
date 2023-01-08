@@ -32,7 +32,7 @@ export function ClubSecret() {
                 userId: user.id,
                 clubId: id,
             }
-            //await dispatch(asyncEnrollClub(data)).unwrap();
+            await dispatch(asyncEnrollClub(data)).unwrap();
             navigate(`/club/detail/${id}`);
         }
         //navigate(`/club/detail/${id}`);
@@ -92,7 +92,7 @@ export function ClubSecret() {
         <ContentBox>
             <ClubContent>{club.memo}</ClubContent>
         </ContentBox>
-        {club.openYn === "Y" && <Button onClick={gotoDetail}>둘러보기</Button>}
+        {club.openYn === "Y" && <Button onClick={gotoDetail}>가입하기</Button>}
         {/* {club.openYn === "N" && <div><Button onClick={submitClub}>가입 신청하기</Button></div>} */}
     </Container>}
     </>

@@ -48,11 +48,11 @@ export function Home() {
         }
     }, [isAuth]);*/
 
-    /*
+    
     useEffect(() => {
-        //dispatch(loadBookmarks());
-        Send.defaults.headers.common['Authorization'] = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwcm9qZWN0cyIsImlkIjo4LCJleHAiOjE2NzQwMzA2NDQsInVzZXJuYW1lIjoicHJvamVjdHMifQ.8IAUHdpYgPUZ8LKWyBoQQD0IUXIr7EhN50M1-VlWFixHhAt5hDzmyfRbE0Se-yllcVmHwwTD0uJEjxQ9fK_7SQ';
-    }, [dispatch]);*/
+        dispatch(loadBookmarks());
+        //Send.defaults.headers.common['Authorization'] = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwcm9qZWN0cyIsImlkIjo4LCJleHAiOjE2NzQwMzA2NDQsInVzZXJuYW1lIjoicHJvamVjdHMifQ.8IAUHdpYgPUZ8LKWyBoQQD0IUXIr7EhN50M1-VlWFixHhAt5hDzmyfRbE0Se-yllcVmHwwTD0uJEjxQ9fK_7SQ';
+    }, [dispatch]);
 
     return(
         <Container>

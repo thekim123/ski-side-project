@@ -32,7 +32,7 @@ public class ClubBoard extends BaseTimeEntity {
     private Long id;
 
     @JoinColumn(name="clubUser_id")
-    @ManyToOne(fetch = LAZY,cascade = REMOVE)
+    @ManyToOne(fetch = LAZY)
     private ClubUser clubUser;
 
     // 댓글

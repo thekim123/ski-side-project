@@ -63,7 +63,7 @@ export function ClubBoardWrite() {
             }
             dispatch(addPost(post));
             navigate(`/club/detail/${club.id}`, { state: club });
-        }
+        } 
     }
     const test = e => {
         console.log(typeof(isNotice));
