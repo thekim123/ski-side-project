@@ -68,9 +68,17 @@ public class ClubBoardService {
             return new IllegalArgumentException("동호회 찾기 실패");
         });
 
-        ClubUser clubUser = clubUserRepository.findByClubId(club.getId(), findUser.getId(), "관리자").orElseThrow(() -> {
-            return new CustomApiException("관리자만 게시판을 생성할 수 있습니다.");
+//        ClubUser clubUser = clubUserRepository.findByClubId(club.getId(), findUser.getId(), "관리자").orElseThrow(() -> {
+//            return new CustomApiException("관리자만 게시판을 생성할 수 있습니다.");
+//        });
+
+        ClubUser clubUser = clubUserRepository.mFindByClubId(club.getId(), findUser.getId()).orElseThrow(() -> {
+            return new CustomApiException("해당 동호회 회원이 아닙니다.");
         });
+
+        if("비회원".equals(clubUser.getRole())){
+            throw new CustomApiException("동호회 회원이 아니면 글을 쓸 수 없습니다.");
+        }
 
         ClubBoard cb = dto.toEntity(clubUser);
         clubBoardRepository.save(cb);

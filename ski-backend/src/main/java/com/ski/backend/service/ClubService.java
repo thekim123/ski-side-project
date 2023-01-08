@@ -77,7 +77,7 @@ public class ClubService {
         // 관리자 채팅방 추가
         ChatRoom adminChatRoom = ChatRoom.builder()
                 .user(findUser)
-                .roomName(club.getClubNm() + "ADMIN")
+                .roomName(club.getClubNm())
                 .build();
         chatRoomRepository.save(adminChatRoom);
     }
@@ -103,14 +103,28 @@ public class ClubService {
 
 
     // 동호회 탈퇴
-    public void deleteMember(long userId, long clubId) {
+    public String deleteMember(long userId, long clubId) {
         ClubUser clubUser = clubUserRepository.findByUserIdAndClubId(userId, clubId, Status.ADMIT).orElseThrow(() -> new CustomApiException("동호회 탈퇴 실패했습니다."));
+
+        /*
+            채팅방 나가기를 위한 채팅방 이름 문자열 만들기
+         */
+        Club club = clubRepository.findById(clubId).orElseThrow(() -> {
+            throw new CustomApiException("클럽을 찾을 수가 없습니다.");
+        });
+        String chatRoomName = club.getClubNm();
+        chatRoomName += clubUser.getId();
+        System.out.println(chatRoomName);
+        // 여기까지
+
         if (!clubUser.getRole().equals("관리자")) {
             clubUserRepository.delete(clubUser);
             clubUser.getClub().setMemberCnt(-1);
         } else {
             throw new CustomApiException("관리자는 방을 탈퇴할 수 없습니다.");
         }
+
+        return chatRoomName;
     }
 
     // 동호회 가입 신청
@@ -128,6 +142,7 @@ public class ClubService {
             club.addMember();
         }
         clubUserRepository.save(cu);
+        insertChatrooms(club, cu);
     }
 
     // 동호회 가입 대기자 리스트 확인
@@ -159,9 +174,6 @@ public class ClubService {
                 if (admitYn) {
                     clubUser.update();
                     club.addMember();
-
-                    insertChatrooms(club, cu, clubUser);
-
 
                     return new CmRespDto<>(1, "가입 승인 완료", null);
                 } else {
@@ -204,7 +216,7 @@ public class ClubService {
         return clubRepository.findById(clubId).map(e -> new ClubResponseDto(club));
     }
 
-    private void insertChatrooms(Club club, List<ClubUser> cu, ClubUser clubUser) {
+    private void insertChatrooms(Club club, ClubUser clubUser) {
         String roomName = club.getClubNm() + clubUser.getId();
 
         ChatRoom chatRoom = ChatRoom.builder()
@@ -214,7 +226,7 @@ public class ClubService {
         chatRoomRepository.save(chatRoom);
 
 
-        cu.forEach(c -> {
+        club.getClubUsers().forEach(c -> {
             if ("관리자".equals(c.getRole())) {
                 ChatRoom chatRoomOfAdmin = ChatRoom.builder()
                         .user(c.getUser())

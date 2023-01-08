@@ -53,16 +53,30 @@ public class ChatService {
         String toUserNickname = toUser.getNickname();
         toUserNickname = toUserNickname.split("_")[0];
 
-        System.out.println(toUserNickname);
-
         String msg = toUserNickname + "님이 퇴장하셨습니다.";
-        sendSystemMessage(user.getUsername(), toUsername, msg);
+        sendSystemMessage(user.getUsername(), toUsername, msg, null);
         whisperRepository.deleteById(whisperId);
     }
 
     @Transactional
-    public void deleteChatRoom(Authentication authentication, Long chatroomId) {
-        chatRoomRepository.deleteById(chatroomId);
+    public void deleteChatRoomWhenLeave(Long userId, String chatRoomName) {
+        ChatRoom room = chatRoomRepository.findByRoomName(chatRoomName);
+        chatRoomRepository.deleteById(room.getId());
+    }
+
+    @Transactional
+    public void deleteChatRoom(Authentication authentication, Long chatRoomId) {
+        User user = getPrincipal(authentication);
+
+        String fakeNickname = user.getNickname().split("_")[0];
+        String msg = fakeNickname+"님이 퇴장하셨습니다.";
+
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow(()->{
+            throw new CustomApiException("채팅방이 존재하지 않습니다.");
+        });
+
+        sendSystemMessage(user.getUsername(), null, msg, chatRoom.getRoomName());
+        chatRoomRepository.deleteById(chatRoomId);
     }
 
     public User getPrincipal(Authentication authentication) {
@@ -71,7 +85,7 @@ public class ChatService {
     }
 
     // 채팅방 퇴장 알림 메세지를 채팅방에 전송합니다.
-    public void sendSystemMessage(String userNickname, String receiver, String msg) {
+    public void sendSystemMessage(String userNickname, String receiver, String msg, String roomName) {
         RestTemplate rt = new RestTemplate();
         String sseServerAddr = "http://15.165.81.194:8040/chat/save";
 
@@ -82,6 +96,7 @@ public class ChatService {
         jsonObject.put("sender", userNickname);
         jsonObject.put("receiver", receiver);
         jsonObject.put("msg", msg);
+        jsonObject.put("roomName", roomName);
 
         System.out.println(jsonObject);
 

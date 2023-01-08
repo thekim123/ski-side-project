@@ -23,5 +23,6 @@ public class ChatRoom {
     @ManyToOne
     private User user;
 
+    @Column(unique = true)
     private String roomName;
 }

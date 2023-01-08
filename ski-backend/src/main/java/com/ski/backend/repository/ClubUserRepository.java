@@ -37,6 +37,14 @@ public interface ClubUserRepository extends JpaRepository<ClubUser, Long> {
     @Query(value = "select cu from ClubUser cu where cu.user.id = :userId and cu.club.id = :clubId and cu.role = :role")
     Optional<ClubUser> findByClubId(@Param("clubId") long clubId, @Param("userId") long userId, @Param("role") String role);
 
+    /*
+        김영환이 임시적으로 만들어 놓은 메소드
+        클럽 회원이 글을 못쓴다고 하여 만듬.
+        클럽 회원을 찾기만함.
+     */
+    @Query(value = "select cu from ClubUser cu where cu.user.id = :userId and cu.club.id = :clubId")
+    Optional<ClubUser> mFindByClubId(@Param("clubId") long clubId, @Param("userId") long userId);
+
     @Query(value = "select cu from ClubUser cu where cu.club.id =:clubId and cu.user.id = :userId")
     List<ClubUser> findByClub_IdAndUser_Id(@Param("clubId") long clubId, @Param("userId") long userId);
 
