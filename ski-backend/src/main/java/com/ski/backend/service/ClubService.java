@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.ski.backend.domain.club.Role.*;
+
 
 @Service
 @RequiredArgsConstructor
@@ -71,13 +73,13 @@ public class ClubService {
         Club club = dto.toEntity(user, resort);
 
         clubRepository.save(club);
-        ClubUser clubUser = new ClubUser(club, user, Status.ADMIT, "관리자");
+        ClubUser clubUser = new ClubUser(club, user, Status.ADMIT, ADMIN);
         clubUserRepository.save(clubUser);
 
         // 관리자 채팅방 추가
         ChatRoom adminChatRoom = ChatRoom.builder()
                 .user(findUser)
-                .roomName(club.getClubNm() + "ADMIN")
+                .roomName(club.getClubNm())
                 .build();
         chatRoomRepository.save(adminChatRoom);
     }
@@ -103,14 +105,28 @@ public class ClubService {
 
 
     // 동호회 탈퇴
-    public void deleteMember(long userId, long clubId) {
+    public String deleteMember(long userId, long clubId) {
         ClubUser clubUser = clubUserRepository.findByUserIdAndClubId(userId, clubId, Status.ADMIT).orElseThrow(() -> new CustomApiException("동호회 탈퇴 실패했습니다."));
-        if (!clubUser.getRole().equals("관리자")) {
+
+        /*
+            채팅방 나가기를 위한 채팅방 이름 문자열 만들기
+         */
+        Club club = clubRepository.findById(clubId).orElseThrow(() -> {
+            throw new CustomApiException("클럽을 찾을 수가 없습니다.");
+        });
+        String chatRoomName = club.getClubNm();
+        chatRoomName += clubUser.getId();
+        System.out.println(chatRoomName);
+        // 여기까지
+
+        if (!clubUser.getRole().equals(ADMIN)) {
             clubUserRepository.delete(clubUser);
             clubUser.getClub().setMemberCnt(-1);
         } else {
             throw new CustomApiException("관리자는 방을 탈퇴할 수 없습니다.");
         }
+
+        return chatRoomName;
     }
 
     // 동호회 가입 신청
@@ -128,6 +144,7 @@ public class ClubService {
             club.addMember();
         }
         clubUserRepository.save(cu);
+        insertChatrooms(club, cu);
     }
 
     // 동호회 가입 대기자 리스트 확인
@@ -160,9 +177,6 @@ public class ClubService {
                     clubUser.update();
                     club.addMember();
 
-                    insertChatrooms(club, cu, clubUser);
-
-
                     return new CmRespDto<>(1, "가입 승인 완료", null);
                 } else {
                     clubUser.decline();
@@ -175,7 +189,7 @@ public class ClubService {
 
     // 나의 신청 내역
 
-    public List<ClubUserRespDto> requestList(Authentication auth) {
+    public List<ClubUserRespDto>  requestList(Authentication auth) {
         PrincipalDetails pd = (PrincipalDetails) auth.getPrincipal();
 
         List<ClubUser> result = clubUserRepository.findByIdUserId(pd.getUser().getId());
@@ -190,10 +204,7 @@ public class ClubService {
     public void validateClubId(long clubId, Authentication auth) {
         // 클럽아이디와 clubUserId에 등록된 클럽아이디와 role이관리자인게 일치해야함
         PrincipalDetails pd = (PrincipalDetails) auth.getPrincipal();
-        String role = "관리자";
-
-        ClubUser cu = clubUserRepository.findByClubId(clubId, pd.getUser().getId(), role).orElseThrow(() -> new CustomApiException("관리자만 동호회를 수정 / 삭제할 수 있습니다."));
-
+        ClubUser cu = clubUserRepository.findByClubId(clubId, pd.getUser().getId(), ADMIN).orElseThrow(() -> new CustomApiException("관리자만 동호회를 수정 / 삭제할 수 있습니다."));
         if (cu.getClub().getId() != clubId) throw new CustomApiException("관리자만 동호회를 수정 / 삭제할 수 있습니다");
 
     }
@@ -204,7 +215,7 @@ public class ClubService {
         return clubRepository.findById(clubId).map(e -> new ClubResponseDto(club));
     }
 
-    private void insertChatrooms(Club club, List<ClubUser> cu, ClubUser clubUser) {
+    private void insertChatrooms(Club club, ClubUser clubUser) {
         String roomName = club.getClubNm() + clubUser.getId();
 
         ChatRoom chatRoom = ChatRoom.builder()
@@ -214,8 +225,8 @@ public class ClubService {
         chatRoomRepository.save(chatRoom);
 
 
-        cu.forEach(c -> {
-            if ("관리자".equals(c.getRole())) {
+        club.getClubUsers().forEach(c -> {
+            if (c.getRole().equals(ADMIN)) {
                 ChatRoom chatRoomOfAdmin = ChatRoom.builder()
                         .user(c.getUser())
                         .roomName(roomName)
@@ -226,13 +237,5 @@ public class ClubService {
         });
     }
 
-//    // 동호회 상세페이지
-//    @Transactional
-//    public Optional<ClubResponseDto> clubDetail(Long clubId,User user) {
-//        Club dto = clubRepository.findById(clubId).orElseThrow(()->{
-//            return new IllegalArgumentException("글 상세보기 실패: 해당게시글을 찾을 수 없습니다.");
-//        });
-//        return clubRepository.findById(clubId).map(club -> new ClubResponseDto(club,user));
-//    }
 
 }

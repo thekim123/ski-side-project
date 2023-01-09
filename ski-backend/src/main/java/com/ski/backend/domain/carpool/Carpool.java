@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -37,6 +38,8 @@ public class Carpool {
     private LocalDateTime departTime;
     private boolean isSmoker;
     private String boarding;
+
+    private String request;
 
     private LocalDateTime createDate;
 

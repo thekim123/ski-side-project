@@ -64,11 +64,10 @@ public class ClubBoard extends BaseTimeEntity {
     private String sortScope;
 
 
-    public void update( ClubBoardDto cb/*,Club club*/) {
+    public void update( ClubBoardDto cb) {
         this.title = cb.getTitle();
         this.content = cb.getContent();
         this.tempFlag = cb.getTempFlag();
         this.sortScope = cb.getSortScope();
-//        this.club = club;
     }
 }

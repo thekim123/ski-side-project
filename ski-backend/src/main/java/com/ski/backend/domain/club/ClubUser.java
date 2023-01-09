@@ -50,10 +50,10 @@ public class ClubUser {
      * 권한
      * 관리자
      */
-    private String role;
+    private Role role;
 
 
-    public ClubUser(Club club, User user,Status status, String role) {
+    public ClubUser(Club club, User user,Status status, Role role) {
         this.club = club;
         this.user = user;
         this.status = status;
@@ -69,7 +69,7 @@ public class ClubUser {
             // 비밀방
             this.status = Status.WAITING;
         }
-        this.role = "회원";
+        this.role = Role.MEMBER;
         this.club = club;
         this.user = user;
     }
@@ -83,10 +83,10 @@ public class ClubUser {
     }
 
     public void updateRole(){
-        this.role = "매니저";
+        this.role = Role.MANAGER;
     }
 
     public void declineRole() {
-        this.role = "회원";
+        this.role = Role.MEMBER;
     }
 }

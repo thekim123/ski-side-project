@@ -1,6 +1,7 @@
 package com.ski.backend.web.dto;
 
 import com.ski.backend.domain.club.ClubUser;
+import com.ski.backend.domain.club.Role;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,13 +12,13 @@ public class ClubUserDto {
 
     private String status;
 
-    private String role;
+    private Role role;
 
     private String nickName;
 
 
     @Builder
-    public ClubUserDto(long id, String status, String role, String nickName) {
+    public ClubUserDto(long id, String status, Role role, String nickName) {
         this.userId = id;
         this.status = status;
         this.role = role;

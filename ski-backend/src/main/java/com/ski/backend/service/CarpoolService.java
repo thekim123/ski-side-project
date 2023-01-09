@@ -30,10 +30,10 @@ public class CarpoolService {
 
         Carpool carpoolEntity = dto.toEntity();
 
-        carpoolEntity.setNegotiate(negotiateEntity);
         carpoolEntity.setUser(user);
+        carpoolEntity.setNegotiate(negotiateEntity);
         carpoolEntity.setCurPassenger(0);
-        carpoolEntity.setSmoker(dto.isSmoker());
+        carpoolEntity.setRequest(dto.getRequest());
         carpoolRepository.save(carpoolEntity);
 
         negotiateEntity.setCarpool(carpoolEntity);
@@ -64,6 +64,7 @@ public class CarpoolService {
         carpoolEntity.setDeparture(dto.getDeparture());
         carpoolEntity.setSmoker(dto.isSmoker());
         carpoolEntity.setBoarding(dto.getBoarding());
+        carpoolEntity.setRequest(dto.getRequest());
     }
 
     @Transactional(readOnly = true)
