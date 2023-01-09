@@ -38,7 +38,7 @@ public class Carpool {
     private LocalDateTime departTime;
     private boolean isSmoker;
     private String boarding;
-    @ColumnDefault("제공")
+
     private String request;
 
     private LocalDateTime createDate;
