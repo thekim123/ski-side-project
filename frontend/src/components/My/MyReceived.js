@@ -39,6 +39,7 @@ export default function MyReceived() {
         const newArr = [...submitShow];
         if (!newArr[idx]) {
             const result = await dispatch(asyncGetSubmits(carpoolId)).unwrap();
+            console.log(result);
             const newUserArr = [...submitContent];
             if (result.length === 0) {
                 newUserArr[idx] = "신청자가 없습니다."
@@ -58,9 +59,10 @@ export default function MyReceived() {
         }
         console.log(data);
         dispatch(admitSubmit(data));
+        
         const newArr = [...submitShow];
         newArr[idx] = false;
-        setSubmitContent(newArr);
+        setSubmitShow(newArr);
     }
     const denyUser = (submitId, id, idx) => {
         const data = {
