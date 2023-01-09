@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.ski.backend.domain.club.Role.*;
+
 
 @Service
 @RequiredArgsConstructor
@@ -71,7 +73,7 @@ public class ClubService {
         Club club = dto.toEntity(user, resort);
 
         clubRepository.save(club);
-        ClubUser clubUser = new ClubUser(club, user, Status.ADMIT, "관리자");
+        ClubUser clubUser = new ClubUser(club, user, Status.ADMIT, ADMIN);
         clubUserRepository.save(clubUser);
 
         // 관리자 채팅방 추가
@@ -117,7 +119,7 @@ public class ClubService {
         System.out.println(chatRoomName);
         // 여기까지
 
-        if (!clubUser.getRole().equals("관리자")) {
+        if (!clubUser.getRole().equals(ADMIN)) {
             clubUserRepository.delete(clubUser);
             clubUser.getClub().setMemberCnt(-1);
         } else {
@@ -202,10 +204,7 @@ public class ClubService {
     public void validateClubId(long clubId, Authentication auth) {
         // 클럽아이디와 clubUserId에 등록된 클럽아이디와 role이관리자인게 일치해야함
         PrincipalDetails pd = (PrincipalDetails) auth.getPrincipal();
-        String role = "관리자";
-
-        ClubUser cu = clubUserRepository.findByClubId(clubId, pd.getUser().getId(), role).orElseThrow(() -> new CustomApiException("관리자만 동호회를 수정 / 삭제할 수 있습니다."));
-
+        ClubUser cu = clubUserRepository.findByClubId(clubId, pd.getUser().getId(), ADMIN).orElseThrow(() -> new CustomApiException("관리자만 동호회를 수정 / 삭제할 수 있습니다."));
         if (cu.getClub().getId() != clubId) throw new CustomApiException("관리자만 동호회를 수정 / 삭제할 수 있습니다");
 
     }
@@ -227,7 +226,7 @@ public class ClubService {
 
 
         club.getClubUsers().forEach(c -> {
-            if ("관리자".equals(c.getRole())) {
+            if (c.getRole().equals(ADMIN)) {
                 ChatRoom chatRoomOfAdmin = ChatRoom.builder()
                         .user(c.getUser())
                         .roomName(roomName)
@@ -238,13 +237,5 @@ public class ClubService {
         });
     }
 
-//    // 동호회 상세페이지
-//    @Transactional
-//    public Optional<ClubResponseDto> clubDetail(Long clubId,User user) {
-//        Club dto = clubRepository.findById(clubId).orElseThrow(()->{
-//            return new IllegalArgumentException("글 상세보기 실패: 해당게시글을 찾을 수 없습니다.");
-//        });
-//        return clubRepository.findById(clubId).map(club -> new ClubResponseDto(club,user));
-//    }
 
 }

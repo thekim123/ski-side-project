@@ -1,5 +1,6 @@
 package com.ski.backend.web.dto;
 
+import com.ski.backend.domain.club.Role;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,10 +10,10 @@ import lombok.NoArgsConstructor;
 public class ClubUserUpdateDto {
 
     private String status;
-    private String role;
+    private Role role;
 
     @Builder
-    public ClubUserUpdateDto(String status, String role) {
+    public ClubUserUpdateDto(String status, Role role) {
         this.status = status;
         this.role = role;
     }

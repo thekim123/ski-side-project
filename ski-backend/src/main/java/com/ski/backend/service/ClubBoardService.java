@@ -2,11 +2,7 @@ package com.ski.backend.service;
 
 
 import com.ski.backend.config.auth.PrincipalDetails;
-import com.ski.backend.domain.club.Club;
-import com.ski.backend.domain.club.ClubBoard;
-import com.ski.backend.domain.club.ClubUser;
-import com.ski.backend.domain.club.Reply;
-import com.ski.backend.domain.common.Status;
+import com.ski.backend.domain.club.*;
 import com.ski.backend.domain.user.User;
 import com.ski.backend.handler.ex.CustomApiException;
 import com.ski.backend.repository.*;
@@ -20,6 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.ski.backend.domain.club.Role.MEMBER;
+import static com.ski.backend.domain.club.Role.NONMEMBER;
 
 
 @Service
@@ -68,15 +67,12 @@ public class ClubBoardService {
             return new IllegalArgumentException("동호회 찾기 실패");
         });
 
-//        ClubUser clubUser = clubUserRepository.findByClubId(club.getId(), findUser.getId(), "관리자").orElseThrow(() -> {
-//            return new CustomApiException("관리자만 게시판을 생성할 수 있습니다.");
-//        });
 
         ClubUser clubUser = clubUserRepository.mFindByClubId(club.getId(), findUser.getId()).orElseThrow(() -> {
             return new CustomApiException("해당 동호회 회원이 아닙니다.");
         });
 
-        if("비회원".equals(clubUser.getRole())){
+        if(clubUser.getRole().equals(NONMEMBER)){
             throw new CustomApiException("동호회 회원이 아니면 글을 쓸 수 없습니다.");
         }
 
@@ -117,7 +113,7 @@ public class ClubBoardService {
         }
         for (ClubUser cu : clubUsers) {
             if (cu.getUser().getId() == userId) {
-                if (cu.getRole().equals("회원") && roleYn) {
+                if (cu.getRole().equals(MEMBER) && roleYn) {
 
                     cu.updateRole();
                     return new CmRespDto<>(1, "매니저 권한 주기 완료", null);
@@ -136,8 +132,7 @@ public class ClubBoardService {
     // 동호회 게시판 만든사람이 관리자인지 확인 해야댐
     public void validateClubBoard(long clubBoardId, Authentication auth){
         PrincipalDetails pd = (PrincipalDetails) auth.getPrincipal();
-        String role = "관리자";
-        ClubBoard cb = clubBoardRepository.findByClubBoardId(clubBoardId, pd.getUser().getId(), role).orElseThrow(() -> new CustomApiException("관리자만 동호회 게시판을 수정 / 삭제할 수 있습니다."));
+        ClubBoard cb = clubBoardRepository.findByClubBoardId(clubBoardId, pd.getUser().getId(), Role.ADMIN).orElseThrow(() -> new CustomApiException("관리자만 동호회 게시판을 수정 / 삭제할 수 있습니다."));
 
         if(cb.getId() != clubBoardId){
             throw new CustomApiException("관리자만 동호회 게시판을 수정 / 삭제할 수 있습니다.");
