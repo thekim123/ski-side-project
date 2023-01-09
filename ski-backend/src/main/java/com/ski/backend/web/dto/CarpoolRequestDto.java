@@ -22,11 +22,11 @@ public class CarpoolRequestDto {
     private Negotiate negotiate;
     private int passenger;
     private String memo;
+    private String request;
     private LocalDateTime departTime;
 
     public Carpool toEntity() {
         return Carpool.builder()
-                .id(id)
                 .departTime(departTime)
                 .departure(departure)
                 .destination(destination)
@@ -35,6 +35,7 @@ public class CarpoolRequestDto {
                 .boarding(boarding)
                 .isSmoker(smoker)
                 .negotiate(negotiate)
+                .request(request)
                 .build();
     }
 

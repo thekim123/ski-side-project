@@ -189,7 +189,7 @@ public class ClubService {
 
     // 나의 신청 내역
 
-    public List<ClubUserRespDto> requestList(Authentication auth) {
+    public List<ClubUserRespDto>  requestList(Authentication auth) {
         PrincipalDetails pd = (PrincipalDetails) auth.getPrincipal();
 
         List<ClubUser> result = clubUserRepository.findByIdUserId(pd.getUser().getId());
