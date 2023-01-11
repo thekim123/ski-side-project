@@ -4,6 +4,8 @@ import { BsArrowRight } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import { BsFillCheckCircleFill } from 'react-icons/bs'
+import { MdPersonPin } from 'react-icons/md'
+import { AiFillCar } from 'react-icons/ai'
 
 export function CarPoolListItem(props) {
     const navigate = useNavigate();
@@ -13,8 +15,9 @@ export function CarPoolListItem(props) {
     return (
     <Wrapper>
         <Top>
-            <div><TakeCnt>인원 {props.curPassenger}/{props.passenger}</TakeCnt><Tag>{props.smoker ? "흡연" : "금연"} 차량</Tag></div>
+            <div><TakeCnt>인원 {props.curPassenger}/{props.passenger}</TakeCnt><div><Tag>{props.smoker ? "흡연" : "금연"} 차량</Tag></div></div>
             {/* <CarCnt>운행건수 (2회)</CarCnt> */}
+            {props.request === '등록' ? <SAiFillCar className='top-icon'/> : <SMdPersonPin className='top-icon'/>}
         </Top>
 
         <Middle onClick={() => props.func(props.id)}> 
@@ -72,7 +75,18 @@ padding: 10px;
 padding-bottom: 3px;
 div{
     display: flex;
+    align-items: center;
 }
+.top-icon {
+    width: 2rem;
+    height: 2rem;
+}
+`
+const SAiFillCar = styled(AiFillCar)`
+color: var(--button-color);
+`
+const SMdPersonPin = styled(MdPersonPin)`
+color: #005C00;
 `
 const TakeCnt = styled.div`
 align-self: center;
@@ -197,4 +211,5 @@ margin-left: 5px;
 border-radius: 3px;
 margin-bottom: 2px;
 color: #FAFAFA;
+height: 15px;
 `
