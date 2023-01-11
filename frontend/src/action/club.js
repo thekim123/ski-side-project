@@ -6,12 +6,12 @@ export const asyncGetClub = createAsyncThunk(
     'clubSlice/asyncGetClub',
     async (id) => {
         const resp = await Send({
-            url:`/club/${id}`,
+            url:`/club/detail/${id}`,
             method: 'get',
         })
         //const data = await resp;
         console.log("resp", resp);
-        //console.log(data);
+        console.log("in action");
         return resp.data.data;
     }
 )
@@ -27,6 +27,7 @@ export const asyncGetClubUser = createAsyncThunk(
             }, 
         })
         console.log("resp", resp);
+        console.log("user - in action");
         return resp.data.data.content;
     }
 )
@@ -61,8 +62,44 @@ export const asyncEnrollClub = createAsyncThunk(
         const resp = await Send({
             url:`/club/${id.userId}/enroll/${id.clubId}`,
             method: 'post',
-        })
+        }) 
         console.log("resp", resp);
+        return resp.data;
+    }
+)
+
+export const asyncGetWaitingUser = createAsyncThunk(
+    'clubSlice/asyncGetWaitingUser',
+    async (id) => {
+        const resp = await Send({
+            url: `/club/${id}/waiting`,
+            method: 'get',
+        })
+        console.log("대기자 명단 조회", resp);
+        return resp.data.data;
+    }
+)
+
+export const asyncGetUserByClub = createAsyncThunk(
+    'clubSlice/asyncGetUserByClub',
+    async (id) => {
+        const resp = await Send({
+            url: `/club/${id}/user`,
+            method: 'get',
+        })
+        console.log("동호회별 유저 리스트 조회", resp);
+        return resp.data.data;
+    }
+)
+
+export const asyncAdmitUser = createAsyncThunk(
+    'clubSlice/asyncAdmitUser',
+    async (data) => {
+        const resp = await Send({
+            url: `/club/joining/${data.clubId}/${data.userId}/${data.admitYn}`,
+            method: 'put',
+        })
+        console.log("가입 대기자 승인/거절", resp);
         return resp.data;
     }
 )

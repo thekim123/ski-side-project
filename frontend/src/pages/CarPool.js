@@ -14,12 +14,15 @@ import { CarPoolListItem } from '../components/CarPool/CarPoolListItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadCarpools } from '../action/carpool';
 import { CgDanger } from 'react-icons/cg';
+import { Switch } from '../components/common/Switch';
 
 export function CarPool() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const carpools = useSelector(state => state.carpool.carpools);
+    const [requestPost, setRequestPost] = useState(false);
     const [filteredCarpools, setFilteredCarpools] = useState([]);
+    const [carpoolsByType, setCarpoolsByType] = useState([]);
     const [routeType, setRouteType] = useState("house");
     const [selectedResort, setSelectedResort] = useState("--");
     const [showSelectBox, setShowSelectBox] = useState(false);
@@ -47,12 +50,31 @@ export function CarPool() {
     const showCarpool = () => {
         if (selectedResort !== '--') {
             setCanShow(true);
+            let result;
             if (routeType === 'house') {
-                setFilteredCarpools(carpools.filter(carpool => carpool.destination === selectedResort))
+                result = carpools.filter(carpool => carpool.destination === selectedResort)
+                //setFilteredCarpools(carpools.filter(carpool => carpool.destination === selectedResort))
             } else {
-                setFilteredCarpools(carpools.filter(carpool => carpool.departure === selectedResort))
+                result = carpools.filter(carpool => carpool.departure === selectedResort)
+                //setFilteredCarpools(carpools.filter(carpool => carpool.departure === selectedResort))
             }
+            const filtered = [...filteredCarpools];
+            const type = requestPost === false ? '요청' : '등록';
+            setFilteredCarpools(result);
+            setCarpoolsByType(result.filter(carpool => carpool.request === type));
         }
+    }
+
+    const toggleRequest = () => {
+        console.log(requestPost);
+        setRequestPost(!requestPost);
+        const origin = [...filteredCarpools];
+        if (requestPost) {
+            setCarpoolsByType(origin.filter(carpool => carpool.request === '요청'))
+        } else {
+            setCarpoolsByType(origin.filter(carpool => carpool.request === '등록'))
+        }
+        
     }
 
     const showDetail = (id) => {
@@ -130,27 +152,58 @@ export function CarPool() {
         </SearchWrapper>
 
         {/* {canShow &&  */}
-        {filteredCarpools.length > 0 && 
         <Posts>
+            {canShow && <SwitchBox>
+                <SwitchText style={{color: requestPost && '#002060'}}>등록만 보기</SwitchText>
+                
+                <Switch 
+                    isOn={requestPost}
+                    func={toggleRequest}/>
+                <SwitchText style={{color: !requestPost && '#005C00'}}>요청만 보기</SwitchText>
+            </SwitchBox>}
+            {carpoolsByType.length > 0 && <>
             <TagBox>
+                <div></div>
+                <div className='tagBox-inside'>
                 <SBsFillCheckCircleFill />
                 <div>협의 가능</div>
+                </div>
             </TagBox>
-            {filteredCarpools.map(carpool => (
+            {carpoolsByType.map(carpool => (
                 <CarPoolListItem  key={carpool.id}{...carpool} func={showDetail}/>
-            ))}
-        </Posts>}
-        {selectedResort === '--' ? <div></div> : canShow && filteredCarpools.length <= 0 &&
+            ))}</>}
+
+            {selectedResort === '--' ? <div></div> : canShow && carpoolsByType.length <= 0 &&
+            <NoPostInside>
+                <div><CgDanger className='noPost-icon'/></div>
+                <div>조건에 맞는 게시글이 없습니다.</div>
+            </NoPostInside>}
+        </Posts>
+        {/* {selectedResort === '--' ? <div></div> : canShow && filteredCarpools.length <= 0 &&
         <NoPost>
             <div><CgDanger className='noPost-icon'/></div>
             <div>조건에 맞는 게시글이 없습니다.</div>
-        </NoPost>}
+        </NoPost>} */}
     </Wrapper>
     )
 }
 const NoPost = styled.div`
 margin-top: 250px;
 display:grid;
+justify-items: center;
+//align-items: center;
+.noPost-icon {
+    width: 40px;
+    height: 40px;
+    padding-bottom: 15px;
+}
+div{
+    color: var(--button-sub-color);
+}
+`
+const NoPostInside = styled.div`
+display:grid;
+margin-top: 60px;
 justify-items: center;
 //align-items: center;
 .noPost-icon {
@@ -336,16 +389,34 @@ text-align: center;
 padding: 12px;
 `
 
+//switch box
+const SwitchBox = styled.div`
+display: flex;
+justify-items: center;
+align-items: end;
+margin: 10px 0px;
+`
+const SwitchText = styled.div`
+font-size: 13px;
+font-family: nanum-square-bold;
+color: var(--button-sub-color);
+padding-bottom: 5px;
+`
+
 //POSTS
 const Posts = styled.div`
 margin: 160px 20px 0 20px;
 `
 const TagBox = styled.div`
 display: flex;
+justify-content: space-between;
 padding: 0 0 10px 5px;
 div{
     //color: gray;
     font-size: 12px;
+}
+.tagBox-inside {
+    display: flex;
 }
 `
 const SBsFillCheckCircleFill = styled(BsFillCheckCircleFill)`

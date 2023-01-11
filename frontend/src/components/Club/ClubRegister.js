@@ -21,8 +21,8 @@ export function ClubRegister() {
     const age = ["제한 없음", "10대", "20대", "30대", "40대", "50대", "60대", "70대", "80대"]
     const gender = ["남", "여", "성별 무관"];
     const genderBack = ["MEN", "WOMEN", "NO"];
-    //const roomType = ["오픈방", "비밀방"];
-    const roomType = ["오픈방"];
+    const roomType = ["오픈방", "비밀방"];
+    //const roomType = ["오픈방"];
     const [error, setError] = useState({
         name: "",
         content: "",

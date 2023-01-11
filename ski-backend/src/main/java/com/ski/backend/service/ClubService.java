@@ -153,7 +153,7 @@ public class ClubService {
 
         List<ClubUser> result = clubUserRepository.findByClubIdAndStatus(clubId, Status.WAITING);
         if (result.size() < 0) {
-            throw new CustomApiException("대기자가 없습니다.");
+            //throw new CustomApiException("대기자가 없습니다.");
         }
         List<ClubUserRespDto> waitingList = result.stream().map(e -> new ClubUserRespDto(e.getUser().getUsername(), e.getStatus(), e.getRole())).collect(Collectors.toList());
         return waitingList;
