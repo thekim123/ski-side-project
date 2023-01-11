@@ -7,7 +7,7 @@ import resorts from '../../data/resort.json';
 import { BsPeopleFill } from 'react-icons/bs';
 import { MdEmojiPeople } from 'react-icons/md'
 import { TbGenderBigender } from 'react-icons/tb'
-import { asyncEnrollClub, enrollClub, getClubUser, getSingleClub } from '../../action/club';
+import { asyncEnrollClub, asyncGetClub, asyncGetClubUser, asyncGetWaitingUser, enrollClub, getClubUser, getSingleClub } from '../../action/club';
 
 export function ClubSecret() {
     const dispatch = useDispatch();
@@ -16,57 +16,75 @@ export function ClubSecret() {
     const dataAge = ["ANY", "TEN", "TWENTY", "THIRTY", "FORTY", "FIFTY", "SIXTY", "SEVENTY", "EIGHTY"]
     const gender = ["남", "여", "성별 무관"]
     const dataGender = ["MEN", "WOMEN", "NO"]
+    const status = useSelector(state => state.club.status);
     const club = useSelector(state => state.club.club);
     const clubUser = useSelector(state => state.club.users);
     const user = useSelector(state => state.auth.user);
+    const waitingUsers = useSelector(state => state.club.waitingUsers);
     const {id} = useParams();
-    const [btnText, setBtnText] = useState("가입 신청하기");
+    const [btnText, setBtnText] = useState(""); //useEffect에서 신청자 목록 불러와서 승인 상태에 따라.
+    const [isWaiting, setIsWaiting] = useState(false);
     //const club = useLocation().state;
 
     const gotoDetail = async e => {
-        //navigate(`/club/detail/${club.id}`, { state: club });
-        //동호회 인원 추가
-        if (club.openYn === "Y") {
-            //dispatch(enrollClub(id)); 
-            let data = {
-                userId: user.id,
-                clubId: id,
-            }
-            await dispatch(asyncEnrollClub(data)).unwrap();
-            navigate(`/club/detail/${id}`);
+        let data = {
+            userId: user.id,
+            clubId: id,
         }
-        //navigate(`/club/detail/${id}`);
+        await dispatch(asyncEnrollClub(data)).unwrap();
+        navigate(`/club/detail/${id}`);
+        
     }
-    const submitClub = async() => {
-        const result = await dispatch(asyncEnrollClub(id)).unwrap();
-        dispatch(getClubUser(id));
-        //setBtnText("승인 대기");
+    const submitClub = async(e) => {
+        if (e.target.innerText === "가입 신청하기") {
+        let data = {
+            userId: user.id,
+            clubId: id,
+        }
+        dispatch(asyncEnrollClub(data));
+        setIsWaiting(true);
+        //관리자의 승인
+        }
     }
 
-    /*
+    
     useEffect(() => {
-        const loadClubUser = async () => {
-            const result = await dispatch(asyncEnrollClub(id)).unwrap();
+        const loadClub = async () => {
+
         }
-        dispatch(getSingleClub(id));
-        //dispatch(getClubUser(id));
-        loadClubUser();
+        const loadClubUser = async () => {
+            const result = await dispatch(asyncGetClubUser(id)).unwrap();
+        }
+        dispatch(asyncGetClub(id));
+        dispatch(asyncGetClubUser(id));
     }, [id]);
 
     useEffect(() => {
-        if (clubUser) {
-            console.log(clubUser);
+        if (club) {
+            if (club.openYn === 'N') dispatch(asyncGetWaitingUser(id));
         }
-    }, [clubUser])*/
+    }, [club])
 
+    useEffect(() => {
+        if (waitingUsers) {
+            const enrollUser = waitingUsers.find(mem => mem.username === user.username);
+            console.log(enrollUser);
+            if (enrollUser !== undefined) {
+                setIsWaiting(true);
+            } else {
+                setIsWaiting(false);
+            }
+        }
+    }, [waitingUsers])
+/*
     // 나중에 삭제
     useEffect(() => {
         dispatch(getSingleClub(id));
-    }, []);
+    }, []);*/
 
     return (
     <>
-    {club && 
+    {status === 'complete' &&  
     <Container>
         <NameFlex>
             {club.openYn === "N" && <AiFillLock className="clubSecret-lock" />}
@@ -93,7 +111,8 @@ export function ClubSecret() {
             <ClubContent>{club.memo}</ClubContent>
         </ContentBox>
         {club.openYn === "Y" && <Button onClick={gotoDetail}>가입하기</Button>}
-        {/* {club.openYn === "N" && <div><Button onClick={submitClub}>가입 신청하기</Button></div>} */}
+        {club.openYn === "N" && !isWaiting && <div><Button onClick={submitClub}>가입 신청하기</Button></div>}
+        {club.openYn === "N" && isWaiting && <Waiting>승인 대기</Waiting>}
     </Container>}
     </>
     )
@@ -168,4 +187,10 @@ color: #FAFAFA;
 padding: 13px 20px;
 border-radius: 15px;
 border: none;
+`
+
+const Waiting = styled.div`
+//background-color:var(--button-color);
+//color: #FAFAFA;
+padding: 13px 20px;
 `

@@ -26,6 +26,7 @@ public class ClubUserRespDto {
         this.username = clubUser.getUser().getUsername();
         this.nickname = clubUser.getUser().getNickname();
         this.role = clubUser.getRole();
+        this.status = clubUser.getStatus();
     }
 
     public ClubUserRespDto(String username, Status status, Role role) {
