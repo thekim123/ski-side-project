@@ -1,28 +1,22 @@
 package com.ski.backend.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.ski.backend.config.auth.PrincipalDetails;
-import com.ski.backend.domain.Tayo.Tayo;
 import com.ski.backend.domain.Tayo.TayoUser;
 import com.ski.backend.domain.board.Board;
 import com.ski.backend.domain.carpool.Carpool;
 import com.ski.backend.domain.club.Reply;
-import com.ski.backend.domain.common.AgeGrp;
 import com.ski.backend.domain.club.ClubUser;
 import com.ski.backend.domain.club.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.Authentication;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.FetchType.EAGER;
-import static javax.persistence.FetchType.LAZY;
 
 @Data
 @Entity
@@ -33,26 +27,22 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(unique = true, nullable = false)
     private String username;
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String nickname;
 
     @Column(nullable = false)
     private String password;
 
-    @Column
-    private String email;
-
     @Enumerated(EnumType.STRING)
     @Column
     private Gender gender;
 
-    @Enumerated(EnumType.STRING)
     @Column
-    private AgeGrp ageGrp;
+    private Integer age;
 
     @Enumerated(EnumType.STRING)
     @Column

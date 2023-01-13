@@ -13,6 +13,6 @@ public class UserUpdateDto {
     private String nickname;
     private String email;
     private String gender;
-    private String ageGrp;
+    private Integer age;
 
 }

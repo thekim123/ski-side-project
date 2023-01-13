@@ -29,31 +29,28 @@ public class CreateUser {
         String password = bCryptPasswordEncoder.encode("password");
 
         User user = User.builder()
-                .email("abc@abc.com")
                 .roles(Role.ROLE_USER)
                 .nickname("abc")
                 .username("abc")
                 .password(password)
                 .gender(Gender.MEN)
-                .ageGrp(AgeGrp.SEVENTY)
+                .age(70)
                 .build();
         User user1 = User.builder()
-                .email("test@abc.com")
                 .roles(Role.ROLE_USER)
                 .nickname("test")
                 .username("test")
                 .password(password)
                 .gender(Gender.MEN)
-                .ageGrp(AgeGrp.SEVENTY)
+                .age(70)
                 .build();
         User user2 = User.builder()
-                .email("project@abc.com")
                 .roles(Role.ROLE_USER)
                 .nickname("project")
                 .username("project")
                 .password(password)
                 .gender(Gender.MEN)
-                .ageGrp(AgeGrp.SEVENTY)
+                .age(70)
                 .build();
         List<User> userList = List.of(user, user1, user2);
 

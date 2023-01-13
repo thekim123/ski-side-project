@@ -22,12 +22,7 @@ public class KakaoUser implements OAuthUserInfo {
 
     @Override
     public String getEmail() {
-        Map<String, Object> accountInfo = (Map<String, Object>) attribute.get("kakao_account");
-        String result = (String) accountInfo.get("email");
-        if(result==null){
-            result = "no email";
-        }
-        return result;
+        return null;
     }
 
     @Override
@@ -35,13 +30,6 @@ public class KakaoUser implements OAuthUserInfo {
         Map<String, Object> accountInfo = (Map<String, Object>) attribute.get("kakao_account");
         Map<String, Object> profileInfo = (Map<String, Object>) accountInfo.get("profile");
         return (String) profileInfo.get("nickname");
-    }
-
-    public String getAgeRange() {
-        Map<String, Object> accountInfo = (Map<String, Object>) attribute.get("kakao_account");
-        Map<String, Object> profileInfo = (Map<String, Object>) accountInfo.get("profile");
-        String rawAgeGrp = (String) profileInfo.get("age_range");
-        return rawAgeGrp;
     }
 
     public String getGender() {
