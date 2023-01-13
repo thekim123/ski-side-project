@@ -25,6 +25,21 @@
 > - 시스템 아키텍쳐 입니다.
 
 ### 2. Spring - Web (ski-backend)
+#### 의존성
+- Spring Boot 2.7.5
+- Lombok
+- Spring Web
+- Spring Devtools
+- Spring Validation
+- Spring Data Jpa
+- Spring OAuth2
+- MariaDB
+- SpringSecurity
+- json-simple
+- jackson
+- jwt(auth0)
+
+
 ![img.png](img.png)
 - 전체 erd입니다.
 
@@ -32,7 +47,7 @@
 --- 
 
 #### (1) User
-- Spring Security + Jwt(auth00) + OAuth2 조합으로 사용자 인증을 구현하였습니다.
+- Spring Security + Jwt(auth0) + OAuth2 조합으로 사용자 인증을 구현하였습니다.
 
 > ![img_1.png](img_1.png)
 > - Oauth 로그인 시 시퀀스 다이어그램입니다.
@@ -124,6 +139,52 @@ public class WebMvcConfig implements WebMvcConfigurer {
 - 카풀을 신청하면 Submit Entity가 저장이 되고, Submit Entity의 state가 default value = 0 으로 저장됩니다.
 - 승인을 하면 state = admit으로 되고 완료됩니다.
 - 그리고 카풀의 경우 신청자와 글 작성자 간의 채팅 기능이 제공되는데, Whisper Entity가 그 교두보 역할을 합니다.
+
+---
+3. Spring Webflux
+#### 의존성
+- Spring Webflux
+- SpringBoot
+- SpringBoot MongoDB reactive
+- Spring Devtools
+- Lombok
+
+(1) Chat Collection
+```java
+@Data
+@Document(collection = "chat")
+public class Chat {
+    private String id;
+    private String msg;
+    private String sender;
+    private String receiver;
+    private String roomName;
+
+    private LocalDateTime createdAt;
+}
+```
+- 위와 같은 Entity를 만들어 Chat collection을 만들었습니다.
+  
+(2) ReactiveRepository(Tailable)
+```java
+    @Tailable
+    @Query("{roomName:  ?0}")
+    Flux<Chat> mFindByRoomName(String roomName);
+```
+- Flux로 response를 유지하면서 데이터를 계속 흘려보낼 수 있습니다.
+- @Tailable은 Select를 하고 나서 커서를 닫지 않고 계속 유지함을 의미합니다.
+
+(3) Controller
+
+```java
+@CrossOrigin
+@GetMapping(value = "/room", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+public Flux<Chat> joinRoom(@RequestBody ChatRoomDto dto) {
+      String roomName = dto.getRoomName();
+      return chatRepository.mFindByRoomName(roomName).subscribeOn(Schedulers.boundedElastic());
+}
+```
+- 미디어타입을 TEXT_EVENT_STREAM_VALUE로 해서 데이터를 응답받고 끝내는 것이 아니라 데이터가 입력될 때마다 계속해서 응답을 해주게 됩니다.  
 
 ---
 ## 4. 배포
