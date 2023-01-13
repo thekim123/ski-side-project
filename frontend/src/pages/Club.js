@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
-import { asyncGetClub, asyncGetClubUser, getClubUser, getSingleClub, loadClubs } from '../action/club';
+import { asyncGetClub, asyncGetClubUser, asyncGetWaitingUser, getClubUser, getSingleClub, loadClubs } from '../action/club';
 import styled from 'styled-components'
 import { ClubListForm } from '../components/Club/ClubListForm'
 import resorts from '../data/resort.json'
@@ -14,6 +14,7 @@ export function Club() {
     const navigate = useNavigate();
     const clubs = useSelector(state => state.club.clubs);
     const user = useSelector(state => state.auth.user);
+    const waitingUsers = useSelector(state => state.club.waitingUsers);
     const resortData = resorts.filter(resort => resort.id !== null);
     const [selectedResort, setSelectedResort] = useState("[전체]"); 
     //const [filteredResorts, setFilteredResorts] = useState(clubs); 
@@ -35,7 +36,15 @@ export function Club() {
             const isMember = users.find(u => u.username === user.username);
             //const isMember = undefined;
             if (isMember !== undefined) {
-                navigate(`/club/detail/${club.id}`)
+                const waitMem = await dispatch(asyncGetWaitingUser(club.id)).unwrap();
+                const waitUser = waitMem.find(mem => mem.username === user.username);
+                //멤버인데 대기자 명단에 없으면 디테일 페이지로 이동.
+                console.log(waitUser);
+                if (waitUser) {
+                    navigate(`/club/secret/${club.id}`);
+                } else {
+                    navigate(`/club/detail/${club.id}`);
+                }
             } else {
                 navigate(`/club/secret/${club.id}`);
             }

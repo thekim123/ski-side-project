@@ -12,6 +12,7 @@ import resorts from '../../data/resort.json';
 import { BsPeopleFill } from 'react-icons/bs'
 import { loadClubPosts } from '../../action/clubBoard';
 import OkCancelModal from '../common/OkCancelModal';
+import { ClubUserModal } from '../common/ClubUserModal';
 
 export function ClubDetail() {
     const dispatch = useDispatch();
@@ -24,6 +25,8 @@ export function ClubDetail() {
     const {id} = useParams();
     const [delOpen, setDelOpen] = useState(false);
     const [isCap, setIsCap] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [enrollModalOpen, setEnrollModalOpen] = useState(false);
 
     const gotoEdit = e => {
         navigate(`/club/edit/${id}`);
@@ -33,6 +36,12 @@ export function ClubDetail() {
     }
     const closeDel = () => {
         setDelOpen(false);
+    }
+    const closeModal = () => {
+        setModalOpen(false);
+    }
+    const closeEnrollModal = () => {
+        setEnrollModalOpen(false);
     }
 
     const cutText = (text, margin) => {
@@ -58,6 +67,15 @@ export function ClubDetail() {
         navigate(`/club/board/detail/${boardId}/${id}`, {state: club.clubNm})
     }
 
+    const showMember = e => {
+        console.log(clubUsers);
+        setModalOpen(true);
+    }
+
+    const showEnroll = e => {
+        setEnrollModalOpen(true);
+    }
+
     useEffect(() => { //새로 로그인 한 후 라든지.. 그럴때를 대비해 state.club이 null인 경우에만 dispatch 호출.
         dispatch(loadClubPosts(id));
         dispatch(getSingleClub(id));
@@ -71,7 +89,7 @@ export function ClubDetail() {
             if (myInfo === undefined) {
                 setIsCap(false);
             }
-            else if (myInfo.role === '관리자') {
+            else if (myInfo.role === 'ADMIN') {
                 setIsCap(true);
             } else {
                 setIsCap(false);
@@ -95,9 +113,27 @@ export function ClubDetail() {
             <CntBox>
                 <SBsPeopleFill />
                 <Cnt>{club && club.memberCnt}명</Cnt>
+                {isCap && <UserButton onClick={showMember}>회원 조회</UserButton>}
+                {club && club.openYn === 'N' && <UserButton onClick={showEnroll}>신청자 조회</UserButton>}
             </CntBox>
 
         </InfoBox>
+        <ClubUserModal 
+            open={modalOpen}
+            close={closeModal}  
+            type="showUser"  
+            userList={clubUsers
+                        .filter(user => user.status !== 'WAITING')
+                        .map(mem => mem.role === 'ADMIN' ? {...mem, order: 1} : {...mem, order: 3})}
+        />
+        <ClubUserModal 
+            open={enrollModalOpen}
+            close={closeEnrollModal}  
+            type="showEnroll"  
+            clubId={id}
+            userList={clubUsers
+                        .filter(user => user.status === 'WAITING')}
+        />
         <TopLine> </TopLine>
 
         <NoticeBox>
@@ -321,4 +357,13 @@ padding: 7px;
 background-color: #E7E6E6;
 width: 50px;
 text-align: center;
+`
+
+const UserButton = styled.button`
+border: none;
+padding: 7px;
+font-size: 12px;
+background-color: var(--button-sub-color);
+border-radius: 5px;
+margin-left: 5px;
 `

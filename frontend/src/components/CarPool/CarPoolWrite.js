@@ -15,11 +15,13 @@ import { BsFillCheckCircleFill } from 'react-icons/bs'
 export function CarPoolWrite() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const type = ["카풀 요청", "카풀 등록"];
     const route = ["도착지가 스키장", "출발지가 스키장"];
     const resortsData = resorts.filter(resort => resort.id !== null);
     const resortName = resortsData.map(resort => resort.name);
     //const city = ["서울", "경기", "인천", "부산", "대구", "대전"]
     const smoking = ["금연 차량", "흡연 차량"];
+    const [selectedType, setSelectedType] = useState("--");
     const [date, setDate] = useState(new Date());
     const [showDate, setShowDate] = useState(false);
     const [selectedRoute, setSelectedRoute] = useState("--");
@@ -31,6 +33,7 @@ export function CarPoolWrite() {
     const cntInput = useRef();
     const contentInput = useRef();
     const [error, setError] = useState({
+        type: "",
         date:"",
         route: "",
         departure: "",
@@ -42,6 +45,7 @@ export function CarPoolWrite() {
         content: "",
     })
     const [isDone, setIsDone] = useState({
+        type: false,
         startEnd: false,
         time: false,
         smoking: false,
@@ -62,6 +66,14 @@ export function CarPoolWrite() {
         setStartTime(time);
         setError({...error, time: null});
         setIsDone({...isDone, time: true});
+    }
+
+    const reflectType = (selection) => {
+        if (type.indexOf(selection) !== -1) {
+            setSelectedType(selection); 
+            setError({...error, type: ""})
+            setIsDone({...isDone, type: true})
+        }
     }
 
     const reflectRoute = (selection) => {
@@ -160,7 +172,8 @@ export function CarPoolWrite() {
             if (replacedCnt.length !== 0) local_error.cnt = "숫자만 입력 가능합니다.";
         }
 
-        //날짜, 시간
+        //날짜, 시간, 게시글 종류
+        if (!selectedType) local_error.type = '요청 / 등록을 선택하세요.'
         if (!date) local_error.date = "날짜를 선택하세요."
         if (!selectedRoute) local_error.route = "경로를 선택하세요."
         if (!selectedResort) {
@@ -187,6 +200,7 @@ export function CarPoolWrite() {
         const enteredCnt = cntInput.current.value;
         if (!validateInput(enteredStartEnd, enteredPlace, enteredContent, enteredCnt)) return;
 
+        const postType = selectedType === '카풀 요청' ? '요청' : '등록';
         const departure = selectedRoute === '도착지가 스키장' ? enteredStartEnd : selectedResort;
         const destination = selectedRoute === '도착지가 스키장' ? selectedResort : enteredStartEnd;
         const isSmoker = selectedSmoking === '흡연 차량' ? true : false;
@@ -194,6 +208,7 @@ export function CarPoolWrite() {
         const realTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), startTime.getHours(), startTime.getMinutes());
         const krTime = new Date(realTime.getTime() + 9*60*60*1000);
         const carpool = {
+            request: postType,
             departure: departure,
             destination: destination,
             departTime: krTime,
@@ -260,6 +275,12 @@ export function CarPoolWrite() {
         <Title><div className="clubReg-top">카풀 등록</div></Title>
         <form onSubmit={handleSubmit}>
             <Row>
+                <SelectBox list={type} label="요청/등록" func={reflectType} state={selectedType} />
+                <div></div>
+            </Row>
+            <Error><Dummy></Dummy><div>{error.type ? error.type : null}</div></Error>
+
+            {selectedType !== '--' && <Row>
             <DatePick>
                 <label>날짜</label>
                 <span onClick={toggleDate}><SDatePicker 
@@ -273,13 +294,13 @@ export function CarPoolWrite() {
                     /></span>
             </DatePick>
             <div></div>
-            </Row>
+            </Row>}
             <Error><Dummy></Dummy><div>{error.date ? error.date : null}</div></Error>
 
-            <Row>
+            {selectedType !== '--' && <Row>
             <SelectBox list={route} label="경로" func={reflectRoute} state={selectedRoute} />
             <div></div>
-            </Row>
+            </Row>}
             <Error><Dummy></Dummy><div>{error.route ? error.route : null}</div></Error>
 
             {selectedRoute !== '--' && <TopRow>

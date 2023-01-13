@@ -33,7 +33,6 @@ export default function ClubBoardList() {
     }
 
     useEffect(() => {
-        console.log("gggggg");
         dispatch(getSingleClub(id));
         dispatch(loadClubPosts(id));
     }, [])
