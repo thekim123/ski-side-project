@@ -6,6 +6,7 @@ import com.ski.backend.domain.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -13,7 +14,10 @@ import java.time.LocalDateTime;
 public class BoardDto {
 
     private Long id;
+    @NotBlank
     private String title;
+
+    @NotBlank
     private String content;
     private String username;
     private String nickname;

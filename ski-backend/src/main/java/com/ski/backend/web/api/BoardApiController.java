@@ -16,8 +16,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -63,7 +65,7 @@ public class BoardApiController {
     }
 
     @PostMapping("write")
-    public CmRespDto<?> write(@RequestBody BoardDto dto, Authentication authentication) {
+    public CmRespDto<?> write(@Valid @RequestBody BoardDto dto, BindingResult bindingResult, Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         User user = principalDetails.getUser();
         boardService.write(dto, user);
@@ -77,7 +79,7 @@ public class BoardApiController {
     }
 
     @PutMapping("/update/")
-    public CmRespDto<?> update(@RequestBody BoardDto dto, Authentication authentication) {
+    public CmRespDto<?> update(@Valid @RequestBody BoardDto dto,BindingResult bindingResult, Authentication authentication) {
         boardService.update(dto, authentication);
         return new CmRespDto<>(HttpStatus.OK.value(), "글 수정 완료", null);
     }

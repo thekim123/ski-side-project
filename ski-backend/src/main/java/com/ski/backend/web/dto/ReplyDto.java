@@ -5,6 +5,7 @@ import com.ski.backend.domain.club.Reply;
 import com.ski.backend.domain.user.User;
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 
@@ -21,6 +22,7 @@ public class ReplyDto {
 
 
     // 댓글
+    @NotBlank
     private String reply;
 
     // 작성시간

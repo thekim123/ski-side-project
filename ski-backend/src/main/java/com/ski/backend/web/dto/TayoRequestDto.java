@@ -9,6 +9,7 @@ import com.ski.backend.domain.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -23,6 +24,8 @@ public class TayoRequestDto {
     private Long resortId;
 
     private RideDevice rideDevice;
+
+    @NotBlank
     private String title;
 
     private AgeGrp age;

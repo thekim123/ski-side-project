@@ -50,22 +50,6 @@ public class CommentService {
         commentRepository.deleteById(id);
     }
 
-    @Transactional
-    public void update(CommentDto dto, Authentication authentication) {
-        long principalId = getPrincipalId(authentication);
-        long commentId = dto.getCommentId();
-
-        Comment commentEntity = commentRepository.findById(commentId).orElseThrow(() -> {
-            throw new CustomApiException("존재하지 않는 댓글입니다.");
-        });
-
-        if (isMyComment(commentEntity.getUser().getId(), principalId)) {
-            throw new CustomApiException("선생님 댓글이 아닙니다!!");
-        }
-
-        commentEntity.setContent(dto.getContent());
-    }
-
     public boolean isMyComment(long commentUserId, long principalId) {
         return principalId == commentUserId;
     }

@@ -10,7 +10,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
@@ -23,7 +26,7 @@ public class ClubBoardApiController {
 
     // 게시판 생성
     @PostMapping
-    public CmRespDto<ClubBoardDto> create(@RequestBody ClubBoardDto dto, Authentication auth) {
+    public CmRespDto<ClubBoardDto> create(@Valid @RequestBody ClubBoardDto dto, BindingResult bindingResult, Authentication auth) {
         PrincipalDetails principalDetails = (PrincipalDetails) auth.getPrincipal();
         User user = principalDetails.getUser();
         ClubBoardDto clubBoard = clubBoardService.createClubBoard(dto, user);
@@ -38,13 +41,12 @@ public class ClubBoardApiController {
 
     @GetMapping("/{clubId}")
     public CmRespDto<Page<ClubBoardDto>> getAllClubBoard(@PageableDefault(sort = "id", direction = DESC) Pageable pageable, @PathVariable long clubId) {
-
         Page<ClubBoardDto> clubBoardDtos = clubBoardService.getAllClubBoard(pageable, clubId);
         return new CmRespDto<>(1, "클럽게시판 전체조회 완료", clubBoardDtos);
     }
 
     @PutMapping("/update/{clubBoardId}")
-    public CmRespDto<ClubBoardDto> updateClubBoard(@PathVariable long clubBoardId, @RequestBody ClubBoardDto dto, Authentication auth) {
+    public CmRespDto<ClubBoardDto> updateClubBoard(@PathVariable long clubBoardId, @Valid @RequestBody ClubBoardDto dto, BindingResult bindingResult, Authentication auth) {
         clubBoardService.update(clubBoardId, dto, auth);
         return new CmRespDto<>(1, "클럽게시판 수정완료", null);
     }
@@ -57,8 +59,8 @@ public class ClubBoardApiController {
 
     // 관리자가 - 회원->매니저 권한 주기
     @PutMapping("/updateRole/{clubBoardId}/{userId}/{roleYn}")
-    public CmRespDto updateRole(@PathVariable long clubBoardId, @PathVariable long userId, Authentication auth,@PathVariable boolean roleYn){
-        return clubBoardService.updateRole(clubBoardId,userId, auth,roleYn);
+    public CmRespDto updateRole(@PathVariable long clubBoardId, @PathVariable long userId, Authentication auth, @PathVariable boolean roleYn) {
+        return clubBoardService.updateRole(clubBoardId, userId, auth, roleYn);
 
     }
 }

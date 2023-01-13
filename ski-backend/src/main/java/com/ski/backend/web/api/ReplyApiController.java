@@ -8,7 +8,10 @@ import com.ski.backend.web.dto.CmRespDto;
 import com.ski.backend.web.dto.ReplyDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,7 +22,7 @@ public class ReplyApiController {
     private final ReplyService replyService;
 
     @PostMapping("/reply")
-    public CmRespDto<ReplyDto> saveReply(@RequestBody ReplyDto dto, Authentication auth) {
+    public CmRespDto<ReplyDto> saveReply(@Valid @RequestBody ReplyDto dto, BindingResult bindingResult, Authentication auth) {
         PrincipalDetails principalDetails = (PrincipalDetails) auth.getPrincipal();
         User user = principalDetails.getUser();
         ReplyDto replyDto = replyService.saveReply(dto, user);
@@ -34,7 +37,7 @@ public class ReplyApiController {
     }
 
     @PutMapping("/updateReply/{replyId}")
-    public CmRespDto<ReplyDto> updateReply(@PathVariable long replyId,@RequestBody ReplyDto replyDto) {
+    public CmRespDto<ReplyDto> updateReply(@PathVariable long replyId,@Valid @RequestBody ReplyDto replyDto, BindingResult bindingResult) {
         ReplyDto dto = replyService.updateReply(replyId, replyDto);
         return new CmRespDto<>(1, "동호회 댓글 수정 완료",dto);
     }

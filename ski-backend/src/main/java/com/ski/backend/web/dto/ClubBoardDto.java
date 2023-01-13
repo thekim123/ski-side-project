@@ -10,6 +10,7 @@ import com.ski.backend.domain.user.User;
 import lombok.*;
 
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,9 +36,11 @@ public class ClubBoardDto {
     private List<ReplyDto> replies;
 
     // 제목
+    @NotBlank
     private String title;
 
     // 내용
+    @NotBlank
     private String content;
 
     /**

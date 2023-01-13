@@ -16,8 +16,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.parameters.P;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.data.domain.Sort.*;
@@ -55,7 +57,7 @@ public class TayoApiController {
 
     // 타요 생성
     @PostMapping
-    public CmRespDto<TayoRequestDto> create(@RequestBody TayoRequestDto dto, Authentication auth) {
+    public CmRespDto<TayoRequestDto> create(@Valid @RequestBody TayoRequestDto dto, BindingResult bindingResult, Authentication auth) {
         PrincipalDetails principalDetails = (PrincipalDetails) auth.getPrincipal();
         User user = principalDetails.getUser();
         tayoService.create(dto, user);
@@ -72,7 +74,7 @@ public class TayoApiController {
 
     // 타요 수정
     @PutMapping("/update/{tayoId}")
-    public CmRespDto<TayoRequestDto> update(@PathVariable long tayoId, @RequestBody TayoRequestDto dto, Authentication auth) {
+    public CmRespDto<TayoRequestDto> update(@PathVariable long tayoId, @Valid @RequestBody TayoRequestDto dto, BindingResult bindingResult, Authentication auth) {
         tayoService.update(tayoId, dto, auth);
 
         return new CmRespDto<>(1, "같이 타요 수정 완료", dto);
@@ -97,6 +99,7 @@ public class TayoApiController {
         List<TayoUserRespDto> listByTayo = tayoService.getListByTayo(tayoId);
         return new CmRespDto<>(1, "타요별 신청 내역 조회", listByTayo);
     }
+
     // 나의 타요 신청내역
     @GetMapping("/{userId}/requestList")
     public CmRespDto<List<TayoUserRespDto>> getRequestList(Authentication auth) {

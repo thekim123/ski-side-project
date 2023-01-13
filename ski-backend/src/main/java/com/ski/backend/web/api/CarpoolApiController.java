@@ -10,7 +10,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,13 +23,21 @@ public class CarpoolApiController {
     private final CarpoolService carpoolService;
 
     @PostMapping
-    public CmRespDto<?> insert(@RequestBody CarpoolRequestDto dto, Authentication authentication) {
+    public CmRespDto<?> insert(
+            @Valid
+            @RequestBody CarpoolRequestDto dto,
+            BindingResult bindingResult,
+            Authentication authentication) {
         carpoolService.write(dto, authentication);
         return new CmRespDto<>(1, "카풀 게시글 등록 성공", null);
     }
 
     @PutMapping("/update/{carpoolId}")
-    public CmRespDto<?> update(@RequestBody CarpoolRequestDto dto, @PathVariable long carpoolId) {
+    public CmRespDto<?> update(
+            @Valid
+            @RequestBody CarpoolRequestDto dto,
+            BindingResult bindingResult,
+            @PathVariable long carpoolId) {
         carpoolService.update(dto, carpoolId);
         return new CmRespDto<>(1, "카풀 게시글 수정 성공", null);
     }
