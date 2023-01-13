@@ -27,7 +27,6 @@ public class Board {
     @Column(nullable = false)
     private String title;
     private String content;
-    private String postImageUrl;
 
     @JoinColumn(name = "resortId")
     @ManyToOne

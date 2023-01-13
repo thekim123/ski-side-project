@@ -1,5 +1,6 @@
 package com.ski.backend.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,8 +19,10 @@ public class ChatRoom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIncludeProperties({"username", "id", "clubUsers"})
     @ManyToOne
     private User user;
 
+    @Column
     private String roomName;
 }

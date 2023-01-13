@@ -17,9 +17,9 @@ spring:
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://ski-project-mariadb.cmyc6d542qdt.ap-northeast-2.rds.amazonaws.com:3306/ski
-    username: ski
-    password: skip1234
+    url: jdbc:mariadb://localhost:3306/ski
+    username: username
+    password: password
 
   jpa:
     open-in-view: true
