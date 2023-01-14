@@ -7,16 +7,19 @@ import styled from 'styled-components'
 import shortid from 'shortid';
 import { useDispatch } from 'react-redux';
 import { getByResort } from '../../action/board';
-import { getTayoByResort } from '../../action/tayo';
+import { asyncGetTayoByResort } from '../../action/tayo';
+import resorts from '../../data/resort.json'
 
 export function ResortMap(props) {
     const dispatch = useDispatch();
+
     const selectResort = e => {
         if (props.page === 'board') {
             dispatch(getByResort(e.target.innerText));
         } else if (props.page === 'tayo') {
             console.log(e.target.innerText)
-            dispatch(getTayoByResort(e.target.innerText));
+            let resortId = resorts.find(resort => resort.name === e.target.innerText).id;
+            dispatch(asyncGetTayoByResort(resortId));
         }
         props.close();
     }

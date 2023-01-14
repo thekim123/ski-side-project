@@ -31,6 +31,10 @@ export function UserInput() {
         copy[name] = value;
         setAnswer(copy);
     }
+    const onSubmit = e => {
+        e.preventDefault();
+        increaseIdx();
+    }
 
     const reflectSelection = (selection) => {
         setSelectedGender(selection);
@@ -47,7 +51,10 @@ export function UserInput() {
     const increaseIdx = e => {
         if (idx === 0) {
             if (answer[0].trim().length < 2) setErrMsg("닉네임은 공백 제외 2자 이상이어야 합니다.");
-            else setIdx(idx + 1);
+            else {
+                setIdx(idx + 1);
+                resetErr();
+            }
         }
         else if (idx === 2) {
             let ageInput = answer[2].replace(/[0-9]/g, '');
@@ -62,6 +69,7 @@ export function UserInput() {
                     gender: selectedGender === '남' ? 'MEN' : 'WOMEN',
                     age: answer[2]
                 }
+                resetErr();
                 dispatch(asyncUpdateUser(data));
                 navigate('/');
             }
@@ -83,7 +91,7 @@ export function UserInput() {
     return (
     <Container>
         <InputLabel>{inputLabel[idx]}</InputLabel>
-        <form>
+        <form onSubmit={onSubmit}>
         {idx === 0 ? <Dummy> </Dummy> : <PrevBtn className="user-button" onClick={decreaseIdx}><div>이전</div></PrevBtn>}
         {idx === 1 ? 
         <Wrapper>

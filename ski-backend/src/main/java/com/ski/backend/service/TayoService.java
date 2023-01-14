@@ -54,7 +54,7 @@ public class TayoService {
     @Transactional(readOnly = true)
     public List<TayoRespDto> getTayoByResortId(long resortId) {
         resortRepository.findById(resortId).orElseThrow(() -> new CustomApiException("등록되지 않은 리조트 입니다."));
-        List<TayoRespDto> tayoResortList = tayoRepository.findByResortId(resortId).stream().map(e -> new TayoRespDto(e.getId(),e.getResort().getId(), e.getRideDevice(), e.getTitle(), e.getTayoMemCnt(),e.getCurTayoMemCnt(),e.getAge())).collect(Collectors.toList());
+        List<TayoRespDto> tayoResortList = tayoRepository.findByResortId(resortId).stream().map(e -> new TayoRespDto(e.getId(),e.getResort().getId(), e.getRideDevice(), e.getTitle(), e.getTayoMemCnt(),e.getCurTayoMemCnt(),e.getAge(), e.getTayoDt(), e.getTayoStrTime(), e.getTayoEndTime())).collect(Collectors.toList());
         return tayoResortList;
     }
 

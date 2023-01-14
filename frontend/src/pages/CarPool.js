@@ -66,7 +66,6 @@ export function CarPool() {
     }
 
     const toggleRequest = () => {
-        console.log(requestPost);
         setRequestPost(!requestPost);
         const origin = [...filteredCarpools];
         if (requestPost) {

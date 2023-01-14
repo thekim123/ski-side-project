@@ -8,6 +8,7 @@ import { MapModal } from '../components/common/MapModal'
 import { FiFilter } from 'react-icons/fi';
 import { HiPlus } from 'react-icons/hi';
 import shortid from 'shortid'
+import { Switch } from '../components/common/Switch';
 
 export function Tayo() {
     const dispatch = useDispatch();
@@ -17,6 +18,8 @@ export function Tayo() {
     const [selectedResort, setSelectedResort] = useState("[전체]"); 
     const [filteredResorts, setFilteredResorts] = useState(posts); 
     const [modalOpen, setModalOpen] = useState(false);
+    const [switchBoard, setSwitchBoard] = useState(false);
+    const [tayoByType, setTayoByType] = useState(posts);
     const resort_kor = ["하이원", "대명", "곤지암", "베어스", "지산", "덕유산", "에덴벨리", "비발디", "휘닉스", "웰리힐리", "용평", "엘리시안"];
 
     const changeSelection = (resort) => {
@@ -34,27 +37,21 @@ export function Tayo() {
         setModalOpen(false);
     }
 
+    const toggleRequest = () => {
+        setSwitchBoard(!switchBoard);
+        const origin = [...posts];
+        if (switchBoard) {
+            setTayoByType(origin.filter(tayo => tayo.rideDevice === '보드'))
+        } else {
+            setTayoByType(origin.filter(tayo => tayo.rideDevice === '스키'))
+        }
+        
+    }
+
     
     useEffect(() => {
         dispatch(loadTayos());
     }, [dispatch]);
-
-    /*
-    useEffect(() => {
-        if (posts) {
-            setTayos([...posts]);
-        }
-    }, [posts])*/
-
-    /*
-    useEffect(() => {
-        if (selectedResort === "[전체]") {setFilteredResorts(posts);}
-        else {
-            let filteredResort = posts.filter(post => post.resortName === selectedResort);
-            setFilteredResorts(filteredResort);
-        }
-
-    }, [selectedResort, posts])*/
 
     return(
         <Container>
@@ -62,15 +59,23 @@ export function Tayo() {
                 <Top>
                 <Title>벙개</Title> 
                 <Icons>
-                    {/* <FiFilter className="tayo-filter"/> */}
+                    <FiFilter className="tayo-filter" onClick={openModal}/>
                     <HiPlus className="tayo-plus" onClick={clickPlus}/>
                 </Icons>
                 </Top>
                 <MapModal open={modalOpen} close={closeModal} page="tayo"/>
+                <SwitchBox>
+                <SwitchText style={{color: switchBoard && '#002060'}}>스키</SwitchText>
+                
+                <Switch
+                    isOn={switchBoard}
+                    func={toggleRequest}/>
+                <SwitchText style={{color: !switchBoard && '#005C00'}}>보드</SwitchText>
+            </SwitchBox>
             </TopWrapper>
 
             <POSTS>
-            {posts.length > 0 && posts.map((post) => (
+            {tayoByType.length > 0 && posts.map((post) => (
                 <TayoListItem key={post.tayo_id} {...post} />
             ))
             }
@@ -118,7 +123,7 @@ text-align: right;
 `
 
 const POSTS = styled.div`
-    padding-top: 60px;
+    padding-top: 95px;
 `
 const Resorts = styled.div`
 display:grid;
@@ -138,4 +143,17 @@ margin: 5px;
 border-bottom: 1px solid #CCCCCC;
 padding: 5px;
 width: 70%;
+`
+
+//switch box
+const SwitchBox = styled.div`
+display: flex;
+justify-items: center;
+align-items: end;
+`
+const SwitchText = styled.div`
+font-size: 13px;
+font-family: nanum-square-bold;
+color: var(--button-sub-color);
+padding-bottom: 5px;
 `
