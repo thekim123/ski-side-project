@@ -46,6 +46,22 @@ export const getTayoByResort = (resortName) => {
     }    
 }
 
+export const asyncGetTayoByResort = createAsyncThunk(
+    'tayoSlice/asyncGetTayoByResort',
+    async (id) => {
+        const resp = await Send({
+            url: `/tayo/${id}`,
+            method: 'get',
+            params: {
+                page: 0,
+                size: 1000
+            },
+        })
+        console.log("asyncGetTayoByResort", resp);
+        return resp.data.data;
+    }
+)
+
 export const addTayo = (post) => {
     return function (dispatch) {
         console.log("z");

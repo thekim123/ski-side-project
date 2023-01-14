@@ -43,7 +43,7 @@ public class TayoRespDto {
     private LocalDateTime tayoEndTime;
 
 
-    public TayoRespDto(Long id,Long resortId, RideDevice rideDevice, String title, int tayoMemCnt, int curTayoMemCnt, AgeGrp age) {
+    public TayoRespDto(Long id,Long resortId, RideDevice rideDevice, String title, int tayoMemCnt, int curTayoMemCnt, AgeGrp age, LocalDate tayoDt, LocalDateTime tayoStrTime, LocalDateTime tayoEndTime) {
         this.id = id;
         this.resortId = resortId;
         this.rideDevice = rideDevice;
@@ -51,6 +51,9 @@ public class TayoRespDto {
         this.tayoMemCnt = tayoMemCnt;
         this.curTayoMemCnt = curTayoMemCnt;
         this.age = age;
+        this.tayoDt = tayoDt;
+        this.tayoStrTime = tayoStrTime;
+        this.tayoEndTime = tayoEndTime;
     }
 
     public TayoRespDto(Tayo tu, User user) {
