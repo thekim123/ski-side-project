@@ -125,6 +125,7 @@ font-size: 13px;
 font-family: nanum-square-bold;
 color: var(--button-sub-color);
 padding-right: 16px;
+cursor: pointer;
 `
 
 const ItemWrapper = styled.div`

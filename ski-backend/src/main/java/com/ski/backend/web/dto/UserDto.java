@@ -17,14 +17,14 @@ public class UserDto {
     private String nickname;
     private String email;
     private String gender;
-    private int age;
+    private Integer age;
 
 
     public UserDto toDto(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
         this.roles = user.getRoles();
-        this.gender = user.getGender().toString();
+        this.gender = user.getGender() == null ? null : user.getGender().toString();
         this.age = user.getAge();
         this.nickname = user.getNickname();
         return this;

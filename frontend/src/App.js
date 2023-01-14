@@ -41,6 +41,7 @@ import MySubmit from './components/My/MySubmit';
 import MyReceived from './components/My/MyReceived';
 import { asyncGetUser } from './action/auth';
 import Send from './components/common/Send'
+import { UserInput } from './features/auth/UserInput';
 
 function App() {
   //const cors = require('cors');
@@ -74,6 +75,7 @@ function App() {
           {/* protected routes */}
           <Route element={<RequireAuth />}>
           <Route index element={<Home />} />
+            <Route path="user" element={<UserInput />} />
             <Route path="board" element={<Board />} />
             <Route path="board/write" element={<BoardWrite />} />
             <Route path="board/edit/:id" element={<EditBoard />} />

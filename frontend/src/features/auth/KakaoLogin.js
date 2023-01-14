@@ -40,8 +40,11 @@ export default function KakaoLogin() {
                 })
                 ).then(resp => {
                     dispatch(kakaoLogin(resp));
-                    navigate('/')
-                }).catch(error => console.log(error));
+                    //navigate('/')
+                }).then(() => {
+                    navigate('/user');
+                })
+                .catch(error => console.log(error));
             } else {
                 console.log("fail");
                 navigate('/login')
