@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { BsPersonCircle } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom';
 import { IoIosArrowForward } from 'react-icons/io';
+import { asyncGetUser } from '../../action/auth';
 
 export default function Mypage() {
     const navigate = useNavigate();
@@ -29,16 +30,22 @@ export default function Mypage() {
         navigate('/');
     }
 
+    useEffect(() => {
+        dispatch(asyncGetUser());
+    }, [])
+
     return (
     <Wrapper>
         <PageName>마이페이지</PageName>
         <ProfileWrapper>
             <SIoPersonCircle />
-            <InfoWrapper>
+            {user.nickname && <InfoWrapper>
                 <Nickname>{user.nickname.split("_")[0]}</Nickname>
                 <div className='my-email'>{user.email}</div>
-                <span>{age[dataAge.indexOf(user.ageGrp)]}</span><span>{gender[dataGender.indexOf(user.gender)]}</span>
-            </InfoWrapper>
+                {/* <span>{age[dataAge.indexOf(user.ageGrp)]}</span> */}
+                <span>{user.age}세</span>
+                <span>{gender[dataGender.indexOf(user.gender)]}</span>
+            </InfoWrapper>}
         </ProfileWrapper>
 
         <SubmitWrapper onClick={gotoMyDetail}>
@@ -113,6 +120,7 @@ margin: 0 10px;
 border-bottom: 1px solid var(--button-sub-color);
 display: flex;
 justify-content: space-between;
+cursor: pointer;
 `
 const SubmitTitle = styled.div`
 font-family: nanum-square-bold;

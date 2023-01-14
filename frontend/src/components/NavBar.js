@@ -30,7 +30,8 @@ export function NavBar() {
 
     return (
         <>
-    {url !== 'login' && <Container>
+    {url !== 'login' && url !== 'user' && 
+    <Container>
         <UL>
                 <NavBox onClick={e => {navigate('/board'); setBtnActive("board")}}>
                 <FaRegClipboard className={"nav-icons" + (btnActive === 'board' ? " active" : "")}/>

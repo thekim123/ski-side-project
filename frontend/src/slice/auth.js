@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { asyncGetUser } from '../action/auth';
+import { asyncGetUser, asyncUpdateUser } from '../action/auth';
 
 const initialState = {
     token: null,
@@ -40,6 +40,9 @@ const authSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(asyncGetUser.fulfilled, (state, action) => {
             state.user = action.payload;
+        })
+        builder.addCase(asyncUpdateUser.fulfilled, (state) => {
+            
         })
     }
 })
