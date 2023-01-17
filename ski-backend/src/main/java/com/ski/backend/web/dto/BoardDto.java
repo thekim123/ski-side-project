@@ -21,6 +21,8 @@ public class BoardDto {
     private String content;
     private String username;
     private String nickname;
+
+    @NotBlank
     private String resortName;
     private LocalDateTime createDate;
 

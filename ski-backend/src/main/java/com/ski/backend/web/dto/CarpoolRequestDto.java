@@ -22,14 +22,8 @@ public class CarpoolRequestDto {
     @NotBlank
     private String boarding;
 
-    @NotBlank
-    private String space;
     private boolean smoker;
 
-    @NotBlank
-    private String phoneNumber;
-
-    @NotBlank
     private int cost;
     private Negotiate negotiate;
     private int passenger;
