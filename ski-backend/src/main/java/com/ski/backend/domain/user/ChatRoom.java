@@ -19,7 +19,7 @@ public class ChatRoom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonIncludeProperties({"username", "id", "clubUsers"})
+    @JsonIncludeProperties({"username", "id"})
     @ManyToOne
     private User user;
 

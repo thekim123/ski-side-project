@@ -61,8 +61,4 @@ public class UserApiController {
         return new CmRespDto<>(1, "닉네임 중복체크 완료", isDuplicate);
     }
 
-//    @GetMapping("chatlist")
-//    public CmRespDto<?> getChatlist(Authentication authentication){
-//        userService.getChatlist(authentication);
-//    }
 }
