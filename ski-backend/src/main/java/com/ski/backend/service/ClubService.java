@@ -19,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -144,7 +145,6 @@ public class ClubService {
             club.addMember();
         }
         clubUserRepository.save(cu);
-        insertChatrooms(club, cu);
     }
 
     // 동호회 가입 대기자 리스트 확인
@@ -176,6 +176,10 @@ public class ClubService {
                 if (admitYn) {
                     clubUser.update();
                     club.addMember();
+                    
+                    // 클럽 가입 처리시 관리자와 신규 가입자 본인 채팅방 다중 insert
+                    List<ChatRoom> chatrooms = insertChatrooms(club, clubUser);
+                    chatRoomRepository.saveAll(chatrooms);
 
                     return new CmRespDto<>(1, "가입 승인 완료", null);
                 } else {
@@ -189,7 +193,7 @@ public class ClubService {
 
     // 나의 신청 내역
 
-    public List<ClubUserRespDto>  requestList(Authentication auth) {
+    public List<ClubUserRespDto> requestList(Authentication auth) {
         PrincipalDetails pd = (PrincipalDetails) auth.getPrincipal();
 
         List<ClubUser> result = clubUserRepository.findByIdUserId(pd.getUser().getId());
@@ -215,15 +219,16 @@ public class ClubService {
         return clubRepository.findById(clubId).map(e -> new ClubResponseDto(club));
     }
 
-    private void insertChatrooms(Club club, ClubUser clubUser) {
-        String roomName = club.getClubNm() + clubUser.getId();
+    // 클럽 가입 처리시 관리자와 신규 가입자 본인 채팅방 다중 insert 하는 매서드
+    private List<ChatRoom> insertChatrooms(Club club, ClubUser clubUser) {
+        String roomName = club.getClubNm() + "-" + clubUser.getUser().getNickname();
+        List<ChatRoom> chatRooms = new ArrayList<>();
 
         ChatRoom chatRoom = ChatRoom.builder()
                 .roomName(roomName)
                 .user(clubUser.getUser())
                 .build();
-        chatRoomRepository.save(chatRoom);
-
+        chatRooms.add(chatRoom);
 
         club.getClubUsers().forEach(c -> {
             if (c.getRole().equals(ADMIN)) {
@@ -231,10 +236,12 @@ public class ClubService {
                         .user(c.getUser())
                         .roomName(roomName)
                         .build();
-                chatRoomRepository.save(chatRoomOfAdmin);
-
+                chatRooms.add(chatRoomOfAdmin);
             }
         });
+
+        return chatRooms;
+
     }
 
 
