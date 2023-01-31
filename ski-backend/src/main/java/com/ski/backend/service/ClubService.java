@@ -144,6 +144,10 @@ public class ClubService {
         if (cu.getStatus().equals(Status.ADMIT)) {
             club.addMember();
         }
+
+        if(club.getOpenYn().equals("Y")){
+            insertChatrooms(club, cu);
+        }
         clubUserRepository.save(cu);
     }
 
