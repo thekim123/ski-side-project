@@ -231,6 +231,7 @@ public class ClubService {
         ChatRoom chatRoom = ChatRoom.builder()
                 .roomName(roomName)
                 .user(clubUser.getUser())
+                .club(club)
                 .build();
         chatRooms.add(chatRoom);
 
@@ -239,6 +240,7 @@ public class ClubService {
                 ChatRoom chatRoomOfAdmin = ChatRoom.builder()
                         .user(c.getUser())
                         .roomName(roomName)
+                        .club(club)
                         .build();
                 chatRooms.add(chatRoomOfAdmin);
             }

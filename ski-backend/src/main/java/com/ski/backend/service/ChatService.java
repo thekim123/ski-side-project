@@ -1,11 +1,13 @@
 package com.ski.backend.service;
 
 import com.ski.backend.config.auth.PrincipalDetails;
+import com.ski.backend.domain.club.Club;
 import com.ski.backend.domain.user.ChatRoom;
 import com.ski.backend.domain.user.User;
 import com.ski.backend.domain.user.Whisper;
 import com.ski.backend.handler.ex.CustomApiException;
 import com.ski.backend.repository.ChatRoomRepository;
+import com.ski.backend.repository.ClubRepository;
 import com.ski.backend.repository.UserRepository;
 import com.ski.backend.repository.WhisperRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ public class ChatService {
     private final ChatRoomRepository chatRoomRepository;
     private final WhisperRepository whisperRepository;
     private final UserRepository userRepository;
+    private final ClubRepository clubRepository;
 
     @Transactional(readOnly = true)
     public List<Whisper> getWhispers(Authentication authentication) {
@@ -59,8 +62,19 @@ public class ChatService {
     }
 
     @Transactional
-    public void deleteChatRoomWhenLeave(Long userId, String chatRoomName) {
-        ChatRoom room = chatRoomRepository.findByRoomName(chatRoomName);
+    public void deleteChatRoomWhenLeave(Long userId, long clubId) {
+        Club club = clubRepository.findById(clubId).orElseThrow(()->{
+            throw new CustomApiException("동호회를 찾을 수 없습니다.");
+        });
+
+        User user = userRepository.findById(userId).orElseThrow(()->{
+            throw new CustomApiException("해당 유저를 찾을 수 없습니다.");
+        });
+
+        ChatRoom room = chatRoomRepository.findByUserAndClub(user, club).orElseThrow(()->{
+            throw new CustomApiException("채팅방이 존재하지 않습니다.");
+        });
+
         chatRoomRepository.deleteById(room.getId());
     }
 
@@ -109,5 +123,15 @@ public class ChatService {
         );
 
         System.out.println(response);
+    }
+
+    @Transactional
+    public void deleteAllChatRoomWhenDeleteClub(long clubId) {
+        Club club = clubRepository.findById(clubId).orElseThrow(()->{
+            throw new CustomApiException("클럽의 고유 번호를 찾을 수가 없습니다. - 존재하지 않는 클럽입니다.");
+        });
+
+        var clubChatRooms = chatRoomRepository.findByClub(club);
+        chatRoomRepository.deleteAll(clubChatRooms);
     }
 }
