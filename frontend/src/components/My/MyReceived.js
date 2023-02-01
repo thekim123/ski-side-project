@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { admitSubmit, asyncGetSubmits, getSubmits, loadCarpools, refuseSubmit } from '../../action/carpool';
 import { CarPoolListItem } from '../CarPool/CarPoolListItem';
 import { FiArrowDownCircle, FiArrowUpCircle } from 'react-icons/fi';
+import { asyncGetWaitingUser } from '../../action/club';
 
 export default function MyReceived() {
     const dispatch = useDispatch();
@@ -81,6 +82,7 @@ export default function MyReceived() {
 
     useEffect(() => {
         dispatch(loadCarpools());
+        //dispatch(asyncGetWaitingUser())
     }, [])
 
     useEffect(() => {

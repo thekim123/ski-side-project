@@ -104,6 +104,18 @@ export const asyncAdmitUser = createAsyncThunk(
     }
 )
 
+export const asyncGetChat = createAsyncThunk(
+    'clubSlice/asyncGetChat',
+    async (data) => {
+        const resp = await Send({
+            url: '/chat/chatroom',
+            method: 'get'
+        })
+        console.log("클럽 채팅방 조회", resp);
+        return resp.data.data;
+    }
+)
+
 export const loadClubs = () => {
     return function (dispatch) {
         Send({
