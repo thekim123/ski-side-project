@@ -69,6 +69,7 @@ export function Club() {
 
     }, [selectedResort, clubs]);
     return (
+        <> {user.id === 4 || user.id === 6 || user.id === 8 ? 
         <ClubContainer>
             <ClubListForm change={changeSelection} />
             <ClubTop>
@@ -131,9 +132,22 @@ export function Club() {
                 </ClubListItem>
                 ))}
             </ClubList>
-        </ClubContainer>
+        </ClubContainer> : 
+        <TempWrapper>
+            <TempInner>서비스 준비 중입니다 :D </TempInner>
+        </TempWrapper>}
+        </>
     )
 }
+const TempWrapper = styled.div`
+margin-top: 170px;
+display: grid;
+justify-items: center;
+align-items: center;
+`
+const TempInner = styled.div`
+color: var(--button-sub-color);
+`
 const ClubContainer = styled.div`
     margin-top: 20px;
 `

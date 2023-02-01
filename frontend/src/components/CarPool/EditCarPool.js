@@ -14,11 +14,13 @@ import { asyncEditCarpool, editCarpool, getCarpool } from '../../action/carpool'
 export function EditCarPool() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const type = ["카풀 요청", "카풀 등록"];
     const route = ["도착지가 스키장", "출발지가 스키장"];
     const resortsData = resorts.filter(resort => resort.id !== null);
     const resortName = resortsData.map(resort => resort.name);
     //const city = ["서울", "경기", "인천", "부산", "대구", "대전"]
     const smoking = ["금연 차량", "흡연 차량"];
+    const [selectedType, setSelectedType] = useState("--");
     const [date, setDate] = useState(null);
     const [showDate, setShowDate] = useState(false);
     const [selectedRoute, setSelectedRoute] = useState("--");
@@ -32,6 +34,7 @@ export function EditCarPool() {
     const carpool = useSelector(state => state.carpool.carpool);
     const {id} = useParams();
     const [error, setError] = useState({
+        type:"",
         date:"",
         route: "",
         departure: "",
@@ -63,6 +66,13 @@ export function EditCarPool() {
     const onSelect = (time) => {
         setStartTime(time);
         setError({...error, time: null});
+    }
+
+    const reflectType = (selection) => {
+        if (type.indexOf(selection) !== -1) {
+            setSelectedType(selection); 
+            setError({...error, type: ""})
+        }
     }
 
     const reflectRoute = (selection) => {
@@ -147,6 +157,7 @@ export function EditCarPool() {
         }
 
         //날짜, 시간
+        if (!selectedType) local_error.type = '요청 / 등록을 선택하세요.'
         if (!date) local_error.date = "날짜를 선택하세요."
         if (!selectedRoute) local_error.route = "경로를 선택하세요."
         if (!selectedResort) {
@@ -173,6 +184,7 @@ export function EditCarPool() {
         const enteredCnt = cntInput.current.value;
         if (!validateInput(enteredStartEnd, enteredPlace, enteredContent, enteredCnt)) return;
 
+        const postType = selectedType === '카풀 요청' ? '요청' : '등록';
         const departure = selectedRoute === '도착지가 스키장' ? enteredStartEnd : selectedResort;
         const destination = selectedRoute === '도착지가 스키장' ? selectedResort : enteredStartEnd;
         const isSmoker = selectedSmoking === '흡연 차량' ? true : false;
@@ -181,6 +193,7 @@ export function EditCarPool() {
         const krTime = new Date(realTime.getTime() + 9*60*60*1000);
         const carpool = {
             id: id,
+            request: postType,
             departure: departure,
             destination: destination,
             departTime: krTime,
@@ -213,6 +226,7 @@ export function EditCarPool() {
             setSelectedRoute("출발지가 스키장");
             setSelectedResort(carpool.departure);
         }
+        setSelectedType(carpool.request === '등록' ? "카풀 등록": "카풀 요청");
         setSelectedSmoking(carpool.smoker ? "흡연 차량" : "금연 차량");
         //setDate(new Date(carpool.departTime.slice(0, 10)));
         //setStartTime(new Date(carpool.departTime));
@@ -288,6 +302,13 @@ export function EditCarPool() {
         <Wrapper> 
         <Title><div className="clubReg-top">카풀 수정</div></Title>
         <form onSubmit={handleSubmit}>
+        <Row>
+                <SelectBox list={type} label="요청/등록" func={reflectType} state={selectedType} />
+                <div></div>
+            </Row>
+            <Error><Dummy></Dummy><div>{error.type ? error.type : null}</div></Error>
+
+            {selectedType !== '--' && 
             <Row>
             <DatePick>
                 <label>날짜</label>
@@ -302,7 +323,7 @@ export function EditCarPool() {
                     /></span>
             </DatePick>
             <div></div>
-            </Row>
+            </Row>}
             <Error><Dummy></Dummy><div>{error.date ? error.date : null}</div></Error>
 
             <Row>

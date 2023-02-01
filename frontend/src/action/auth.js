@@ -43,6 +43,17 @@ export const kakaoLogin = (backData) => {
     }
 }
 
+export const logoutAction = () => {
+    return function (dispatch) {
+        try {
+            dispatch(authActions.logOut());
+            Send.defaults.headers.common['Authorization'] = null;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+}
+
 export const getUser = () => {
     return function (dispatch) {
         Send({

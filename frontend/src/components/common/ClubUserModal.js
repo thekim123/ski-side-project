@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components'
-import { asyncAdmitUser } from '../../action/club';
+import { asyncAdmitUser, asyncGetChat } from '../../action/club';
 
 export function ClubUserModal(props) {
     const dispatch = useDispatch();
@@ -36,7 +36,11 @@ export function ClubUserModal(props) {
         dispatch(asyncAdmitUser(data));
     }
 
-    return (
+    const gotoChat = (user) => {
+        dispatch(asyncGetChat());
+    }
+
+    return ( 
         <Wrapper>
         <div className={props.open ? "openModal skiModal" : "skiModal"} onClick={clickOutside}>
         {props.open ? (
@@ -69,6 +73,7 @@ export function ClubUserModal(props) {
                         <div className='user-name'>{user.nickname.split("_")[0]}</div>
                         {clickedArr[idx] ? <div>{clickedArr[idx]}</div> :
                         <SubRow>
+                            <RowBtn onClick={() => gotoChat(user)}>채팅</RowBtn>
                             <RowBtn onClick={(e) => admitUser(e, idx, user.id)}>수락</RowBtn>
                             <RowBtn onClick={(e) => admitUser(e, idx, user.id)}>거절</RowBtn>
                         </SubRow>}

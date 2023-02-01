@@ -212,6 +212,7 @@ height: 480px;
 .home-grid-item{
     height: 55px;
 }
+margin-bottom: 80px;
 `
 
 const Button = styled.div`

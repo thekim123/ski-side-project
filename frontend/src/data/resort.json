@@ -37,7 +37,7 @@
             "time": "매일 09:00 ~ 17:00\n야간 19:00 ~ 22:00",
             "duration": "연중무휴",
             "url": "https://www.yongpyong.co.kr/kor/skiNboard/introduce.do",
-            "color": "#FFF2CC"
+            "color": "#CCCCCC"
         },
         {
             "id": 4,
@@ -85,6 +85,21 @@
             "color": "#FFF2CC"
         },
         {
+            "id": 13,
+            "region": "평창",
+            "name": "알펜시아리조트",
+            "lat": "37.657231935901834",
+            "lon": "128.67359618247175",
+            "time": "https://www.alpensia.com/ski/slope-plan.do",
+            "duration": "연중무휴",
+            "planUrl": "https://www.alpensia.com/ski/slope-plan.do",
+            "url": "https://www.alpensia.com/guide/total-use-cost-ski.do",
+            "color": "#ABBCC9"
+        },
+        {
+            "id": null
+        },
+        {
             "id": 5,
             "region": "정선",
             "name": "하이원리조트",
@@ -94,6 +109,30 @@
             "duration": "",
             "planUrl": "",
             "url": "http://www.hi-one.kr/sub/sub04_04.php",
+            "color": "#ABBCC9"
+        },
+        {
+            "id": 11,
+            "region": "무주",
+            "name": "덕유산리조트",
+            "lat": "35.886078372101544",
+            "lon": "127.72949017805212",
+            "time": "https://www.mdysresort.com/ski/schedule.asp",
+            "duration": "",
+            "planUrl": "https://www.mdysresort.com/ski/schedule.asp?dSYear=2022&dSMonth=12",
+            "url": "https://www.mdysresort.com/ski/charge_bk20211006.asp",
+            "color": "#FFDDDD"
+        },
+        {
+            "id": 14,
+            "region": "태백",
+            "name": "오투리조트",
+            "lat": "37.17603714493349",
+            "lon": "128.9403411352801",
+            "time": "https://www.o2resort.com/GDE/totalPrice_skiLift.jsp",
+            "duration": "",
+            "planUrl": "https://www.o2resort.com/GDE/totalPrice_skiLift.jsp",
+            "url": "https://www.o2resort.com/GDE/totalPrice_skiLift.jsp",
             "color": "#ABBCC9"
         },
         {
@@ -112,16 +151,7 @@
             "color": "#ABBCC9"
         },
         {
-            "id": 11,
-            "region": "무주",
-            "name": "덕유산리조트",
-            "lat": "35.886078372101544",
-            "lon": "127.72949017805212",
-            "time": "https://www.mdysresort.com/ski/schedule.asp",
-            "duration": "",
-            "planUrl": "https://www.mdysresort.com/ski/schedule.asp?dSYear=2022&dSMonth=12",
-            "url": "https://www.mdysresort.com/ski/charge_bk20211006.asp",
-            "color": "#FFDDDD"
+            "id": null
         },
         {
             "id": 10,
