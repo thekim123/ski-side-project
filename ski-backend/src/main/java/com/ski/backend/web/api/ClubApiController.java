@@ -65,6 +65,7 @@ public class ClubApiController {
     @DeleteMapping("/delete/{clubId}")
     public CmRespDto<ClubResponseDto> delete(@PathVariable long clubId, Authentication auth) {
         clubService.delete(clubId, auth);
+        chatService.deleteAllChatRoomWhenDeleteClub(clubId);
         return new CmRespDto<>(1, "동호회 삭제 완료", null);
     }
 
@@ -79,8 +80,8 @@ public class ClubApiController {
     // 동호회 탈퇴
     @DeleteMapping("/leave/{userId}/{clubId}")
     public CmRespDto<ClubResponseDto> deleteMember(@PathVariable long userId, @PathVariable long clubId) {
-        String chatRoomName = clubService.deleteMember(userId, clubId);
-        chatService.deleteChatRoomWhenLeave(userId, chatRoomName);
+        clubService.deleteMember(userId, clubId);
+        chatService.deleteChatRoomWhenLeave(userId, clubId);
         return new CmRespDto<>(1, "동호회 탈퇴 완료", null);
     }
 
