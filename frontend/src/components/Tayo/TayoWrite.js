@@ -439,6 +439,7 @@ const Input = styled.div`
 const CheckBox = styled.div`
 display: grid;
 grid-template-columns: 110px 20px 1fr;
+align-items: center;
 padding-top: 7px;
 input {
     width: 15px;
@@ -450,6 +451,7 @@ label {
     text-align: left;
     font-size: 12px;
     padding-top: 3px;
+    padding-left: 10px;
 }
 `
 const BtnWrap = styled.div`

@@ -365,7 +365,7 @@ export function CarPoolWrite() {
             {isDone.smoking &&
             <Row>
             <Input>
-            {selectedType === '등록' ? <label>탑승 가능 인원</label> : <label>탑승 희망 인원</label>}
+            {selectedType === '등록' ? <label>탑승 가능 인원</label> : <label>탑승 가능 인원</label>}
             <input
                 type="text"
                 ref={cntInput}

@@ -52,6 +52,16 @@ export function Tayo() {
     useEffect(() => {
         dispatch(loadTayos());
     }, [dispatch]);
+    useEffect(() => {
+        if (posts) {
+            const origin = [...posts];
+            if (switchBoard) {
+                setTayoByType(origin.filter(tayo => tayo.rideDevice === '스키'))
+            } else {
+                setTayoByType(origin.filter(tayo => tayo.rideDevice === '보드'))
+            }
+        }
+    }, [posts])
 
     return(
         <Container>

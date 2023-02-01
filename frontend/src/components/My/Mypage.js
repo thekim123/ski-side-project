@@ -5,6 +5,7 @@ import { BsPersonCircle } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom';
 import { IoIosArrowForward } from 'react-icons/io';
 import { asyncGetUser } from '../../action/auth';
+import { logoutAction } from '../../action/auth';
 
 export default function Mypage() {
     const navigate = useNavigate();
@@ -26,7 +27,7 @@ export default function Mypage() {
         navigate('/my/received');
     }
     const logout = () => {
-        window.localStorage.removeItem('access_token');
+        dispatch(logoutAction());
         navigate('/');
     }
 
@@ -63,9 +64,9 @@ export default function Mypage() {
             <IoIosArrowForward />
         </SubmitWrapper>
 
-        {/* <SubmitWrapper onClick={logout}> */}
-            {/* <SubmitTitle>로그아웃</SubmitTitle> */}
-        {/* </SubmitWrapper> */}
+        <SubmitWrapper onClick={logout}>
+            <SubmitTitle>로그아웃</SubmitTitle>
+        </SubmitWrapper>
     </Wrapper>
     )
 }
