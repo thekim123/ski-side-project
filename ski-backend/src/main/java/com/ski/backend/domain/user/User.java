@@ -44,6 +44,9 @@ public class User {
     @Column
     private Integer age;
 
+    @Column
+    private Boolean agreement;
+
     @Enumerated(EnumType.STRING)
     @Column
     private Role roles;

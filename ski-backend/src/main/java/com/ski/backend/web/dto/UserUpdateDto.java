@@ -14,5 +14,6 @@ public class UserUpdateDto {
     private String email;
     private String gender;
     private Integer age;
+    private Boolean agreement;
 
 }
