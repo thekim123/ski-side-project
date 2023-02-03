@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { asyncGetUser, asyncUpdateUser } from '../action/auth';
+import { asyncDeleteUser, asyncGetUser, asyncUpdateUser } from '../action/auth';
 
 const initialState = {
     token: null,
@@ -43,6 +43,10 @@ const authSlice = createSlice({
         })
         builder.addCase(asyncUpdateUser.fulfilled, (state) => {
             
+        })
+        builder.addCase(asyncDeleteUser.fulfilled, (state) => {
+            state.token = null;
+            state.isAuth = false;
         })
     }
 })

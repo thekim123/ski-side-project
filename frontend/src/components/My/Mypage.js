@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { IoIosArrowForward } from 'react-icons/io';
 import { asyncGetUser } from '../../action/auth';
 import { logoutAction } from '../../action/auth';
+import OkButtonModal from '../common/OkButtonModal'
 
 export default function Mypage() {
     const navigate = useNavigate();
@@ -16,6 +17,7 @@ export default function Mypage() {
     const dataAge = ["ANY", "TEN", "TWENTY", "THIRTY", "FORTY", "FIFTY", "SIXTY", "SEVENTY", "EIGHTY"]
     const gender = ["남자", "여자", ""]
     const dataGender = ["MEN", "WOMEN", "NO"]
+    const [delOpen, setDelOpen] = useState(false);
 
     const gotoMyDetail = () => {
         navigate('/my/detail');
@@ -29,6 +31,13 @@ export default function Mypage() {
     const logout = () => {
         dispatch(logoutAction());
         navigate('/');
+    }
+
+    const closeDel = () => {
+        setDelOpen(false);
+    }
+    const deleteUser = () => {
+        setDelOpen(true);
     }
 
     useEffect(() => {
@@ -67,6 +76,16 @@ export default function Mypage() {
         <SubmitWrapper onClick={logout}>
             <SubmitTitle>로그아웃</SubmitTitle>
         </SubmitWrapper>
+
+        <SubmitWrapper onClick={deleteUser}>
+            <SubmitTitle>회원 탈퇴</SubmitTitle>
+        </SubmitWrapper>
+        <OkButtonModal 
+                    open={delOpen}
+                    close={closeDel}
+                    message={"정말 탈퇴하시겠습니까?"}
+                    ok={"확인"}
+                    usage={"userDel"}/>
     </Wrapper>
     )
 }

@@ -42,7 +42,8 @@ export default function KakaoLogin() {
                     dispatch(kakaoLogin(resp));
                     //navigate('/')
                 }).then(() => {
-                    navigate('/user');
+                    //navigate('/user');
+                    navigate('/user/agreement');
                 })
                 .catch(error => console.log(error));
             } else {

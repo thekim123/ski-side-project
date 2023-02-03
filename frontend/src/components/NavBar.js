@@ -30,7 +30,7 @@ export function NavBar() {
 
     return (
         <>
-    {url !== 'login' && url !== 'user' && 
+    {url !== 'login' && url !== 'user' && url !== 'user/agreement' && 
     <Container>
         <UL>
                 <NavBox onClick={e => {navigate('/board'); setBtnActive("board")}}>
