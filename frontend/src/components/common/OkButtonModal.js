@@ -6,6 +6,7 @@ import { deleteComment, deletePost } from '../../action/board';
 import { deleteCbPost, deleteClubComment } from '../../action/clubBoard';
 import { deleteTayo } from '../../action/tayo';
 import { deleteCarpool, submitCarpool } from '../../action/carpool';
+import { asyncDeleteUser } from '../../action/auth';
 
 export default function OkButtonModal(props) {
     const dispatch = useDispatch();
@@ -50,6 +51,10 @@ export default function OkButtonModal(props) {
             dispatch(deleteCarpool(props.targetId));
             props.close();
             navigate('/carpool');
+        } else if (props.usage === "userDel") {
+            dispatch(asyncDeleteUser());
+            props.close();
+            navigate('/');
         }
     }
 

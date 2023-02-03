@@ -60,12 +60,15 @@ export function UserInput() {
             let ageInput = answer[2].replace(/[0-9]/g, '');
             if (ageInput.length !== 0) {
                 setErrMsg("숫자만 입력 가능합니다.");
+            } else if (answer[2] < 20 || answer[2] > 80) {
+                setErrMsg("20세부터 80세까지 이용 가능합니다.");
             } else {
                 console.log(answer);
                 let data = {
                     username: user.username,
                     password: "skiproject",
                     nickname: answer[0],
+                    agreement: true,
                     gender: selectedGender === '남' ? 'MEN' : 'WOMEN',
                     age: answer[2]
                 }
@@ -80,7 +83,6 @@ export function UserInput() {
     }
 
     useEffect(() => {
-        console.log("user ", user);
         if (user) {
             if (user.nickname) {
                 navigate("/");

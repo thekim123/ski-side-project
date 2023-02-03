@@ -42,6 +42,7 @@ import MyReceived from './components/My/MyReceived';
 import { asyncGetUser } from './action/auth';
 import Send from './components/common/Send'
 import { UserInput } from './features/auth/UserInput';
+import { Agreement } from './features/auth/Agreement';
 
 function App() {
   //const cors = require('cors');
@@ -76,6 +77,7 @@ function App() {
           <Route element={<RequireAuth />}>
           <Route index element={<Home />} />
             <Route path="user" element={<UserInput />} />
+            <Route path="user/agreement" element={<Agreement />} />
             <Route path="board" element={<Board />} />
             <Route path="board/write" element={<BoardWrite />} />
             <Route path="board/edit/:id" element={<EditBoard />} />
