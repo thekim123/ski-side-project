@@ -3,6 +3,8 @@ package com.ski.backend.domain.user;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ski.backend.domain.Tayo.TayoUser;
 import com.ski.backend.domain.board.Board;
+import com.ski.backend.domain.board.Dislikes;
+import com.ski.backend.domain.board.Likes;
 import com.ski.backend.domain.carpool.Carpool;
 import com.ski.backend.domain.club.Reply;
 import com.ski.backend.domain.club.ClubUser;
@@ -11,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -55,28 +58,36 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Board> boards;
 
+    @JsonIgnoreProperties({"user", "board"})
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Likes> likes;
+
+    @JsonIgnoreProperties({"user", "board"})
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Dislikes> dislikes;
+
     @JsonIgnoreProperties({"user"})
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Whisper> whispers;
 
     @JsonIgnoreProperties({"user"})
-    @OneToMany
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ChatRoom> chatRooms;
 
     @JsonIgnoreProperties({"user"})
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ClubUser> clubUsers = new ArrayList<>();
 
     @JsonIgnoreProperties({"user"})
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Carpool> carpools;
 
     @JsonIgnoreProperties({"user"})
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Reply> replies = new ArrayList<>();
 
     @JsonIgnoreProperties({"user", "tayo"})
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<TayoUser> tayoUsers = new ArrayList<>();
 
     private LocalDateTime createDate;

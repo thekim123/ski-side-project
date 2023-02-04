@@ -24,6 +24,7 @@ public class ChatRoom {
 
     @JsonIncludeProperties({"username", "id"})
     @ManyToOne
+    @JoinColumn(name = "userId")
     private User user;
 
     @Column

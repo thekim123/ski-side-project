@@ -22,6 +22,5 @@ public class Whisper {
     @ManyToOne
     private User principal;
 
-
     private String toUsername;
 }
