@@ -29,7 +29,8 @@ export function TopBar() {
     }
     return(
         <>
-        {t !== 'login' && <Container>
+        {t !== 'login' && t !== 'user' && t !== 'user/agreement' && 
+        <Container>
             <LeftSide>
                 {t !== '' && t !== 'board' && t !== 'carpool' && t !== 'tayo' && t !== 'club' && t !== 'my' && t !== 'chat' && t !== 'alarm' &&
                     <BiArrowBack className="backBtn" onClick={goback} />}

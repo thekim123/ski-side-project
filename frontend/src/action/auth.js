@@ -95,3 +95,15 @@ export const asyncUpdateUser = createAsyncThunk(
         return resp.data.data;
     }
 )
+
+export const asyncDeleteUser = createAsyncThunk(
+    'authSlice/asyncDeleteUser',
+    async () => {
+        const resp = await Send({
+            url: '/user/delete',
+            method: 'delete'
+        })
+        console.log("회원 탈퇴", resp);
+        return resp.data;
+    }
+)
