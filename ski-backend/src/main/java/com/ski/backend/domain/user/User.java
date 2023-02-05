@@ -55,7 +55,7 @@ public class User {
     private Role roles;
 
     @JsonIgnoreProperties({"user"})
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Board> boards;
 
     @JsonIgnoreProperties({"user", "board"})
