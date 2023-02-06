@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
-import { asyncUpdateUser } from '../../action/auth';
+import { asyncIsDuplicated, asyncUpdateUser } from '../../action/auth';
 import { IoMdArrowDropdown } from 'react-icons/io';
 import shortid from 'shortid'
 
@@ -48,12 +48,17 @@ export function UserInput() {
         setIdx(idx - 1);
     }
 
-    const increaseIdx = e => {
+    const increaseIdx = async e => {
         if (idx === 0) {
             if (answer[0].trim().length < 2) setErrMsg("닉네임은 공백 제외 2자 이상이어야 합니다.");
+            else if (answer[0].trim().length >= 10) setErrMsg("닉네임은 공백 제외 10자 미만이어야 합니다.");
             else {
-                setIdx(idx + 1);
-                resetErr();
+                let isDuplicated = await dispatch(asyncIsDuplicated(answer[0])).unwrap();
+                if (isDuplicated) setErrMsg("사용 중인 닉네임입니다.");
+                else {
+                    setIdx(idx + 1);
+                    resetErr();
+                }
             }
         }
         else if (idx === 2) {
