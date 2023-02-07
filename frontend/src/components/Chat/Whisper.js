@@ -1,23 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { MdKeyboardCapslock } from 'react-icons/md';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components'
-import { FiSend } from 'react-icons/fi'
 import { BsFillPersonFill } from 'react-icons/bs'
 import shortid from 'shortid'
-import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { FiSend } from 'react-icons/fi'
 import { BsChatDots } from 'react-icons/bs'
 
-export default function Chat() {
-    const dispatch = useDispatch();
+export default function Whisper() {
+    const [listening, setListening] = useState(false);
     const [prevChat, setPrevChat] = useState([])
     const [commentInput, setCommentInput] = useState("");
-    const [listening, setListening] = useState(false);
-    const [meventSource, setmEventSource] = useState(undefined);
-    let eventSource = undefined;
-    const {room} = useParams();
     const user = useSelector(state => state.auth.user);
-    const nickname = user.nickname.split("_")[0]
+    const {sender} = useParams();
+    const {receiver} = useParams();
 
     const handleInputChange = e => {
         setCommentInput(e.target.value);
@@ -25,9 +21,9 @@ export default function Chat() {
 
     async function addMessage() {
         let chat = {
-            sender: nickname,
+            sender: sender,
             msg: commentInput,
-            roomName: room,
+            receiver: receiver
         }
 
         fetch("http://15.165.81.194:8040/chat/save", {  
@@ -48,8 +44,8 @@ export default function Chat() {
         let eventSource;
         if (!listening) {
             //eventSource = new EventSource(`http://localhost:8040/chat/room/yejinsh`)
-            eventSource = new EventSource(`http://15.165.81.194:8040/chat/room/${room}`)
-            setmEventSource(eventSource) 
+            eventSource = new EventSource(`http://15.165.81.194:8040/chat/sender/${sender}/receiver/${receiver}`)
+            //setmEventSource(eventSource) 
 
             eventSource.onopen = event => {
                 console.log("connection opened")
@@ -81,10 +77,8 @@ export default function Chat() {
         console.log(prevChat);
     }, [prevChat]);
 
-    //나의 id와 roomName 속 내 id가 일치할 경우에만 보이도록.
-    //roomName에 따라 채팅 위의 게시글 종류, 버튼 종류 등등 다르게 보이도록.
     return (
-    <Wrapper>
+        <Wrapper>
         {prevChat.length === 0 && 
             <NoneWrapper>
                 <div className='none-inside'>
@@ -95,7 +89,7 @@ export default function Chat() {
         {prevChat.length > 0 && 
         <ChatWrapper>
             {prevChat.map(chat => (
-                chat.sender === nickname ? 
+                chat.sender === user.nickname ? 
                 <MeWrapper key={shortid.generate()}>
                     <Dummy></Dummy>
                     <BubbleLine>

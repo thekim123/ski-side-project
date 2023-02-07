@@ -46,9 +46,11 @@ export function CarPoolDetail() {
     const handleQ = e => {
         navigate(`/carpool/chat/${id}/carpool${id}submit${user.id}writer${carpool.user.id}/quest`)
     }
-    const gotoChat = () => {
-        navigate(`/carpool/chat/${id}/carpool${id}submit${user.id}writer${carpool.user.id}/chat`)
-    }
+    const gotoChat = () => { 
+        //navigate(`/carpool/chat/${id}/carpool${id}submit${user.id}writer${carpool.user.id}/chat`)
+        //이 버튼 클릭 가능한 사람은 항상 sender.
+        navigate(`/carpool/chat/${id}/${user.nickname}/${carpool.user.nickname}/chat`);
+    } 
 
     const handleSubmit = e => {
         setSubmitOpen(true);
