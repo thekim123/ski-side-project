@@ -69,7 +69,7 @@ export function Club() {
 
     }, [selectedResort, clubs]);
     return (
-        <> {user.id === 4 || user.id === 6 || user.id === 8 ? 
+        <> {user.id === 4 || user.id === 6 || user.id === 8 || user.id === 23 ? 
         <ClubContainer>
             <ClubListForm change={changeSelection} />
             <ClubTop>

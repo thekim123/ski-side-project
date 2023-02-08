@@ -44,6 +44,7 @@ import Send from './components/common/Send'
 import { UserInput } from './features/auth/UserInput';
 import { Agreement } from './features/auth/Agreement';
 import Whisper from './components/Chat/Whisper';
+import ClubChat from './components/Club/ClubChat';
 
 function App() {
   //const cors = require('cors');
@@ -93,6 +94,7 @@ function App() {
             <Route path="club/board/list/:id" element={<ClubBoardList />} />
             <Route path="club/board/detail/:id/:clubId" element={<ClubBoardDetail />} />
             <Route path="club/board/edit/:id/:clubId" element={<ClubBoardEdit />} />
+            <Route path="club/chat/:roomName" element={<ClubChat />} />
             <Route path="tayo" element={<Tayo />} />
             <Route path="tayo/write" element={<TayoWrite />} />
             <Route path="tayo/detail/:id" element={<TayoDetail />} />

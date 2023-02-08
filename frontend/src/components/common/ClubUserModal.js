@@ -1,12 +1,16 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import { asyncAdmitUser, asyncGetChat } from '../../action/club';
+import { asyncAdmitUser, asyncGetChat, getClubUser } from '../../action/club';
 
 export function ClubUserModal(props) {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     //const [btnClicked, setBtnClicked] = useState(false);
     const [clickedArr, setClickedArr] = useState(Array.from({length: props.userList.length}, () => false));
+    const clubUser = useSelector(state => state.club.users);
+    const [userList, setUserList] = useState([]);
 
     const clickOutside = (e) => {
         if (e.target.className === "openModal skiModal") {
@@ -17,10 +21,12 @@ export function ClubUserModal(props) {
         props.close();
     }
 
-    const admitUser = (e, idx, userId) => {
+    const admitUser = async (e, idx, userId) => {
         let admitYn;
         if (e.target.innerText === '수락') {
             admitYn = true;
+            props.func();
+            dispatch(getClubUser(props.clubId));
         } else {
             admitYn = false;
         }
@@ -33,12 +39,19 @@ export function ClubUserModal(props) {
         let arr = [...clickedArr];
         arr[idx] = e.target.innerText + "완료";
         setClickedArr(arr);
-        dispatch(asyncAdmitUser(data));
+        await dispatch(asyncAdmitUser(data)).unwrap();
     }
 
-    const gotoChat = (user) => {
-        dispatch(asyncGetChat());
+    const gotoChat = (user) => { 
+        //dispatch(asyncGetChat());
+        navigate(`/club/chat/${props.clubNm}`);
     }
+
+    useEffect(() => {
+        setUserList(clubUser
+            .filter(user => user.status !== 'WAITING')
+            .map(mem => mem.role === 'ADMIN' ? {...mem, order: 1} : {...mem, order: 3}))
+    }, [clubUser])
 
     return ( 
         <Wrapper>
@@ -48,7 +61,9 @@ export function ClubUserModal(props) {
                 <XButton onClick={clickX}>&times;</XButton>
                 {props.type === 'showUser' ? 
                 <UserList>
-                    {props.userList
+                    {clubUser
+            .filter(user => user.status !== 'WAITING')
+            .map(mem => mem.role === 'ADMIN' ? {...mem, order: 1} : {...mem, order: 3})
                         .sort(function(a, b) {
                             return a.order - b.order;
                         })
@@ -58,7 +73,8 @@ export function ClubUserModal(props) {
                             {user.role === 'ADMIN' ? 
                                 <div>방장</div> :
                                 <SubRow>
-                                    {/* <RowBtn>퇴출</RowBtn> */}
+                                    <RowBtn onClick={() => gotoChat(user)}>채팅</RowBtn>
+                                    {/* <RowBtn onClick={() => (user)}>퇴출</RowBtn> */}
                                     {/* <RowBtn>관리자 임명</RowBtn> */}
                                 </SubRow>
                             }
