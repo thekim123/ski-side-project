@@ -14,6 +14,7 @@ export default function Whisper() {
     const user = useSelector(state => state.auth.user);
     const {sender} = useParams();
     const {receiver} = useParams();
+    const another = sender === user.nickname ? receiver : sender;
 
     const handleInputChange = e => {
         setCommentInput(e.target.value);
@@ -21,9 +22,9 @@ export default function Whisper() {
 
     async function addMessage() {
         let chat = {
-            sender: sender,
+            sender: user.nickname,
             msg: commentInput,
-            receiver: receiver
+            receiver: another
         }
 
         fetch("http://15.165.81.194:8040/chat/save", {  

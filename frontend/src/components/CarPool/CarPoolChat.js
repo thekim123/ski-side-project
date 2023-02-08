@@ -23,7 +23,9 @@ export default function CarPoolChat() {
     //const {room} = useParams();
     //const submitId = room.split("submit")[1].split("writer")[0];
     const {sender} = useParams();
+    const {sid} = useParams();
     const {receiver} = useParams();
+    const {rid} = useParams();
     
     const gotoDetail = (id) => {
         navigate(`/carpool/detail/${id}`)
@@ -39,7 +41,7 @@ export default function CarPoolChat() {
     const admitUser = () => {
         const data = {
             //admitUserId: submitId,
-            admitUserId: sender,
+            admitUserId: sid,
             toCarpoolId: id
         }
         dispatch(admitSubmit(data));
@@ -47,7 +49,7 @@ export default function CarPoolChat() {
     const denyUser = () => {
         const data = {
             //admitUserId: submitId,
-            admitUserId: sender,
+            admitUserId: sid,
             toCarpoolId: id
         }
         dispatch(refuseSubmit(data));
@@ -102,8 +104,10 @@ export default function CarPoolChat() {
                         message={"신청하시겠습니까?"}
                         ok={"신청"}
                         usage={"carpoolSubmit"}
-                        submitId={user.id}
-                        writerId={post.user.id}
+                        sid={user.id}
+                        rid={post.user.id}
+                        sender={user.nickname}
+                        receiver={post.user.nickname}
                         targetId={id} />}
         </Top>
         <Bottom>

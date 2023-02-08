@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { asyncEditCarpool, asyncGetSubmits } from '../action/carpool';
+import { asyncEditCarpool, asyncGetCarpool, asyncGetSubmits } from '../action/carpool';
 
 const initialState = {
     carpools: [],
@@ -36,6 +36,9 @@ const carpoolSlice = createSlice({
         })
         builder.addCase(asyncEditCarpool.fulfilled, (state) => {
             
+        })
+        builder.addCase(asyncGetCarpool.fulfilled, (state, action) => {
+            state.carpool = action.payload;
         })
     }
 })

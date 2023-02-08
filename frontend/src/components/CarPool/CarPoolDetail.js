@@ -5,7 +5,7 @@ import { HiPencil } from 'react-icons/hi'
 import { BsTrashFill, BsFilePost, BsArrowRight } from 'react-icons/bs'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { getCarpool, getSubmits, submitCarpool } from '../../action/carpool'
+import { asyncGetCarpool, getCarpool, getSubmits, submitCarpool } from '../../action/carpool'
 import OkButtonModal from '../common/OkButtonModal'
 import { getUser } from '../../action/auth'
 
@@ -44,12 +44,13 @@ export function CarPoolDetail() {
     }
 
     const handleQ = e => {
-        navigate(`/carpool/chat/${id}/carpool${id}submit${user.id}writer${carpool.user.id}/quest`)
+        //navigate(`/carpool/chat/${id}/carpool${id}submit${user.id}writer${carpool.user.id}/quest`)
+        navigate(`/carpool/chat/${id}/${user.nickname}/${user.id}/${carpool.user.nickname}/${carpool.user.id}/quest`);
     }
     const gotoChat = () => { 
         //navigate(`/carpool/chat/${id}/carpool${id}submit${user.id}writer${carpool.user.id}/chat`)
         //이 버튼 클릭 가능한 사람은 항상 sender.
-        navigate(`/carpool/chat/${id}/${user.nickname}/${carpool.user.nickname}/chat`);
+        navigate(`/carpool/chat/${id}/${user.nickname}/${user.id}/${carpool.user.nickname}/${carpool.user.id}/chat`);
     } 
 
     const handleSubmit = e => {
@@ -58,7 +59,7 @@ export function CarPoolDetail() {
 
     useEffect(() => {
         setSubmitUser(false);
-        dispatch(getCarpool(id));
+        //dispatch(getCarpool(id));
     }, [dispatch]);
 
     useEffect(() => {
@@ -66,11 +67,8 @@ export function CarPoolDetail() {
     }, [])
 
     useEffect(() => {
-        if (carpool && user) {
-            //setDate(new Date(carpool.createDate));
-            //const t = new Date(carpool.createDate)
-            //const month = t.getMonth() + 1
-            //setDate(t.getFullYear() + "."+month + "." + t.getDate()+". "+carpool.createDate.slice(11,16));
+        const getC = async() => {
+            const carpool = await dispatch(asyncGetCarpool(id)).unwrap();
             setDate(`${carpool.createDate[0]}.
             ${carpool.createDate[1] < 10 ? "0"+carpool.createDate[1] : carpool.createDate[1]}.
             ${carpool.createDate[2] < 10 ? "0"+carpool.createDate[2] : carpool.createDate[2]} 
@@ -79,9 +77,23 @@ export function CarPoolDetail() {
 
             if (user.username === carpool.user.username) {
                 setIsMine(true);
+            } else {
+                setIsMine(false);
             }
+            return carpool;
         }
-    }, [carpool, user])
+
+        if (user) {
+        const carpool = getC();
+        if (carpool) {
+            //setDate(new Date(carpool.createDate));
+            //const t = new Date(carpool.createDate)
+            //const month = t.getMonth() + 1
+            //setDate(t.getFullYear() + "."+month + "." + t.getDate()+". "+carpool.createDate.slice(11,16));
+            
+        }
+    }
+    }, [user])
 
     useEffect(() => {
         if (submits) {

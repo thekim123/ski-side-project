@@ -46,7 +46,8 @@ export default function OkButtonModal(props) {
             dispatch(submitCarpool(id));
             props.close();
             //navigate to chat
-            navigate(`/carpool/chat/${id}/carpool${id}submit${props.submitId}writer${props.writerId}/submit`)            
+            navigate(`/carpool/chat/${props.targetId}/${props.sender}/${props.sid}/${props.receiver}/${props.rid}/chat`)
+                        
         } else if (props.usage === "carpoolDel") {
             dispatch(deleteCarpool(props.targetId));
             props.close();

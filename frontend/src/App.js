@@ -101,14 +101,14 @@ function App() {
             <Route path="carpool/detail/:id" element={<CarPoolDetail />} />
             <Route path="carpool/edit/:id" element={<EditCarPool />} />
             {/* <Route path="carpool/chat/:id/:room/:type" element={<CarPoolChat />} /> */}
-            <Route path="carpool/chat/:id/:sender/:receiver/:type" element={<CarPoolChat />} />
+            <Route path="carpool/chat/:id/:sender/:sid/:receiver/:rid/:type" element={<CarPoolChat />} />
             <Route path="my" element={<Mypage />} />
             <Route path="my/detail" element={<MyPageDetail />} />
             <Route path="my/submit" element={<MySubmit />} />
             <Route path="my/received" element={<MyReceived />} /> 
             <Route path="chat" element={<ChatList />} />
             <Route path="chat/detail/:room/:type" element={<Chat />} />
-            <Route path="chat/detail/:sender/:receiver/:type" element={<Whisper />} />
+            <Route path="chat/detail/:sender/:sid/:receiver/:rid/:type" element={<Whisper />} />
             <Route path="alarm" element={<Alarm />} />
           </Route>
         </Route>
