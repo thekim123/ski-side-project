@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { asyncDeleteUser, asyncGetUser, asyncUpdateUser } from '../action/auth';
+import { asyncDeleteUser, asyncGetUser, asyncIsDuplicated, asyncUpdateUser } from '../action/auth';
 
 const initialState = {
     token: null,
@@ -47,6 +47,9 @@ const authSlice = createSlice({
         builder.addCase(asyncDeleteUser.fulfilled, (state) => {
             state.token = null;
             state.isAuth = false;
+        })
+        builder.addCase(asyncIsDuplicated.fulfilled, (state, action) => {
+            
         })
     }
 })

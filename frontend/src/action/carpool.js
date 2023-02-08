@@ -60,6 +60,18 @@ export const editCarpool = (id, carpool) => {
     }
 } 
 
+export const asyncGetCarpool = createAsyncThunk(
+    'carpoolSlice/asyncGetCarpool',
+    async (id) => {
+        const resp = await Send({
+            url:`/carpool/${id}`,
+            method: 'get',
+        })
+        console.log("get carpool", resp);
+        return resp.data.data;
+    }
+)
+
 export const asyncEditCarpool = createAsyncThunk(
     'carpoolSlice/asyncEditCarpool',
     async (carpool) => {
