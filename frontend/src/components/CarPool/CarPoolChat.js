@@ -120,10 +120,10 @@ export default function CarPoolChat() {
 }
 
 const Wrapper = styled.div`
-margin-top: 30px;
+margin-top: 20px;
 `
 const Top = styled.div`
-padding: 0 15px;
+padding: 10px 15px;
 padding-bottom: 10px;
 border-bottom: 1px solid var(--button-sub-color);
 margin-top: 60px;

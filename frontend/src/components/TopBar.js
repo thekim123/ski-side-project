@@ -16,7 +16,11 @@ export function TopBar() {
             console.log("t")
             navigate(-1, {state: "test"});
         }
+        else if (t.slice(0, 11) === 'club/detail') {
+            navigate('/club');
+        }
         else navigate(-1);
+        console.log(t.slice(0, 11));
     }
     const gotoMyPage = e => {
         navigate('/my');
