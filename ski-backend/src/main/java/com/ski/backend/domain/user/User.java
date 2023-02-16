@@ -66,7 +66,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Dislikes> dislikes;
 
-    @JsonIgnoreProperties({"user", "board"})
+    @JsonIgnoreProperties({"fromUser"})
     @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL)
     private List<Bookmark> bookmarks;
 

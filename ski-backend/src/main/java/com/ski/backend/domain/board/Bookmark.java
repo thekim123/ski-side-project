@@ -23,7 +23,7 @@ public class Bookmark {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@JsonIgnoreProperties({ "boards", "tayos", "password", "clubUsers", "carpools" })
+	@JsonIgnoreProperties({"boards", "password", "clubUsers", "carpools", "tayos","dislikes", "likes", "chatRooms", "whispers"})
 	@ManyToOne
 	@JoinColumn(name = "fromUserId")
 	private User fromUser;
