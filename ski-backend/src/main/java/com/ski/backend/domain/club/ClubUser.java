@@ -31,7 +31,7 @@ public class ClubUser {
     @JoinColumn(name = "club_id")
     private Club club;
 
-    @JsonIgnoreProperties({"boards", "clubUsers", "carpools", "tayoUsers"})
+    @JsonIgnoreProperties({"boards", "clubUsers", "carpools", "tayoUsers","likes","dislikes"})
     @ManyToOne(fetch = LAZY)// 여러 사용자가 한 클럽에 속할 수 있으니까
     @JoinColumn(name = "user_id")
     private User user;

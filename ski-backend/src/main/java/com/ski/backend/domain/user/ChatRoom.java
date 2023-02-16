@@ -30,7 +30,7 @@ public class ChatRoom {
     @Column
     private String roomName;
 
-    @JsonIgnoreProperties({"clubUsers"})
+    @JsonIgnoreProperties({"clubUsers", "resort"})
     @OneToOne
     private Club club;
 }

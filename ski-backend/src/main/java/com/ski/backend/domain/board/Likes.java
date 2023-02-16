@@ -36,7 +36,7 @@ public class Likes {
 
     @ManyToOne
     @JoinColumn(name = "userId")
-    @JsonIgnoreProperties({"boards", "password", "clubUsers", "carpools", "tayos"})
+    @JsonIgnoreProperties({"boards", "password", "clubUsers", "carpools", "tayos", "likes","dislikes"})
     private User user;
 
     private LocalDateTime createDate;
