@@ -3,6 +3,7 @@ package com.ski.backend.domain.user;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ski.backend.domain.Tayo.TayoUser;
 import com.ski.backend.domain.board.Board;
+import com.ski.backend.domain.board.Bookmark;
 import com.ski.backend.domain.board.Dislikes;
 import com.ski.backend.domain.board.Likes;
 import com.ski.backend.domain.carpool.Carpool;
@@ -64,6 +65,10 @@ public class User {
     @JsonIgnoreProperties({"user", "board"})
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Dislikes> dislikes;
+
+    @JsonIgnoreProperties({"user", "board"})
+    @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL)
+    private List<Bookmark> bookmarks;
 
     @JsonIgnoreProperties({"user"})
     @OneToMany(cascade = CascadeType.ALL)
