@@ -6,6 +6,7 @@ import { admitSubmit, getCarpool, getSubmits, refuseSubmit } from '../../action/
 import Chat from '../Chat/Chat'
 import { CarPoolListItem } from './CarPoolListItem';
 import OkButtonModal from '../common/OkButtonModal'
+import Whisper from '../Chat/Whisper';
 
 export default function CarPoolChat() {
     const dispatch = useDispatch();
@@ -19,8 +20,12 @@ export default function CarPoolChat() {
     const [submitNickname, setSubmitNickname] = useState("");
     const {id} = useParams();
     const {type} = useParams();
-    const {room} = useParams();
-    const submitId = room.split("submit")[1].split("writer")[0];
+    //const {room} = useParams();
+    //const submitId = room.split("submit")[1].split("writer")[0];
+    const {sender} = useParams();
+    const {sid} = useParams();
+    const {receiver} = useParams();
+    const {rid} = useParams();
     
     const gotoDetail = (id) => {
         navigate(`/carpool/detail/${id}`)
@@ -35,14 +40,16 @@ export default function CarPoolChat() {
 
     const admitUser = () => {
         const data = {
-            admitUserId: submitId,
+            //admitUserId: submitId,
+            admitUserId: sid,
             toCarpoolId: id
         }
         dispatch(admitSubmit(data));
     }
     const denyUser = () => {
         const data = {
-            admitUserId: submitId,
+            //admitUserId: submitId,
+            admitUserId: sid,
             toCarpoolId: id
         }
         dispatch(refuseSubmit(data));
@@ -64,7 +71,8 @@ export default function CarPoolChat() {
     useEffect(() => {
         
         if (submits) {
-            const sbm = submits.find(submit => submit.fromUser.id == submitId);
+            //const sbm = submits.find(submit => submit.fromUser.id == submitId);
+            const sbm = submits.find(submit => submit.fromUser.nickname == sender);
             if (sbm !== undefined) {
                 setSubmitNickname(sbm.fromUser.nickname.split("_")[0])
                 setState(sbm.state);
@@ -96,12 +104,15 @@ export default function CarPoolChat() {
                         message={"신청하시겠습니까?"}
                         ok={"신청"}
                         usage={"carpoolSubmit"}
-                        submitId={user.id}
-                        writerId={post.user.id}
+                        sid={user.id}
+                        rid={post.user.id}
+                        sender={user.nickname}
+                        receiver={post.user.nickname}
                         targetId={id} />}
         </Top>
         <Bottom>
-        <Chat />
+        {/* <Chat /> */}
+        <Whisper />
         </Bottom>
 
     </Wrapper>
@@ -109,10 +120,10 @@ export default function CarPoolChat() {
 }
 
 const Wrapper = styled.div`
-margin-top: 30px;
+margin-top: 20px;
 `
 const Top = styled.div`
-padding: 0 15px;
+padding: 10px 15px;
 padding-bottom: 10px;
 border-bottom: 1px solid var(--button-sub-color);
 margin-top: 60px;

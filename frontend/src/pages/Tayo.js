@@ -85,7 +85,7 @@ export function Tayo() {
             </TopWrapper>
 
             <POSTS>
-            {tayoByType.length > 0 && posts.map((post) => (
+            {tayoByType.length > 0 && tayoByType.map((post) => (
                 <TayoListItem key={post.tayo_id} {...post} />
             ))
             }

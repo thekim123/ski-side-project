@@ -27,6 +27,7 @@ export function ClubDetail() {
     const [isCap, setIsCap] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [enrollModalOpen, setEnrollModalOpen] = useState(false);
+    const [clubMemCnt, setClubMemCnt] = useState(0);
 
     const gotoEdit = e => {
         navigate(`/club/edit/${id}`);
@@ -42,6 +43,9 @@ export function ClubDetail() {
     }
     const closeEnrollModal = () => {
         setEnrollModalOpen(false);
+    }
+    const updateCnt = () => {
+        setClubMemCnt(clubMemCnt+1);
     }
 
     const cutText = (text, margin) => {
@@ -68,7 +72,6 @@ export function ClubDetail() {
     }
 
     const showMember = e => {
-        console.log(clubUsers);
         setModalOpen(true);
     }
 
@@ -76,11 +79,21 @@ export function ClubDetail() {
         setEnrollModalOpen(true);
     }
 
+    const userChat = () => {
+        navigate(`/club/chat/${club.clubNm}`);
+    }
+
     useEffect(() => { //새로 로그인 한 후 라든지.. 그럴때를 대비해 state.club이 null인 경우에만 dispatch 호출.
         dispatch(loadClubPosts(id));
         dispatch(getSingleClub(id));
         dispatch(getClubUser(id));
     }, [dispatch, id]);
+
+    useEffect(() => {
+        if (club) {
+            setClubMemCnt(club.memberCnt);
+        }
+    }, [club])
 
     useEffect(() => {
         console.log("clubUsers", clubUsers);
@@ -112,28 +125,33 @@ export function ClubDetail() {
         <InfoBox>
             <CntBox>
                 <SBsPeopleFill />
-                <Cnt>{club && club.memberCnt}명</Cnt>
+                <Cnt>{club && clubMemCnt}명</Cnt>
                 {isCap && <UserButton onClick={showMember}>회원 조회</UserButton>}
-                {club && club.openYn === 'N' && <UserButton onClick={showEnroll}>신청자 조회</UserButton>}
+                {isCap && club && club.openYn === 'N' && <UserButton onClick={showEnroll}>신청자 조회</UserButton>}
+                {!isCap && <UserButton onClick={userChat}>방장과 채팅하기</UserButton>}
             </CntBox>
 
         </InfoBox>
-        <ClubUserModal 
+        {club && <ClubUserModal 
             open={modalOpen}
             close={closeModal}  
             type="showUser"  
+            clubId={id}
+            clubNm={club.clubNm}
             userList={clubUsers
                         .filter(user => user.status !== 'WAITING')
                         .map(mem => mem.role === 'ADMIN' ? {...mem, order: 1} : {...mem, order: 3})}
-        />
-        <ClubUserModal 
+        />}
+        {club && <ClubUserModal 
             open={enrollModalOpen}
             close={closeEnrollModal}  
             type="showEnroll"  
             clubId={id}
+            clubNm={club.clubNm}
+            func={updateCnt}
             userList={clubUsers
                         .filter(user => user.status === 'WAITING')}
-        />
+        />}
         <TopLine> </TopLine>
 
         <NoticeBox>

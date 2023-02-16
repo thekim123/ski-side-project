@@ -107,3 +107,15 @@ export const asyncDeleteUser = createAsyncThunk(
         return resp.data;
     }
 )
+
+export const asyncIsDuplicated = createAsyncThunk(
+    'authSlice/asyncIsDuplicated',
+    async (nickname) => {
+        const resp = await Send({
+            url:`/user/nickname/${nickname}`,
+            method: 'get'
+        })
+        console.log("닉네임 중복 확인", resp);
+        return resp.data.data;
+    }
+)

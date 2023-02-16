@@ -76,8 +76,9 @@ export default function MyReceived() {
         setSubmitShow(newArr);
     }
 
-    const gotoChat = (id, submitId) => {
-        navigate(`/carpool/chat/${id}/carpool${id}submit${submitId}writer${user.id}/chat`)
+    const gotoChat = (id, senderName, senderId) => {
+        //navigate(`/carpool/chat/${id}/carpool${id}submit${submitId}writer${user.id}/chat`)
+        navigate(`/carpool/chat/${id}/${senderName}/${senderId}/${user.nickname}/${user.id}/chat`);
     }
 
     useEffect(() => {
@@ -125,7 +126,8 @@ export default function MyReceived() {
                                         <Button className='mine-c' onClick={() => denyUser(submit.fromUser.id, submit.toCarpool.id, idx)}>거절</Button>
                                     </ButtonWrapper> 
                                     : <InfoText>신청 {submit.state}</InfoText>}
-                                    <Button className='mine-ok' onClick={() => gotoChat(submit.toCarpool.id, submit.fromUser.id)}>채팅</Button>
+                                    {/* <Button className='mine-ok' onClick={() => gotoChat(submit.toCarpool.id, submit.fromUser.id)}>채팅</Button> */}
+                                    <Button className='mine-ok' onClick={() => gotoChat(submit.toCarpool.id, submit.fromUser.nickname, submit.fromUser.id)}>채팅</Button>
                                 </UserRow>)}</UserWrapper>}
                         </>}
                 </SubmitWrapper>
