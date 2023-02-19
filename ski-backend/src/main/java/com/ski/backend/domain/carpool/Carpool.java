@@ -21,7 +21,7 @@ public class Carpool {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonIgnoreProperties({"boards", "clubUsers", "carpools", "tayoUsers", "password"})
+    @JsonIgnoreProperties({"boards", "clubUsers", "carpools", "tayoUsers", "password", "bookmarks"})
     @JoinColumn(name = "userId")
     @ManyToOne
     private User user;
