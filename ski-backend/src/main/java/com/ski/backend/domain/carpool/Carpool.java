@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -39,6 +40,10 @@ public class Carpool {
     private String boarding;
 
     private String request;
+
+    @JsonIgnoreProperties({"fromUser", "toCarpool"})
+    @OneToMany(mappedBy = "toCarpool", cascade = CascadeType.ALL)
+    private List<Submit> submits;
 
     private LocalDateTime createDate;
 
