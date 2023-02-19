@@ -27,7 +27,7 @@ public class AuthService {
         user.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
         user.setGender(Gender.valueOf(dto.getGender()));
         user.setAge(dto.getAge());
-        user.setRoles(Role.ROLE_USER);
+        user.setRoles(Role.ROLE_GUEST);
         user.setNickname(dto.getNickname());
         userRepository.save(user);
         return new UserDto().toDto(user);

@@ -4,6 +4,7 @@ public enum Role {
     ROLE_USER("ROLE_USER"),
     ROLE_ADMIN("ROLE_ADMIN"),
     ROLE_MANAGER("ROLE_MANAGER"),
+    ROLE_GUEST("ROLE_GUEST"),
     ROLE_ANONYMOUS("ROLE_ANONYMOUS");
 
     String role;

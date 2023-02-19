@@ -1,7 +1,6 @@
 package com.ski.backend.config;
 
 import com.ski.backend.config.jwt.JwtAuthenticationFilter;
-//import com.project.ski.config.jwt.JwtAuthorizationFilter;
 import com.ski.backend.config.jwt.JwtAuthorizationFilter;
 import com.ski.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,10 +10,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -28,7 +25,6 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain configure(HttpSecurity http) throws Exception {
         return http
-                .addFilter(corsConfig.corsFilter())
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -37,9 +33,12 @@ public class SecurityConfig {
                 .apply(new MyCustomDsl())
                 .and()
                 .authorizeRequests(authorize -> authorize
-                        .antMatchers(HttpMethod.OPTIONS, "/**/*").permitAll()
-                        .antMatchers("/api/home"/*, "/api/club/**"*/)
-                        .access("hasRole('USER')")
+                        .antMatchers("/api/resort/**")
+                        .access("hasRole('ROLE_ADMIN')")
+                        .antMatchers("/api/board/**", "/api/club/**", "/api/carpool/**", "/api/chat/**", "/api/club/**", "/api/clubBoard/**", "/api/board/comment/**", "/api/submit/**", "/api/tayo/**")
+                        .access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                        .antMatchers("/api/bookmark/**")
+                        .access("hasRole('ROLE_USER') or hasRole('ROLE_GUEST') or hasRole('ROLE_ADMIN')")
                         .anyRequest().permitAll())
                 .build();
     }

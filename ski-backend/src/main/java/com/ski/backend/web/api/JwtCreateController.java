@@ -34,7 +34,7 @@ public class JwtCreateController {
             userRequest = User.builder()
                     .username(kakaoUser.getProvider() + "_" + kakaoUser.getProviderId())
                     .password(bCryptPasswordEncoder.encode("skiproject"))
-                    .roles(Role.ROLE_USER)
+                    .roles(Role.ROLE_GUEST)
                     .build();
             userEntity = userRepository.save(userRequest);
         }

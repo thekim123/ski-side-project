@@ -43,12 +43,9 @@ public class UserService {
         }
 
         userEntity.setAgreement(dto.getAgreement());
-        if(!dto.getAgreement()){
-            userRepository.delete(userEntity);
-            throw new CustomApiException("약관에 동의 하세요.");
+        if (!dto.getAgreement()) {
+            userEntity.setRoles(Role.ROLE_GUEST);
         }
-
-
     }
 
     @Transactional(readOnly = true)
