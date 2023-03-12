@@ -38,14 +38,15 @@ public class UserService {
 
         userEntity.setAge(dto.getAge());
         userEntity.setNickname(dto.getNickname());
-        if (dto.getRoles() != null) {
-            userEntity.setRoles(Role.valueOf(dto.getRoles()));
-        }
 
         userEntity.setAgreement(dto.getAgreement());
         if (!dto.getAgreement()) {
             userEntity.setRoles(Role.ROLE_GUEST);
+        } else {
+            userEntity.setRoles(Role.ROLE_USER);
         }
+        System.out.println(userEntity.getRoles());
+        System.out.println(userEntity.getAgreement());
     }
 
     @Transactional(readOnly = true)

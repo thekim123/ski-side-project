@@ -3,7 +3,6 @@ package com.ski.backend.web.api;
 
 import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.domain.board.Board;
-import com.ski.backend.domain.user.User;
 import com.ski.backend.service.BoardService;
 import com.ski.backend.service.LikesService;
 import com.ski.backend.web.dto.BoardDto;
@@ -65,10 +64,8 @@ public class BoardApiController {
     }
 
     @PostMapping("write")
-    public CmRespDto<?> write(@Valid @RequestBody BoardDto dto, BindingResult bindingResult, Authentication authentication) {
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        User user = principalDetails.getUser();
-        boardService.write(dto, user);
+    public CmRespDto<?> write(@Valid @RequestBody BoardDto.Save dto, BindingResult bindingResult, Authentication authentication) {
+        boardService.write(dto, authentication);
         return new CmRespDto<>(1, "글쓰기 완료", null);
     }
 
@@ -79,7 +76,7 @@ public class BoardApiController {
     }
 
     @PutMapping("/update/")
-    public CmRespDto<?> update(@Valid @RequestBody BoardDto dto,BindingResult bindingResult, Authentication authentication) {
+    public CmRespDto<?> update(@Valid @RequestBody BoardDto.Save dto, BindingResult bindingResult, Authentication authentication) {
         boardService.update(dto, authentication);
         return new CmRespDto<>(HttpStatus.OK.value(), "글 수정 완료", null);
     }

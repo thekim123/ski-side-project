@@ -10,10 +10,7 @@ import com.ski.backend.domain.carpool.Carpool;
 import com.ski.backend.domain.club.Reply;
 import com.ski.backend.domain.club.ClubUser;
 import com.ski.backend.domain.club.Gender;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

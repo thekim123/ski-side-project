@@ -49,12 +49,15 @@ public class SubmitService {
         submitRepository.mUnSubmit(fromUserId, toCarpoolId);
     }
 
+    // 테스트해야되는 메서드
     @Transactional
     public void admit(AdmitDto dto, Authentication authentication) {
 
         long carpoolId = dto.getToCarpoolId();
         Carpool carpoolEntity = carpoolRepository.findById(carpoolId).orElseThrow(() -> new IllegalArgumentException("카풀 게시글을 찾을 수 없습니다."));
-        carpoolEntity.setCurPassenger(carpoolEntity.getCurPassenger() + 1);
+
+        // 잘 되는지 테스트해야 돼요.
+        carpoolEntity.increaseCurPassenger();
         Submit submitEntity = submitRepository.findByFromUserIdAndToCarpoolId(dto.getAdmitUserId(), dto.getToCarpoolId());
 
         User principal = getPrincipal(authentication);

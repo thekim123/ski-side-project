@@ -2,20 +2,27 @@ package com.ski.backend.domain.carpool;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ski.backend.domain.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.ski.backend.web.dto.CarpoolRequestDto;
+import lombok.*;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
+/**
+ * Carpool entity
+ * curPassenger의 Default Value를
+ * 생성자에 만들어야 될지, 그냥 필드에 0을 때려박을지 고민중이에요.
+ * 일단은 withUserAndNegotiate 메서드 안에 넣겠습니다.
+ */
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Data
+@Getter
 public class Carpool {
 
     @Id
@@ -50,6 +57,23 @@ public class Carpool {
     @PrePersist
     public void createDate() {
         this.createDate = LocalDateTime.now();
+    }
+
+
+    public void setCurPassengerWithDefaultValue() {
+        this.curPassenger = 0;
+    }
+
+    public void increaseCurPassenger() {
+        this.curPassenger++;
+    }
+
+    /**
+     * user, negotiate 를 매핑
+     */
+    public void withUserAndNegotiate(User user, Negotiate negotiate) {
+        this.user = user;
+        this.negotiate = negotiate;
     }
 
 }

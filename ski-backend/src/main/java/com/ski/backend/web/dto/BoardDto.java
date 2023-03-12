@@ -1,37 +1,43 @@
 package com.ski.backend.web.dto;
 
-import com.ski.backend.domain.board.Board;
-import com.ski.backend.domain.resort.Resort;
-import com.ski.backend.domain.user.User;
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
+
+/**
+ * Save - insert, update 쿼리시 사용하는 dto
+ * Get - select 쿼리시 사용하는 dto
+ */
 @NoArgsConstructor
-@Data
+@Getter
+@Builder
 public class BoardDto {
 
-    private Long id;
-    @NotBlank
-    private String title;
+    @Getter
+    @NoArgsConstructor
+    public static class Save {
+        private Long id;
+        @NotBlank
+        private String title;
 
-    @NotBlank
-    private String content;
-    private String username;
-    private String nickname;
+        @NotBlank
+        private String content;
+        private UserDto userDto;
+        private String nickname;
 
-    @NotBlank
-    private String resortName;
-    private LocalDateTime createDate;
+        @NotBlank
+        private String resortName;
+        private LocalDateTime createDate;
+    }
 
-    public Board toEntity(User user, Resort resort) {
-        return Board.builder()
-                .user(user)
-                .resort(resort)
-                .content(content)
-                .title(title)
-                .build();
+    /**
+     * Get의 경우 아직 구현이 안됨
+     */
+    public static class Get {
+
     }
 }

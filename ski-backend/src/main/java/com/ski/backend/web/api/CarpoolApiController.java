@@ -25,7 +25,7 @@ public class CarpoolApiController {
     @PostMapping
     public CmRespDto<?> insert(
             @Valid
-            @RequestBody CarpoolRequestDto dto,
+            @RequestBody CarpoolRequestDto.Save dto,
             BindingResult bindingResult,
             Authentication authentication) {
         carpoolService.write(dto, authentication);
@@ -35,10 +35,9 @@ public class CarpoolApiController {
     @PutMapping("/update/{carpoolId}")
     public CmRespDto<?> update(
             @Valid
-            @RequestBody CarpoolRequestDto dto,
-            BindingResult bindingResult,
-            @PathVariable long carpoolId) {
-        carpoolService.update(dto, carpoolId);
+            @RequestBody CarpoolRequestDto.Save dto,
+            BindingResult bindingResult) {
+        carpoolService.update(dto);
         return new CmRespDto<>(1, "카풀 게시글 수정 성공", null);
     }
 
@@ -50,13 +49,13 @@ public class CarpoolApiController {
 
     @GetMapping
     public CmRespDto<?> getAll(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<Carpool> pages =  carpoolService.getAll(pageable);
+        Page<Carpool> pages = carpoolService.getAll(pageable);
         return new CmRespDto<>(1, "카풀 게시글 모두 불러오기 성공", pages);
     }
 
     @GetMapping("/{carpoolId}")
     public CmRespDto<?> getAll(@PathVariable long carpoolId) {
-        Carpool carpool =  carpoolService.detail(carpoolId);
+        Carpool carpool = carpoolService.detail(carpoolId);
         return new CmRespDto<>(1, "카풀 게시글 불러오기 성공", carpool);
     }
 }

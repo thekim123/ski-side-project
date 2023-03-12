@@ -7,12 +7,20 @@ import com.ski.backend.domain.user.User;
 import com.ski.backend.repository.CarpoolRepository;
 import com.ski.backend.repository.NegotiateRepository;
 import com.ski.backend.web.dto.CarpoolRequestDto;
+import com.ski.backend.web.dto.NegotiateDto;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
@@ -21,22 +29,27 @@ public class CarpoolService {
     private final CarpoolRepository carpoolRepository;
     private final NegotiateRepository negotiateRepository;
 
+    // 엄..... 이거 맞냐?
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Transactional
-    public void write(CarpoolRequestDto dto, Authentication authentication) {
+    public void write(CarpoolRequestDto.Save dto, Authentication authentication) {
+        ModelMapper mapper = new ModelMapper();
         User user = getPrincipal(authentication);
 
-        Negotiate negotiate = dto.getNegotiate();
+        TypeMap<NegotiateDto, Negotiate> negotiateTypeMap = mapper.createTypeMap(NegotiateDto.class, Negotiate.class);
+        typeMapWithNegotiate(negotiateTypeMap);
+        Negotiate negotiate = mapper.map(dto.getNegotiateDto(), Negotiate.class);
         Negotiate negotiateEntity = negotiateRepository.save(negotiate);
 
-        Carpool carpoolEntity = dto.toEntity();
-
-        carpoolEntity.setUser(user);
-        carpoolEntity.setNegotiate(negotiateEntity);
-        carpoolEntity.setCurPassenger(0);
-        carpoolEntity.setRequest(dto.getRequest());
+        TypeMap<CarpoolRequestDto.Save, Carpool> carpoolTypeMap = mapper.createTypeMap(CarpoolRequestDto.Save.class, Carpool.class);
+        typeMapWithCarpools(carpoolTypeMap);
+        Carpool carpoolEntity = mapper.map(dto, Carpool.class);
+        carpoolEntity.withUserAndNegotiate(user, negotiate);
+        carpoolEntity.setCurPassengerWithDefaultValue();
         carpoolRepository.save(carpoolEntity);
 
-        negotiateEntity.setCarpool(carpoolEntity);
     }
 
     @Transactional
@@ -46,25 +59,22 @@ public class CarpoolService {
     }
 
     @Transactional
-    public void update(CarpoolRequestDto dto, long carpoolId) {
-        Carpool carpoolEntity = carpoolRepository.findById(carpoolId).orElseThrow(() -> new IllegalArgumentException("카풀 글 수정 실패 : 게시글의 ID를 찾을 수 없습니다."));
-        Long negotiateId = carpoolEntity.getNegotiate().getId();
-        Negotiate negotiate = negotiateRepository.findById(negotiateId).orElseThrow(()-> new IllegalArgumentException("협상 아이디를 찾을 수 없습니다."));
+    public void update(CarpoolRequestDto.Save dto) {
+        Carpool carpoolEntity = entityManager.find(Carpool.class, dto.getId());
+        entityManager.persist(carpoolEntity);
+        Negotiate negotiateEntity = carpoolEntity.getNegotiate();
 
-        negotiate.setDestination(dto.getNegotiate().isDestination());
-        negotiate.setDeparture(dto.getNegotiate().isDeparture());
-        negotiate.setDepartTime(dto.getNegotiate().isDepartTime());
-        negotiate.setBoardingPlace(dto.getNegotiate().isBoardingPlace());
-        carpoolEntity.setNegotiate(negotiate);
+        ModelMapper mapper = new ModelMapper();
+        TypeMap<NegotiateDto, Negotiate> negotiateTypeMap = mapper.createTypeMap(NegotiateDto.class, Negotiate.class);
+        typeMapWithNegotiate(negotiateTypeMap);
+        mapper.map(dto.getNegotiateDto(), negotiateEntity);
 
-        carpoolEntity.setMemo(dto.getMemo());
-        carpoolEntity.setDepartTime(dto.getDepartTime());
-        carpoolEntity.setPassenger(dto.getPassenger());
-        carpoolEntity.setDestination(dto.getDestination());
-        carpoolEntity.setDeparture(dto.getDeparture());
-        carpoolEntity.setSmoker(dto.isSmoker());
-        carpoolEntity.setBoarding(dto.getBoarding());
-        carpoolEntity.setRequest(dto.getRequest());
+        ModelMapper mapper1 = new ModelMapper();
+        TypeMap<CarpoolRequestDto.Save, Carpool> carpoolTypeMap = mapper1.createTypeMap(CarpoolRequestDto.Save.class, Carpool.class);
+        typeMapWithCarpools(carpoolTypeMap);
+        mapper1.map(dto, carpoolEntity);
+        entityManager.merge(carpoolEntity);
+        entityManager.flush();
     }
 
     @Transactional(readOnly = true)
@@ -76,6 +86,57 @@ public class CarpoolService {
     public Carpool detail(long carpoolId) {
         return carpoolRepository.findById(carpoolId).orElseThrow(() -> new IllegalArgumentException("해당 카풀 글이 존재하지 않습니다."));
     }
+
+
+    /**
+     * 아래는 추출한 메서드
+     */
+
+    public void typeMapWithNegotiate(TypeMap<NegotiateDto, Negotiate> typeMap) {
+        typeMap.setProvider(request -> {
+            NegotiateDto source = (NegotiateDto) request.getSource();
+            return Negotiate.builder()
+                    .boardingPlace(source.isBoardingPlace())
+                    .destination(source.isDestination())
+                    .departTime(source.isDepartTime())
+                    .departure(source.isDeparture())
+                    .build();
+        });
+    }
+
+    public void typeMapWithCarpools(TypeMap<CarpoolRequestDto.Save, Carpool> typeMap) {
+        typeMap.setProvider(request -> {
+            CarpoolRequestDto.Save source = (CarpoolRequestDto.Save) request.getSource();
+            return Carpool.builder()
+                    .id(source.getId())
+                    .departure(source.getDeparture())
+                    .destination(source.getDestination())
+                    .boarding(source.getBoarding())
+                    .isSmoker(source.isSmoker())
+                    .passenger(source.getPassenger())
+                    .memo(source.getMemo())
+                    .request(source.getRequest())
+                    .negotiate(typeMapWithNegotiate().map(source.getNegotiateDto()))
+                    .departTime(LocalDateTime.parse(source.getDepartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                    .build();
+        });
+    }
+
+    public TypeMap<NegotiateDto, Negotiate> typeMapWithNegotiate() {
+        ModelMapper mapper = new ModelMapper();
+        TypeMap<NegotiateDto, Negotiate> typeMap = mapper.createTypeMap(NegotiateDto.class, Negotiate.class);
+        typeMap.setProvider(request -> {
+            NegotiateDto source = (NegotiateDto) request.getSource();
+            return Negotiate.builder()
+                    .boardingPlace(source.isBoardingPlace())
+                    .destination(source.isDestination())
+                    .departTime(source.isDepartTime())
+                    .departure(source.isDeparture())
+                    .build();
+        });
+        return typeMap;
+    }
+
 
     public User getPrincipal(Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();

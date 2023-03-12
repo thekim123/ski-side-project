@@ -33,8 +33,7 @@ public class BookmarkService {
 	public List<Bookmark> bookmarkList(Authentication authentication) {
 		PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
 		User userEntity = principalDetails.getUser();
-		List<Bookmark>bookmarks = bookmarkRepository.findByFromUser(userEntity);
-		return bookmarks;
+		return bookmarkRepository.findByFromUser(userEntity);
 	}
 
 }

@@ -4,16 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ski.backend.domain.resort.Resort;
 import com.ski.backend.domain.user.User;
 import com.ski.backend.web.dto.BoardDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+@Getter
 @Entity
 @Builder
 @NoArgsConstructor
@@ -33,7 +30,7 @@ public class Board {
     @ManyToOne
     private Resort resort;
 
-    @JsonIgnoreProperties({"boards", "password", "clubUsers","tayoUsers"})
+    @JsonIgnoreProperties({"boards", "password", "clubUsers", "tayoUsers"})
     @JoinColumn(name = "userId")
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
@@ -75,30 +72,38 @@ public class Board {
     }
 
 
-    public void changeData(BoardDto dto, Resort resort) {
-        this.setContent(dto.getContent());
-        this.setTitle(dto.getTitle());
-        this.setResort(resort);
+    public void changeData(BoardDto.Save dto, Resort resort) {
+        this.content = dto.getContent();
+        this.title = dto.getTitle();
+        this.resort = resort;
     }
 
+    // user 의 setter
+    public void withUserAndResort(User user, Resort resort) {
+        this.user = user;
+        this.resort = resort;
+    }
+
+
+    // 좋아요와 싫어요를 주입하는 비즈니스 로직
     public void loadLikesAndDislikes(long principalId) {
 
         long likeCount = this.getLikes().size();
         long dislikeCount = this.getDislikes().size();
 
-        this.setLikeCount(likeCount);
-        this.setDislikeCount(dislikeCount);
-        this.setTotalLikeCount(likeCount - dislikeCount);
+        this.likeCount = likeCount;
+        this.dislikeCount = dislikeCount;
+        this.totalLikeCount = likeCount - dislikeCount;
 
         this.getLikes().forEach((like) -> {
             if (like.getUser().getId() == principalId) {
-                this.setLikeState(true);
+                this.likeState = true;
             }
         });
 
         this.getDislikes().forEach(dislikes -> {
             if (dislikes.getUser().getId() == principalId) {
-                this.setDislikeState(true);
+                this.dislikeState = true;
             }
         });
     }
