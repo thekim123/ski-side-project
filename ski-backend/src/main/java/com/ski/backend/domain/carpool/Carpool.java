@@ -3,11 +3,16 @@ package com.ski.backend.domain.carpool;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ski.backend.domain.user.User;
 import com.ski.backend.web.dto.CarpoolRequestDto;
+import com.ski.backend.web.dto.NegotiateDto;
 import lombok.*;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
+import org.modelmapper.config.Configuration;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
@@ -76,4 +81,50 @@ public class Carpool {
         this.negotiate = negotiate;
     }
 
+    /**
+     * dto -> entity 매핑
+     */
+    public void mapEntityWhenUpdate(CarpoolRequestDto.Save dto) {
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration()
+                .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE)
+                .setFieldMatchingEnabled(true);
+        TypeMap<CarpoolRequestDto.Save, Carpool> carpoolTypeMap
+                = mapper.createTypeMap(CarpoolRequestDto.Save.class, Carpool.class);
+        typeMapWithCarpools(carpoolTypeMap);
+        mapper.map(dto, this);
+    }
+
+    public void typeMapWithCarpools(TypeMap<CarpoolRequestDto.Save, Carpool> typeMap) {
+        typeMap.setProvider(request -> {
+            CarpoolRequestDto.Save source = (CarpoolRequestDto.Save) request.getSource();
+            return Carpool.builder()
+                    .id(source.getId())
+                    .departure(source.getDeparture())
+                    .destination(source.getDestination())
+                    .boarding(source.getBoarding())
+                    .isSmoker(source.isSmoker())
+                    .passenger(source.getPassenger())
+                    .memo(source.getMemo())
+                    .request(source.getRequest())
+                    .negotiate(typeMapWithNegotiate().map(source.getNegotiateDto()))
+                    .departTime(LocalDateTime.parse(source.getDepartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                    .build();
+        });
+    }
+
+    public TypeMap<NegotiateDto, Negotiate> typeMapWithNegotiate() {
+        ModelMapper mapper = new ModelMapper();
+        TypeMap<NegotiateDto, Negotiate> typeMap = mapper.createTypeMap(NegotiateDto.class, Negotiate.class);
+        typeMap.setProvider(request -> {
+            NegotiateDto source = (NegotiateDto) request.getSource();
+            return Negotiate.builder()
+                    .boardingPlace(source.isBoardingPlace())
+                    .destination(source.isDestination())
+                    .departTime(source.isDepartTime())
+                    .departure(source.isDeparture())
+                    .build();
+        });
+        return typeMap;
+    }
 }

@@ -11,6 +11,7 @@ import com.ski.backend.web.dto.NegotiateDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
+import org.modelmapper.config.Configuration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -62,17 +63,17 @@ public class CarpoolService {
     public void update(CarpoolRequestDto.Save dto) {
         Carpool carpoolEntity = entityManager.find(Carpool.class, dto.getId());
         entityManager.persist(carpoolEntity);
+
         Negotiate negotiateEntity = carpoolEntity.getNegotiate();
+        negotiateEntity.mapEntityWhenUpdate(dto.getNegotiateDto());
 
-        ModelMapper mapper = new ModelMapper();
-        TypeMap<NegotiateDto, Negotiate> negotiateTypeMap = mapper.createTypeMap(NegotiateDto.class, Negotiate.class);
-        typeMapWithNegotiate(negotiateTypeMap);
-        mapper.map(dto.getNegotiateDto(), negotiateEntity);
+        carpoolEntity.mapEntityWhenUpdate(dto);
 
-        ModelMapper mapper1 = new ModelMapper();
-        TypeMap<CarpoolRequestDto.Save, Carpool> carpoolTypeMap = mapper1.createTypeMap(CarpoolRequestDto.Save.class, Carpool.class);
-        typeMapWithCarpools(carpoolTypeMap);
-        mapper1.map(dto, carpoolEntity);
+//        ModelMapper mapper = new ModelMapper();
+//        TypeMap<CarpoolRequestDto.Save, Carpool> carpoolTypeMap
+//                = mapper.createTypeMap(CarpoolRequestDto.Save.class, Carpool.class);
+//        typeMapWithCarpools(carpoolTypeMap);
+//        mapper.map(dto, carpoolEntity);
         entityManager.merge(carpoolEntity);
         entityManager.flush();
     }
