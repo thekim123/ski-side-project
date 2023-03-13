@@ -29,6 +29,9 @@ public class Negotiate {
     private boolean departTime;
     private boolean boardingPlace;
 
+    public void withCarpool(Carpool carpool) {
+        this.carpool = carpool;
+    }
 
     public void mapEntityWhenUpdate(NegotiateDto dto) {
         ModelMapper mapper = new ModelMapper();

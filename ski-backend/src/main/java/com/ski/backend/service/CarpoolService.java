@@ -36,20 +36,20 @@ public class CarpoolService {
 
     @Transactional
     public void write(CarpoolRequestDto.Save dto, Authentication authentication) {
-        ModelMapper mapper = new ModelMapper();
         User user = getPrincipal(authentication);
 
-        TypeMap<NegotiateDto, Negotiate> negotiateTypeMap = mapper.createTypeMap(NegotiateDto.class, Negotiate.class);
-        typeMapWithNegotiate(negotiateTypeMap);
-        Negotiate negotiate = mapper.map(dto.getNegotiateDto(), Negotiate.class);
-        Negotiate negotiateEntity = negotiateRepository.save(negotiate);
+        Negotiate negotiate = new Negotiate();
+        negotiate.mapEntityWhenUpdate(dto.getNegotiateDto());
 
-        TypeMap<CarpoolRequestDto.Save, Carpool> carpoolTypeMap = mapper.createTypeMap(CarpoolRequestDto.Save.class, Carpool.class);
-        typeMapWithCarpools(carpoolTypeMap);
-        Carpool carpoolEntity = mapper.map(dto, Carpool.class);
+        Carpool carpoolEntity = new Carpool();
+        carpoolEntity.mapEntityWhenUpdate(dto);
         carpoolEntity.withUserAndNegotiate(user, negotiate);
+        // 이거 바꿔야해
         carpoolEntity.setCurPassengerWithDefaultValue();
+
+        negotiate.withCarpool(carpoolEntity);
         carpoolRepository.save(carpoolEntity);
+        negotiateRepository.save(negotiate);
 
     }
 
@@ -62,18 +62,11 @@ public class CarpoolService {
     @Transactional
     public void update(CarpoolRequestDto.Save dto) {
         Carpool carpoolEntity = entityManager.find(Carpool.class, dto.getId());
-        entityManager.persist(carpoolEntity);
+        carpoolEntity.mapEntityWhenUpdate(dto);
 
         Negotiate negotiateEntity = carpoolEntity.getNegotiate();
         negotiateEntity.mapEntityWhenUpdate(dto.getNegotiateDto());
 
-        carpoolEntity.mapEntityWhenUpdate(dto);
-
-//        ModelMapper mapper = new ModelMapper();
-//        TypeMap<CarpoolRequestDto.Save, Carpool> carpoolTypeMap
-//                = mapper.createTypeMap(CarpoolRequestDto.Save.class, Carpool.class);
-//        typeMapWithCarpools(carpoolTypeMap);
-//        mapper.map(dto, carpoolEntity);
         entityManager.merge(carpoolEntity);
         entityManager.flush();
     }
@@ -92,52 +85,6 @@ public class CarpoolService {
     /**
      * 아래는 추출한 메서드
      */
-
-    public void typeMapWithNegotiate(TypeMap<NegotiateDto, Negotiate> typeMap) {
-        typeMap.setProvider(request -> {
-            NegotiateDto source = (NegotiateDto) request.getSource();
-            return Negotiate.builder()
-                    .boardingPlace(source.isBoardingPlace())
-                    .destination(source.isDestination())
-                    .departTime(source.isDepartTime())
-                    .departure(source.isDeparture())
-                    .build();
-        });
-    }
-
-    public void typeMapWithCarpools(TypeMap<CarpoolRequestDto.Save, Carpool> typeMap) {
-        typeMap.setProvider(request -> {
-            CarpoolRequestDto.Save source = (CarpoolRequestDto.Save) request.getSource();
-            return Carpool.builder()
-                    .id(source.getId())
-                    .departure(source.getDeparture())
-                    .destination(source.getDestination())
-                    .boarding(source.getBoarding())
-                    .isSmoker(source.isSmoker())
-                    .passenger(source.getPassenger())
-                    .memo(source.getMemo())
-                    .request(source.getRequest())
-                    .negotiate(typeMapWithNegotiate().map(source.getNegotiateDto()))
-                    .departTime(LocalDateTime.parse(source.getDepartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                    .build();
-        });
-    }
-
-    public TypeMap<NegotiateDto, Negotiate> typeMapWithNegotiate() {
-        ModelMapper mapper = new ModelMapper();
-        TypeMap<NegotiateDto, Negotiate> typeMap = mapper.createTypeMap(NegotiateDto.class, Negotiate.class);
-        typeMap.setProvider(request -> {
-            NegotiateDto source = (NegotiateDto) request.getSource();
-            return Negotiate.builder()
-                    .boardingPlace(source.isBoardingPlace())
-                    .destination(source.isDestination())
-                    .departTime(source.isDepartTime())
-                    .departure(source.isDeparture())
-                    .build();
-        });
-        return typeMap;
-    }
-
 
     public User getPrincipal(Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
