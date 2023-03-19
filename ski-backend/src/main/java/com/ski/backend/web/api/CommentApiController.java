@@ -26,8 +26,7 @@ public class CommentApiController {
             @RequestBody CommentDto dto,
             BindingResult bindingResult,
             Authentication authentication) {
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        User principal = principalDetails.getUser();
+        User principal = ((PrincipalDetails) authentication.getPrincipal()).getUser();
         commentService.write(principal, dto);
         return new CmRespDto<>(1, "댓글쓰기 완료", null);
     }
@@ -35,7 +34,7 @@ public class CommentApiController {
     @DeleteMapping("/delete/{commentId}")
     public CmRespDto<?> delete(@PathVariable long commentId, Authentication authentication) {
         commentService.delete(commentId, authentication);
-        return new CmRespDto<>(1, "댓글 삭제 완료",null);
+        return new CmRespDto<>(1, "댓글 삭제 완료", null);
     }
 
 }

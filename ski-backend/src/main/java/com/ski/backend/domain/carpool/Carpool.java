@@ -51,7 +51,8 @@ public class Carpool {
     private boolean isSmoker;
     private String boarding;
 
-    private String request;
+    @Enumerated(EnumType.STRING)
+    private RequestType request;
 
     @JsonIgnoreProperties({"fromUser", "toCarpool"})
     @OneToMany(mappedBy = "toCarpool", cascade = CascadeType.ALL)
@@ -106,7 +107,7 @@ public class Carpool {
                     .isSmoker(source.isSmoker())
                     .passenger(source.getPassenger())
                     .memo(source.getMemo())
-                    .request(source.getRequest())
+                    .request(RequestType.valueOf(source.getRequest()))
                     .negotiate(typeMapWithNegotiate().map(source.getNegotiateDto()))
                     .departTime(LocalDateTime.parse(source.getDepartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                     .build();

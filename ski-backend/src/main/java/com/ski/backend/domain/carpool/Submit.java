@@ -2,10 +2,7 @@ package com.ski.backend.domain.carpool;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ski.backend.domain.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Data
+@Getter
 @Table(
         uniqueConstraints = {
                 @UniqueConstraint(
@@ -39,7 +36,8 @@ public class Submit {
     @ManyToOne
     private Carpool toCarpool;
 
-    private String state;
+    @Enumerated(EnumType.STRING)
+    private SubmitState state;
     private LocalDateTime createDate;
 
     @PrePersist
@@ -47,4 +45,7 @@ public class Submit {
         this.createDate = LocalDateTime.now();
     }
 
+    public void setState(String state) {
+        this.state = SubmitState.valueOf(state);
+    }
 }

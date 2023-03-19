@@ -34,7 +34,7 @@ public class SubmitService {
 
     @Transactional
     public void submit(Authentication authentication, long toCarpoolId) {
-        Long fromUserId = getPrincipalId(authentication);
+        Long fromUserId = ((PrincipalDetails) authentication.getPrincipal()).getUser().getId();
 
         try {
             submitRepository.mSubmit(fromUserId, toCarpoolId);
@@ -45,7 +45,7 @@ public class SubmitService {
 
     @Transactional
     public void unSubmit(Authentication authentication, long toCarpoolId) {
-        Long fromUserId = getPrincipalId(authentication);
+        Long fromUserId = ((PrincipalDetails) authentication.getPrincipal()).getUser().getId();
         submitRepository.mUnSubmit(fromUserId, toCarpoolId);
     }
 
@@ -58,15 +58,16 @@ public class SubmitService {
 
         // 잘 되는지 테스트해야 돼요.
         carpoolEntity.increaseCurPassenger();
-        Submit submitEntity = submitRepository.findByFromUserIdAndToCarpoolId(dto.getAdmitUserId(), dto.getToCarpoolId());
+        Submit submitEntity = submitRepository.findByFromUserIdAndToCarpoolId(dto.getAdmitUserId(), dto.getToCarpoolId()).orElseThrow(() -> {
+            throw new CustomApiException("해당 카풀 신청 데이터를 찾을 수 없습니다.");
+        });
 
-        User principal = getPrincipal(authentication);
+        User principal = ((PrincipalDetails) authentication.getPrincipal()).getUser();
 
         Whisper whisperEntity = Whisper.builder()
                 .principal(principal)
                 .toUsername(carpoolEntity.getUser().getNickname())
                 .build();
-        whisperRepository.save(whisperEntity);
 
         Whisper writerWhisperEntity = Whisper.builder()
                 .principal(carpoolEntity.getUser())
@@ -83,22 +84,16 @@ public class SubmitService {
 
     @Transactional
     public void refuseAdmit(AdmitDto dto) {
-        Submit submitEntity = submitRepository.findByFromUserIdAndToCarpoolId(dto.getAdmitUserId(), dto.getToCarpoolId());
+        Submit submitEntity = submitRepository.findByFromUserIdAndToCarpoolId(dto.getAdmitUserId(), dto.getToCarpoolId()).orElseThrow(() -> {
+            throw new CustomApiException("해당 카풀 신청 데이터를 찾을 수 없습니다.");
+        });
         submitEntity.setState("거절");
     }
 
     @Transactional(readOnly = true)
     public List<Submit> getMySubmit(Authentication authentication) {
-        System.out.println(getPrincipalId(authentication));
-        return submitRepository.findByFromUserId(getPrincipalId(authentication));
+        Long userId = ((PrincipalDetails) authentication.getPrincipal()).getUser().getId();
+        return submitRepository.findByFromUserId(userId);
     }
 
-    public User getPrincipal(Authentication authentication) {
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        return principalDetails.getUser();
-    }
-
-    public Long getPrincipalId(Authentication authentication) {
-        return getPrincipal(authentication).getId();
-    }
 }

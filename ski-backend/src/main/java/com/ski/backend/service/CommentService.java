@@ -37,7 +37,7 @@ public class CommentService {
 
     @Transactional
     public void delete(long id, Authentication authentication) {
-        long principalId = getPrincipalId(authentication);
+        long principalId = ((PrincipalDetails) authentication.getPrincipal()).getUser().getId();
 
         Comment commentEntity = commentRepository.findById(id).orElseThrow(() -> {
             throw new CustomApiException("존재하지 않는 댓글입니다.");
@@ -52,12 +52,6 @@ public class CommentService {
 
     public boolean isMyComment(long commentUserId, long principalId) {
         return principalId == commentUserId;
-    }
-
-    public long getPrincipalId(Authentication authentication) {
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        long principalId = principalDetails.getUser().getId();
-        return principalId;
     }
 
 }

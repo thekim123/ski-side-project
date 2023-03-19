@@ -28,11 +28,9 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final ResortRepository resortRepository;
 
-    // Entity를 직접 반환하고 있어서 수정이 필요해요. - 모든 조회 매서드
-    // 그런데 아직 계층형 매핑이 익숙치 않아서 좀 더 숙달이 되면 진행해볼게요.
     @Transactional(readOnly = true)
     public Page<Board> getHomeBoard(Authentication authentication, Pageable pageable) {
-        long principalId = getPrincipalId(authentication);
+        long principalId = ((PrincipalDetails) authentication.getPrincipal()).getUser().getId();
         Page<Board> boards = boardRepository.homeBoard(principalId, pageable);
 
         boards.forEach((board) -> board.loadLikesAndDislikes(principalId));
@@ -41,13 +39,9 @@ public class BoardService {
 
     @Transactional
     public void write(BoardDto.Save dto, Authentication authentication) {
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        User user = principalDetails.getUser();
+        User user = ((PrincipalDetails) authentication.getPrincipal()).getUser();
         Resort resort = findResort(dto);
 
-        // ㅅㅂ;; 이정도면 그냥 세터 열고 싶다
-        // 메서드로 추출해야 될지...
-        // 추출해야겠구나!!
         ModelMapper modelMapper = new ModelMapper();
         TypeMap<BoardDto.Save, Board> typeMap = modelMapper.createTypeMap(BoardDto.Save.class, Board.class);
         typeMapWithBoard(dto, typeMap);
@@ -74,7 +68,7 @@ public class BoardService {
     @Transactional
     public void delete(long boardId, Authentication authentication) {
         Board boardEntity = findBoardEntityById(boardId);
-        long principalId = getPrincipalId(authentication);
+        long principalId = ((PrincipalDetails) authentication.getPrincipal()).getUser().getId();
 
         if (isMyBoard(boardEntity.getUser().getId(), principalId)) {
             throw new IllegalArgumentException("선생님의 글이 아니잖아요!!!!");
@@ -85,7 +79,7 @@ public class BoardService {
 
     @Transactional
     public void update(BoardDto.Save dto, Authentication authentication) {
-        long principalId = getPrincipalId(authentication);
+        long principalId = ((PrincipalDetails) authentication.getPrincipal()).getUser().getId();
         Board boardEntity = findBoardEntityById(dto.getId());
 
         if (isMyBoard(boardEntity.getUser().getId(), principalId)) {
@@ -101,15 +95,13 @@ public class BoardService {
     @Transactional(readOnly = true)
     public Page<Board> getAllBoardList(Pageable pageable, long principalId) {
         Page<Board> boards = boardRepository.findAll(pageable);
-
         boards.forEach((board) -> board.loadLikesAndDislikes(principalId));
-
         return boards;
     }
 
     @Transactional(readOnly = true)
     public Page<Board> getBoardByResort(String resortName, Pageable pageable, Authentication authentication) {
-        long principalId = getPrincipalId(authentication);
+        long principalId = ((PrincipalDetails) authentication.getPrincipal()).getUser().getId();
         ResortName name = ResortName.valueOf(resortName);
         Resort resort = resortRepository.findByResortName(name).orElseThrow(() -> {
             throw new CustomApiException("리조트를 찾을 수 없습니다.");
@@ -130,7 +122,7 @@ public class BoardService {
 
     @Transactional(readOnly = true)
     public Board getBoardDetail(long boardId, Authentication authentication) {
-        long principalId = getPrincipalId(authentication);
+        long principalId = ((PrincipalDetails) authentication.getPrincipal()).getUser().getId();
         Board boardEntity = findBoardEntityById(boardId);
         boardEntity.loadLikesAndDislikes(principalId);
         return boardEntity;
@@ -144,11 +136,6 @@ public class BoardService {
     public Board findBoardEntityById(long boardId) {
         return boardRepository.findById(boardId).orElseThrow(() ->
                 new IllegalArgumentException("게시글의 등록번호를 찾을 수 없습니다."));
-    }
-
-    public long getPrincipalId(Authentication authentication) {
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        return principalDetails.getUser().getId();
     }
 
     public boolean isMyBoard(long userId, long principalId) {

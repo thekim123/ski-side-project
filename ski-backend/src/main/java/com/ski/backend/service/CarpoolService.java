@@ -7,11 +7,7 @@ import com.ski.backend.domain.user.User;
 import com.ski.backend.repository.CarpoolRepository;
 import com.ski.backend.repository.NegotiateRepository;
 import com.ski.backend.web.dto.CarpoolRequestDto;
-import com.ski.backend.web.dto.NegotiateDto;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeMap;
-import org.modelmapper.config.Configuration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -20,8 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
@@ -36,8 +30,7 @@ public class CarpoolService {
 
     @Transactional
     public void write(CarpoolRequestDto.Save dto, Authentication authentication) {
-        User user = getPrincipal(authentication);
-
+        User user = ((PrincipalDetails) authentication.getPrincipal()).getUser();
         Negotiate negotiate = new Negotiate();
         negotiate.mapEntityWhenUpdate(dto.getNegotiateDto());
 
@@ -81,13 +74,4 @@ public class CarpoolService {
         return carpoolRepository.findById(carpoolId).orElseThrow(() -> new IllegalArgumentException("해당 카풀 글이 존재하지 않습니다."));
     }
 
-
-    /**
-     * 아래는 추출한 메서드
-     */
-
-    public User getPrincipal(Authentication authentication) {
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        return principalDetails.getUser();
-    }
 }

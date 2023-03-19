@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SubmitRepository extends JpaRepository<Submit, Long> {
 
@@ -19,6 +20,6 @@ public interface SubmitRepository extends JpaRepository<Submit, Long> {
     void mUnSubmit(@Param("fromUserId") long fromUserId, @Param("toCarpoolId") long toCarpoolId);
 
     List<Submit> findByToCarpoolId(long carpoolId);
-    Submit findByFromUserIdAndToCarpoolId(long fromUserId, long toCarpoolId);
+    Optional<Submit> findByFromUserIdAndToCarpoolId(long fromUserId, long toCarpoolId);
     List<Submit> findByFromUserId(long fromUserId);
 }

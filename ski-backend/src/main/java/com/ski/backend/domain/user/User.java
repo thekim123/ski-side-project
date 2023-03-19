@@ -100,6 +100,7 @@ public class User {
         this.createDate = LocalDateTime.now();
     }
 
+
 //    public void removeClub(ClubUser clubUser) {
 //        clubUsers.remove(clubUser);
 //    }

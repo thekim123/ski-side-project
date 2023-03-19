@@ -3,41 +3,38 @@ package com.ski.backend.domain.board;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ski.backend.domain.resort.Resort;
 import com.ski.backend.domain.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Builder
 @Entity
-@Data
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Bookmark", uniqueConstraints = { @UniqueConstraint(name = "subscribe", columnNames = { "fromUserId", "toResortId" }) })
+@Table(name = "Bookmark", uniqueConstraints = {@UniqueConstraint(name = "subscribe", columnNames = {"fromUserId", "toResortId"})})
 public class Bookmark {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@JsonIgnoreProperties({"boards", "password", "clubUsers", "carpools", "tayos","dislikes", "likes", "chatRooms", "whispers"})
-	@ManyToOne
-	@JoinColumn(name = "fromUserId")
-	private User fromUser;
+    @JsonIgnoreProperties({"boards", "password", "clubUsers", "carpools", "tayos", "dislikes", "likes", "chatRooms", "whispers"})
+    @ManyToOne
+    @JoinColumn(name = "fromUserId")
+    private User fromUser;
 
-	@JsonIgnoreProperties
-	@ManyToOne
-	@JoinColumn(name = "toResortId")
-	private Resort toResort;
+    @JsonIgnoreProperties
+    @ManyToOne
+    @JoinColumn(name = "toResortId")
+    private Resort toResort;
 
-	private LocalDateTime createDate;
+    private LocalDateTime createDate;
 
-	@PrePersist
-	public void createDate() {
-		this.createDate = LocalDateTime.now();
-	}
+    @PrePersist
+    public void createDate() {
+        this.createDate = LocalDateTime.now();
+    }
 
 }

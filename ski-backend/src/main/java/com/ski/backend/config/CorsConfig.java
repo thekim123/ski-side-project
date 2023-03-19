@@ -16,12 +16,12 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedHeaders(Arrays.asList("X-Requested-With","Origin","Content-Type","Accept","Authorization"));
+        config.setAllowedHeaders(Arrays.asList("X-Requested-With", "Origin", "Content-Type", "Accept", "Authorization"));
         config.setExposedHeaders(Arrays.asList("Access-Control-Allow-Headers", "Authorization, x-xsrf-token, Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, " +
                 "Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"));
         config.addAllowedOrigin("http://15.165.81.194:3000");
         config.addAllowedOrigin("http://localhost:3000");
-        config.addAllowedMethod("*");
+        config.addAllowedMethod("GET, POST, DELETE, PUT");
 
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
