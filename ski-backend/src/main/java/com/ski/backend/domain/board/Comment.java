@@ -1,6 +1,7 @@
 package com.ski.backend.domain.board;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ski.backend.domain.BaseTimeEntity;
 import com.ski.backend.domain.user.User;
 import lombok.*;
 
@@ -12,7 +13,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Comment {
+@EqualsAndHashCode(callSuper = true)
+@ToString
+public class Comment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,17 +26,9 @@ public class Comment {
     @ManyToOne
     private Board board;
 
-    @JsonIgnoreProperties({"boards","clubUsers", "carpools", "tayos", "password"})
+    @JsonIgnoreProperties({"boards", "clubUsers", "carpools", "tayos", "password"})
     @JoinColumn(name = "userId")
     @ManyToOne
     private User user;
-
-    private LocalDateTime createDate;
-    private LocalDateTime updateDate;
-
-    @PrePersist
-    public void createDate() {
-        this.createDate = LocalDateTime.now();
-    }
 
 }

@@ -1,12 +1,11 @@
 package com.ski.backend.domain.Tayo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ski.backend.domain.BaseTimeEntity;
 import com.ski.backend.domain.common.Status;
 import com.ski.backend.domain.user.User;
 import com.ski.backend.web.dto.TayoUserRespDto;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -17,7 +16,9 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class TayoUser {
+@EqualsAndHashCode(callSuper = true)
+@ToString
+public class TayoUser extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +39,7 @@ public class TayoUser {
     @Enumerated(STRING)
     private Role role;
 
-    public TayoUser(Tayo tayo,User user,  Status status,Role role) {
+    public TayoUser(Tayo tayo, User user, Status status, Role role) {
         this.tayo = tayo;
         this.user = user;
         this.status = status;

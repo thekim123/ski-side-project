@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ski.backend.domain.BaseTimeEntity;
 import com.ski.backend.domain.user.User;
 import com.ski.backend.web.dto.ClubBoardDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -23,6 +20,8 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@ToString
 public class ClubBoard extends BaseTimeEntity {
 
     // 동호회 게시판 식별값
@@ -31,13 +30,14 @@ public class ClubBoard extends BaseTimeEntity {
     @Column(name = "clubBoard_id")
     private Long id;
 
-    @JoinColumn(name="clubUser_id")
+    @JoinColumn(name = "clubUser_id")
     @ManyToOne(fetch = LAZY)
     private ClubUser clubUser;
 
     // 댓글
     @JsonIgnore
     @OneToMany(mappedBy = "clubBoard", cascade = ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Reply> replies = new ArrayList<>();
 
     // 제목
@@ -64,7 +64,7 @@ public class ClubBoard extends BaseTimeEntity {
     private String sortScope;
 
 
-    public void update( ClubBoardDto cb) {
+    public void update(ClubBoardDto cb) {
         this.title = cb.getTitle();
         this.content = cb.getContent();
         this.tempFlag = cb.getTempFlag();

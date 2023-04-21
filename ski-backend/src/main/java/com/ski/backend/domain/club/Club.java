@@ -22,6 +22,8 @@ import static javax.persistence.FetchType.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@ToString
 @Table(uniqueConstraints = {
         @UniqueConstraint(
                 name = "club",
@@ -39,18 +41,19 @@ public class Club extends BaseTimeEntity {
     @JoinColumn(name = "resort_id")
     private Resort resort;
 
-    @OneToMany(mappedBy = "club", cascade = ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "club", cascade = ALL, orphanRemoval = true)
+    @Builder.Default
     private List<ClubUser> clubUsers = new ArrayList<>();
 
 
     /**
-     *  동호회명
+     * 동호회명
      */
     @Column(length = 100, nullable = false)
     private String clubNm;
 
     /**
-     *  인원수
+     * 인원수
      */
     @Column(nullable = false)
     private int memberCnt;
@@ -85,7 +88,6 @@ public class Club extends BaseTimeEntity {
      */
     @Column(nullable = false)
     private String memo;
-
 
 
     public void update(ClubRequestDto dto, Resort resort) {

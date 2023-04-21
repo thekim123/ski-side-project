@@ -1,10 +1,8 @@
 package com.ski.backend.domain.resort;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.ski.backend.domain.BaseTimeEntity;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,7 +13,9 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Resort {
+@EqualsAndHashCode(callSuper = true)
+@ToString
+public class Resort extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,11 +25,4 @@ public class Resort {
     @Column(length = 100, unique = true)
     private ResortName resortName;
 
-    private LocalDateTime createDate;
-    private LocalDateTime updateDate;
-
-    @PrePersist
-    public void createDate() {
-        this.createDate = LocalDateTime.now();
-    }
 }

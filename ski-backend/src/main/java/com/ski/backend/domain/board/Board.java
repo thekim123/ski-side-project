@@ -1,6 +1,7 @@
 package com.ski.backend.domain.board;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ski.backend.domain.BaseTimeEntity;
 import com.ski.backend.domain.resort.Resort;
 import com.ski.backend.domain.user.User;
 import com.ski.backend.web.dto.BoardDto;
@@ -8,6 +9,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -15,7 +17,9 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Board {
+@EqualsAndHashCode(callSuper = true)
+@ToString
+public class Board extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,15 +41,18 @@ public class Board {
 
     @JsonIgnoreProperties("board")
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Comment> comment;
+    @Builder.Default
+    private List<Comment> comment = new ArrayList<>();
 
     @JsonIgnoreProperties({"board"})
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Likes> likes;
+    @Builder.Default
+    private List<Likes> likes = new ArrayList<>();
 
     @JsonIgnoreProperties({"board"})
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Dislikes> dislikes;
+    @Builder.Default
+    private List<Dislikes> dislikes = new ArrayList<>();
 
     @Transient
     private long totalLikeCount;
@@ -62,14 +69,7 @@ public class Board {
     @Transient
     private boolean dislikeState;
 
-    private LocalDateTime createDate;
-
     private long pageCount;
-
-    @PrePersist
-    public void createDate() {
-        this.createDate = LocalDateTime.now();
-    }
 
 
     public void changeData(BoardDto.Save dto, Resort resort) {

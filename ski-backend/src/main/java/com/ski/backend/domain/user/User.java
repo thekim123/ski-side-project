@@ -1,6 +1,7 @@
 package com.ski.backend.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ski.backend.domain.BaseTimeEntity;
 import com.ski.backend.domain.Tayo.TayoUser;
 import com.ski.backend.domain.board.Board;
 import com.ski.backend.domain.board.Bookmark;
@@ -23,7 +24,9 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+@EqualsAndHashCode(callSuper = true)
+@ToString
+public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,53 +56,53 @@ public class User {
 
     @JsonIgnoreProperties({"user"})
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Board> boards;
+    @Builder.Default
+    private List<Board> boards = new ArrayList<>();
 
     @JsonIgnoreProperties({"user", "board"})
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Likes> likes;
+    @Builder.Default
+    private List<Likes> likes = new ArrayList<>();
 
     @JsonIgnoreProperties({"user", "board"})
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Dislikes> dislikes;
+    @Builder.Default
+    private List<Dislikes> dislikes = new ArrayList<>();
 
     @JsonIgnoreProperties({"fromUser"})
     @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL)
-    private List<Bookmark> bookmarks;
+    @Builder.Default
+    private List<Bookmark> bookmarks = new ArrayList<>();
 
     @JsonIgnoreProperties({"user"})
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Whisper> whispers;
+    @Builder.Default
+    private List<Whisper> whispers = new ArrayList<>();
 
     @JsonIgnoreProperties({"user"})
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<ChatRoom> chatRooms;
+    @Builder.Default
+    private List<ChatRoom> chatRooms = new ArrayList<>();
 
     @JsonIgnoreProperties({"user"})
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<ClubUser> clubUsers = new ArrayList<>();
 
     @JsonIgnoreProperties({"user"})
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<Carpool> carpools;
 
     @JsonIgnoreProperties({"user"})
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<Reply> replies = new ArrayList<>();
 
     @JsonIgnoreProperties({"user", "tayo"})
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<TayoUser> tayoUsers = new ArrayList<>();
-
-    private LocalDateTime createDate;
-
-    private LocalDateTime updateDate;
-
-    @PrePersist
-    public void createDate() {
-        this.createDate = LocalDateTime.now();
-    }
-
 
 //    public void removeClub(ClubUser clubUser) {
 //        clubUsers.remove(clubUser);

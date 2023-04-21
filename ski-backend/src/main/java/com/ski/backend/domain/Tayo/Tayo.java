@@ -6,10 +6,7 @@ import com.ski.backend.domain.BaseTimeEntity;
 import com.ski.backend.domain.common.AgeGrp;
 import com.ski.backend.domain.resort.Resort;
 import com.ski.backend.web.dto.TayoRequestDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -27,6 +24,8 @@ import static javax.persistence.FetchType.LAZY;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@ToString
 public class Tayo extends BaseTimeEntity {
 
     @Id
@@ -41,6 +40,7 @@ public class Tayo extends BaseTimeEntity {
 
     @JsonIgnoreProperties({"tayo"})
     @OneToMany(mappedBy = "tayo", fetch = EAGER, orphanRemoval = true)
+    @Builder.Default
     private List<TayoUser> tayoUsers = new ArrayList<>();
 
     // 보드 / 스키

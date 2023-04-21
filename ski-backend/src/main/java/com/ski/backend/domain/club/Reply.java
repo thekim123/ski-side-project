@@ -5,10 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ski.backend.domain.BaseTimeEntity;
 import com.ski.backend.domain.user.User;
 import com.ski.backend.web.dto.ReplyDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -19,7 +16,8 @@ import static javax.persistence.FetchType.LAZY;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
+@EqualsAndHashCode(callSuper = true)
+@ToString
 public class Reply extends BaseTimeEntity {
 
     // 댓글 식별값

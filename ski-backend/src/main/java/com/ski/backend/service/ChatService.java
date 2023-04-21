@@ -32,19 +32,19 @@ public class ChatService {
 
     @Transactional(readOnly = true)
     public List<Whisper> getWhispers(Authentication authentication) {
-        User user = getPrincipal(authentication);
+        User user = ((PrincipalDetails) authentication.getPrincipal()).getUser();
         return whisperRepository.findByPrincipal(user);
     }
 
     @Transactional(readOnly = true)
     public List<ChatRoom> getChatRoom(Authentication authentication) {
-        User user = getPrincipal(authentication);
+        User user = ((PrincipalDetails) authentication.getPrincipal()).getUser();
         return chatRoomRepository.findByUser(user);
     }
 
     @Transactional
     public void deleteWhisper(Authentication authentication, Long whisperId) {
-        User user = getPrincipal(authentication);
+        User user = ((PrincipalDetails) authentication.getPrincipal()).getUser();
 
         Whisper whisper = whisperRepository.findById(whisperId).orElseThrow(() -> {
             throw new CustomApiException("해당 카풀 채팅 링크를 찾을 수 없습니다.");
@@ -63,15 +63,15 @@ public class ChatService {
 
     @Transactional
     public void deleteChatRoomWhenLeave(Long userId, long clubId) {
-        Club club = clubRepository.findById(clubId).orElseThrow(()->{
+        Club club = clubRepository.findById(clubId).orElseThrow(() -> {
             throw new CustomApiException("동호회를 찾을 수 없습니다.");
         });
 
-        User user = userRepository.findById(userId).orElseThrow(()->{
+        User user = userRepository.findById(userId).orElseThrow(() -> {
             throw new CustomApiException("해당 유저를 찾을 수 없습니다.");
         });
 
-        ChatRoom room = chatRoomRepository.findByUserAndClub(user, club).orElseThrow(()->{
+        ChatRoom room = chatRoomRepository.findByUserAndClub(user, club).orElseThrow(() -> {
             throw new CustomApiException("채팅방이 존재하지 않습니다.");
         });
 
@@ -80,22 +80,17 @@ public class ChatService {
 
     @Transactional
     public void deleteChatRoom(Authentication authentication, Long chatRoomId) {
-        User user = getPrincipal(authentication);
+        User user = ((PrincipalDetails) authentication.getPrincipal()).getUser();
 
         String fakeNickname = user.getNickname().split("_")[0];
-        String msg = fakeNickname+"님이 퇴장하셨습니다.";
+        String msg = fakeNickname + "님이 퇴장하셨습니다.";
 
-        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow(()->{
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow(() -> {
             throw new CustomApiException("채팅방이 존재하지 않습니다.");
         });
 
         sendSystemMessage(user.getUsername(), null, msg, chatRoom.getRoomName());
         chatRoomRepository.deleteById(chatRoomId);
-    }
-
-    public User getPrincipal(Authentication authentication) {
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        return principalDetails.getUser();
     }
 
     // 채팅방 퇴장 알림 메세지를 채팅방에 전송합니다.
@@ -127,7 +122,7 @@ public class ChatService {
 
     @Transactional
     public void deleteAllChatRoomWhenDeleteClub(long clubId) {
-        Club club = clubRepository.findById(clubId).orElseThrow(()->{
+        Club club = clubRepository.findById(clubId).orElseThrow(() -> {
             throw new CustomApiException("클럽의 고유 번호를 찾을 수가 없습니다. - 존재하지 않는 클럽입니다.");
         });
 

@@ -1,6 +1,7 @@
 package com.ski.backend.domain.board;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ski.backend.domain.BaseTimeEntity;
 import com.ski.backend.domain.resort.Resort;
 import com.ski.backend.domain.user.User;
 import lombok.*;
@@ -14,7 +15,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "Bookmark", uniqueConstraints = {@UniqueConstraint(name = "subscribe", columnNames = {"fromUserId", "toResortId"})})
-public class Bookmark {
+@EqualsAndHashCode(callSuper = true)
+@ToString
+public class Bookmark extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,12 +32,5 @@ public class Bookmark {
     @ManyToOne
     @JoinColumn(name = "toResortId")
     private Resort toResort;
-
-    private LocalDateTime createDate;
-
-    @PrePersist
-    public void createDate() {
-        this.createDate = LocalDateTime.now();
-    }
 
 }

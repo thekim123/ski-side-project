@@ -26,41 +26,41 @@ public class ClubBoardApiController {
 
     // 게시판 생성
     @PostMapping
-    public CmRespDto<ClubBoardDto> create(@Valid @RequestBody ClubBoardDto dto, BindingResult bindingResult, Authentication auth) {
+    public CmRespDto<?> create(@Valid @RequestBody ClubBoardDto dto, BindingResult bindingResult, Authentication auth) {
         PrincipalDetails principalDetails = (PrincipalDetails) auth.getPrincipal();
         User user = principalDetails.getUser();
-        ClubBoardDto clubBoard = clubBoardService.createClubBoard(dto, user);
-        return new CmRespDto<>(1, "클럽게시판 생성 완료", clubBoard);
+        clubBoardService.createClubBoard(dto, user);
+        return new CmRespDto<>(1, "클럽게시판 생성 완료", null);
     }
 
     @GetMapping("/detail/{clubBoardId}")
-    public CmRespDto<Page<ClubBoardDto>> getClubBoard(@PageableDefault(sort = "id", direction = DESC) Pageable pageable, @PathVariable long clubBoardId) {
+    public CmRespDto<?> getClubBoard(@PageableDefault(sort = "id", direction = DESC) Pageable pageable, @PathVariable long clubBoardId) {
         Page<ClubBoardDto> clubBoard = clubBoardService.getClubBoard(pageable, clubBoardId);
         return new CmRespDto<>(1, "클럽게시판 조회 완료", clubBoard);
     }
 
     @GetMapping("/{clubId}")
-    public CmRespDto<Page<ClubBoardDto>> getAllClubBoard(@PageableDefault(sort = "id", direction = DESC) Pageable pageable, @PathVariable long clubId) {
-        Page<ClubBoardDto> clubBoardDtos = clubBoardService.getAllClubBoard(pageable, clubId);
-        return new CmRespDto<>(1, "클럽게시판 전체조회 완료", clubBoardDtos);
+    public CmRespDto<?> getAllClubBoard(@PageableDefault(sort = "id", direction = DESC) Pageable pageable, @PathVariable long clubId) {
+        Page<ClubBoardDto> clubBoardDtoList = clubBoardService.getAllClubBoard(pageable, clubId);
+        return new CmRespDto<>(1, "클럽게시판 전체조회 완료", clubBoardDtoList);
     }
 
     @PutMapping("/update/{clubBoardId}")
-    public CmRespDto<ClubBoardDto> updateClubBoard(@PathVariable long clubBoardId, @Valid @RequestBody ClubBoardDto dto, BindingResult bindingResult, Authentication auth) {
+    public CmRespDto<?> updateClubBoard(@PathVariable long clubBoardId, @Valid @RequestBody ClubBoardDto dto, BindingResult bindingResult, Authentication auth) {
         clubBoardService.update(clubBoardId, dto, auth);
         return new CmRespDto<>(1, "클럽게시판 수정완료", null);
     }
 
     @DeleteMapping("/delete/{clubBoardId}")
-    public CmRespDto<ClubBoardDto> deleteClubBoard(@PathVariable long clubBoardId, Authentication auth) {
+    public CmRespDto<?> deleteClubBoard(@PathVariable long clubBoardId, Authentication auth) {
         clubBoardService.delete(clubBoardId, auth);
         return new CmRespDto<>(1, "클럽게시판 삭제완료", null);
     }
 
     // 관리자가 - 회원->매니저 권한 주기
     @PutMapping("/updateRole/{clubBoardId}/{userId}/{roleYn}")
-    public CmRespDto updateRole(@PathVariable long clubBoardId, @PathVariable long userId, Authentication auth, @PathVariable boolean roleYn) {
-        return clubBoardService.updateRole(clubBoardId, userId, auth, roleYn);
-
+    public CmRespDto<?> updateRole(@PathVariable long clubBoardId, @PathVariable long userId, Authentication auth, @PathVariable boolean roleYn) {
+        String updateResult = clubBoardService.updateRole(clubBoardId, userId, auth, roleYn);
+        return new CmRespDto<>(1, updateResult, null);
     }
 }

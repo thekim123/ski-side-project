@@ -15,10 +15,12 @@ import com.ski.backend.web.dto.CmRespDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,9 +46,13 @@ public class ClubService {
     @Transactional(readOnly = true)
     public Page<ClubResponseDto> clubList(Pageable pageable) {
         Page<Club> clubPage = clubRepository.findAll(pageable);
-        Page<ClubResponseDto> dto = clubPage.map(e -> new ClubResponseDto(e.getId(), e.getMemberCnt(), e.getClubNm(), e.getResort().getId(), e.getOpenYn()));
-        return dto;
-
+        return clubPage.map(e -> ClubResponseDto.builder()
+                .id(e.getId())
+                .memberCnt(e.getMemberCnt())
+                .clubNm(e.getClubNm())
+                .resortId(e.getResort().getId())
+                .openYn(e.getOpenYn())
+                .build());
     }
 
     // 동호회별 유저목록 조회
@@ -59,16 +65,19 @@ public class ClubService {
     @Transactional(readOnly = true)
     public Page<ClubResponseDto> getClubListByUser(Pageable pageable, Long userId) {
         Page<ClubUser> clubData = clubUserRepository.findByUser_Id(pageable, userId);
-        Page<ClubResponseDto> result = clubData.map(e -> new ClubResponseDto(e.getId(), e.getClub().getClubNm(), e.getClub().getMemo(), e.getClub().getOpenYn(), e.getClub().getMemberCnt()));
-
-        return result;
+        return clubData.map(e -> ClubResponseDto.builder()
+                .id(e.getId())
+                .clubNm(e.getClub().getClubNm())
+                .openYn(e.getClub().getOpenYn())
+                .memberCnt(e.getClub().getMemberCnt())
+                .memo(e.getClub().getMemo())
+                .build());
     }
 
 
     // 동호회 생성
     @Transactional
     public void create(ClubRequestDto dto, User user) {
-
         User findUser = userRepository.findById(user.getId()).orElseThrow(() -> new CustomApiException("사용자를 찾지 못했습니다."));
         Resort resort = resortRepository.findById(dto.getResortId()).orElseThrow(() -> new CustomApiException("리조트를 찾지 못했습니다."));
         Club club = dto.toEntity(user, resort);
@@ -106,8 +115,8 @@ public class ClubService {
 
 
     // 동호회 탈퇴
-    public String deleteMember(long userId, long clubId) {
-        ClubUser clubUser = clubUserRepository.findByUserIdAndClubId(userId, clubId, Status.ADMIT).orElseThrow(() -> new CustomApiException("동호회 탈퇴 실패했습니다."));
+    public void deleteMember(long userId, long clubId) {
+        ClubUser clubUser = clubUserRepository.findByUserIdAndClubIdAndStatus(userId, clubId, Status.ADMIT).orElseThrow(() -> new EntityNotFoundException("동호회 탈퇴 실패했습니다."));
 
         /*
             채팅방 나가기를 위한 채팅방 이름 문자열 만들기
@@ -127,7 +136,6 @@ public class ClubService {
             throw new CustomApiException("관리자는 방을 탈퇴할 수 없습니다.");
         }
 
-        return chatRoomName;
     }
 
     // 동호회 가입 신청
@@ -138,14 +146,16 @@ public class ClubService {
         if (clubUser.size() > 0) {
             throw new CustomApiException("이미 가입신청한 사용자입니다");
         }
-        Club club = clubRepository.findById(clubId).get();
+        Club club = clubRepository.findById(clubId).orElseThrow(() -> {
+            throw new EntityNotFoundException("해당 클럽이 존재하지 않습니다.");
+        });
 
         ClubUser cu = new ClubUser(club, user);
         if (cu.getStatus().equals(Status.ADMIT)) {
             club.addMember();
         }
 
-        if(club.getOpenYn().equals("Y")){
+        if (club.getOpenYn().equals("Y")) {
             insertChatrooms(club, cu);
         }
         clubUserRepository.save(cu);
@@ -154,67 +164,59 @@ public class ClubService {
     // 동호회 가입 대기자 리스트 확인
     @Transactional(readOnly = true)
     public List<ClubUserRespDto> getClubWaitingList(long clubId) {
-
         List<ClubUser> result = clubUserRepository.findByClubIdAndStatus(clubId, Status.WAITING);
-        if (result.size() < 0) {
-            //throw new CustomApiException("대기자가 없습니다.");
-        }
-        List<ClubUserRespDto> waitingList = result.stream().map(e -> new ClubUserRespDto(e.getUser().getUsername(), e.getStatus(), e.getRole())).collect(Collectors.toList());
-        return waitingList;
+        return result.stream().map(e -> new ClubUserRespDto(e.getUser().getUsername(), e.getStatus(), e.getRole())).collect(Collectors.toList());
     }
 
     // 가입 대기자 승인 / 거절
     @Transactional
-    public CmRespDto updateJoiningStatus(long clubId, long userId, Authentication auth, boolean admitYn) {
+    public String updateJoiningStatus(long clubId, long userId, Authentication auth, boolean admitYn) {
 
-        Club club = clubRepository.findById(clubId).orElseThrow(() -> new CustomApiException("동호회를 찾지 못했습니다."));
-        User user = userRepository.findById(userId).orElseThrow(() -> new CustomApiException("사용자를 찾을 수 없습니다"));
+        Club club = clubRepository.findById(clubId).orElseThrow(() -> new EntityNotFoundException("동호회를 찾지 못했습니다."));
 
         List<ClubUser> cu = clubUserRepository.findByClubIdAndStatus(clubId, Status.WAITING);
         if (cu.size() == 0) {
             throw new CustomApiException("대기자가 없습니다");
         }
         validateClubId(clubId, auth);
+
+        String result = "아무일도 일어나지 않았습니다.";
         for (ClubUser clubUser : cu) {
             if (clubUser.getUser().getId() == userId) {
                 if (admitYn) {
                     clubUser.update();
                     club.addMember();
-                    
-                    // 클럽 가입 처리시 관리자와 신규 가입자 본인 채팅방 다중 insert
-                    List<ChatRoom> chatrooms = insertChatrooms(club, clubUser);
-                    chatRoomRepository.saveAll(chatrooms);
 
-                    return new CmRespDto<>(1, "가입 승인 완료", null);
+                    // 클럽 가입 처리시 관리자와 신규 가입자 본인 채팅방 다중 insert
+                    List<ChatRoom> chatroomList = insertChatrooms(club, clubUser);
+                    chatRoomRepository.saveAll(chatroomList);
+                    return "가입 승인 완료";
                 } else {
                     clubUser.decline();
-                    return new CmRespDto<>(1, "가입 거절 완료", null);
+                    return "가입 거절 완료";
                 }
             }
         }
-        throw new IllegalArgumentException();
+        return result;
     }
 
     // 나의 신청 내역
-
     public List<ClubUserRespDto> requestList(Authentication auth) {
         PrincipalDetails pd = (PrincipalDetails) auth.getPrincipal();
 
-        List<ClubUser> result = clubUserRepository.findByIdUserId(pd.getUser().getId());
+        List<ClubUser> result = clubUserRepository.findByUserId(pd.getUser().getId());
         if (result.size() == 0) {
             throw new CustomApiException("신청 내역이 없습니다.");
         }
-        List<ClubUserRespDto> requestLists = result.stream().map(e -> new ClubUserRespDto(e.getUser().getUsername(), e.getStatus(), e.getRole())).collect(Collectors.toList());
 
-        return requestLists;
+        return result.stream().map(e -> new ClubUserRespDto(e.getUser().getUsername(), e.getStatus(), e.getRole())).collect(Collectors.toList());
     }
 
     public void validateClubId(long clubId, Authentication auth) {
         // 클럽아이디와 clubUserId에 등록된 클럽아이디와 role이관리자인게 일치해야함
         PrincipalDetails pd = (PrincipalDetails) auth.getPrincipal();
-        ClubUser cu = clubUserRepository.findByClubId(clubId, pd.getUser().getId(), ADMIN).orElseThrow(() -> new CustomApiException("관리자만 동호회를 수정 / 삭제할 수 있습니다."));
-        if (cu.getClub().getId() != clubId) throw new CustomApiException("관리자만 동호회를 수정 / 삭제할 수 있습니다");
-
+        ClubUser cu = clubUserRepository.findClubUserByClubId(clubId, pd.getUser().getId(), ADMIN).orElseThrow(() -> new AccessDeniedException("관리자만 동호회를 수정 / 삭제할 수 있습니다."));
+        if (cu.getClub().getId() != clubId) throw new AccessDeniedException("관리자만 동호회를 수정 / 삭제할 수 있습니다");
     }
 
     // 동호회 상세페이지

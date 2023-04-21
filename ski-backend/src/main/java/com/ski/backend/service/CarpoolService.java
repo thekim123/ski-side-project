@@ -24,23 +24,23 @@ public class CarpoolService {
     private final CarpoolRepository carpoolRepository;
     private final NegotiateRepository negotiateRepository;
 
-    // 엄..... 이거 맞냐?
     @PersistenceContext
     private EntityManager entityManager;
 
+    // 카풀 전체 수정해야함.
     @Transactional
     public void write(CarpoolRequestDto.Save dto, Authentication authentication) {
         User user = ((PrincipalDetails) authentication.getPrincipal()).getUser();
         Negotiate negotiate = new Negotiate();
-        negotiate.mapEntityWhenUpdate(dto.getNegotiateDto());
+//        negotiate.mapEntityWhenUpdate(dto.getNegotiateDto());
 
         Carpool carpoolEntity = new Carpool();
-        carpoolEntity.mapEntityWhenUpdate(dto);
+//        carpoolEntity.mapEntityWhenUpdate(dto);
         carpoolEntity.withUserAndNegotiate(user, negotiate);
         // 이거 바꿔야해
         carpoolEntity.setCurPassengerWithDefaultValue();
 
-        negotiate.withCarpool(carpoolEntity);
+//        negotiate.withCarpool(carpoolEntity);
         carpoolRepository.save(carpoolEntity);
         negotiateRepository.save(negotiate);
 
@@ -55,10 +55,10 @@ public class CarpoolService {
     @Transactional
     public void update(CarpoolRequestDto.Save dto) {
         Carpool carpoolEntity = entityManager.find(Carpool.class, dto.getId());
-        carpoolEntity.mapEntityWhenUpdate(dto);
+//        carpoolEntity.mapEntityWhenUpdate(dto);
 
         Negotiate negotiateEntity = carpoolEntity.getNegotiate();
-        negotiateEntity.mapEntityWhenUpdate(dto.getNegotiateDto());
+//        negotiateEntity.mapEntityWhenUpdate(dto.getNegotiateDto());
 
         entityManager.merge(carpoolEntity);
         entityManager.flush();

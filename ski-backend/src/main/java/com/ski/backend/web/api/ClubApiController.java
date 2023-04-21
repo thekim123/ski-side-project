@@ -29,35 +29,30 @@ public class ClubApiController {
 
     // 동호회 첫화면 조회
     @GetMapping
-    public CmRespDto<Page<ClubResponseDto>> clubList(Pageable pageable) {
+    public CmRespDto<?> clubList(Pageable pageable) {
         Page<ClubResponseDto> clubPage = clubService.clubList(pageable);
         return new CmRespDto<>(1, "동호회 리스트 조회 완료", clubPage);
     }
 
     // 동호회별 유저목록 조회
     @GetMapping("/{clubId}/user")
-    public CmRespDto<Page<ClubUserRespDto>> getUserList(@PageableDefault(sort = "id", direction = DESC) Pageable pageable, @PathVariable Long clubId) {
-
+    public CmRespDto<?> getUserList(@PageableDefault(sort = "id", direction = DESC) Pageable pageable, @PathVariable Long clubId) {
         Page<ClubUserRespDto> userClubList = clubService.getUserListByClub(pageable, clubId);
         return new CmRespDto<>(1, "동호회별 유저 리스트 조회 완료", userClubList);
     }
 
     // 유저별 동호회 목록 조회
     @GetMapping("/{userId}/club")
-    public CmRespDto<Page<ClubResponseDto>> getClubList(@PageableDefault(sort = "id", direction = DESC) Pageable pageable, @PathVariable Long userId) {
-
+    public CmRespDto<?> getClubList(@PageableDefault(sort = "id", direction = DESC) Pageable pageable, @PathVariable Long userId) {
         Page<ClubResponseDto> clubListByUser = clubService.getClubListByUser(pageable, userId);
         return new CmRespDto<>(1, "유저별 동호회 목록 조회 완료", clubListByUser);
     }
 
     // 동호회 생성
     @PostMapping
-    public CmRespDto<ClubRequestDto> create(@RequestBody ClubRequestDto dto, Authentication auth) {
-        PrincipalDetails principalDetails = (PrincipalDetails) auth.getPrincipal();
-        User user = principalDetails.getUser();
-
+    public CmRespDto<?> create(@RequestBody ClubRequestDto dto, Authentication auth) {
+        User user = ((PrincipalDetails) auth.getPrincipal()).getUser();
         clubService.create(dto, user);
-
         return new CmRespDto<>(1, "동호회 생성 완료", null);
     }
 
@@ -102,13 +97,15 @@ public class ClubApiController {
 
     // 가입 대기자 승인 거절
     @PutMapping("/joining/{clubId}/{userId}/{admitYn}")
-    public CmRespDto statusAdmit(@PathVariable long clubId, @PathVariable long userId, Authentication auth, @PathVariable boolean admitYn) {
-        return clubService.updateJoiningStatus(clubId, userId, auth, admitYn);
+    public CmRespDto<?> statusAdmit(@PathVariable long clubId, @PathVariable long userId, Authentication auth, @PathVariable boolean admitYn) {
+        String updateResult = clubService.updateJoiningStatus(clubId, userId, auth, admitYn);
+        return new CmRespDto<>(1, updateResult, null);
     }
 
     // 나의 신청 내역 조회
+    // 주소를 수정해야할듯합니다
     @GetMapping("/{userId}/requestList")
-    public CmRespDto<List<ClubUserRespDto>> getRequestList(Authentication auth) {
+    public CmRespDto<?> getRequestList(Authentication auth, @PathVariable String userId) {
         List<ClubUserRespDto> requestList = clubService.requestList(auth);
         return new CmRespDto<>(1, "나의 신청내역 조회", requestList);
     }
@@ -116,7 +113,7 @@ public class ClubApiController {
 
     // 동호회 상세페이지 조회
     @GetMapping("/detail/{clubId}")
-    public CmRespDto getClubDetail(@PathVariable long clubId) {
+    public CmRespDto<?> getClubDetail(@PathVariable long clubId) {
         Optional<ClubResponseDto> clubDetail = clubService.clubDetail(clubId);
         return new CmRespDto<>(1, "동호회 상세페이지 조회", clubDetail);
     }

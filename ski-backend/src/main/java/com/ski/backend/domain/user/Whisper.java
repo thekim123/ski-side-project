@@ -1,10 +1,8 @@
 package com.ski.backend.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.ski.backend.domain.BaseTimeEntity;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -13,12 +11,14 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Data
 @Builder
-public class Whisper {
+@EqualsAndHashCode(callSuper = true)
+@ToString
+public class Whisper extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonIncludeProperties({"username", "id","carpools"})
+    @JsonIncludeProperties({"username", "id", "carpools"})
     @ManyToOne
     private User principal;
 

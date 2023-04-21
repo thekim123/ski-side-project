@@ -4,6 +4,8 @@ import com.ski.backend.domain.common.AgeGrp;
 import com.ski.backend.domain.club.Club;
 import com.ski.backend.domain.club.ClubUser;
 import com.ski.backend.domain.club.Gender;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +14,8 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ClubResponseDto {
 
 
@@ -50,21 +54,8 @@ public class ClubResponseDto {
 
     private List<ClubUser> clubUsers;
 
-    public ClubResponseDto(long clubId, int memberCnt, String clubNm, long resortName, String openYn) {
-        this.id = clubId;
-        this.memberCnt = memberCnt;
-        this.clubNm = clubNm;
-        this.resortId = resortName;
-        this.openYn = openYn;
-    }
 
-    public ClubResponseDto(long clubId, String clubNm, String memo, String openYn, int memberCnt) {
-        this.id = clubId;
-        this.clubNm = clubNm;
-        this.memo = memo;
-        this.openYn = openYn;
-        this.memberCnt = memberCnt;
-    }
+    @Builder
     public ClubResponseDto(Club club) {
         this.id = club.getId();
         this.memberCnt = club.getMemberCnt();
@@ -74,7 +65,6 @@ public class ClubResponseDto {
         this.ageGrp = club.getAgeGrp();
         this.openYn = club.getOpenYn();
         this.memo = club.getMemo();
-
     }
 
 }

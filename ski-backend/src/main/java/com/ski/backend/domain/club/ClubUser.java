@@ -2,6 +2,7 @@ package com.ski.backend.domain.club;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ski.backend.domain.BaseTimeEntity;
 import com.ski.backend.domain.common.Status;
 import com.ski.backend.domain.user.User;
 import lombok.*;
@@ -21,7 +22,9 @@ import static javax.persistence.FetchType.LAZY;
 @Builder
 @AllArgsConstructor
 @Table(name = "club_users")
-public class ClubUser {
+@EqualsAndHashCode(callSuper = true)
+@ToString
+public class ClubUser extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,13 +34,14 @@ public class ClubUser {
     @JoinColumn(name = "club_id")
     private Club club;
 
-    @JsonIgnoreProperties({"boards", "clubUsers", "carpools", "tayoUsers","likes","dislikes"})
+    @JsonIgnoreProperties({"boards", "clubUsers", "carpools", "tayoUsers", "likes", "dislikes"})
     @ManyToOne(fetch = LAZY)// 여러 사용자가 한 클럽에 속할 수 있으니까
     @JoinColumn(name = "user_id")
     private User user;
 
 
-    @OneToMany( mappedBy = "clubUser",cascade = ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "clubUser", cascade = ALL, orphanRemoval = true)
+    @Builder.Default
     private List<ClubBoard> clubBoards = new ArrayList<>();
     // 승인여부 확인용
 
@@ -46,14 +50,14 @@ public class ClubUser {
 
     /**
      * 방장만이 권한을 부여 할 수 있음
-     *
+     * <p>
      * 권한
      * 관리자
      */
     private Role role;
 
 
-    public ClubUser(Club club, User user,Status status, Role role) {
+    public ClubUser(Club club, User user, Status status, Role role) {
         this.club = club;
         this.user = user;
         this.status = status;
@@ -82,7 +86,7 @@ public class ClubUser {
         this.status = Status.DENIED;
     }
 
-    public void updateRole(){
+    public void updateRole() {
         this.role = Role.MANAGER;
     }
 

@@ -1,6 +1,7 @@
 package com.ski.backend.domain.carpool;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ski.backend.domain.BaseTimeEntity;
 import com.ski.backend.domain.user.User;
 import lombok.*;
 
@@ -12,6 +13,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Getter
+@EqualsAndHashCode(callSuper = true)
+@ToString
 @Table(
         uniqueConstraints = {
                 @UniqueConstraint(
@@ -20,7 +23,7 @@ import java.time.LocalDateTime;
                 )
         }
 )
-public class Submit {
+public class Submit extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,12 +41,6 @@ public class Submit {
 
     @Enumerated(EnumType.STRING)
     private SubmitState state;
-    private LocalDateTime createDate;
-
-    @PrePersist
-    public void createDate() {
-        this.createDate = LocalDateTime.now();
-    }
 
     public void setState(String state) {
         this.state = SubmitState.valueOf(state);

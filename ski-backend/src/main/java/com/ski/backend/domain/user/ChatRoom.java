@@ -2,12 +2,10 @@ package com.ski.backend.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+import com.ski.backend.domain.BaseTimeEntity;
 import com.ski.backend.domain.club.Club;
 import com.ski.backend.domain.club.ClubUser;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -16,7 +14,9 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Data
 @Builder
-public class ChatRoom {
+@EqualsAndHashCode(callSuper = true)
+@ToString
+public class ChatRoom extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

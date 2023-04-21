@@ -18,28 +18,26 @@ import javax.validation.Valid;
 @RequestMapping("/api/clubBoard")
 public class ReplyApiController {
 
-
     private final ReplyService replyService;
 
     @PostMapping("/reply")
-    public CmRespDto<ReplyDto> saveReply(@Valid @RequestBody ReplyDto dto, BindingResult bindingResult, Authentication auth) {
-        PrincipalDetails principalDetails = (PrincipalDetails) auth.getPrincipal();
-        User user = principalDetails.getUser();
+    public CmRespDto<?> saveReply(@Valid @RequestBody ReplyDto dto, BindingResult bindingResult, Authentication auth) {
+        User user = ((PrincipalDetails) auth.getPrincipal()).getUser();
         ReplyDto replyDto = replyService.saveReply(dto, user);
         return new CmRespDto<>(1, "동호회 댓글 작성 완료", replyDto);
     }
 
     //
     @DeleteMapping("/deleteReply/{replyId}")
-    public CmRespDto<ReplyDto> deleteReply(@PathVariable long replyId) {
+    public CmRespDto<?> deleteReply(@PathVariable long replyId) {
         replyService.deleteReply(replyId);
         return new CmRespDto<>(1, "동호회 댓글 삭제 완료", null);
     }
 
     @PutMapping("/updateReply/{replyId}")
-    public CmRespDto<ReplyDto> updateReply(@PathVariable long replyId,@Valid @RequestBody ReplyDto replyDto, BindingResult bindingResult) {
+    public CmRespDto<?> updateReply(@PathVariable long replyId, @Valid @RequestBody ReplyDto replyDto, BindingResult bindingResult) {
         ReplyDto dto = replyService.updateReply(replyId, replyDto);
-        return new CmRespDto<>(1, "동호회 댓글 수정 완료",dto);
+        return new CmRespDto<>(1, "동호회 댓글 수정 완료", dto);
     }
 }
 
