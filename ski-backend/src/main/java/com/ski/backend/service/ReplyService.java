@@ -3,7 +3,7 @@ package com.ski.backend.service;
 import com.ski.backend.domain.club.ClubBoard;
 import com.ski.backend.domain.club.Reply;
 import com.ski.backend.domain.user.User;
-import com.ski.backend.repository.ClubBoardRepository;
+import com.ski.backend.repository.club.ClubBoardRepository;
 import com.ski.backend.repository.ReplyRepository;
 import com.ski.backend.web.dto.ReplyDto;
 import lombok.RequiredArgsConstructor;

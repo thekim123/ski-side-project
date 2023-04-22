@@ -1,8 +1,9 @@
-package com.ski.backend.repository;
+package com.ski.backend.repository.club;
 
 import com.ski.backend.domain.club.ClubUser;
 import com.ski.backend.domain.club.Role;
 import com.ski.backend.domain.common.Status;
+import com.ski.backend.domain.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,11 +20,11 @@ import java.util.Optional;
  */
 public interface ClubUserRepository extends JpaRepository<ClubUser, Long> {
 
-    Optional<ClubUser> findByUserIdAndClubIdAndStatus(@Param("userId") long userId, @Param("clubId") long clubId, @Param("status") Status status);
+    Optional<ClubUser> findByUserIdAndClubIdAndStatus(long userId, long clubId, Status status);
 
-    Optional<ClubUser> findClubUserByClubId(@Param("clubId") long clubId, @Param("userId") long userId, @Param("role") Role role);
+    Optional<ClubUser> findByIdAndUserAndRole(Long id, User user, Role role);
 
-    Optional<ClubUser> findByClubIdAndUserId(@Param("clubId") long clubId, @Param("userId") long userId);
+    Optional<ClubUser> findByClubIdAndUserId(long clubId, long userId);
 
     List<ClubUser> findByUserId(long userId);
 
@@ -61,13 +62,5 @@ public interface ClubUserRepository extends JpaRepository<ClubUser, Long> {
             "where c.id = :clubId " +
             "and cu.status = :status")
     List<ClubUser> findByClubIdAndStatus(@Param("clubId") long clubId, @Param("status") Status status);
-
-    // 동호회 Id로 동호회 유저들 찾기
-    // TODO: 이거 @Query 지우고도 정상 작동하는지 테스트할 것 되지 않을까?
-    @Query(value = "select cu " +
-            "from ClubUser cu " +
-            "join cu.club c " +
-            "where c.id = :clubId ")
-    List<ClubUser> findClubUserByClubId(@Param("clubId") long clubId);
 
 }

@@ -1,4 +1,4 @@
-package com.ski.backend.repository;
+package com.ski.backend.repository.club;
 
 
 import com.ski.backend.domain.club.ClubBoard;

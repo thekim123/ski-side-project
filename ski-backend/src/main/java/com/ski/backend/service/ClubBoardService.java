@@ -6,6 +6,9 @@ import com.ski.backend.domain.club.*;
 import com.ski.backend.domain.user.User;
 import com.ski.backend.handler.ex.CustomApiException;
 import com.ski.backend.repository.*;
+import com.ski.backend.repository.club.ClubBoardRepository;
+import com.ski.backend.repository.club.ClubRepository;
+import com.ski.backend.repository.club.ClubUserRepository;
 import com.ski.backend.web.dto.club.ClubBoardDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,9 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 
-import static com.ski.backend.domain.club.Role.MEMBER;
 import static com.ski.backend.domain.club.Role.NONMEMBER;
 
 
@@ -94,37 +95,6 @@ public class ClubBoardService {
         clubBoardRepository.delete(cb);
     }
 
-    // 관리자가 - 회원->매니저 권한 주기
-    @Transactional
-    public String updateRole(long clubBoardId, long userId, Authentication auth, boolean roleYn) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new CustomApiException("사용자를 찾을 수 없습니다"));
-        ClubBoard clubBoard = clubBoardRepository.findById(clubBoardId).orElseThrow(() -> new CustomApiException("해당 게시판이 없습니다."));
-
-        long clubId = clubBoard.getClubUser().getClub().getId();
-
-        List<ClubUser> clubUsers = clubUserRepository.findClubUserByClubId(clubId);
-        validateClubBoard(clubBoardId, auth);
-
-        if (clubUsers.size() == 0) {
-            throw new CustomApiException("사용자가 없습니다.");
-        }
-
-        String result = "아무일도 일어나지 않았습니다.";
-        for (ClubUser cu : clubUsers) {
-            if (cu.getUser().getId() == userId) {
-                if (cu.getRole().equals(MEMBER) && roleYn) {
-                    cu.updateRole();
-                    result = "매니저 권한 주기 완료";
-                } else {
-                    cu.declineRole();
-                    result = "매니저 권한 취소 완료.";
-                }
-            }
-        }
-        return result;
-    }
-
-
     // 동호회 게시판 만든사람이 관리자인지 확인 해야댐
     public void validateClubBoard(long clubBoardId, Authentication auth) {
         PrincipalDetails pd = (PrincipalDetails) auth.getPrincipal();
@@ -133,6 +103,8 @@ public class ClubBoardService {
         if (cb.getId() != clubBoardId) {
             throw new CustomApiException("관리자만 동호회 게시판을 수정 / 삭제할 수 있습니다.");
         }
+
+
     }
 
 }

@@ -86,8 +86,8 @@ public class ClubUser extends BaseTimeEntity {
         this.status = Status.DENIED;
     }
 
-    public void updateRole() {
-        this.role = Role.MANAGER;
+    public void updateRole(String role) {
+        this.role = Role.valueOf(role);
     }
 
     public void declineRole() {

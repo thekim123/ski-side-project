@@ -7,6 +7,8 @@ import com.ski.backend.domain.resort.Resort;
 import com.ski.backend.domain.user.ChatRoom;
 import com.ski.backend.domain.user.User;
 import com.ski.backend.handler.ex.CustomApiException;
+import com.ski.backend.repository.club.ClubRepository;
+import com.ski.backend.repository.club.ClubUserRepository;
 import com.ski.backend.web.dto.club.ClubRequestDto;
 import com.ski.backend.web.dto.club.ClubResponseDto;
 import com.ski.backend.web.dto.club.ClubUserRespDto;
@@ -22,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -199,6 +202,26 @@ public class ClubService {
         return result;
     }
 
+    /**
+     * 클럽 권한 수정 서비스 로직
+     *
+     * @param clubUserId 클럽 유저 아이디
+     * @param auth       로그인 정보
+     * @param role       역할 이름
+     */
+    @Transactional
+    public void updateRole(long clubUserId, Authentication auth, String role) {
+        ClubUser clubUser = clubUserRepository.findById(clubUserId).orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다"));
+        User loginUser = ((PrincipalDetails) auth.getPrincipal()).getUser();
+        User clubAdmin = clubUser.getClub().getClubAdmin();
+
+        if (!Objects.equals(loginUser.getUsername(), clubAdmin.getUsername())) {
+            throw new AccessDeniedException("클럽장만이 권한을 수정할 수 있습니다.");
+        }
+        clubUser.updateRole(role);
+    }
+
+
     // 나의 신청 내역
     public List<ClubUserRespDto> requestList(Authentication auth) {
         PrincipalDetails pd = (PrincipalDetails) auth.getPrincipal();
@@ -212,9 +235,9 @@ public class ClubService {
     }
 
     public void validateClubId(long clubId, Authentication auth) {
-        // 클럽아이디와 clubUserId에 등록된 클럽아이디와 role이관리자인게 일치해야함
+        // 클럽아이디와 clubUserId에 등록된 클럽아이디와 role 이 관리자인게 일치해야함
         PrincipalDetails pd = (PrincipalDetails) auth.getPrincipal();
-        ClubUser cu = clubUserRepository.findClubUserByClubId(clubId, pd.getUser().getId(), ADMIN).orElseThrow(() -> new AccessDeniedException("관리자만 동호회를 수정 / 삭제할 수 있습니다."));
+        ClubUser cu = clubUserRepository.findByIdAndUserAndRole(clubId, pd.getUser(), ADMIN).orElseThrow(() -> new AccessDeniedException("관리자만 동호회를 수정 / 삭제할 수 있습니다."));
         if (cu.getClub().getId() != clubId) throw new AccessDeniedException("관리자만 동호회를 수정 / 삭제할 수 있습니다");
     }
 

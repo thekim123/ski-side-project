@@ -57,10 +57,4 @@ public class ClubBoardApiController {
         return new CmRespDto<>(1, "클럽게시판 삭제완료", null);
     }
 
-    // 관리자가 - 회원->매니저 권한 주기
-    @PutMapping("/updateRole/{clubBoardId}/{userId}/{roleYn}")
-    public CmRespDto<?> updateRole(@PathVariable long clubBoardId, @PathVariable long userId, Authentication auth, @PathVariable boolean roleYn) {
-        String updateResult = clubBoardService.updateRole(clubBoardId, userId, auth, roleYn);
-        return new CmRespDto<>(1, updateResult, null);
-    }
 }

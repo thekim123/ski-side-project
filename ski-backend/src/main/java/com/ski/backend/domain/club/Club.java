@@ -3,6 +3,7 @@ package com.ski.backend.domain.club;
 import com.ski.backend.domain.BaseTimeEntity;
 import com.ski.backend.domain.common.AgeGrp;
 import com.ski.backend.domain.resort.Resort;
+import com.ski.backend.domain.user.User;
 import com.ski.backend.web.dto.club.ClubRequestDto;
 import lombok.*;
 
@@ -40,6 +41,9 @@ public class Club extends BaseTimeEntity {
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "resort_id")
     private Resort resort;
+
+    @ManyToOne
+    private User clubAdmin;
 
     @OneToMany(mappedBy = "club", cascade = ALL, orphanRemoval = true)
     @Builder.Default

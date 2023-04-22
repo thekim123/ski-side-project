@@ -88,7 +88,7 @@ public class User extends BaseTimeEntity {
     @Builder.Default
     private List<ClubUser> clubUsers = new ArrayList<>();
 
-    @JsonIgnoreProperties({"user"})
+    @JsonIgnoreProperties({"writer"})
     @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Carpool> carpools = new ArrayList<>();

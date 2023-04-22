@@ -9,16 +9,13 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Getter
-@EqualsAndHashCode(callSuper = true)
 @ToString
 @Embeddable
-public class Negotiate extends BaseTimeEntity {
+public class Negotiate {
 
     private boolean nDeparture;
     private boolean nDestination;
     private boolean nDepartTime;
     private boolean nBoardingPlace;
-
-
 
 }

@@ -1,17 +1,11 @@
 package com.ski.backend.service;
 
-import com.ski.backend.domain.club.ClubUser;
-import com.ski.backend.handler.ex.CustomApiException;
-import com.ski.backend.repository.ClubUserRepository;
-import org.assertj.core.api.Assertions;
+import com.ski.backend.repository.club.ClubUserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class ClubServiceTest {

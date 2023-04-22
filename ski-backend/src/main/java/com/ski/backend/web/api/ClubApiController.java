@@ -120,4 +120,12 @@ public class ClubApiController {
         Optional<ClubResponseDto> clubDetail = clubService.clubDetail(clubId);
         return new CmRespDto<>(1, "동호회 상세페이지 조회", clubDetail);
     }
+
+
+    // 관리자가 - 회원->매니저 권한 주기
+    @PutMapping("/updateRole/{clubUserId}")
+    public CmRespDto<?> updateRole(@PathVariable long clubUserId, Authentication auth, String role) {
+        clubService.updateRole(clubUserId, auth, role);
+        return new CmRespDto<>(1, "권한 수정이 완료되었습니다.", null);
+    }
 }

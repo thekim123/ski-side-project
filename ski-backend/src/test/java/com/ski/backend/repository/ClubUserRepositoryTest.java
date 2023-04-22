@@ -1,5 +1,7 @@
 package com.ski.backend.repository;
 
+import com.ski.backend.repository.club.ClubRepository;
+import com.ski.backend.repository.club.ClubUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 

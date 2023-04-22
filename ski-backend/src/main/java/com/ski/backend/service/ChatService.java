@@ -7,7 +7,7 @@ import com.ski.backend.domain.user.User;
 import com.ski.backend.domain.user.Whisper;
 import com.ski.backend.handler.ex.CustomApiException;
 import com.ski.backend.repository.ChatRoomRepository;
-import com.ski.backend.repository.ClubRepository;
+import com.ski.backend.repository.club.ClubRepository;
 import com.ski.backend.repository.UserRepository;
 import com.ski.backend.repository.WhisperRepository;
 import lombok.RequiredArgsConstructor;

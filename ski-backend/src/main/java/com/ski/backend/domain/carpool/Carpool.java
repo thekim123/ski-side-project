@@ -27,7 +27,7 @@ public class Carpool extends BaseTimeEntity {
     private Long id;
 
     @JsonIgnoreProperties({"boards", "clubUsers", "carpools", "tayoUsers", "password", "bookmarks"})
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "writerId")
     @ManyToOne
     private User writer;
 
