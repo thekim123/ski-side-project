@@ -1,4 +1,4 @@
-package com.ski.backend.web.dto;
+package com.ski.backend.web.dto.club;
 
 import com.ski.backend.domain.club.Club;
 
@@ -7,6 +7,7 @@ import com.ski.backend.domain.club.ClubUser;
 import com.ski.backend.domain.club.Reply;
 
 import com.ski.backend.domain.user.User;
+import com.ski.backend.web.dto.ReplyDto;
 import lombok.*;
 
 

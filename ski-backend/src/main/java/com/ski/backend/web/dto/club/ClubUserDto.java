@@ -1,4 +1,4 @@
-package com.ski.backend.web.dto;
+package com.ski.backend.web.dto.club;
 
 import com.ski.backend.domain.club.ClubUser;
 import com.ski.backend.domain.club.Role;

@@ -6,7 +6,7 @@ import com.ski.backend.domain.club.*;
 import com.ski.backend.domain.user.User;
 import com.ski.backend.handler.ex.CustomApiException;
 import com.ski.backend.repository.*;
-import com.ski.backend.web.dto.ClubBoardDto;
+import com.ski.backend.web.dto.club.ClubBoardDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

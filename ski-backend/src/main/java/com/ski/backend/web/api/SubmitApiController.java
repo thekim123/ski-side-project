@@ -1,9 +1,8 @@
 package com.ski.backend.web.api;
 
-import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.domain.carpool.Submit;
 import com.ski.backend.service.SubmitService;
-import com.ski.backend.web.dto.AdmitDto;
+import com.ski.backend.web.dto.carpool.AdmitDto;
 import com.ski.backend.web.dto.CmRespDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;

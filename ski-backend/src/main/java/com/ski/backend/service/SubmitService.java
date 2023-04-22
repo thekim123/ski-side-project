@@ -3,15 +3,13 @@ package com.ski.backend.service;
 import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.domain.carpool.Carpool;
 import com.ski.backend.domain.carpool.Submit;
-import com.ski.backend.domain.user.ChatRoom;
 import com.ski.backend.domain.user.User;
 import com.ski.backend.domain.user.Whisper;
 import com.ski.backend.handler.ex.CustomApiException;
 import com.ski.backend.repository.CarpoolRepository;
-import com.ski.backend.repository.ChatRoomRepository;
 import com.ski.backend.repository.SubmitRepository;
 import com.ski.backend.repository.WhisperRepository;
-import com.ski.backend.web.dto.AdmitDto;
+import com.ski.backend.web.dto.carpool.AdmitDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -66,11 +64,11 @@ public class SubmitService {
 
         Whisper whisperEntity = Whisper.builder()
                 .principal(principal)
-                .toUsername(carpoolEntity.getUser().getNickname())
+                .toUsername(carpoolEntity.getWriter().getNickname())
                 .build();
 
         Whisper writerWhisperEntity = Whisper.builder()
-                .principal(carpoolEntity.getUser())
+                .principal(carpoolEntity.getWriter())
                 .toUsername(principal.getNickname())
                 .build();
 

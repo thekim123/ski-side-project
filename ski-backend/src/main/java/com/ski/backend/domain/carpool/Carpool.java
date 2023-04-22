@@ -3,21 +3,16 @@ package com.ski.backend.domain.carpool;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ski.backend.domain.BaseTimeEntity;
 import com.ski.backend.domain.user.User;
-import com.ski.backend.web.dto.CarpoolRequestDto;
-import com.ski.backend.web.dto.NegotiateDto;
+import com.ski.backend.web.dto.carpool.CarpoolRequestDto;
 import lombok.*;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeMap;
-import org.modelmapper.config.Configuration;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 
-// TODO : 카풀 - negotiate 엔티티 구조 개편 카풀로 통합, 아래 조건들도 통합할지 생각해봐야함.
+// TODO : 카풀 - 아래 조건들도 클래스로는 통합할까?
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,7 +29,7 @@ public class Carpool extends BaseTimeEntity {
     @JsonIgnoreProperties({"boards", "clubUsers", "carpools", "tayoUsers", "password", "bookmarks"})
     @JoinColumn(name = "userId")
     @ManyToOne
-    private User user;
+    private User writer;
 
     @Embedded
     private Negotiate negotiate;
@@ -64,12 +59,24 @@ public class Carpool extends BaseTimeEntity {
         this.curPassenger++;
     }
 
+
+    // TODO: 이 로직을 서비스 레이어로 옮겨야 댐
+    public void update(CarpoolRequestDto dto) {
+        this.passenger = dto.getPassenger();
+        this.departure = dto.getDeparture();
+        this.destination = dto.getDestination();
+        this.boarding = dto.getBoarding();
+        this.isSmoker = dto.isSmoker();
+        this.memo = dto.getMemo();
+        this.request = RequestType.valueOf(dto.getRequest());
+        this.departTime = LocalDateTime.parse(dto.getDepartTime());
+    }
+
     /**
      * user, negotiate 를 매핑
      */
-    public void withUserAndNegotiate(User user, Negotiate negotiate) {
-        this.user = user;
-        this.negotiate = negotiate;
+    public void withWriter(User user) {
+        this.writer = user;
     }
 
 }

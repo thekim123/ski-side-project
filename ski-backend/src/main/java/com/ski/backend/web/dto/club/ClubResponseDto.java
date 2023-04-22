@@ -1,4 +1,4 @@
-package com.ski.backend.web.dto;
+package com.ski.backend.web.dto.club;
 
 import com.ski.backend.domain.common.AgeGrp;
 import com.ski.backend.domain.club.Club;

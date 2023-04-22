@@ -2,8 +2,9 @@ package com.ski.backend.web.api;
 
 import com.ski.backend.domain.carpool.Carpool;
 import com.ski.backend.service.CarpoolService;
-import com.ski.backend.web.dto.CarpoolRequestDto;
+import com.ski.backend.web.dto.carpool.CarpoolRequestDto;
 import com.ski.backend.web.dto.CmRespDto;
+import com.ski.backend.web.dto.carpool.CarpoolResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +26,7 @@ public class CarpoolApiController {
     @PostMapping
     public CmRespDto<?> insert(
             @Valid
-            @RequestBody CarpoolRequestDto.Save dto,
+            @RequestBody CarpoolRequestDto dto,
             BindingResult bindingResult,
             Authentication authentication) {
         carpoolService.write(dto, authentication);
@@ -35,7 +36,7 @@ public class CarpoolApiController {
     @PutMapping("/update/{carpoolId}")
     public CmRespDto<?> update(
             @Valid
-            @RequestBody CarpoolRequestDto.Save dto,
+            @RequestBody CarpoolRequestDto dto,
             BindingResult bindingResult) {
         carpoolService.update(dto);
         return new CmRespDto<>(1, "카풀 게시글 수정 성공", null);
@@ -55,7 +56,7 @@ public class CarpoolApiController {
 
     @GetMapping("/{carpoolId}")
     public CmRespDto<?> getAll(@PathVariable long carpoolId) {
-        Carpool carpool = carpoolService.detail(carpoolId);
-        return new CmRespDto<>(1, "카풀 게시글 불러오기 성공", carpool);
+        CarpoolResponseDto dto = carpoolService.detail(carpoolId);
+        return new CmRespDto<>(1, "카풀 게시글 불러오기 성공", dto);
     }
 }

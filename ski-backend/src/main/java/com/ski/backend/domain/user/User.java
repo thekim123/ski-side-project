@@ -14,7 +14,6 @@ import com.ski.backend.domain.club.Gender;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,9 +89,9 @@ public class User extends BaseTimeEntity {
     private List<ClubUser> clubUsers = new ArrayList<>();
 
     @JsonIgnoreProperties({"user"})
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
     @Builder.Default
-    private List<Carpool> carpools;
+    private List<Carpool> carpools = new ArrayList<>();
 
     @JsonIgnoreProperties({"user"})
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

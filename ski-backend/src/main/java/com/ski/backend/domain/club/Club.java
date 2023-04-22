@@ -3,7 +3,7 @@ package com.ski.backend.domain.club;
 import com.ski.backend.domain.BaseTimeEntity;
 import com.ski.backend.domain.common.AgeGrp;
 import com.ski.backend.domain.resort.Resort;
-import com.ski.backend.web.dto.ClubRequestDto;
+import com.ski.backend.web.dto.club.ClubRequestDto;
 import lombok.*;
 
 import javax.persistence.*;

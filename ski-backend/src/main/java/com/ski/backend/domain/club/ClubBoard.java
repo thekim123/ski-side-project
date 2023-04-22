@@ -2,8 +2,7 @@ package com.ski.backend.domain.club;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ski.backend.domain.BaseTimeEntity;
-import com.ski.backend.domain.user.User;
-import com.ski.backend.web.dto.ClubBoardDto;
+import com.ski.backend.web.dto.club.ClubBoardDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.CascadeType.REMOVE;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity

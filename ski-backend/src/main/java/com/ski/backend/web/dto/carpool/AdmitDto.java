@@ -1,4 +1,4 @@
-package com.ski.backend.web.dto;
+package com.ski.backend.web.dto.carpool;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
