@@ -2,13 +2,13 @@ package com.ski.backend.service;
 
 import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.club.entity.Club;
-import com.ski.backend.domain.user.ChatRoom;
-import com.ski.backend.domain.user.User;
-import com.ski.backend.domain.user.Whisper;
+import com.ski.backend.user.entity.ChatRoom;
+import com.ski.backend.user.entity.User;
+import com.ski.backend.user.entity.Whisper;
 import com.ski.backend.handler.ex.CustomApiException;
 import com.ski.backend.repository.ChatRoomRepository;
 import com.ski.backend.club.repository.ClubRepository;
-import com.ski.backend.repository.UserRepository;
+import com.ski.backend.user.repository.UserRepository;
 import com.ski.backend.repository.WhisperRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Map;
 
@@ -51,7 +52,9 @@ public class ChatService {
         });
 
         String toUsername = whisper.getToUsername();
-        User toUser = userRepository.findByUsername(toUsername);
+        User toUser = userRepository.findByUsername(toUsername).orElseThrow(() -> {
+            throw new EntityNotFoundException("존재하지 않는 회원입니다.");
+        });
 
         String toUserNickname = toUser.getNickname();
         toUserNickname = toUserNickname.split("_")[0];

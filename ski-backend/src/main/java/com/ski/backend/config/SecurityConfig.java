@@ -2,11 +2,10 @@ package com.ski.backend.config;
 
 import com.ski.backend.config.jwt.JwtAuthenticationFilter;
 import com.ski.backend.config.jwt.JwtAuthorizationFilter;
-import com.ski.backend.repository.UserRepository;
+import com.ski.backend.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -39,6 +38,7 @@ public class SecurityConfig {
                         .access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                         .antMatchers("/api/bookmark/**")
                         .access("hasRole('ROLE_USER') or hasRole('ROLE_GUEST') or hasRole('ROLE_ADMIN')")
+                        .antMatchers("/api/user/join").permitAll()
                         .anyRequest().permitAll())
                 .build();
     }

@@ -5,14 +5,15 @@ import com.ski.backend.club.entity.ClubUser;
 import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.domain.common.Status;
 import com.ski.backend.domain.resort.Resort;
-import com.ski.backend.domain.user.ChatRoom;
-import com.ski.backend.domain.user.User;
+import com.ski.backend.user.entity.ChatRoom;
+import com.ski.backend.user.entity.User;
 import com.ski.backend.handler.ex.CustomApiException;
 import com.ski.backend.club.repository.ClubRepository;
 import com.ski.backend.club.repository.ClubUserRepository;
-import com.ski.backend.web.dto.club.ClubRequestDto;
-import com.ski.backend.web.dto.club.ClubResponseDto;
-import com.ski.backend.web.dto.club.ClubUserRespDto;
+import com.ski.backend.user.repository.UserRepository;
+import com.ski.backend.club.dto.ClubRequestDto;
+import com.ski.backend.club.dto.ClubResponseDto;
+import com.ski.backend.club.dto.ClubUserRespDto;
 import com.ski.backend.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,7 +30,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.ski.backend.club.entity.Role.*;
+import static com.ski.backend.club.entity.ClubRole.*;
 
 
 @Service
@@ -132,7 +133,7 @@ public class ClubService {
         System.out.println(chatRoomName);
         // 여기까지
 
-        if (!clubUser.getRole().equals(ADMIN)) {
+        if (!clubUser.getClubRole().equals(ADMIN)) {
             clubUserRepository.delete(clubUser);
             clubUser.getClub().setMemberCnt(-1);
         } else {
@@ -168,7 +169,7 @@ public class ClubService {
     @Transactional(readOnly = true)
     public List<ClubUserRespDto> getClubWaitingList(long clubId) {
         List<ClubUser> result = clubUserRepository.findByClubIdAndStatus(clubId, Status.WAITING);
-        return result.stream().map(e -> new ClubUserRespDto(e.getUser().getUsername(), e.getStatus(), e.getRole())).collect(Collectors.toList());
+        return result.stream().map(e -> new ClubUserRespDto(e.getUser().getUsername(), e.getStatus(), e.getClubRole())).collect(Collectors.toList());
     }
 
     // 가입 대기자 승인 / 거절
@@ -232,13 +233,13 @@ public class ClubService {
             throw new CustomApiException("신청 내역이 없습니다.");
         }
 
-        return result.stream().map(e -> new ClubUserRespDto(e.getUser().getUsername(), e.getStatus(), e.getRole())).collect(Collectors.toList());
+        return result.stream().map(e -> new ClubUserRespDto(e.getUser().getUsername(), e.getStatus(), e.getClubRole())).collect(Collectors.toList());
     }
 
     public void validateClubId(long clubId, Authentication auth) {
         // 클럽아이디와 clubUserId에 등록된 클럽아이디와 role 이 관리자인게 일치해야함
         PrincipalDetails pd = (PrincipalDetails) auth.getPrincipal();
-        ClubUser cu = clubUserRepository.findByIdAndUserAndRole(clubId, pd.getUser(), ADMIN).orElseThrow(() -> new AccessDeniedException("관리자만 동호회를 수정 / 삭제할 수 있습니다."));
+        ClubUser cu = clubUserRepository.findByIdAndUserAndClubRole(clubId, pd.getUser(), ADMIN).orElseThrow(() -> new AccessDeniedException("관리자만 동호회를 수정 / 삭제할 수 있습니다."));
         if (cu.getClub().getId() != clubId) throw new AccessDeniedException("관리자만 동호회를 수정 / 삭제할 수 있습니다");
     }
 
@@ -261,7 +262,7 @@ public class ClubService {
         chatRooms.add(chatRoom);
 
         club.getClubUsers().forEach(c -> {
-            if (c.getRole().equals(ADMIN)) {
+            if (c.getClubRole().equals(ADMIN)) {
                 ChatRoom chatRoomOfAdmin = ChatRoom.builder()
                         .user(c.getUser())
                         .roomName(roomName)

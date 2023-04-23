@@ -1,8 +1,8 @@
 package com.ski.backend.repository;
 
 import com.ski.backend.club.entity.Club;
-import com.ski.backend.domain.user.ChatRoom;
-import com.ski.backend.domain.user.User;
+import com.ski.backend.user.entity.ChatRoom;
+import com.ski.backend.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

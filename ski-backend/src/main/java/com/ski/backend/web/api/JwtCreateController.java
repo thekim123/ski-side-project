@@ -5,15 +5,16 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.ski.backend.config.jwt.JwtProperties;
 import com.ski.backend.config.oauth.KakaoUser;
 import com.ski.backend.config.oauth.OAuthUserInfo;
-import com.ski.backend.domain.user.Role;
-import com.ski.backend.domain.user.User;
-import com.ski.backend.repository.UserRepository;
+import com.ski.backend.user.entity.Role;
+import com.ski.backend.user.entity.User;
+import com.ski.backend.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Date;
 import java.util.Map;
 
@@ -28,8 +29,11 @@ public class JwtCreateController {
     @PostMapping("/oauth/jwt/kakao")
     public String jwtCreate(@RequestBody Map<String, Object> data) {
         OAuthUserInfo kakaoUser = new KakaoUser(data);
+        String kakaoUsername = kakaoUser.getProvider() + "_" + kakaoUser.getProviderId();
 
-        User userEntity = userRepository.findByUsername(kakaoUser.getProvider() + "_" + kakaoUser.getProviderId());
+        User userEntity = userRepository.findByUsername(kakaoUsername).orElseThrow(() -> {
+            throw new EntityNotFoundException("존재하지 않는 회원입니다.");
+        });
         User userRequest;
         if (userEntity == null) {
             userRequest = User.builder()

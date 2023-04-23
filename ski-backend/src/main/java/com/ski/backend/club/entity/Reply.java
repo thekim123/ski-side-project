@@ -3,7 +3,7 @@ package com.ski.backend.club.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ski.backend.domain.BaseTimeEntity;
-import com.ski.backend.domain.user.User;
+import com.ski.backend.user.entity.User;
 import com.ski.backend.web.dto.ReplyDto;
 import lombok.*;
 

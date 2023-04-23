@@ -4,7 +4,7 @@ package com.ski.backend.club.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ski.backend.domain.BaseTimeEntity;
 import com.ski.backend.domain.common.Status;
-import com.ski.backend.domain.user.User;
+import com.ski.backend.user.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -54,14 +54,14 @@ public class ClubUser extends BaseTimeEntity {
      * 권한
      * 관리자
      */
-    private Role role;
+    private ClubRole clubRole;
 
 
-    public ClubUser(Club club, User user, Status status, Role role) {
+    public ClubUser(Club club, User user, Status status, ClubRole clubRole) {
         this.club = club;
         this.user = user;
         this.status = status;
-        this.role = role;
+        this.clubRole = clubRole;
     }
 
     public ClubUser(Club club, User user) {
@@ -73,7 +73,7 @@ public class ClubUser extends BaseTimeEntity {
             // 비밀방
             this.status = Status.WAITING;
         }
-        this.role = Role.MEMBER;
+        this.clubRole = ClubRole.MEMBER;
         this.club = club;
         this.user = user;
     }
@@ -87,10 +87,10 @@ public class ClubUser extends BaseTimeEntity {
     }
 
     public void updateRole(String role) {
-        this.role = Role.valueOf(role);
+        this.clubRole = ClubRole.valueOf(role);
     }
 
     public void declineRole() {
-        this.role = Role.MEMBER;
+        this.clubRole = ClubRole.MEMBER;
     }
 }

@@ -2,7 +2,7 @@ package com.ski.backend.web.api;
 
 
 import com.ski.backend.config.auth.PrincipalDetails;
-import com.ski.backend.domain.user.User;
+import com.ski.backend.user.entity.User;
 import com.ski.backend.service.ReplyService;
 import com.ski.backend.web.dto.CmRespDto;
 import com.ski.backend.web.dto.ReplyDto;

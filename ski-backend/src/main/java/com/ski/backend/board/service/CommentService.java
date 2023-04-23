@@ -3,7 +3,7 @@ package com.ski.backend.board.service;
 import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.domain.board.Board;
 import com.ski.backend.domain.board.Comment;
-import com.ski.backend.domain.user.User;
+import com.ski.backend.user.entity.User;
 import com.ski.backend.handler.ex.CustomApiException;
 import com.ski.backend.board.repository.BoardRepository;
 import com.ski.backend.board.repository.CommentRepository;

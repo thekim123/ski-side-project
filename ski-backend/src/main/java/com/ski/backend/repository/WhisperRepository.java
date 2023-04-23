@@ -1,7 +1,7 @@
 package com.ski.backend.repository;
 
-import com.ski.backend.domain.user.User;
-import com.ski.backend.domain.user.Whisper;
+import com.ski.backend.user.entity.User;
+import com.ski.backend.user.entity.Whisper;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

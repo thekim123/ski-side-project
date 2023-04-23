@@ -4,15 +4,15 @@ package com.ski.backend.club.service;
 import com.ski.backend.club.entity.Club;
 import com.ski.backend.club.entity.ClubBoard;
 import com.ski.backend.club.entity.ClubUser;
-import com.ski.backend.club.entity.Role;
+import com.ski.backend.club.entity.ClubRole;
 import com.ski.backend.config.auth.PrincipalDetails;
-import com.ski.backend.domain.user.User;
+import com.ski.backend.user.entity.User;
 import com.ski.backend.handler.ex.CustomApiException;
-import com.ski.backend.repository.*;
 import com.ski.backend.club.repository.ClubBoardRepository;
 import com.ski.backend.club.repository.ClubRepository;
 import com.ski.backend.club.repository.ClubUserRepository;
-import com.ski.backend.web.dto.club.ClubBoardDto;
+import com.ski.backend.user.repository.UserRepository;
+import com.ski.backend.club.dto.ClubBoardDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 
-import static com.ski.backend.club.entity.Role.NONMEMBER;
+import static com.ski.backend.club.entity.ClubRole.NONMEMBER;
 
 
 @Service
@@ -75,7 +75,7 @@ public class ClubBoardService {
             throw new EntityNotFoundException("해당 동호회 회원이 아닙니다.");
         });
 
-        if (clubUser.getRole().equals(NONMEMBER)) {
+        if (clubUser.getClubRole().equals(NONMEMBER)) {
             throw new AccessDeniedException("동호회 회원이 아니면 글을 쓸 수 없습니다.");
         }
 
@@ -101,10 +101,10 @@ public class ClubBoardService {
     // 동호회 게시판 만든사람이 관리자인지 확인 해야댐
     public void validateClubBoard(long clubBoardId, Authentication auth) {
         PrincipalDetails pd = (PrincipalDetails) auth.getPrincipal();
-        ClubBoard cb = clubBoardRepository.findByClubBoardId(clubBoardId, pd.getUser().getId(), Role.ADMIN).orElseThrow(() -> new CustomApiException("관리자만 동호회 게시판을 수정 / 삭제할 수 있습니다."));
+        ClubBoard cb = clubBoardRepository.findByClubBoardId(clubBoardId, pd.getUser().getId(), ClubRole.ADMIN).orElseThrow(() -> new AccessDeniedException("관리자만 동호회 게시판을 수정 / 삭제할 수 있습니다."));
 
         if (cb.getId() != clubBoardId) {
-            throw new CustomApiException("관리자만 동호회 게시판을 수정 / 삭제할 수 있습니다.");
+            throw new AccessDeniedException("관리자만 동호회 게시판을 수정 / 삭제할 수 있습니다.");
         }
 
 

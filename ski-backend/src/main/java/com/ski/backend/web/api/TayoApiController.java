@@ -1,21 +1,17 @@
 package com.ski.backend.web.api;
 
 import com.ski.backend.config.auth.PrincipalDetails;
-import com.ski.backend.domain.Tayo.Tayo;
-import com.ski.backend.domain.user.User;
+import com.ski.backend.user.entity.User;
 import com.ski.backend.service.TayoService;
 import com.ski.backend.web.dto.CmRespDto;
 import com.ski.backend.web.dto.TayoRequestDto;
 import com.ski.backend.web.dto.TayoRespDto;
 import com.ski.backend.web.dto.TayoUserRespDto;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.parameters.P;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 

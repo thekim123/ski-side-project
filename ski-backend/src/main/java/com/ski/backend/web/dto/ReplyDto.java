@@ -2,7 +2,7 @@ package com.ski.backend.web.dto;
 
 import com.ski.backend.club.entity.ClubBoard;
 import com.ski.backend.club.entity.Reply;
-import com.ski.backend.domain.user.User;
+import com.ski.backend.user.entity.User;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;

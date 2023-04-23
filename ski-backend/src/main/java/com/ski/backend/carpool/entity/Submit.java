@@ -2,7 +2,7 @@ package com.ski.backend.carpool.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ski.backend.domain.BaseTimeEntity;
-import com.ski.backend.domain.user.User;
+import com.ski.backend.user.entity.User;
 import lombok.*;
 
 import javax.persistence.*;

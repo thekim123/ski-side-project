@@ -2,7 +2,7 @@ package com.ski.backend.club.repository;
 
 
 import com.ski.backend.club.entity.ClubBoard;
-import com.ski.backend.club.entity.Role;
+import com.ski.backend.club.entity.ClubRole;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -36,10 +36,13 @@ public interface ClubBoardRepository extends JpaRepository<ClubBoard, Long> {
             "from ClubBoard cb" +
             " join ClubUser cu " +
             "on cb.clubUser.id = cu.id " +
-            "where cu.role = :role " +
+            "where cu.clubRole = :role " +
             "and cb.id = :clubBoardId " +
             "and cu.user.id = :userId")
-    Optional<ClubBoard> findByClubBoardId(@Param("clubBoardId") long clubBoardId, @Param("userId") long userId, @Param("role") Role role);
+    Optional<ClubBoard> findByClubBoardId(
+            @Param("clubBoardId") long clubBoardId,
+            @Param("userId") long userId,
+            @Param("role") ClubRole role);
 
 
 }

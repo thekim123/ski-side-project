@@ -1,9 +1,9 @@
 package com.ski.backend.club.repository;
 
 import com.ski.backend.club.entity.ClubUser;
-import com.ski.backend.club.entity.Role;
+import com.ski.backend.club.entity.ClubRole;
 import com.ski.backend.domain.common.Status;
-import com.ski.backend.domain.user.User;
+import com.ski.backend.user.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @author 김병조
+ * @author jo-kim
+ * @author thekim123
  * @apiNote 2023.04.21 modified by thekim123 - JPA ORM 관련 리팩토링함
  * 아직 테스트는 안함 ㅎ
  */
@@ -22,7 +23,7 @@ public interface ClubUserRepository extends JpaRepository<ClubUser, Long> {
 
     Optional<ClubUser> findByUserIdAndClubIdAndStatus(long userId, long clubId, Status status);
 
-    Optional<ClubUser> findByIdAndUserAndRole(Long id, User user, Role role);
+    Optional<ClubUser> findByIdAndUserAndClubRole(Long id, User user, ClubRole clubRole);
 
     Optional<ClubUser> findByClubIdAndUserId(long clubId, long userId);
 

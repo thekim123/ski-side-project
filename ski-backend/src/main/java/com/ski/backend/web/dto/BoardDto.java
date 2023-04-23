@@ -1,5 +1,6 @@
 package com.ski.backend.web.dto;
 
+import com.ski.backend.user.dto.UserDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

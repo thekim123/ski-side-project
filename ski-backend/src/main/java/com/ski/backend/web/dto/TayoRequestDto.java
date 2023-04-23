@@ -5,14 +5,13 @@ import com.ski.backend.domain.Tayo.RideDevice;
 import com.ski.backend.domain.Tayo.Tayo;
 import com.ski.backend.domain.common.AgeGrp;
 import com.ski.backend.domain.resort.Resort;
-import com.ski.backend.domain.user.User;
+import com.ski.backend.user.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Getter
 @NoArgsConstructor

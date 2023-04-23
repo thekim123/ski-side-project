@@ -3,8 +3,7 @@ package com.ski.backend.domain.Tayo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ski.backend.domain.BaseTimeEntity;
 import com.ski.backend.domain.common.Status;
-import com.ski.backend.domain.user.User;
-import com.ski.backend.web.dto.TayoUserRespDto;
+import com.ski.backend.user.entity.User;
 import lombok.*;
 
 import javax.persistence.*;

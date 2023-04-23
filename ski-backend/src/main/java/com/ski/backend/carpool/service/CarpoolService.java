@@ -4,12 +4,12 @@ import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.carpool.entity.Carpool;
 import com.ski.backend.carpool.entity.Negotiate;
 import com.ski.backend.carpool.entity.RequestType;
-import com.ski.backend.domain.user.User;
+import com.ski.backend.user.entity.User;
 import com.ski.backend.carpool.repository.CarpoolRepository;
 import com.ski.backend.handler.ex.CustomApiException;
-import com.ski.backend.web.dto.carpool.CarpoolRequestDto;
-import com.ski.backend.web.dto.carpool.CarpoolResponseDto;
-import com.ski.backend.web.dto.carpool.NegotiateDto;
+import com.ski.backend.carpool.dto.CarpoolRequestDto;
+import com.ski.backend.carpool.dto.CarpoolResponseDto;
+import com.ski.backend.carpool.dto.NegotiateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
@@ -51,7 +52,7 @@ public class CarpoolService {
                 .departure(dto.getDeparture())
                 .boarding(dto.getBoarding())
                 .destination(dto.getDestination())
-                .departTime(LocalDateTime.parse(dto.getDepartTime()))
+                .departTime(LocalDateTime.parse(dto.getDepartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .passenger(dto.getPassenger())
                 .request(RequestType.valueOf(dto.getRequest()))
                 .negotiate(negotiate)

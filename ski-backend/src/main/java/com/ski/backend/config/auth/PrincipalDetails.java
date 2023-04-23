@@ -1,10 +1,8 @@
 package com.ski.backend.config.auth;
 
-import com.ski.backend.domain.user.User;
+import com.ski.backend.user.entity.User;
 import lombok.Data;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;

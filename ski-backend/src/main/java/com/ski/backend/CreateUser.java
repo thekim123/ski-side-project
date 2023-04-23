@@ -4,14 +4,13 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.ski.backend.config.jwt.JwtProperties;
 import com.ski.backend.club.entity.Gender;
-import com.ski.backend.domain.user.Role;
-import com.ski.backend.domain.user.User;
-import com.ski.backend.repository.UserRepository;
+import com.ski.backend.user.entity.Role;
+import com.ski.backend.user.entity.User;
+import com.ski.backend.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class CreateUser {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @PostConstruct
+//    @PostConstruct
     public void createUserAndGenToken() {
 
         String password = bCryptPasswordEncoder.encode("password");

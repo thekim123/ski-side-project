@@ -3,8 +3,8 @@ package com.ski.backend.club.entity;
 import com.ski.backend.domain.BaseTimeEntity;
 import com.ski.backend.domain.common.AgeGrp;
 import com.ski.backend.domain.resort.Resort;
-import com.ski.backend.domain.user.User;
-import com.ski.backend.web.dto.club.ClubRequestDto;
+import com.ski.backend.user.entity.User;
+import com.ski.backend.club.dto.ClubRequestDto;
 import lombok.*;
 
 import javax.persistence.*;

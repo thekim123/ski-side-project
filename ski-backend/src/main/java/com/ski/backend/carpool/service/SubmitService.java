@@ -1,15 +1,16 @@
 package com.ski.backend.carpool.service;
 
+import com.ski.backend.carpool.entity.SubmitState;
 import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.carpool.entity.Carpool;
 import com.ski.backend.carpool.entity.Submit;
-import com.ski.backend.domain.user.User;
-import com.ski.backend.domain.user.Whisper;
+import com.ski.backend.user.entity.User;
+import com.ski.backend.user.entity.Whisper;
 import com.ski.backend.handler.ex.CustomApiException;
 import com.ski.backend.carpool.repository.CarpoolRepository;
 import com.ski.backend.carpool.repository.SubmitRepository;
 import com.ski.backend.repository.WhisperRepository;
-import com.ski.backend.web.dto.carpool.AdmitDto;
+import com.ski.backend.carpool.dto.AdmitDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -31,15 +32,30 @@ public class SubmitService {
         return submitRepository.findByToCarpoolId(toCarpoolId);
     }
 
+    /**
+     * 카풀 신청 제출 서비스 로직
+     *
+     * @param authentication 로그인 정보
+     * @param toCarpoolId    카풀 게시글 id
+     * @apiNote Modifying 쿼리를 사용했던 것을 바꿈.
+     * 성능상의 핸디캡이 분명 있지만 아직 성능상의 문제보다는
+     * 객체지향을 좀 더 생각하는게 좋을거 같아서 바꿈
+     * @since 2023.04.23 수정
+     */
     @Transactional
     public void submit(Authentication authentication, long toCarpoolId) {
-        Long fromUserId = ((PrincipalDetails) authentication.getPrincipal()).getUser().getId();
+        Carpool carpool = carpoolRepository.findById(toCarpoolId).orElseThrow(() -> {
+            throw new EntityNotFoundException("카풀 게시글이 존재하지 않습니다.");
+        });
+        User loginUser = ((PrincipalDetails) authentication.getPrincipal()).getUser();
 
-        try {
-            submitRepository.mSubmit(fromUserId, toCarpoolId);
-        } catch (Exception e) {
-            throw new CustomApiException("이미 제출을 하셨습니다.");
-        }
+        Submit submit = Submit.builder()
+                .toCarpool(carpool)
+                .fromUser(loginUser)
+                .state(SubmitState.대기)
+                .build();
+
+        submitRepository.save(submit);
     }
 
     @Transactional

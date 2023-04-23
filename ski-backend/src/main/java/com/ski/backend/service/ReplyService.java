@@ -2,7 +2,7 @@ package com.ski.backend.service;
 
 import com.ski.backend.club.entity.ClubBoard;
 import com.ski.backend.club.entity.Reply;
-import com.ski.backend.domain.user.User;
+import com.ski.backend.user.entity.User;
 import com.ski.backend.club.repository.ClubBoardRepository;
 import com.ski.backend.repository.ReplyRepository;
 import com.ski.backend.web.dto.ReplyDto;
