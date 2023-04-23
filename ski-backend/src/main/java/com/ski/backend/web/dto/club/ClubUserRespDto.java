@@ -1,7 +1,7 @@
 package com.ski.backend.web.dto.club;
 
-import com.ski.backend.domain.club.ClubUser;
-import com.ski.backend.domain.club.Role;
+import com.ski.backend.club.entity.ClubUser;
+import com.ski.backend.club.entity.Role;
 import com.ski.backend.domain.common.Status;
 import lombok.Data;
 

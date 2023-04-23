@@ -2,12 +2,10 @@ package com.ski.backend.repository;
 
 import com.ski.backend.domain.Tayo.Role;
 import com.ski.backend.domain.Tayo.TayoUser;
-import com.ski.backend.domain.club.ClubUser;
 import com.ski.backend.domain.common.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 import java.util.Optional;

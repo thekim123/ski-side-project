@@ -2,7 +2,7 @@ package com.ski.backend.web.api;
 
 import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.domain.user.User;
-import com.ski.backend.service.ClubBoardService;
+import com.ski.backend.club.service.ClubBoardService;
 import com.ski.backend.web.dto.club.ClubBoardDto;
 import com.ski.backend.web.dto.CmRespDto;
 import lombok.RequiredArgsConstructor;

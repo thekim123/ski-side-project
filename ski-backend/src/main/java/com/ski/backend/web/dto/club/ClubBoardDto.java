@@ -1,12 +1,8 @@
 package com.ski.backend.web.dto.club;
 
-import com.ski.backend.domain.club.Club;
+import com.ski.backend.club.entity.ClubBoard;
+import com.ski.backend.club.entity.ClubUser;
 
-import com.ski.backend.domain.club.ClubBoard;
-import com.ski.backend.domain.club.ClubUser;
-import com.ski.backend.domain.club.Reply;
-
-import com.ski.backend.domain.user.User;
 import com.ski.backend.web.dto.ReplyDto;
 import lombok.*;
 

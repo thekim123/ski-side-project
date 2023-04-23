@@ -1,6 +1,6 @@
 package com.ski.backend.web.dto.club;
 
-import com.ski.backend.domain.club.Role;
+import com.ski.backend.club.entity.Role;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

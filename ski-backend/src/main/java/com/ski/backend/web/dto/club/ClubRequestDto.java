@@ -1,9 +1,9 @@
 package com.ski.backend.web.dto.club;
 
 import com.ski.backend.domain.common.AgeGrp;
-import com.ski.backend.domain.club.Club;
-import com.ski.backend.domain.club.ClubUser;
-import com.ski.backend.domain.club.Gender;
+import com.ski.backend.club.entity.Club;
+import com.ski.backend.club.entity.ClubUser;
+import com.ski.backend.club.entity.Gender;
 import com.ski.backend.domain.resort.Resort;
 import com.ski.backend.domain.user.User;
 import lombok.*;
@@ -46,9 +46,6 @@ public class ClubRequestDto {
     private List<ClubUser> user;
 
 
-
-
-
     public Club toEntity(User user, Resort resort) {
         return Club.builder()
                 .clubNm(clubNm)
@@ -59,6 +56,7 @@ public class ClubRequestDto {
                 .openYn(openYn)
                 .memo(memo)
                 .url(url)
+                .clubAdmin(user)
                 .build();
     }
 

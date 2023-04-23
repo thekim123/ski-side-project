@@ -22,8 +22,8 @@ public class UserApiController {
 
     @PostMapping("join")
     public ResponseEntity<?> join(@RequestBody UserDto dto) {
-        UserDto joinDto = authService.join(dto);
-        return new ResponseEntity<>(new CmRespDto<>(1, "회원가입완료", joinDto), HttpStatus.OK);
+        authService.join(dto);
+        return new ResponseEntity<>(new CmRespDto<>(1, "회원가입완료", null), HttpStatus.OK);
     }
 
     @PostMapping("login")
@@ -56,7 +56,7 @@ public class UserApiController {
     }
 
     @GetMapping("nickname/{nickname}")
-    public CmRespDto<?> isNicknameDuplicate(@PathVariable String nickname){
+    public CmRespDto<?> isNicknameDuplicate(@PathVariable String nickname) {
         boolean isDuplicate = authService.isNicknameDuplicate(nickname);
         return new CmRespDto<>(1, "닉네임 중복체크 완료", isDuplicate);
     }

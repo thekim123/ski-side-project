@@ -4,7 +4,7 @@ import com.ski.backend.config.auth.PrincipalDetails;
 
 import com.ski.backend.domain.user.User;
 import com.ski.backend.service.ChatService;
-import com.ski.backend.service.ClubService;
+import com.ski.backend.club.service.ClubService;
 import com.ski.backend.web.dto.*;
 import com.ski.backend.web.dto.club.ClubRequestDto;
 import com.ski.backend.web.dto.club.ClubResponseDto;
@@ -84,9 +84,9 @@ public class ClubApiController {
     }
 
     // 동호회 가입
-    @PostMapping("/{userId}/enroll/{clubId}")
-    public CmRespDto<ClubUserRespDto> enrollClub(@PathVariable long userId, @PathVariable long clubId) {
-        clubService.enrollClub(userId, clubId);
+    @PostMapping("/enroll/{clubId}")
+    public CmRespDto<ClubUserRespDto> enrollClub(Authentication auth, @PathVariable long clubId) {
+        clubService.enrollClub(auth, clubId);
         return new CmRespDto<>(1, "동호회 가입 신청", null);
     }
 
@@ -106,9 +106,8 @@ public class ClubApiController {
     }
 
     // 나의 신청 내역 조회
-    // 주소를 수정해야할듯합니다
-    @GetMapping("/{userId}/requestList")
-    public CmRespDto<?> getRequestList(Authentication auth, @PathVariable String userId) {
+    @GetMapping("/requestList")
+    public CmRespDto<?> getRequestList(Authentication auth) {
         List<ClubUserRespDto> requestList = clubService.requestList(auth);
         return new CmRespDto<>(1, "나의 신청내역 조회", requestList);
     }
@@ -122,9 +121,18 @@ public class ClubApiController {
     }
 
 
-    // 관리자가 - 회원->매니저 권한 주기
+    /**
+     * 동호회 관리자가 회원의 권한을 변경함
+     *
+     * @param clubUserId 클럽에서 해당 유저의 id
+     * @param auth       로그인 정보
+     * @param role       변경할 역할
+     * @author 김병조
+     * @since 아마도 2022.11.01
+     * 2023.04.23 thekim123 수정
+     */
     @PutMapping("/updateRole/{clubUserId}")
-    public CmRespDto<?> updateRole(@PathVariable long clubUserId, Authentication auth, String role) {
+    public CmRespDto<?> updateRole(@PathVariable long clubUserId, Authentication auth, @RequestParam String role) {
         clubService.updateRole(clubUserId, auth, role);
         return new CmRespDto<>(1, "권한 수정이 완료되었습니다.", null);
     }

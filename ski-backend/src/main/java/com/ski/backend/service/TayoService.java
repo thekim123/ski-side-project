@@ -5,7 +5,6 @@ import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.domain.Tayo.Role;
 import com.ski.backend.domain.Tayo.Tayo;
 import com.ski.backend.domain.Tayo.TayoUser;
-import com.ski.backend.domain.club.ClubUser;
 import com.ski.backend.domain.common.Status;
 import com.ski.backend.domain.resort.Resort;
 import com.ski.backend.domain.user.User;
@@ -26,7 +25,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

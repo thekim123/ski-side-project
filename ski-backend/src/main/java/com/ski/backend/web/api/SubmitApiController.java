@@ -1,7 +1,7 @@
 package com.ski.backend.web.api;
 
-import com.ski.backend.domain.carpool.Submit;
-import com.ski.backend.service.SubmitService;
+import com.ski.backend.carpool.entity.Submit;
+import com.ski.backend.carpool.service.SubmitService;
 import com.ski.backend.web.dto.carpool.AdmitDto;
 import com.ski.backend.web.dto.CmRespDto;
 import lombok.RequiredArgsConstructor;

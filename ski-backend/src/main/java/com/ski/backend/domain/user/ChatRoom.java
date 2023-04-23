@@ -3,8 +3,7 @@ package com.ski.backend.domain.user;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import com.ski.backend.domain.BaseTimeEntity;
-import com.ski.backend.domain.club.Club;
-import com.ski.backend.domain.club.ClubUser;
+import com.ski.backend.club.entity.Club;
 import lombok.*;
 
 import javax.persistence.*;

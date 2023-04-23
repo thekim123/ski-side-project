@@ -1,8 +1,7 @@
 package com.ski.backend.service;
 
 import com.ski.backend.config.auth.PrincipalDetails;
-import com.ski.backend.domain.common.AgeGrp;
-import com.ski.backend.domain.club.Gender;
+import com.ski.backend.club.entity.Gender;
 import com.ski.backend.domain.user.Role;
 import com.ski.backend.domain.user.User;
 import com.ski.backend.repository.UserRepository;
@@ -20,8 +19,9 @@ public class AuthService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    // TODO: 회원 관련 로직 수정
     @Transactional
-    public UserDto join(UserDto dto) {
+    public void join(UserDto dto) {
         User user = new User();
         user.setUsername(dto.getUsername());
         user.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
@@ -30,13 +30,11 @@ public class AuthService {
         user.setRoles(Role.ROLE_GUEST);
         user.setNickname(dto.getNickname());
         userRepository.save(user);
-        return new UserDto().toDto(user);
     }
 
     @Transactional(readOnly = true)
     public PrincipalDetails userLogin(Authentication authentication) {
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        return principalDetails;
+        return (PrincipalDetails) authentication.getPrincipal();
     }
 
     @Transactional

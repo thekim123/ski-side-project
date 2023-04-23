@@ -3,8 +3,8 @@ package com.ski.backend.web.api;
 
 import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.domain.board.Board;
-import com.ski.backend.service.BoardService;
-import com.ski.backend.service.LikesService;
+import com.ski.backend.board.service.BoardService;
+import com.ski.backend.board.service.LikesService;
 import com.ski.backend.web.dto.BoardDto;
 import com.ski.backend.web.dto.CmRespDto;
 import com.ski.backend.web.dto.LikesDto;

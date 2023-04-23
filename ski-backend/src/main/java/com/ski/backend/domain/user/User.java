@@ -7,10 +7,10 @@ import com.ski.backend.domain.board.Board;
 import com.ski.backend.domain.board.Bookmark;
 import com.ski.backend.domain.board.Dislikes;
 import com.ski.backend.domain.board.Likes;
-import com.ski.backend.domain.carpool.Carpool;
-import com.ski.backend.domain.club.Reply;
-import com.ski.backend.domain.club.ClubUser;
-import com.ski.backend.domain.club.Gender;
+import com.ski.backend.carpool.entity.Carpool;
+import com.ski.backend.club.entity.Reply;
+import com.ski.backend.club.entity.ClubUser;
+import com.ski.backend.club.entity.Gender;
 import lombok.*;
 
 import javax.persistence.*;

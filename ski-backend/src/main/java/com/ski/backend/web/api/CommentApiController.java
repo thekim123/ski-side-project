@@ -2,7 +2,7 @@ package com.ski.backend.web.api;
 
 import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.domain.user.User;
-import com.ski.backend.service.CommentService;
+import com.ski.backend.board.service.CommentService;
 import com.ski.backend.web.dto.CmRespDto;
 import com.ski.backend.web.dto.CommentDto;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
 package com.ski.backend.web.api;
 
-import com.ski.backend.domain.carpool.Carpool;
-import com.ski.backend.service.CarpoolService;
+import com.ski.backend.carpool.entity.Carpool;
+import com.ski.backend.carpool.service.CarpoolService;
 import com.ski.backend.web.dto.carpool.CarpoolRequestDto;
 import com.ski.backend.web.dto.CmRespDto;
 import com.ski.backend.web.dto.carpool.CarpoolResponseDto;
