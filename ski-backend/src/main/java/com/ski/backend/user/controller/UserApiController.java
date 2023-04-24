@@ -1,4 +1,4 @@
-package com.ski.backend.user.web;
+package com.ski.backend.user.controller;
 
 import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.user.service.AuthService;

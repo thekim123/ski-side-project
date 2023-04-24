@@ -1,4 +1,4 @@
-package com.ski.backend.user.web;
+package com.ski.backend.user.controller;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

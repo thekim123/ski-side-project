@@ -1,13 +1,11 @@
 package com.ski.backend.club.service;
 
-import com.ski.backend.chat.reopository.ChatRoomRepository;
 import com.ski.backend.club.entity.Club;
 import com.ski.backend.club.entity.ClubUser;
 import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.resort.repository.ResortRepository;
 import com.ski.backend.user.entity.Status;
 import com.ski.backend.resort.entity.Resort;
-import com.ski.backend.chat.entity.ChatRoom;
 import com.ski.backend.user.entity.User;
 import com.ski.backend.handler.ex.CustomApiException;
 import com.ski.backend.club.repository.ClubRepository;
@@ -43,8 +41,6 @@ public class ClubService {
 
     private final UserRepository userRepository;
     private final ResortRepository resortRepository;
-
-    private final ChatRoomRepository chatRoomRepository;
 
 
     // 동호회 첫 화면 목록조회
@@ -90,13 +86,6 @@ public class ClubService {
         clubRepository.save(club);
         ClubUser clubUser = new ClubUser(club, user, Status.ADMIT, ADMIN);
         clubUserRepository.save(clubUser);
-
-        // 관리자 채팅방 추가
-        ChatRoom adminChatRoom = ChatRoom.builder()
-                .user(findUser)
-                .roomName(club.getClubNm())
-                .build();
-        chatRoomRepository.save(adminChatRoom);
     }
 
     // 동호회 삭제
@@ -159,10 +148,6 @@ public class ClubService {
         if (cu.getStatus().equals(Status.ADMIT)) {
             club.addMember();
         }
-
-        if (club.getOpenYn().equals("Y")) {
-            insertChatrooms(club, cu);
-        }
         clubUserRepository.save(cu);
     }
 
@@ -193,8 +178,6 @@ public class ClubService {
                     club.addMember();
 
                     // 클럽 가입 처리시 관리자와 신규 가입자 본인 채팅방 다중 insert
-                    List<ChatRoom> chatroomList = insertChatrooms(club, clubUser);
-                    chatRoomRepository.saveAll(chatroomList);
                     return "가입 승인 완료";
                 } else {
                     clubUser.decline();
@@ -249,33 +232,4 @@ public class ClubService {
         Club club = clubRepository.findById(clubId).orElseThrow(() -> new CustomApiException("글 상세보기 실패: 해당 게시글을 찾을수 없습니다."));
         return clubRepository.findById(clubId).map(e -> new ClubResponseDto(club));
     }
-
-    // 클럽 가입 처리시 관리자와 신규 가입자 본인 채팅방 다중 insert 하는 매서드
-    private List<ChatRoom> insertChatrooms(Club club, ClubUser clubUser) {
-        String roomName = club.getClubNm() + "-" + clubUser.getUser().getNickname();
-        List<ChatRoom> chatRooms = new ArrayList<>();
-
-        ChatRoom chatRoom = ChatRoom.builder()
-                .roomName(roomName)
-                .user(clubUser.getUser())
-                .club(club)
-                .build();
-        chatRooms.add(chatRoom);
-
-        club.getClubUsers().forEach(c -> {
-            if (c.getClubRole().equals(ADMIN)) {
-                ChatRoom chatRoomOfAdmin = ChatRoom.builder()
-                        .user(c.getUser())
-                        .roomName(roomName)
-                        .club(club)
-                        .build();
-                chatRooms.add(chatRoomOfAdmin);
-            }
-        });
-
-        return chatRooms;
-
-    }
-
-
 }

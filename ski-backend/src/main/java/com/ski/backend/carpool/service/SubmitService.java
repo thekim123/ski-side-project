@@ -1,30 +1,29 @@
 package com.ski.backend.carpool.service;
 
 import com.ski.backend.carpool.entity.SubmitState;
+import com.ski.backend.config.AuditorProvider;
 import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.carpool.entity.Carpool;
 import com.ski.backend.carpool.entity.Submit;
 import com.ski.backend.user.entity.User;
-import com.ski.backend.chat.entity.Whisper;
 import com.ski.backend.carpool.repository.CarpoolRepository;
 import com.ski.backend.carpool.repository.SubmitRepository;
-import com.ski.backend.chat.reopository.WhisperRepository;
 import com.ski.backend.carpool.dto.AdmitDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class SubmitService {
     private final SubmitRepository submitRepository;
     private final CarpoolRepository carpoolRepository;
-    private final WhisperRepository whisperRepository;
 
     @Transactional(readOnly = true)
     public List<Submit> getSubmit(long toCarpoolId) {
@@ -57,17 +56,38 @@ public class SubmitService {
         submitRepository.save(submit);
     }
 
+    /**
+     * 카풀 신청 취소 서비스 로직
+     *
+     * @param authentication 로그인 정보
+     * @param toCarpoolId    신청하려는 카풀 게시글 id
+     * @since last modified at 2023.04.24
+     */
     @Transactional
     public void unSubmit(Authentication authentication, long toCarpoolId) {
         Long fromUserId = ((PrincipalDetails) authentication.getPrincipal()).getUser().getId();
         submitRepository.mUnSubmit(fromUserId, toCarpoolId);
     }
 
+    /**
+     * 카풀 승인 서비스 로직
+     *
+     * @param dto            승인 dto
+     * @param authentication 로그인 정보
+     * @apiNote 승인을 받으면 채팅창이 연결되도록 하였다.
+     * 현재는 채팅서버에서 인증이 불가능하여 이곳의 db를 사용하고 있는 상황이다.
+     * @since last modified at 2023.04.24
+     */
     @Transactional
     public void admit(AdmitDto dto, Authentication authentication) {
-
         long carpoolId = dto.getToCarpoolId();
         Carpool carpoolEntity = carpoolRepository.findById(carpoolId).orElseThrow(() -> new EntityNotFoundException("카풀 게시글을 찾을 수 없습니다."));
+
+        AuditorProvider ad = new AuditorProvider();
+
+        if (isCarpoolWriter(carpoolEntity, ad)) {
+            throw new AccessDeniedException("해당 게시글의 작성자가 아닙니다.");
+        }
 
         carpoolEntity.increaseCurPassenger();
         Submit submitEntity = submitRepository.findByFromUserIdAndToCarpoolId(dto.getAdmitUserId(), dto.getToCarpoolId()).orElseThrow(() -> {
@@ -75,22 +95,22 @@ public class SubmitService {
         });
         submitEntity.setState("승인");
 
-        User principal = ((PrincipalDetails) authentication.getPrincipal()).getUser();
+    }
 
-        Whisper whisperEntity = Whisper.builder()
-                .principal(principal)
-                .toUsername(carpoolEntity.getWriter().getNickname())
-                .build();
-
-        Whisper writerWhisperEntity = Whisper.builder()
-                .principal(carpoolEntity.getWriter())
-                .toUsername(principal.getNickname())
-                .build();
-
-        List<Whisper> whispers = new ArrayList<>();
-        whispers.add(whisperEntity);
-        whispers.add(writerWhisperEntity);
-        whisperRepository.saveAll(whispers);
+    /**
+     * 카풀 게시글의 작성자인지 체크하는 메서드
+     *
+     * @param carpoolEntity 카풀 entity
+     * @param ad            auditorProvider
+     * @return 카풀 게시글의 작성자(true)인지 여부
+     * @apiNote 단순한 메서드일텐데 왜 이렇게 길어지게 되었느냐면,
+     * ad 에서 username 을 가져올 때 타입이 Optional 이고, Optional<String>과 String 을 비교하는 데에서 경고가 나왔다.
+     * 그래서 .get()을 붙이니 isPresent() 없이 get()을 썻다고 경고가 재차 뜸.
+     * 그래서 길어졌다.
+     * @since 2023.04.24
+     */
+    private static boolean isCarpoolWriter(Carpool carpoolEntity, AuditorProvider ad) {
+        return ad.getCurrentAuditor().isPresent() && !Objects.equals(ad.getCurrentAuditor().get(), carpoolEntity.getWriter().getUsername());
     }
 
     @Transactional

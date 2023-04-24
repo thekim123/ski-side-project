@@ -1,4 +1,4 @@
-package com.ski.backend;
+package com.ski.backend.common;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

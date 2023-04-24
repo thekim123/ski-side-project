@@ -1,8 +1,6 @@
 package com.ski.backend.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.ski.backend.chat.entity.ChatRoom;
-import com.ski.backend.chat.entity.Whisper;
 import com.ski.backend.common.BaseTimeEntity;
 import com.ski.backend.tayo.entity.TayoUser;
 import com.ski.backend.board.entity.Board;
@@ -81,16 +79,6 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Bookmark> bookmarks = new ArrayList<>();
-
-    @JsonIgnoreProperties({"user"})
-    @OneToMany(cascade = CascadeType.ALL)
-    @Builder.Default
-    private List<Whisper> whispers = new ArrayList<>();
-
-    @JsonIgnoreProperties({"user"})
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @Builder.Default
-    private List<ChatRoom> chatRooms = new ArrayList<>();
 
     @JsonIgnoreProperties({"user"})
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

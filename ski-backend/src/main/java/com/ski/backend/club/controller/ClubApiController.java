@@ -4,7 +4,6 @@ import com.ski.backend.common.CmRespDto;
 import com.ski.backend.config.auth.PrincipalDetails;
 
 import com.ski.backend.user.entity.User;
-import com.ski.backend.chat.service.ChatService;
 import com.ski.backend.club.service.ClubService;
 import com.ski.backend.club.dto.ClubRequestDto;
 import com.ski.backend.club.dto.ClubResponseDto;
@@ -27,7 +26,6 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 public class ClubApiController {
 
     private final ClubService clubService;
-    private final ChatService chatService;
 
 
     // 동호회 첫화면 조회
@@ -63,7 +61,6 @@ public class ClubApiController {
     @DeleteMapping("/delete/{clubId}")
     public CmRespDto<ClubResponseDto> delete(@PathVariable long clubId, Authentication auth) {
         clubService.delete(clubId, auth);
-        chatService.deleteAllChatRoomWhenDeleteClub(clubId);
         return new CmRespDto<>(1, "동호회 삭제 완료", null);
     }
 
@@ -79,7 +76,6 @@ public class ClubApiController {
     @DeleteMapping("/leave/{userId}/{clubId}")
     public CmRespDto<ClubResponseDto> deleteMember(@PathVariable long userId, @PathVariable long clubId) {
         clubService.deleteMember(userId, clubId);
-        chatService.deleteChatRoomWhenLeave(userId, clubId);
         return new CmRespDto<>(1, "동호회 탈퇴 완료", null);
     }
 
