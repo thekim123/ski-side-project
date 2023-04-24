@@ -3,7 +3,7 @@ package com.ski.backend.user.web;
 import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.user.service.AuthService;
 import com.ski.backend.user.service.UserService;
-import com.ski.backend.web.dto.CmRespDto;
+import com.ski.backend.common.CmRespDto;
 import com.ski.backend.user.dto.UserDto;
 import com.ski.backend.user.dto.UserUpdateDto;
 import lombok.RequiredArgsConstructor;

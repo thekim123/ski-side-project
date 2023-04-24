@@ -1,13 +1,13 @@
 package com.ski.backend.board.service;
 
 import com.ski.backend.config.auth.PrincipalDetails;
-import com.ski.backend.domain.board.Board;
-import com.ski.backend.domain.board.Comment;
+import com.ski.backend.board.entity.Board;
+import com.ski.backend.board.entity.Comment;
 import com.ski.backend.user.entity.User;
 import com.ski.backend.handler.ex.CustomApiException;
 import com.ski.backend.board.repository.BoardRepository;
 import com.ski.backend.board.repository.CommentRepository;
-import com.ski.backend.web.dto.CommentDto;
+import com.ski.backend.board.dto.CommentDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;

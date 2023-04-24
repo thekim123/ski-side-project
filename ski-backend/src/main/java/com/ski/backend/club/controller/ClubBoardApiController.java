@@ -4,7 +4,7 @@ import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.user.entity.User;
 import com.ski.backend.club.service.ClubBoardService;
 import com.ski.backend.club.dto.ClubBoardDto;
-import com.ski.backend.web.dto.CmRespDto;
+import com.ski.backend.common.CmRespDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

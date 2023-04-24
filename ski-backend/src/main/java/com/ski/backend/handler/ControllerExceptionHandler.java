@@ -1,7 +1,7 @@
 package com.ski.backend.handler;
 
 import com.ski.backend.handler.ex.CustomApiException;
-import com.ski.backend.web.dto.CmRespDto;
+import com.ski.backend.common.CmRespDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

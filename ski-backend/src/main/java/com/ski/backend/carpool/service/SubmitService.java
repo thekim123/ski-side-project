@@ -5,11 +5,10 @@ import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.carpool.entity.Carpool;
 import com.ski.backend.carpool.entity.Submit;
 import com.ski.backend.user.entity.User;
-import com.ski.backend.user.entity.Whisper;
-import com.ski.backend.handler.ex.CustomApiException;
+import com.ski.backend.chat.entity.Whisper;
 import com.ski.backend.carpool.repository.CarpoolRepository;
 import com.ski.backend.carpool.repository.SubmitRepository;
-import com.ski.backend.repository.WhisperRepository;
+import com.ski.backend.chat.reopository.WhisperRepository;
 import com.ski.backend.carpool.dto.AdmitDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -64,18 +63,17 @@ public class SubmitService {
         submitRepository.mUnSubmit(fromUserId, toCarpoolId);
     }
 
-    // 테스트해야되는 메서드
     @Transactional
     public void admit(AdmitDto dto, Authentication authentication) {
 
         long carpoolId = dto.getToCarpoolId();
         Carpool carpoolEntity = carpoolRepository.findById(carpoolId).orElseThrow(() -> new EntityNotFoundException("카풀 게시글을 찾을 수 없습니다."));
 
-        // 잘 되는지 테스트해야 돼요.
         carpoolEntity.increaseCurPassenger();
         Submit submitEntity = submitRepository.findByFromUserIdAndToCarpoolId(dto.getAdmitUserId(), dto.getToCarpoolId()).orElseThrow(() -> {
             throw new EntityNotFoundException("해당 카풀 신청 데이터를 찾을 수 없습니다.");
         });
+        submitEntity.setState("승인");
 
         User principal = ((PrincipalDetails) authentication.getPrincipal()).getUser();
 
@@ -93,8 +91,6 @@ public class SubmitService {
         whispers.add(whisperEntity);
         whispers.add(writerWhisperEntity);
         whisperRepository.saveAll(whispers);
-
-        submitEntity.setState("승인");
     }
 
     @Transactional

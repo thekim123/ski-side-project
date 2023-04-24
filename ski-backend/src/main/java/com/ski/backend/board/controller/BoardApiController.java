@@ -2,12 +2,12 @@ package com.ski.backend.board.controller;
 
 
 import com.ski.backend.config.auth.PrincipalDetails;
-import com.ski.backend.domain.board.Board;
+import com.ski.backend.board.entity.Board;
 import com.ski.backend.board.service.BoardService;
 import com.ski.backend.board.service.LikesService;
-import com.ski.backend.web.dto.BoardDto;
-import com.ski.backend.web.dto.CmRespDto;
-import com.ski.backend.web.dto.LikesDto;
+import com.ski.backend.board.dto.BoardDto;
+import com.ski.backend.common.CmRespDto;
+import com.ski.backend.board.dto.LikesDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

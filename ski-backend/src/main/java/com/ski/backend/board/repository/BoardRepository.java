@@ -1,6 +1,6 @@
 package com.ski.backend.board.repository;
 
-import com.ski.backend.domain.board.Board;
+import com.ski.backend.board.entity.Board;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

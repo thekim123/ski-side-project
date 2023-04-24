@@ -3,7 +3,7 @@ package com.ski.backend.board.service;
 import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.board.repository.DislikesRepository;
 import com.ski.backend.board.repository.LikesRepository;
-import com.ski.backend.web.dto.LikesDto;
+import com.ski.backend.board.dto.LikesDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;

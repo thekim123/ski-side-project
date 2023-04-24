@@ -1,8 +1,8 @@
 package com.ski.backend.club.entity;
 
-import com.ski.backend.domain.BaseTimeEntity;
-import com.ski.backend.domain.common.AgeGrp;
-import com.ski.backend.domain.resort.Resort;
+import com.ski.backend.common.BaseTimeEntity;
+import com.ski.backend.user.entity.AgeGrp;
+import com.ski.backend.resort.entity.Resort;
 import com.ski.backend.user.entity.User;
 import com.ski.backend.club.dto.ClubRequestDto;
 import lombok.*;

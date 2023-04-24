@@ -2,9 +2,9 @@ package com.ski.backend.club.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.ski.backend.domain.BaseTimeEntity;
+import com.ski.backend.common.BaseTimeEntity;
 import com.ski.backend.user.entity.User;
-import com.ski.backend.web.dto.ReplyDto;
+import com.ski.backend.club.dto.ReplyDto;
 import lombok.*;
 
 import javax.persistence.*;

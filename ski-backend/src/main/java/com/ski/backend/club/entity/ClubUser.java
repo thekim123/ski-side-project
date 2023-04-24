@@ -2,8 +2,8 @@ package com.ski.backend.club.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.ski.backend.domain.BaseTimeEntity;
-import com.ski.backend.domain.common.Status;
+import com.ski.backend.common.BaseTimeEntity;
+import com.ski.backend.user.entity.Status;
 import com.ski.backend.user.entity.User;
 import lombok.*;
 

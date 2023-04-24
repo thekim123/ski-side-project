@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ski.backend.config.auth.PrincipalDetails;
-import com.ski.backend.domain.board.Bookmark;
+import com.ski.backend.board.entity.Bookmark;
 import com.ski.backend.user.entity.User;
 
 import lombok.RequiredArgsConstructor;

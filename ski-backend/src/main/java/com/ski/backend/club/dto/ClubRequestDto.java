@@ -1,10 +1,10 @@
 package com.ski.backend.club.dto;
 
-import com.ski.backend.domain.common.AgeGrp;
+import com.ski.backend.user.entity.AgeGrp;
 import com.ski.backend.club.entity.Club;
 import com.ski.backend.club.entity.ClubUser;
 import com.ski.backend.club.entity.Gender;
-import com.ski.backend.domain.resort.Resort;
+import com.ski.backend.resort.entity.Resort;
 import com.ski.backend.user.entity.User;
 import lombok.*;
 

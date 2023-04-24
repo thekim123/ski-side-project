@@ -1,12 +1,14 @@
 package com.ski.backend.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.ski.backend.domain.BaseTimeEntity;
-import com.ski.backend.domain.Tayo.TayoUser;
-import com.ski.backend.domain.board.Board;
-import com.ski.backend.domain.board.Bookmark;
-import com.ski.backend.domain.board.Dislikes;
-import com.ski.backend.domain.board.Likes;
+import com.ski.backend.chat.entity.ChatRoom;
+import com.ski.backend.chat.entity.Whisper;
+import com.ski.backend.common.BaseTimeEntity;
+import com.ski.backend.tayo.entity.TayoUser;
+import com.ski.backend.board.entity.Board;
+import com.ski.backend.board.entity.Bookmark;
+import com.ski.backend.board.entity.Dislikes;
+import com.ski.backend.board.entity.Likes;
 import com.ski.backend.carpool.entity.Carpool;
 import com.ski.backend.club.entity.Reply;
 import com.ski.backend.club.entity.ClubUser;

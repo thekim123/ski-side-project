@@ -3,7 +3,7 @@ package com.ski.backend.carpool.controller;
 import com.ski.backend.carpool.entity.Submit;
 import com.ski.backend.carpool.service.SubmitService;
 import com.ski.backend.carpool.dto.AdmitDto;
-import com.ski.backend.web.dto.CmRespDto;
+import com.ski.backend.common.CmRespDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;

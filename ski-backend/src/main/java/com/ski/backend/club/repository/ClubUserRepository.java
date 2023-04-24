@@ -2,7 +2,7 @@ package com.ski.backend.club.repository;
 
 import com.ski.backend.club.entity.ClubUser;
 import com.ski.backend.club.entity.ClubRole;
-import com.ski.backend.domain.common.Status;
+import com.ski.backend.user.entity.Status;
 import com.ski.backend.user.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

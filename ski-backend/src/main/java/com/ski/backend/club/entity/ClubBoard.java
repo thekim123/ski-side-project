@@ -1,7 +1,7 @@
 package com.ski.backend.club.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ski.backend.domain.BaseTimeEntity;
+import com.ski.backend.common.BaseTimeEntity;
 import com.ski.backend.club.dto.ClubBoardDto;
 import lombok.*;
 

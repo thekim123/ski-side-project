@@ -3,7 +3,6 @@ package com.ski.backend.club.dto;
 import com.ski.backend.club.entity.ClubBoard;
 import com.ski.backend.club.entity.ClubUser;
 
-import com.ski.backend.web.dto.ReplyDto;
 import lombok.*;
 
 

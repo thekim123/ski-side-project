@@ -1,6 +1,6 @@
 package com.ski.backend.board.repository;
 
-import com.ski.backend.domain.board.Likes;
+import com.ski.backend.board.entity.Likes;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

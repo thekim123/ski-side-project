@@ -1,11 +1,11 @@
 package com.ski.backend.club.controller;
 
+import com.ski.backend.common.CmRespDto;
 import com.ski.backend.config.auth.PrincipalDetails;
 
 import com.ski.backend.user.entity.User;
-import com.ski.backend.service.ChatService;
+import com.ski.backend.chat.service.ChatService;
 import com.ski.backend.club.service.ClubService;
-import com.ski.backend.web.dto.*;
 import com.ski.backend.club.dto.ClubRequestDto;
 import com.ski.backend.club.dto.ClubResponseDto;
 import com.ski.backend.club.dto.ClubUserRespDto;

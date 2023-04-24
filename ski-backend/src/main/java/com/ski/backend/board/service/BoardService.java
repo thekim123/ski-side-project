@@ -1,14 +1,14 @@
 package com.ski.backend.board.service;
 
 import com.ski.backend.config.auth.PrincipalDetails;
-import com.ski.backend.domain.board.Board;
-import com.ski.backend.domain.resort.Resort;
-import com.ski.backend.domain.resort.ResortName;
+import com.ski.backend.board.entity.Board;
+import com.ski.backend.resort.entity.Resort;
+import com.ski.backend.resort.entity.ResortName;
 import com.ski.backend.user.entity.User;
 import com.ski.backend.handler.ex.CustomApiException;
 import com.ski.backend.board.repository.BoardRepository;
-import com.ski.backend.repository.ResortRepository;
-import com.ski.backend.web.dto.BoardDto;
+import com.ski.backend.resort.repository.ResortRepository;
+import com.ski.backend.board.dto.BoardDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.Provider;

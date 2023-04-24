@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.ski.backend.domain.board.Bookmark;
+import com.ski.backend.board.entity.Bookmark;
 import com.ski.backend.user.entity.User;
 
 public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {

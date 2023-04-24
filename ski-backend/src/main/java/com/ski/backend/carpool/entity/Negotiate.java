@@ -1,6 +1,5 @@
 package com.ski.backend.carpool.entity;
 
-import com.ski.backend.domain.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;

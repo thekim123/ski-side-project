@@ -1,7 +1,7 @@
 package com.ski.backend.user.web;
 
-import com.ski.backend.service.ChatService;
-import com.ski.backend.web.dto.CmRespDto;
+import com.ski.backend.chat.service.ChatService;
+import com.ski.backend.common.CmRespDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;

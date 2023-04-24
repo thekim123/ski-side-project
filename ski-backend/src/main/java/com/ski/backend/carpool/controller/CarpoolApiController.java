@@ -3,7 +3,7 @@ package com.ski.backend.carpool.controller;
 import com.ski.backend.carpool.entity.Carpool;
 import com.ski.backend.carpool.service.CarpoolService;
 import com.ski.backend.carpool.dto.CarpoolRequestDto;
-import com.ski.backend.web.dto.CmRespDto;
+import com.ski.backend.common.CmRespDto;
 import com.ski.backend.carpool.dto.CarpoolResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

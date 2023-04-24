@@ -2,7 +2,7 @@ package com.ski.backend.board.controller;
 
 import com.ski.backend.config.auth.PrincipalDetails;
 import com.ski.backend.board.service.BookmarkService;
-import com.ski.backend.web.dto.CmRespDto;
+import com.ski.backend.common.CmRespDto;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
