@@ -1,7 +1,7 @@
 package com.skiproject.sseserver.web;
 
-import com.skiproject.sseserver.domain.Chat;
-import com.skiproject.sseserver.repository.ChatRepository;
+import com.skiproject.sseserver.chat.entity.Chat;
+import com.skiproject.sseserver.chat.repository.ChatRepository;
 import com.skiproject.sseserver.web.dto.ChatRoomDto;
 import com.skiproject.sseserver.web.dto.ChatWhisperDto;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,27 +28,33 @@ public class ChatController {
     }
 
     @CrossOrigin
-    @GetMapping(value = "/room/{roomName}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<Chat> findByRoomName(@PathVariable String roomName) {
-        return chatRepository.mFindByRoomName(roomName).subscribeOn(Schedulers.boundedElastic());
+    @GetMapping(value = "/room/{roomName}",
+            produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Chat> getMessageByRoomName(@PathVariable String roomName) {
+        return chatRepository.mFindByRoomName(roomName)
+                .subscribeOn(Schedulers.boundedElastic());
     }
 
     @CrossOrigin
-    @GetMapping(value = "/room", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(value = "/room",
+            produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Chat> joinRoom(@RequestBody ChatRoomDto dto) {
         String roomName = dto.getRoomName();
-        return chatRepository.mFindByRoomName(roomName).subscribeOn(Schedulers.boundedElastic());
+        return chatRepository.mFindByRoomName(roomName)
+                .subscribeOn(Schedulers.boundedElastic());
     }
 
     @CrossOrigin
-    @GetMapping(value = "/sender/{sender}/receiver/{receiver}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(value = "/sender/{sender}/receiver/{receiver}",
+            produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Chat> getMsg(@PathVariable String sender, @PathVariable String receiver) {
         return chatRepository.mFindBySender(sender, receiver)
                 .subscribeOn(Schedulers.boundedElastic());
     }
 
     @CrossOrigin
-    @GetMapping(value = "/whisper", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(value = "/whisper",
+            produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Chat> getMsg(@RequestBody ChatWhisperDto dto) {
         String sender = dto.getSender();
         String receiver = dto.getReceiver();

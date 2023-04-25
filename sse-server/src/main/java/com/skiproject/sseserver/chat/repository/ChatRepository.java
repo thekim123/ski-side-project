@@ -1,6 +1,6 @@
-package com.skiproject.sseserver.repository;
+package com.skiproject.sseserver.chat.repository;
 
-import com.skiproject.sseserver.domain.Chat;
+import com.skiproject.sseserver.chat.entity.Chat;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.data.mongodb.repository.Tailable;

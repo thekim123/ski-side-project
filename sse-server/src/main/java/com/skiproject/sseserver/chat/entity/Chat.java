@@ -1,4 +1,4 @@
-package com.skiproject.sseserver.domain;
+package com.skiproject.sseserver.chat.entity;
 
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
