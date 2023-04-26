@@ -27,9 +27,7 @@ public class ClubBoardApiController {
     // 게시판 생성
     @PostMapping
     public CmRespDto<?> create(@Valid @RequestBody ClubBoardDto dto, BindingResult bindingResult, Authentication auth) {
-        PrincipalDetails principalDetails = (PrincipalDetails) auth.getPrincipal();
-        User user = principalDetails.getUser();
-        clubBoardService.createClubBoard(dto, user);
+        clubBoardService.createClubBoard(dto, auth);
         return new CmRespDto<>(1, "클럽게시판 생성 완료", null);
     }
 

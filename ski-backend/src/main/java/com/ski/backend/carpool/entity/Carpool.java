@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-// TODO : 카풀 - 아래 조건들도 클래스로는 통합할까?
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -60,7 +59,6 @@ public class Carpool extends BaseTimeEntity {
     }
 
 
-    // TODO: 이 로직을 서비스 레이어로 옮겨야 댐
     public void update(CarpoolRequestDto dto) {
         this.passenger = dto.getPassenger();
         this.departure = dto.getDeparture();

@@ -43,8 +43,7 @@ public class BoardApiController {
 
     @GetMapping("/")
     public CmRespDto<?> getAllBoard(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable, Authentication authentication) {
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        long principalId = principalDetails.getUser().getId();
+        long principalId = ((PrincipalDetails) authentication.getPrincipal()).getUser().getId();
         Page<Board> pages = boardService.getAllBoardList(pageable, principalId);
         return new CmRespDto<>(1, "전체 게시글 조회 완료", pages);
     }

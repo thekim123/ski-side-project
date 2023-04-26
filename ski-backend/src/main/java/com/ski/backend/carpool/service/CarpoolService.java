@@ -106,7 +106,6 @@ public class CarpoolService {
      *
      * @param pageable 페이지 정보
      * @return 카풀 게시글 페이징한 것
-     * TODO: 이것도 entity 쌩으로 던지는데 수정할 것.
      */
     @Transactional(readOnly = true)
     public Page<Carpool> getAll(Pageable pageable) {

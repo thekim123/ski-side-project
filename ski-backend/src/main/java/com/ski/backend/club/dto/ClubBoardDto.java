@@ -56,6 +56,16 @@ public class ClubBoardDto {
 
     private String nickName;
 
+
+    // 관리자 or 매니저의 게시글 강제 수정/삭제
+    private String forcedEdit;
+
+    // 삭제한 관리자 or 매니저  username
+    private String forceEditor;
+
+    // 삭제 일시
+    private LocalDateTime forceEditedAt;
+
     private LocalDateTime createDt;
 
     private LocalDateTime updateDt;
@@ -65,10 +75,10 @@ public class ClubBoardDto {
         this.id = cb.getId();
         //this.replies =cb.getReplies().stream().map(ReplyDto::new).collect(Collectors.toList());
         this.replies = cb.getReplies().stream().map(r -> new ReplyDto(r, r.getUser().getNickname())).collect(Collectors.toList());
-        this.title =cb.getTitle();
-        this.content =cb.getContent();
-        this.tempFlag =cb.getTempFlag();
-        this.sortScope =cb.getSortScope();
+        this.title = cb.getTitle();
+        this.content = cb.getContent();
+        this.tempFlag = cb.getTempFlag();
+        this.sortScope = cb.getSortScope();
         this.nickName = cb.getClubUser().getUser().getNickname();
         this.createDt = cb.getCreatedDate();
     }

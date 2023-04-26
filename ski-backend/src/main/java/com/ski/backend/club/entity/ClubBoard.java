@@ -1,12 +1,14 @@
 package com.ski.backend.club.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ski.backend.club.dto.ForceType;
 import com.ski.backend.common.BaseTimeEntity;
 import com.ski.backend.club.dto.ClubBoardDto;
 import lombok.*;
 
 import javax.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +63,14 @@ public class ClubBoard extends BaseTimeEntity {
     @Column(nullable = false)
     private String sortScope;
 
+    // 관리자 or 매니저의 게시글 강제 수정/삭제
+    private String forcedEdit;
+
+    // 삭제한 관리자 or 매니저  username
+    private String forceEditor;
+
+    // 삭제 일시
+    private LocalDateTime forceEditedAt;
 
     public void update(ClubBoardDto cb) {
         this.title = cb.getTitle();
@@ -68,4 +78,17 @@ public class ClubBoard extends BaseTimeEntity {
         this.tempFlag = cb.getTempFlag();
         this.sortScope = cb.getSortScope();
     }
+
+    public void forceUpdate(ClubBoardDto dto) {
+        this.forcedEdit = "UPDATE";
+        this.forceEditedAt = LocalDateTime.now();
+        this.forceEditor = dto.getForceEditor();
+    }
+
+    public void forceDelete(String forceEditor) {
+        this.forcedEdit = "DELETE";
+        this.forceEditedAt = LocalDateTime.now();
+        this.forceEditor = forceEditor;
+    }
+
 }

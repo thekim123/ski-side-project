@@ -19,7 +19,6 @@ public class AuthService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    // TODO: 회원 관련 로직 수정
     @Transactional
     public void join(UserDto dto) {
         User user = User.builder()
