@@ -55,7 +55,6 @@ public class NotificationController {
     }
 
     /**
-     * TODO: 몽고 디비 가서 버퍼사이즈 조정할 것
      *
      * @param receiver 수신자의 username 을 보내주세요.
      * @return 알림의 Flux
@@ -71,7 +70,6 @@ public class NotificationController {
 
     /**
      * 알림을 읽었을 때 호출하는 api
-     * TODO: 몽고디비 collection 버퍼 사이즈 조정 후 테스트 해야함.
      *
      * @param notificationId 알림 id
      * @return 메서드의 반환 타입은 void 이지만,
@@ -88,9 +86,7 @@ public class NotificationController {
         notificationRepository.findById(notificationId).flatMap(target -> {
                     target.read();
                     return notificationRepository.save(target);
-                }).thenReturn(ServerResponse.ok()
-                        .contentType(MediaType.TEXT_PLAIN)
-                        .body("읽음 처리가 완료되었습니다.", String.class))
+                }).thenReturn(ServerResponse.ok())
                 .subscribe();
     }
 }
