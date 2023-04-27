@@ -60,6 +60,7 @@ public class User extends BaseTimeEntity {
     @Column
     private Role roles;
 
+    // TODO: 얘네들의 foreign key 를 끊을거야
     @JsonIgnoreProperties({"user"})
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @Builder.Default

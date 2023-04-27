@@ -21,7 +21,6 @@ public class LikesService {
         long principalId = getPrincipalId(authentication);
         long boardId = dto.getBoardId();
         likesRepository.mLike(boardId, principalId);
-
         if (dto.isDislikeState()) {
             dislikesRepository.mUnDislike(boardId, principalId);
         }
@@ -36,12 +35,9 @@ public class LikesService {
 
     @Transactional
     public void dislike(LikesDto dto, Authentication authentication) {
-
         long principalId = getPrincipalId(authentication);
         long boardId = dto.getBoardId();
-
         dislikesRepository.mDislike(boardId, principalId);
-
         if (dto.isLikeState()) {
             likesRepository.mUnlike(boardId, principalId);
         }
@@ -51,7 +47,6 @@ public class LikesService {
     public void unDislike(LikesDto dto, Authentication authentication) {
         long principalId = getPrincipalId(authentication);
         long boardId = dto.getBoardId();
-
         dislikesRepository.mUnDislike(boardId, principalId);
     }
 

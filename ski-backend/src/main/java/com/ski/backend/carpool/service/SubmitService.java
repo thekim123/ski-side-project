@@ -72,19 +72,19 @@ public class SubmitService {
     /**
      * 카풀 승인 서비스 로직
      *
-     * @param dto            승인 dto
-     * @param authentication 로그인 정보
+     * @param dto 승인 dto
      * @apiNote 승인을 받으면 채팅창이 연결되도록 하였다.
      * 현재는 채팅서버에서 인증이 불가능하여 이곳의 db를 사용하고 있는 상황이다.
+     * <p/>
+     * 채팅서버에 인증기능이 추가되어서 더 이상 RestTemplate 를 사용하여 연결하지 않는다.
      * @since last modified at 2023.04.24
+     * @since v1.51
      */
     @Transactional
-    public void admit(AdmitDto dto, Authentication authentication) {
+    public void admit(AdmitDto dto) {
         long carpoolId = dto.getToCarpoolId();
         Carpool carpoolEntity = carpoolRepository.findById(carpoolId).orElseThrow(() -> new EntityNotFoundException("카풀 게시글을 찾을 수 없습니다."));
-
         AuditorProvider ad = new AuditorProvider();
-
         if (isCarpoolWriter(carpoolEntity, ad)) {
             throw new AccessDeniedException("해당 게시글의 작성자가 아닙니다.");
         }
@@ -94,7 +94,6 @@ public class SubmitService {
             throw new EntityNotFoundException("해당 카풀 신청 데이터를 찾을 수 없습니다.");
         });
         submitEntity.setState("승인");
-
     }
 
     /**
